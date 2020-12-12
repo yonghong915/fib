@@ -1,4 +1,4 @@
-
+### Java template
 .metadata
 bin/
 tmp/
@@ -14,6 +14,12 @@ local.properties
 .project
 .class
 /target/
+
+
+# IntelliJ project files
+.idea
+.idea/
+*.iml
 
 # External tool builders
 .externalToolBuilders/
@@ -58,3 +64,15 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Log file
+*.log
