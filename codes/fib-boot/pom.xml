@@ -18,8 +18,7 @@
 	</parent>
 
 	<modules>
-		<module>fib-bank</module>
-		<module>fib-cloud</module>
+		<module>fib-application</module>
 		<module>fib-framework</module>
 	</modules>
 
