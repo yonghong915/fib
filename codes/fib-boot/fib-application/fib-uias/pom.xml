@@ -4,19 +4,17 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>fib-framework</artifactId>
-	<name>fib-framework</name>
-	<url>http://maven.apache.org</url>
-	<packaging>pom</packaging>
 	<parent>
 		<groupId>com.fib</groupId>
-		<artifactId>fib-boot</artifactId>
+		<artifactId>fib-application</artifactId>
 		<version>1.0.0.RELEASE</version>
 	</parent>
-
-	<modules>
-		<module>fib-commons</module>
-		<module>fib-core</module>
-		<module>fib-mq</module>
-	</modules>
+	<artifactId>fib-uias</artifactId>
+	<name>fib-uias</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+	</dependencies>
 </project>

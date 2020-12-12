@@ -4,18 +4,24 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
+	<artifactId>fib-application</artifactId>
+	<name>fib-application</name>
+	<url>http://maven.apache.org</url>
+	<packaging>pom</packaging>
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-boot</artifactId>
 		<version>1.0.0.RELEASE</version>
 	</parent>
-	<artifactId>fib-application</artifactId>
-	<name>fib-application</name>
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
 
-	</dependencies>
+	<modules>
+		<module>fib-bip</module>
+		<module>fib-crm</module>
+		<module>fib-ecif</module>
+		<module>fib-esb</module>
+		<module>fib-oims</module>
+		<module>fib-pcms</module>
+		<module>fib-uias</module>
+		<module>fib-upp</module>
+	</modules>
 </project>
