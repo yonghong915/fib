@@ -1,0 +1,27 @@
+version: "2"
+services:
+  eureka-server1:
+    image: fib-config
+    container_name: config-server1
+    hostname: config-server1
+    ports:
+      - 9001:9001
+    environment:
+      - SERVER_PORT=9001
+      - SERVICE_NAME=fib-config
+      - IP_ADDRESS=192.168.56.11
+      - HOSTNAME=config-server1
+      - EUREKA_SERVER=http://192.168.56.11:8761/eureka,http://192.168.56.11:8762/eureka
+
+  eureka-server2:
+    image: fib-config
+    container_name: config-server2
+    hostname: config-server2
+    ports:
+      - 9002:9001
+    environment:
+      - SERVER_PORT=9001
+      - SERVICE_NAME=fib-config
+      - IP_ADDRESS=192.168.56.11
+      - HOSTNAME=config-server2
+      - EUREKA_SERVER=http://192.168.56.11:8761/eureka,http://192.168.56.11:8762/eureka

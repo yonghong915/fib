@@ -1,6 +1,9 @@
 
     fib-boot
         fib-framework
+            fib-config
+            fib-eureka
+            fib-gateway
             fib-commons
             fib-core
             fib-mq

@@ -1,0 +1,25 @@
+version: "2"
+services:
+  eureka-server1:
+    image: fib-eureka
+    container_name: eureka-server1
+    hostname: eureka-server1
+    ports:
+      - 8761:8761
+    environment:
+      - SERVER_PORT=8761
+      - SERVICE_NAME=fib-eureka
+      - HOSTNAME=eureka-server1
+      - EUREKA_SERVER=http://192.168.56.11:8761/eureka,http://192.168.56.11:8762/eureka
+
+  eureka-server2:
+    image: fib-eureka
+    container_name: eureka-server2
+    hostname: eureka-server2
+    ports:
+      - 8762:8761
+    environment:
+      - SERVER_PORT=8761
+      - SERVICE_NAME=fib-eureka
+      - HOSTNAME=eureka-server2
+      - EUREKA_SERVER=http://192.168.56.11:8761/eureka,http://192.168.56.11:8762/eureka
