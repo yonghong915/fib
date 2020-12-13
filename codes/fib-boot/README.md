@@ -39,7 +39,7 @@ DOCKER_HOST=tcp://192.168.56.11:2375
 
 5.运行maven打包
 
-mvn clean package -Dmaven.test.skip=true dockerfile:build
+mvn clean package -Psit -Dmaven.test.skip=true dockerfile:build
 
 6.服务器中启动应用 
 
