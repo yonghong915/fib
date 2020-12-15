@@ -16,5 +16,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-commons</artifactId>
+		</dependency>
 	</dependencies>
 </project>

@@ -1,4 +1,4 @@
-package org.fib.upp;
+package com.fib.upp;
 
 /**
  * Hello world!

@@ -1,6 +1,7 @@
 package com.fib.commons.web;
 
 public interface RestStatus {
+
 	/**
 	 * the status codes of per restful request.
 	 * 
