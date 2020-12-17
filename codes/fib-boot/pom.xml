@@ -43,7 +43,7 @@
 		<guava.version>30.0-jre</guava.version>
 		<protostuff.version>1.7.2</protostuff.version>
 		<xstream.version>1.4.15</xstream.version>
-		
+
 
 		<springboot.version>2.2.2.RELEASE</springboot.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
@@ -202,30 +202,30 @@
 				<artifactId>hutool-all</artifactId>
 				<version>${hutool.version}</version>
 			</dependency>
-			
+
 			<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
 
-		<dependency>
-			<groupId>io.protostuff</groupId>
-			<artifactId>protostuff-core</artifactId>
-			<version>${protostuff.version}</version>
-		</dependency>
+			<dependency>
+				<groupId>io.protostuff</groupId>
+				<artifactId>protostuff-core</artifactId>
+				<version>${protostuff.version}</version>
+			</dependency>
 
-		<dependency>
-			<groupId>io.protostuff</groupId>
-			<artifactId>protostuff-runtime</artifactId>
-			<version>${protostuff.version}</version>
-		</dependency>
+			<dependency>
+				<groupId>io.protostuff</groupId>
+				<artifactId>protostuff-runtime</artifactId>
+				<version>${protostuff.version}</version>
+			</dependency>
 
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>${xstream.version}</version>
-		</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>${xstream.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.jasypt</groupId>
@@ -321,11 +321,16 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

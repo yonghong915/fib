@@ -3,6 +3,7 @@ package com.fib.core.base.entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fib.commons.util.serialize.DateJsonDeserializer;
@@ -24,6 +25,7 @@ public class BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** 主键 */
+	@TableId
 	private Long pkId;
 
 	/** 创建人 */
