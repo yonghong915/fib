@@ -1,0 +1,1 @@
+INSERT INTO sys_error_code(pk_id,language,system_code,error_code,error_desc) VALUES(123456789,'zh_CN','uias','TCH01999','调用服务[{0}]异常');

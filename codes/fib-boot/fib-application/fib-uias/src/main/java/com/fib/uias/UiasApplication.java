@@ -13,8 +13,7 @@ import org.springframework.cache.annotation.EnableCaching;
  * @date 2020-12-16
  */
 @SpringBootApplication
-@MapperScan("com.fib.uias.mapper")
-@EnableCaching
+//@EnableCaching
 public class UiasApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UiasApplication.class, args);
