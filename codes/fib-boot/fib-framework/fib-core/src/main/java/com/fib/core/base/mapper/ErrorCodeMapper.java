@@ -1,11 +1,11 @@
-package com.fib.uias.mapper;
+package com.fib.core.base.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fib.uias.entity.ErrorCodeEntity;
+import com.fib.core.base.entity.ErrorCodeEntity;
 
 /**
  * 

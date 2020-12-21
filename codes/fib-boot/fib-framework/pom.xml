@@ -18,6 +18,7 @@
 		<module>fib-config</module>
 		<module>fib-eureka</module>
 		<module>fib-gateway</module>
+		<module>fib-monitor</module>
 		<module>fib-commons</module>
 		<module>fib-core</module>
 		<module>fib-mq</module>

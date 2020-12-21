@@ -1,7 +1,6 @@
-package com.fib.uias.entity;
+package com.fib.core.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fib.core.base.entity.BaseEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

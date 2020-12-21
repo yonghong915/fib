@@ -1,4 +1,4 @@
-package org.fib.uias;
+package com.fib.uias;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -10,13 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fib.uias.UiasApplication;
 import com.fib.uias.entity.UserEntity;
 import com.fib.uias.service.IUserService;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UiasApplication.class)
@@ -46,14 +44,6 @@ public class CacheTest {
 		userEntity.setPkId(pkId);
 		int addRet = userService.addUser(userEntity);
 		System.out.println("addRet=" + addRet);
-	}
-
-	@Test
-	public void testGetErrorMsg() {
-		String errorCode = "TCH01999";
-		String errorMsg = "调用服务[{}]异常";
-		String params = "LpcbcCommunicationService";
-		String ret = StrUtil.format(errorMsg, params, "a", "b");
-		System.out.println(ret);
+		assertNotNull(pkId);
 	}
 }

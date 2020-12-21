@@ -1,6 +1,5 @@
 package com.fib.uias.mapper;
 
-import java.net.HttpURLConnection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Select;

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fib.core.base.mapper.ErrorCodeMapper">
+	<sql id="BASE_COLUMN_LIST">
+		pk_id,language,system_code,error_code,error_desc,del_flag
+	</sql>
+
+	<!-- 查找用户信息 -->
+	<select id="selectList"
+		parameterType="com.fib.core.base.entity.ErrorCodeEntity"
+		resultType="com.fib.core.base.entity.ErrorCodeEntity">
+		SELECT
+		<include refid="BASE_COLUMN_LIST"></include>
+		FROM sys_error_code
+		<where>
+			<if test="pkId != null">
+				and pk_id = #{pkId}
+			</if>
+			<if test="errorCode != null">
+				and error_code = #{errorCode}
+			</if>
+		</where>
+	</select>
+
+</mapper>

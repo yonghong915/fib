@@ -30,5 +30,5 @@ CREATE TABLE sys_user(
      update_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      PRIMARY KEY (pk_id)
  );
- 
+CREATE UNIQUE INDEX uk_error_code ON sys_error_code(error_code);
  
