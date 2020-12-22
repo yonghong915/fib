@@ -17,4 +17,6 @@ import com.fib.core.base.entity.ErrorCodeEntity;
 public interface ErrorCodeMapper extends BaseMapper<ErrorCodeEntity> {
 	@Select("selectList")
 	List<ErrorCodeEntity> selectList(ErrorCodeEntity entity);
+
+	ErrorCodeEntity findByKey(ErrorCodeEntity entity);
 }

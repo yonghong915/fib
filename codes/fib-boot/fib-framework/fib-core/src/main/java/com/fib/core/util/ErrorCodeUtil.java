@@ -42,8 +42,7 @@ public class ErrorCodeUtil {
 			logger.error("input param errorCode is null.");
 			return errorCode;
 		}
-		String errorMsg = "";
-		Object obj = redisUtil.get(locale.toString() + "~" + errorCode);
+		Object obj = redisUtil.get("errorCode~" + locale.toString() + "~" + errorCode);
 		if (null == obj) {
 			return "";
 		}

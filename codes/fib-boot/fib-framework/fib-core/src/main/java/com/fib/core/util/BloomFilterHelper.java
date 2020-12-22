@@ -10,6 +10,8 @@ public class BloomFilterHelper<T> {
 	private int bitSize;
 
 	private Funnel<T> funnel;
+	
+	
 
 	public BloomFilterHelper(Funnel<T> funnel, int expectedInsertions, double fpp) {
 		Preconditions.checkArgument(funnel != null, "funnel不能为空");

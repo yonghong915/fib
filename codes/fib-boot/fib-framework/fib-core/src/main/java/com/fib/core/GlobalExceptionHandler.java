@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.fib.commons.web.ResultRsp;
 import com.fib.commons.web.ResultUtil;
 import com.fib.core.exception.BusinessException;
+import com.fib.core.util.StatusCode;
 
 /**
- * Global Exception Handle
+ * Global Exception Handler
  * 
  * @author fangyh
  * @version 1.0
@@ -26,12 +27,12 @@ public class GlobalExceptionHandler<T> {
 
 	@ExceptionHandler
 	public ResultRsp<T> handler(HttpServletRequest req, HttpServletResponse res, Exception e) {
-		logger.info("Restful Http请求发生异常...");
-
+		logger.error("Restful Http请求发生异常.", e);
 		if (e instanceof BusinessException) {
 			BusinessException bizExp = (BusinessException) e;
 			return ResultUtil.error(bizExp.getCode(), bizExp.getMsg());
+		} else {
+			return ResultUtil.message(StatusCode.OTHER_EXCEPTION);
 		}
-		return null;
 	}
 }

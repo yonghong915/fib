@@ -22,5 +22,21 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="findByKey"
+		parameterType="com.fib.core.base.entity.ErrorCodeEntity"
+		resultType="com.fib.core.base.entity.ErrorCodeEntity">
+		SELECT
+		<include refid="BASE_COLUMN_LIST"></include>
+		FROM sys_error_code
+		<where>
+			<if test="pkId != null">
+				and pk_id = #{pkId}
+			</if>
+			<if test="errorCode != null">
+				and error_code = #{errorCode}
+			</if>
+		</where>
+	</select>
 
 </mapper>

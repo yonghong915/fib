@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fib.core.base.entity.ErrorCodeEntity;
 import com.fib.core.base.service.IErrorCodeService;
+import com.fib.core.config.BloomFilterConfig;
 import com.fib.core.util.RedisUtil;
 
 import cn.hutool.core.util.StrUtil;
@@ -27,6 +28,9 @@ class ErrorCodeServiceTest {
 	@Autowired
 	private RedisUtil redisUtil;
 
+	@Autowired
+	private BloomFilterConfig bloomFilterConfig;
+
 	private Locale DEFAULT_LOCALE = Locale.getDefault();
 
 	@Test
@@ -38,13 +42,12 @@ class ErrorCodeServiceTest {
 		entity.setErrorCode(errorCode1);
 		entity.setLanguage(DEFAULT_LOCALE.toString());
 		for (int i = 0; i < 10; i++) {
-			List<ErrorCodeEntity> list = errorCodeService.selectList(entity);
+			ErrorCodeEntity errorCode = errorCodeService.findByKey(entity);
 			String params = "LpcbcCommunicationService";
-			for (ErrorCodeEntity errorCode : list) {
-				System.out.println("errorCode=" + errorCode);
-				String errorDesc = errorCode.getErrorDesc();
-				System.out.println(StrUtil.format(errorDesc, params));
-			}
+			System.out.println("errorCode=" + errorCode);
+			String errorDesc = errorCode.getErrorDesc();
+			System.out.println(StrUtil.format(errorDesc, params));
+
 		}
 		assertEquals(100, 100);
 	}

@@ -14,10 +14,6 @@ import lombok.Getter;
  * @version 1.0.0
  */
 public class BusinessException extends BaseException {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2314396437259053562L;
 
 	@Getter
@@ -52,5 +48,4 @@ public class BusinessException extends BaseException {
 	public String toString() {
 		return "{rspCode:" + code + ",rspMsg:" + msg + "}";
 	}
-
 }

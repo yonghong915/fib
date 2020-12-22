@@ -37,7 +37,7 @@ public class UiasApplication {
 
 	@Bean(name = "hystrixRegistrationBean")
 	public ServletRegistrationBean<HystrixMetricsStreamServlet> servletRegistrationBean() {
-		ServletRegistrationBean<HystrixMetricsStreamServlet> registration = new ServletRegistrationBean<HystrixMetricsStreamServlet>(new HystrixMetricsStreamServlet(),
+		ServletRegistrationBean<HystrixMetricsStreamServlet> registration = new ServletRegistrationBean<>(new HystrixMetricsStreamServlet(),
 				"/actuator/hystrix.stream");
 		registration.setName("HystrixMetricsStreamServlet");
 		registration.setLoadOnStartup(1);

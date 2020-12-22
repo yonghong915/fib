@@ -1,20 +1,15 @@
 package com.fib.core.base.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
 
 import com.fib.core.util.BloomFilterHelper;
@@ -25,9 +20,7 @@ public class RedisService {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
-	private static double size = Math.pow(2, 32);
 
-	private static final String bloomFilterName = "isVipBloom";
 	/**
 	 * 默认过期时长，单位：秒
 	 */
