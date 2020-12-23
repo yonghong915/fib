@@ -56,16 +56,9 @@ public class UserCtrler {
 		}
 	}
 
-	@PostMapping(value = "/getUser")
+	@GetMapping(value = "/getUser")
 	public UserEntity get(String userCode) {
 		System.out.println("userCode=" + userCode);
-
-		try {
-			Thread.sleep(60 * 60 * 1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return userService.getUser(userCode);
 	}
 

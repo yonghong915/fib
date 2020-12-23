@@ -36,7 +36,7 @@ public class ErrorCodeUtil {
 		}
 		return getDescription(errorCode, DEFAULT_LOCALE, args);
 	}
-
+	
 	public static String getDescription(String errorCode, Locale locale, String... args) {
 		if (StrUtil.isEmpty(errorCode)) {
 			logger.error("input param errorCode is null.");

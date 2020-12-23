@@ -13,7 +13,7 @@
 	<name>fib-commons</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		
+
 
 	</properties>
 	<dependencies>
@@ -61,6 +61,9 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+		</dependency>
 	</dependencies>
 </project>

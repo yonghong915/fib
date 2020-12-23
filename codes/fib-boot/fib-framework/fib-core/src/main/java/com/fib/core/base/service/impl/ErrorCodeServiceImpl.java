@@ -11,11 +11,13 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fib.core.base.datasource.DS;
 import com.fib.core.base.entity.ErrorCodeEntity;
 import com.fib.core.base.mapper.ErrorCodeMapper;
 import com.fib.core.base.service.IErrorCodeService;
 import com.fib.core.config.BloomFilterConfig;
 import com.fib.core.exception.BusinessException;
+import com.fib.core.util.ConstantUtil;
 import com.fib.core.util.RedisUtil;
 import com.fib.core.util.StatusCode;
 
@@ -46,6 +48,7 @@ public class ErrorCodeServiceImpl extends ServiceImpl<ErrorCodeMapper, ErrorCode
 	 * @param entity
 	 * @return
 	 */
+	@DS(ConstantUtil.DSType.DS_TYPE_SYSDB)
 	@Override
 	public List<ErrorCodeEntity> selectList(ErrorCodeEntity entity) {
 		String key = entity.getLanguage() + "~" + entity.getErrorCode();

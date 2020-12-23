@@ -1,6 +1,7 @@
 package com.fib.commons.web;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -41,8 +42,8 @@ public class ResultRsp<T> implements Serializable {
 	 * 时间戳
 	 */
 	@JsonProperty("timestamp")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSZ", timezone = "GMT+8")
-	private long timestamp = System.currentTimeMillis();
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
+	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 	public ResultRsp() {
 		// do nothing

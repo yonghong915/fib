@@ -2,15 +2,18 @@ package com.fib.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.fib.core.base.datasource.DataSourceProperties;
 import com.fib.core.base.entity.ErrorCodeEntity;
 import com.fib.core.base.service.IErrorCodeService;
 import com.fib.core.config.BloomFilterConfig;
@@ -33,8 +36,12 @@ class ErrorCodeServiceTest {
 
 	private Locale DEFAULT_LOCALE = Locale.getDefault();
 
+	@Autowired
+	private DataSourceProperties dataSourceProperties;
+
 	@Test
 	void testGetErrorCodeList() {
+		System.out.println("dataSourceProperties=" + dataSourceProperties);
 		ErrorCodeEntity entity = new ErrorCodeEntity();
 		String errorCode1 = "E000009";
 		// Object obj = redisUtil.get(DEFAULT_LOCALE.toString() + "~" + errorCode1);

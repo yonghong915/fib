@@ -11,6 +11,8 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fib.core.exception.BusinessException;
+import com.fib.core.util.StatusCode;
 import com.fib.uias.entity.UserEntity;
 import com.fib.uias.mapper.UserMapper;
 import com.fib.uias.service.IUserService;
@@ -23,10 +25,14 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserMapper userMapper;
 
-	@Cacheable(value = "aaa")
 	public UserEntity getUser(String userCode) {
 		logger.info("getUser--->userCode={}", userCode);
-		return userMapper.selectById(userCode);
+		try {
+			int a = 1 / 0;
+			return userMapper.selectById(userCode);
+		} catch (Exception e) {
+			throw new BusinessException(StatusCode.DB_EXCEPTION);
+		}
 	}
 
 	public int addUser(UserEntity userEntity) {
