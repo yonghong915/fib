@@ -2,14 +2,16 @@ package com.fib.core.util;
 
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
+
+import cn.hutool.core.collection.CollUtil;
 
 @Component
 public final class RedisUtil {
-	@Autowired
+	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
 
 	public boolean expire(String key, long time) {
@@ -42,7 +44,7 @@ public final class RedisUtil {
 			if (key.length == 1) {
 				redisTemplate.delete(key[0]);
 			} else {
-				redisTemplate.delete(CollectionUtils.arrayToList(key));
+				redisTemplate.delete(CollUtil.newArrayList(key));
 			}
 		}
 	}

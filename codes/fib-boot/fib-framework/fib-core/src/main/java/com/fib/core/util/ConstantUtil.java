@@ -1,10 +1,15 @@
 package com.fib.core.util;
 
 public class ConstantUtil {
+	private ConstantUtil() {
+	}
 
 	public static class DSType {
+		private DSType() {
+		}
+
 		public static final String DS_TYPE_SYSDB = "SYSDB";
-		public static final String DS_TYPE_APPDB = "UMPDB";
+		public static final String DS_TYPE_APPDB = "APPDB";
 	}
 
 	/**
@@ -15,6 +20,9 @@ public class ConstantUtil {
 	 * @since 1.0
 	 */
 	public static class LogType {
+		private LogType() {
+		}
+
 		/**
 		 * 系统日志类型： 操作
 		 */
@@ -24,6 +32,8 @@ public class ConstantUtil {
 	}
 
 	public static class JWTConstants {
+		private JWTConstants() {
+		}
 
 		/**
 		 * 上线需要变更
@@ -37,7 +47,7 @@ public class ConstantUtil {
 
 	}
 
-	public static enum MenuType {
+	public enum MenuType {
 		MENU(1), BUTTON(2);
 
 		private int value;
@@ -51,7 +61,7 @@ public class ConstantUtil {
 		}
 	}
 
-	public static enum UserStatus {
+	public enum UserStatus {
 		NORMAL("01"), EXPIRE("01"), LOCKED("02");
 
 		private String value;

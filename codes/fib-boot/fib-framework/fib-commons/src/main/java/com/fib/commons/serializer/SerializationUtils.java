@@ -25,27 +25,20 @@ public class SerializationUtils {
 		return SingletonHolder.instance;
 	}
 
-	public void loadSerializerInstance(String className) {
+	public Serializer loadSerializerInstance(Class<?> clazz) {
 		if (null != serializer) {
-			return;
+			return serializer;
 		}
+		Object obj;
 		try {
-			Class<?> clazz = Class.forName(className);
-			Object obj = clazz.getDeclaredConstructor().newInstance();
+			obj = clazz.getDeclaredConstructor().newInstance();
 			if (obj instanceof Serializer) {
 				serializer = (Serializer) obj;
 			}
-		} catch (ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException | InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			throw new BaseException("Failed to obtain serial instance.", e);
 		}
-	}
-
-	public <T> byte[] serialize(T obj) {
-		return serializer.serialize(obj);
-	}
-
-	public <T> T deserialize(byte[] data, Class<T> clazz) {
-		return serializer.deserialize(data, clazz);
+		return serializer;
 	}
 }

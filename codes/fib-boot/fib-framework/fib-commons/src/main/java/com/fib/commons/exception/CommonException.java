@@ -18,4 +18,8 @@ public class CommonException extends BaseException {
 		super(message, cause);
 	}
 
+	public CommonException(String message) {
+		super(message);
+	}
+
 }

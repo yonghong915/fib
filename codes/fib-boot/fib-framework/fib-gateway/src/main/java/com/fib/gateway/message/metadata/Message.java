@@ -1,0 +1,178 @@
+package com.fib.gateway.message.metadata;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import lombok.Data;
+
+/**
+ * 消息信息
+ * 
+ * @author fangyh
+ * @version 1.0
+ * @since 1.0
+ * @date 2020-12-28
+ */
+@Data
+public class Message {
+	private String databaseMessageId;
+	private String groupId;
+	private String id;
+	private int type = 1000;
+	private String shortText;
+	private String className;
+	private Map<String, Field> fields = new TreeMap<>();
+	private String xpath;
+	private String template;
+	private Map<String, String> nameSpaces = new HashMap<>();
+	private String prePackEvent;
+	private String postPackEvent;
+	private String preParseEvent;
+	private String postParseEvent;
+
+	private boolean schemaValid = false;
+	private int schemaValidType;
+	private String schemaValidPath;
+
+	private String prefixString;
+	private byte[] prefix;
+	private String suffixString;
+	private byte[] suffix;
+	private Map variable = new HashMap();
+	private String msgCharset;
+
+	private String extendedAttributeText;
+	private Map<String, String> extendedAttributes = new HashMap<>();
+	private boolean removeBlankNode = false;
+
+	public List<Field> getFieldList() {
+		List<Field> var1 = new ArrayList<>(this.fields.size());
+		var1.addAll(this.fields.values());
+		return var1;
+	}
+
+	public Field getField(String var1) {
+		return this.fields.get(var1);
+	}
+
+	public void setField(String var1, Field var2) {
+		this.fields.put(var1, var2);
+	}
+
+	public String getExtendAttribute(String var1) {
+		return null == this.extendedAttributes ? null : (String) this.extendedAttributes.get(var1);
+	}
+
+	public void setExtendAttribute(String var1, String var2) {
+		if (null == this.extendedAttributes) {
+			this.extendedAttributes = new HashMap<>(3);
+		}
+
+		this.extendedAttributes.put(var1, var2);
+	}
+
+	public boolean equalTo(Message var1) {
+		if (null == var1) {
+			return false;
+		} else if (!this.id.equalsIgnoreCase(var1.getId())) {
+			return false;
+		} else if (this.type != var1.getType()) {
+			return false;
+		} else if (!this.className.equalsIgnoreCase(var1.getClassName())) {
+			return false;
+		} else if (null == this.xpath ^ null == var1.getXpath()) {
+			return false;
+		} else if (null != this.xpath && null != var1.getXpath() && !this.xpath.equalsIgnoreCase(var1.getXpath())) {
+			return false;
+		} else if (this.schemaValidType != var1.getSchemaValidType()) {
+			return false;
+		} else if (null != this.schemaValidPath && !this.schemaValidPath.equalsIgnoreCase(var1.getSchemaValidPath())) {
+			return false;
+		} else {
+			if (1002 == var1.getType() || 1003 == var1.getType()) {
+				if (null == this.prefix ^ null == var1.getPrefix()) {
+					return false;
+				}
+
+				if (null != this.prefix && null != var1.getPrefix() && !Arrays.equals(this.prefix, var1.getPrefix())) {
+					return false;
+				}
+
+				if (null == this.suffix ^ null == var1.getSuffix()) {
+					return false;
+				}
+
+				if (null != this.suffix && null != var1.getSuffix() && !Arrays.equals(this.suffix, var1.getSuffix())) {
+					return false;
+				}
+			}
+
+			if (null == this.prePackEvent ^ null == var1.getPrePackEvent()) {
+				return false;
+			} else if (null != this.prePackEvent && null != var1.getPrePackEvent()
+					&& !this.prePackEvent.equalsIgnoreCase(var1.getPrePackEvent())) {
+				return false;
+			} else if (null == this.postPackEvent ^ null == var1.getPostPackEvent()) {
+				return false;
+			} else if (null != this.postPackEvent && null != var1.getPostPackEvent()
+					&& !this.postPackEvent.equalsIgnoreCase(var1.getPostPackEvent())) {
+				return false;
+			} else if (null == this.preParseEvent ^ null == var1.getPreParseEvent()) {
+				return false;
+			} else if (null != this.preParseEvent && null != var1.getPreParseEvent()
+					&& !this.preParseEvent.equalsIgnoreCase(var1.getPreParseEvent())) {
+				return false;
+			} else if (null == this.postParseEvent ^ null == var1.getPostParseEvent()) {
+				return false;
+			} else if (null != this.postParseEvent && null != var1.getPostParseEvent()
+					&& !this.postParseEvent.equalsIgnoreCase(var1.getPostParseEvent())) {
+				return false;
+			} else if (null == this.template ^ null == var1.getTemplate()) {
+				return false;
+			} else if (null != this.template && null != var1.getTemplate()
+					&& !this.template.equalsIgnoreCase(var1.getTemplate())) {
+				return false;
+			} else if (null == this.variable ^ null == var1.getVariable()) {
+				return false;
+			} else {
+				Iterator var2;
+				A var3;
+				if (null != this.variable && null != var1.getVariable()) {
+					if (this.variable.size() != var1.getVariable().size()) {
+						return false;
+					}
+
+					var2 = var1.getVariable().values().iterator();
+					var3 = null;
+
+					while (var2.hasNext()) {
+						var3 = (A) var2.next();
+						if (!var3.A((A) this.variable.get(var3.D()))) {
+							return false;
+						}
+					}
+				}
+
+				var2 = this.fields.values().iterator();
+				var3 = null;
+
+				Field var4;
+				do {
+					if (!var2.hasNext()) {
+						return true;
+					}
+
+					var4 = (Field) var2.next();
+				} while (var4.equalTo(var1.getField(var4.getName())));
+
+				return false;
+			}
+		}
+	}
+
+}

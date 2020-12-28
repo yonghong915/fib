@@ -1,6 +1,5 @@
 package com.fib.core.base.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,8 +19,6 @@ import com.fib.core.exception.BusinessException;
 import com.fib.core.util.ConstantUtil;
 import com.fib.core.util.RedisUtil;
 import com.fib.core.util.StatusCode;
-
-import cn.hutool.core.collection.CollUtil;
 
 /**
  * 错误码服务
@@ -48,7 +45,7 @@ public class ErrorCodeServiceImpl extends ServiceImpl<ErrorCodeMapper, ErrorCode
 	 * @param entity
 	 * @return
 	 */
-	@DS(ConstantUtil.DSType.DS_TYPE_SYSDB)
+	@DS(ConstantUtil.DSType.DS_TYPE_APPDB)
 	@Override
 	public List<ErrorCodeEntity> selectList(ErrorCodeEntity entity) {
 		String key = entity.getLanguage() + "~" + entity.getErrorCode();

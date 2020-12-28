@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -28,7 +27,6 @@ public class UserServiceImpl implements IUserService {
 	public UserEntity getUser(String userCode) {
 		logger.info("getUser--->userCode={}", userCode);
 		try {
-			int a = 1 / 0;
 			return userMapper.selectById(userCode);
 		} catch (Exception e) {
 			throw new BusinessException(StatusCode.DB_EXCEPTION);
@@ -45,11 +43,10 @@ public class UserServiceImpl implements IUserService {
 	public void retryTransferAccounts(int fromAccountId, int toAccountId, float money) throws Exception {
 		logger.info("----retryTransferAccounts--");
 
-		throw new Exception();
 	}
 
 	@Recover
 	public void recover(Exception e) {
-		System.out.println("回调方法执行！！！");
+		logger.info("回调方法执行！！！");
 	}
 }

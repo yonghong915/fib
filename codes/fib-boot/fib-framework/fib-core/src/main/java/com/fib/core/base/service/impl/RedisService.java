@@ -7,7 +7,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,13 @@ import com.google.common.base.Preconditions;
 
 @Service
 public class RedisService {
-	@Autowired
+	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
 
-
 	/**
-	 * 默认过期时长，单位：秒
+	 * 默认过期时长，单位：秒 60*60*24
 	 */
-	public static final long DEFAULT_EXPIRE = 60 * 60 * 24;
+	public static final long DEFAULT_EXPIRE = 86400;
 
 	/**
 	 * 不设置过期时长
@@ -144,9 +144,7 @@ public class RedisService {
 		Preconditions.checkArgument(bloomFilterHelper != null, "bloomFilterHelper不能为空");
 		int[] offset = bloomFilterHelper.murmurHashOffset(value);
 		for (int i : offset) {
-			if (!redisTemplate.opsForValue().getBit(key, i)) {
-				return false;
-			}
+			return redisTemplate.opsForValue().getBit(key, i);
 		}
 
 		return true;
@@ -159,29 +157,6 @@ public class RedisService {
 	 */
 	public Set<ZSetOperations.TypedTuple<Object>> reverseZRankWithRank(String key, long start, long end) {
 		ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-		Set<ZSetOperations.TypedTuple<Object>> ret = zset.reverseRangeWithScores(key, start, end);
-		return ret;
+		return zset.reverseRangeWithScores(key, start, end);
 	}
-
-//	public Boolean bloomFilterAdd(int value) {
-//		DefaultRedisScript<Boolean> bloomAdd = new DefaultRedisScript<>();
-//		bloomAdd.setScriptSource(new ResourceScriptSource(new ClassPathResource("bloomFilterAdd.lua")));
-//		bloomAdd.setResultType(Boolean.class);
-//		List<Object> keyList = new ArrayList<>();
-//		keyList.add(bloomFilterName);
-//		keyList.add(value + "");
-//		Boolean result = (Boolean) redisTemplate.execute(bloomAdd, keyList);
-//		return result;
-//	}
-//
-//	public Boolean bloomFilterExists(int value) {
-//		DefaultRedisScript<Boolean> bloomExists = new DefaultRedisScript<>();
-//		bloomExists.setScriptSource(new ResourceScriptSource(new ClassPathResource("bloomFilterExist.lua")));
-//		bloomExists.setResultType(Boolean.class);
-//		List<Object> keyList = new ArrayList<>();
-//		keyList.add(bloomFilterName);
-//		keyList.add(value + "");
-//		Boolean result = (Boolean) redisTemplate.execute(bloomExists, keyList);
-//		return result;
-//	}
 }

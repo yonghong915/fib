@@ -1,11 +1,12 @@
 package com.fib.uias.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +22,7 @@ import cn.hutool.core.util.IdUtil;
 @RestController
 @RequestMapping("/user")
 public class UserCtrler {
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private IUserService userService;
 
@@ -58,12 +60,12 @@ public class UserCtrler {
 
 	@GetMapping(value = "/getUser")
 	public UserEntity get(String userCode) {
-		System.out.println("userCode=" + userCode);
+		logger.info("userCode={}", userCode);
 		return userService.getUser(userCode);
 	}
 
 	@GetMapping("/add/{name}")
-	@HystrixCommand(fallbackMethod = "SaveFallbackMethod", commandProperties = {
+	@HystrixCommand(fallbackMethod = "saveFallbackMethod", commandProperties = {
 			@HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
 			@HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests", value = "3") })
 	public String add(@PathVariable String name) {
@@ -72,8 +74,7 @@ public class UserCtrler {
 		return respEntity.getBody();
 	}
 
-	public String SaveFallbackMethod(@PathVariable String name) {
-		String data = "稍后再试";
-		return data;
+	public String saveFallbackMethod(@PathVariable String name) {
+		return name + "稍后再试";
 	}
 }

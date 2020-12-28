@@ -1,27 +1,33 @@
 package com.fib.commons.serializer;
 
 import static org.junit.Assert.assertEquals;
+
 import java.io.Serializable;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fib.commons.serializer.jdk.JdkSerializer;
+import com.fib.commons.serializer.json.JsonSerializer;
+import com.fib.commons.serializer.protostuff.ProtoStuffSerializer;
+import com.fib.commons.serializer.xml.XmlSerializer;
 
 public class SerializerTest {
 	private Logger logger = LoggerFactory.getLogger(SerializerTest.class);
 
 	@Test
 	public void testProtoStuff() {
-		String className = "com.fib.commons.serializer.protostuff.ProtoStuffSerializer";
 
 		User user = new User();
 		user.setName("fangyh");
 		user.setAge(10);
 		logger.info("before serial for protostuff：{}", user);
 
-		SerializationUtils instance = SerializationUtils.getInstance();
-		instance.loadSerializerInstance(className);
-		byte[] userBytes = SerializationUtils.getInstance().serialize(user);
-		User user2 = SerializationUtils.getInstance().deserialize(userBytes, User.class);
+		byte[] userBytes = SerializationUtils.getInstance().loadSerializerInstance(ProtoStuffSerializer.class)
+				.serialize(user);
+		User user2 = SerializationUtils.getInstance().loadSerializerInstance(ProtoStuffSerializer.class)
+				.deserialize(userBytes, User.class);
 		logger.info("deserialize obj for protostuff：{}", user2);
 
 		assertEquals(user.getAge(), user2.getAge());
@@ -29,17 +35,14 @@ public class SerializerTest {
 
 	@Test
 	public void testJdk() {
-
-		String className = "com.fib.commons.serializer.jdk.JdkSerializer";
 		User user = new User();
 		user.setName("fangyh");
 		user.setAge(10);
 		logger.info("before serial for jdk：{}", user);
 
-		SerializationUtils instance = SerializationUtils.getInstance();
-		instance.loadSerializerInstance(className);
-		byte[] userBytes = SerializationUtils.getInstance().serialize(user);
-		User user2 = SerializationUtils.getInstance().deserialize(userBytes, User.class);
+		byte[] userBytes = SerializationUtils.getInstance().loadSerializerInstance(JdkSerializer.class).serialize(user);
+		User user2 = SerializationUtils.getInstance().loadSerializerInstance(JdkSerializer.class).deserialize(userBytes,
+				User.class);
 		logger.info("deserialize obj for jdk：{}", user2);
 
 		assertEquals(user.getAge(), user2.getAge());
@@ -47,17 +50,16 @@ public class SerializerTest {
 
 	@Test
 	public void testJson() {
-		String className = "com.fib.commons.serializer.json.JsonSerializer";
 
 		User user = new User();
 		user.setName("fangyh");
 		user.setAge(10);
 		logger.info("before serial for json：{}", user);
 
-		SerializationUtils instance = SerializationUtils.getInstance();
-		instance.loadSerializerInstance(className);
-		byte[] userBytes = SerializationUtils.getInstance().serialize(user);
-		User user2 = SerializationUtils.getInstance().deserialize(userBytes, User.class);
+		byte[] userBytes = SerializationUtils.getInstance().loadSerializerInstance(JsonSerializer.class)
+				.serialize(user);
+		User user2 = SerializationUtils.getInstance().loadSerializerInstance(JsonSerializer.class)
+				.deserialize(userBytes, User.class);
 		logger.info("deserialize obj for json：{}", user2);
 
 		assertEquals(user.getAge(), user2.getAge());
@@ -65,16 +67,14 @@ public class SerializerTest {
 
 	@Test
 	public void testXml() {
-		String className = "com.fib.commons.serializer.xml.XmlSerializer";
 		User user = new User();
 		user.setName("fangyh");
 		user.setAge(10);
 		logger.info("before serial for xml：{}", user);
 
-		SerializationUtils instance = SerializationUtils.getInstance();
-		instance.loadSerializerInstance(className);
-		byte[] userBytes = SerializationUtils.getInstance().serialize(user);
-		User user2 = SerializationUtils.getInstance().deserialize(userBytes, User.class);
+		byte[] userBytes = SerializationUtils.getInstance().loadSerializerInstance(XmlSerializer.class).serialize(user);
+		User user2 = SerializationUtils.getInstance().loadSerializerInstance(XmlSerializer.class).deserialize(userBytes,
+				User.class);
 		logger.info("deserialize obj for xml：{}", user2);
 
 		assertEquals(user.getAge(), user2.getAge());
@@ -109,5 +109,4 @@ public class SerializerTest {
 			return getClass().getName() + "(name=" + getName() + ",age=" + getAge() + ")";
 		}
 	}
-
 }

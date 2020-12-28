@@ -13,9 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.fib.uias.entity.UserEntity;
 import com.fib.uias.service.IUserService;
 
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UiasApplication.class)
 @EnableCaching
@@ -30,20 +27,9 @@ public class CacheTest {
 
 	@Test
 	public void getUserByIdTest() throws Exception {
-		UserEntity user = userService.getUser("12233");
+		UserEntity user = userService.getUser("1234567890");
 		System.out.println(user.getPkId());
 		assertNotNull(user);
 
-	}
-
-	@Test
-	public void addUserTest() {
-		UserEntity userEntity = new UserEntity();
-		Snowflake sf = IdUtil.getSnowflake(1, 1);
-		long pkId = sf.nextId();
-		userEntity.setPkId(pkId);
-		int addRet = userService.addUser(userEntity);
-		System.out.println("addRet=" + addRet);
-		assertNotNull(pkId);
 	}
 }
