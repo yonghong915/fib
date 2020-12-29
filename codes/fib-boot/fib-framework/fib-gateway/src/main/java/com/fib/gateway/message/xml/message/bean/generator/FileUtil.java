@@ -280,7 +280,6 @@ public class FileUtil {
 
 		long var3 = var1.length();
 		long var5 = 0L;
-		boolean var7 = false;
 		FileInputStream var8 = null;
 
 		try {
@@ -380,7 +379,6 @@ public class FileUtil {
 				}
 
 				byte[] var4 = new byte[8192];
-				boolean var5 = false;
 				FileInputStream var6 = null;
 				FileOutputStream var7 = null;
 

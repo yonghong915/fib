@@ -2,12 +2,14 @@ package com.fib.gateway.message.xml;
 
 import com.fib.gateway.message.bean.MessageBean;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = false)
 public class TestBean extends MessageBean {
 
 	@Override
 	public void validate() {
-		// TODO Auto-generated method stub
-
+		//
 	}
 
 	private String accountNo;
@@ -31,6 +33,7 @@ public class TestBean extends MessageBean {
 		this.accountDate = accountDate;
 	}
 
+	@Override
 	public Object getAttribute(String name) {
 		if ("accountNo".equals(name)) {
 			return this.getAccountNo();
@@ -40,6 +43,7 @@ public class TestBean extends MessageBean {
 		return null;
 	}
 
+	@Override
 	public void setAttribute(String name, Object value) {
 		if ("accountNo".equals(name)) {
 			this.setAccountNo((String) value);
@@ -48,18 +52,18 @@ public class TestBean extends MessageBean {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return toString(false);
 	}
 
+	@Override
 	public String toString(boolean isWrap) {
 		return toString(isWrap, false);
 	}
 
 	public String toString(boolean isWrap, boolean isTable) {
-		StringBuffer buf = new StringBuffer(10240);
-		StringBuffer tableBuf = new StringBuffer(2048);
-		String str = null;
+		StringBuilder buf = new StringBuilder(10240);
 		if (null != accountNo) {
 			buf.append("<a n=\"accountNo\" t=\"str\">");
 			buf.append(accountNo);
@@ -81,7 +85,7 @@ public class TestBean extends MessageBean {
 			}
 			buf.append("</b>");
 			if (!isWrap) {
-				buf = new StringBuffer(buf.toString());
+				buf = new StringBuilder(buf.toString());
 				buf.insert(0, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 				return buf.toString();
 			} else {

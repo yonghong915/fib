@@ -99,6 +99,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 		}
 	}
+
 	private void A(MessageBean var1, Message var2, Field var3, String var4, Node var5) {
 		String var6 = null;
 		if (var3.getXpath().indexOf("${") == -1) {
@@ -118,13 +119,15 @@ public class XmlMessageParser extends AbstractMessageParser {
 			this.A(var1, var3, this.A(var8), this.A(var7, var8));
 		}
 	}
-	private void A(MessageBean var1, Field var2, Class var3, Object var4) {
+
+	private void A(MessageBean var1, Field var2, Class<?> var3, Object var4) {
 		if (null != var3 && null != var4) {
 			var1.setAttribute(var2.getName(), var4);
 		}
 
 	}
-	private Class A(String var1) {
+
+	private Class<?> A(String var1) {
 		if ("String".equals(var1)) {
 			return String.class;
 		} else if ("byte[]".equals(var1)) {
@@ -141,7 +144,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			throw new RuntimeException("ddd");
 		}
 	}
-	
+
 	private Object A(String var1, String var2) {
 		if (null == var1) {
 			return null;
@@ -173,7 +176,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			throw new RuntimeException("eeee");
 		}
 	}
-	
+
 	protected byte[] A(Field var1, byte[] var2) {
 		return var2;
 //		if (5000 == var1.getPaddingDirection()) {
@@ -221,7 +224,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 //			}
 //		}
 	}
-	
+
 	private String A(String var1, Node var2, Field var3) {
 		int var4 = var1.indexOf("/text()");
 		if (-1 < var4) {
@@ -242,7 +245,6 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 		return null == var5 ? "" : var5.getText();
 	}
-
 
 	public static String getFieldTypeText(int var0) {
 		switch (var0) {
@@ -308,6 +310,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			throw new RuntimeException("bbb");
 		}
 	}
+
 	public static String getJavaTypeByDataType(int var0) {
 		switch (var0) {
 		case 3000:
@@ -332,6 +335,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			throw new RuntimeException("ccc");
 		}
 	}
+
 	public static void main(String[] args) {
 		byte[] a = "abcd".getBytes();
 		for (int i = 0; i < a.length; i++) {

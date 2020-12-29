@@ -1,8 +1,9 @@
 package com.fib.gateway.message.xml.message;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
+
+import com.fib.commons.exception.CommonException;
 
 public class CodeUtil {
 	public static String NEW_LINE = System.getProperty("line.separator");
@@ -191,7 +192,6 @@ public class CodeUtil {
 
 	public static byte[] BytetoHex(byte var0) {
 		byte[] var1 = new byte[2];
-		boolean var2 = false;
 		byte var3 = (byte) (var0 >>> 4 & 15);
 		var1[0] = (byte) (var3 > 9 ? var3 - 10 + 65 : var3 + 48);
 		var3 = (byte) (var0 & 15);
@@ -201,7 +201,6 @@ public class CodeUtil {
 
 	public static byte[] BytetoHex(byte[] var0, int var1, int var2) {
 		byte[] var3 = new byte[var2 * 2];
-		boolean var4 = false;
 
 		for (int var5 = 0; var5 < var2; ++var5) {
 			byte var6 = (byte) (var0[var1 + var5] >>> 4 & 15);
@@ -226,7 +225,6 @@ public class CodeUtil {
 	}
 
 	public static byte[] HextoByte(byte[] var0, int var1, int var2) {
-		Object var3 = null;
 		byte[] var7;
 		if (var2 % 2 != 0) {
 			var7 = new byte[var2 + 1];
@@ -237,7 +235,6 @@ public class CodeUtil {
 		}
 
 		byte[] var4 = new byte[var7.length / 2];
-		boolean var5 = false;
 
 		for (int var6 = 0; var6 < var4.length; ++var6) {
 			byte var8 = (byte) (var7[2 * var6] >= 65 ? var7[2 * var6] - 65 + 10 : var7[2 * var6] - 48);
@@ -325,7 +322,6 @@ public class CodeUtil {
 	public static String Bytes2FormattedText(byte[] var0, String var1) {
 		if (null != var0 && var0.length > 0) {
 			boolean var2 = false;
-			boolean var3 = false;
 			int var14;
 			if (var0.length % 16 == 0) {
 				var14 = var0.length / 16;
@@ -353,8 +349,6 @@ public class CodeUtil {
 						}
 					}
 
-					Object var15 = null;
-					boolean var16 = false;
 					byte[] var17;
 					int var18;
 					if (var2) {
@@ -437,7 +431,7 @@ public class CodeUtil {
 					}
 				}
 			} catch (UnsupportedEncodingException var13) {
-				//ExceptionUtil.throwActualException(var13);
+				// ExceptionUtil.throwActualException(var13);
 			}
 
 			return var4.toString();
@@ -452,7 +446,7 @@ public class CodeUtil {
 
 	public static String formatAmount(String var0, int var1) {
 		if (var1 < 0) {
-			throw new RuntimeException("scale must be greater than 0");
+			throw new CommonException("scale must be greater than 0");
 		} else if (var1 == 0) {
 			if (null != var0 && 0 != var0.length()) {
 				return var0.length() != 1 || !"-".equals(var0.substring(0, 1)) && !"+".equals(var0.substring(0, 1))
@@ -632,7 +626,6 @@ public class CodeUtil {
 
 	public static byte[] BCDtoASC(byte[] var0) {
 		byte[] var1 = new byte[var0.length * 2];
-		boolean var2 = false;
 
 		for (int var3 = 0; var3 < var0.length; ++var3) {
 			byte var4 = (byte) (var0[var3] >>> 4 & 15);
@@ -650,7 +643,6 @@ public class CodeUtil {
 
 	public static byte[] BCDtoASCUpperCase(byte[] var0) {
 		byte[] var1 = new byte[var0.length * 2];
-		boolean var2 = false;
 
 		for (int var3 = 0; var3 < var0.length; ++var3) {
 			byte var4 = (byte) (var0[var3] >>> 4 & 15);
@@ -664,7 +656,6 @@ public class CodeUtil {
 
 	public static byte[] BCDtoASC(byte[] var0, int var1, int var2) {
 		byte[] var3 = new byte[var2 * 2];
-		boolean var4 = false;
 
 		for (int var5 = 0; var5 < var2; ++var5) {
 			byte var6 = (byte) (var0[var5 + var1] >>> 4 & 15);
@@ -714,7 +705,7 @@ public class CodeUtil {
 
 	public static byte[] InttoBCD(int var0) {
 		if (0 > var0) {
-			throw new RuntimeException("num < 0!");
+			throw new CommonException("num < 0!");
 		} else {
 			String var1 = "" + var0;
 			return ASCtoBCD(var1);
@@ -847,21 +838,18 @@ public class CodeUtil {
 		}
 	}
 
-	
-
 	public static boolean isLeapYear(String var0) {
 		if (null == var0) {
-			throw new RuntimeException("year is null!");
+			throw new CommonException("year is null!");
 		} else if (0 == var0.length()) {
-			throw new RuntimeException("year is Black!");
+			throw new CommonException("year is Black!");
 		} else {
-			boolean var1 = false;
 
 			int var4;
 			try {
 				var4 = Integer.parseInt(var0);
 			} catch (Exception var3) {
-				throw new RuntimeException("year must be a num!");
+				throw new CommonException("year must be a num!");
 			}
 
 			if (0 == var4 % 400) {

@@ -49,7 +49,7 @@ public class MessageMetadataManager {
 	private static Map<String, Message> cacheByClass = new HashMap<>(1024);
 
 	/***/
-	public static final Set keyWordSet = new HashSet();
+	public static final Set<String> keyWordSet = new HashSet<>();
 
 	/***/
 	public static boolean isRequired = false;
@@ -93,7 +93,7 @@ public class MessageMetadataManager {
 		field.setName(attrValue);
 
 		attrValue = ele.attribute(EnumConstants.FieldAttr.FIELD_TYPE.code()).getValue();
-		field.setFieldType(EnumConstants.FiledType.getFieldTypeCode(attrValue));
+		field.setFieldType(EnumConstants.FieldType.getFieldTypeCode(attrValue));
 
 		attrValue = ele.attribute(EnumConstants.FieldAttr.REQUIRED.code()).getValue();
 		field.setRequired("true".equalsIgnoreCase(attrValue));
@@ -357,11 +357,11 @@ public class MessageMetadataManager {
 		}
 	}
 
-	static Map access$300() {
+	static Map<String, File> getGroupPathCache() {
 		return groupPathCache;
 	}
 
-	static Map access$100() {
+	static Map<String, Message> getClassCache() {
 		return cacheByClass;
 	}
 }
