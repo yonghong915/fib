@@ -1,11 +1,17 @@
 package com.fib.gateway.message.xml.script;
 
-
 public class BeanShellEngine {
 
 	public void set(String string, Object message) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
+	public Object get(String var8) {
+
+		return null;
+	}
+
+	public Object eval(String var1) {
+		return null;
+	}
 }

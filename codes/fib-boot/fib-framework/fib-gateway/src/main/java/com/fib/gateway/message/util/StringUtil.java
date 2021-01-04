@@ -1,4 +1,4 @@
-package com.fib.gateway.message.xml.message.bean.generator;
+package com.fib.gateway.message.util;
 
 import java.io.IOException;
 import java.io.StringReader;

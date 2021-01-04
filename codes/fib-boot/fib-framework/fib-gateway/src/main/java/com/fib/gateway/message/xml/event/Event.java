@@ -2,6 +2,9 @@ package com.fib.gateway.message.xml.event;
 
 import com.fib.gateway.message.xml.channel.Channel;
 
+import lombok.Data;
+
+@Data
 public class Event {
 
 	/**
@@ -108,6 +111,7 @@ public class Event {
 	 * 事件相关应答消息
 	 */
 	private byte[] responseMessage;
+
 	private long createTime;
 
 	public byte[] getRequestMessage() {
@@ -139,6 +143,6 @@ public class Event {
 		this.source = source;
 		this.requestMessage = requestMessage;
 		this.responseMessage = responseMessage;
-		createTime = System.currentTimeMillis();
+		this.createTime = System.currentTimeMillis();
 	}
 }

@@ -6,7 +6,13 @@ import com.fib.gateway.message.bean.MessageBean;
 import com.fib.gateway.message.parser.AbstractMessageParser;
 import com.fib.gateway.message.parser.MessageParserFactory;
 
-
+/**
+ * 报文解析器
+ * @author fangyh
+ * @version 1.0
+ * @since 1.0
+ * @date 2020-12-30
+ */
 public class MessageParser extends AbstractMessageParser {
 
 	@Override

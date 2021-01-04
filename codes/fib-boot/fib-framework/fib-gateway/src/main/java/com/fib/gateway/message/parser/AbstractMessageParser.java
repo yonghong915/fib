@@ -9,7 +9,7 @@ import com.fib.gateway.message.metadata.Message;
 import lombok.Data;
 
 /**
- * 消息解包器基类
+ * 报文解析器基类
  * 
  * @author fangyh
  * @version 1.0

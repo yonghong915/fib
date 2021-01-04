@@ -2,11 +2,18 @@ package com.fib.gateway.message.packer;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fib.commons.exception.CommonException;
 import com.fib.gateway.message.bean.MessageBean;
 import com.fib.gateway.message.metadata.Message;
+import com.fib.gateway.message.metadata.Variable;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 
 /**
@@ -19,6 +26,7 @@ import lombok.Data;
  */
 @Data
 public abstract class AbstractMessagePacker {
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 	/***/
 	protected Message message = null;
 
@@ -35,4 +43,41 @@ public abstract class AbstractMessagePacker {
 	private String defaultCharset = System.getProperty("file.encoding");
 
 	public abstract byte[] pack();
+
+	protected void loadVariable() {
+		if (CollUtil.isNotEmpty(this.message.getVariable())) {
+			Iterator<Variable> variableIter = this.message.getVariable().values().iterator();
+			Variable variable = null;
+			Object variableValue = null;
+			while (variableIter.hasNext()) {
+				variable = variableIter.next();
+				this.variableCache.put(variable.getName(), variableValue);
+				switch (variable.getDataType()) {
+				case 3000:
+				case 3001:
+					variableValue = variable.getValue();
+					break;
+
+				case 3003:
+				case 3007:
+					variableValue = Integer.valueOf(variable.getValue());
+					break;
+
+				case 3004:
+					variableValue = Byte.valueOf(variable.getValue());
+					break;
+
+				case 3005:
+				case 3008:
+					variableValue = Short.valueOf(variable.getValue());
+					break;
+
+				case 3002:
+				case 3006:
+				default:
+					throw new CommonException("tableRowField.dataType.unsupport");
+				}
+			}
+		}
+	}
 }

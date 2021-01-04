@@ -17,29 +17,27 @@ public class ValueRange {
 	private String referenceId;
 	private Message reference;
 
-	public boolean equalsTo(ValueRange var1) {
-		if (null == var1) {
+	public boolean equalsTo(ValueRange valuerange) {
+		if (null == valuerange)
 			return false;
-		} else if (!this.value.equalsIgnoreCase(var1.getValue())) {
+		if (!value.equalsIgnoreCase(valuerange.getValue()))
 			return false;
-		} else if (null == this.referenceId ^ null == var1.getReferenceId()) {
+		if ((null == referenceId) ^ (null == valuerange.getReferenceId()))
 			return false;
-		} else if (null != this.referenceId && null != var1.getReferenceId()
-				&& !this.referenceId.equalsIgnoreCase(var1.getReferenceId())) {
+		if (null != referenceId && null != valuerange.getReferenceId()
+				&& !referenceId.equalsIgnoreCase(valuerange.getReferenceId()))
 			return false;
-		} else if (null == this.reference ^ null == var1.getReference()) {
+		if ((null == reference) ^ (null == valuerange.getReference()))
 			return false;
-		} else {
-			return null == this.reference || null == var1.getReference() || this.reference.equalTo(var1.getReference());
-		}
+		return null == reference || null == valuerange.getReference() || reference.equalTo(valuerange.getReference());
 	}
 
 	public ValueRange copy() {
-		ValueRange var1 = new ValueRange();
-		var1.setReference(this.reference);
-		var1.setReferenceId(this.referenceId);
-		var1.setShortText(this.shortText);
-		var1.setValue(this.value);
-		return var1;
+		ValueRange valuerange = new ValueRange();
+		valuerange.setReference(reference);
+		valuerange.setReferenceId(referenceId);
+		valuerange.setShortText(shortText);
+		valuerange.setValue(value);
+		return valuerange;
 	}
 }

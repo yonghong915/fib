@@ -9,6 +9,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.fib.commons.exception.CommonException;
 import com.fib.gateway.message.bean.MessageBean;
@@ -16,37 +17,37 @@ import com.fib.gateway.message.metadata.Field;
 import com.fib.gateway.message.metadata.Message;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 public class XmlMessageParser extends AbstractMessageParser {
 	Document document = null;
 
 	@Override
 	public MessageBean parse() {
 		if (null == this.messageData) {
-
+			throw new CommonException("");
 		}
 		if (null == this.message) {
-
+			throw new CommonException("");
 		}
 
-		SAXReader var1 = new SAXReader();
-		var1.getDocumentFactory().setXPathNamespaceURIs(this.message.getNameSpaces());
+		SAXReader saxReader = new SAXReader();
+		saxReader.getDocumentFactory().setXPathNamespaceURIs(this.message.getNameSpaces());
 		try {
-			this.document = var1.read(new InputSource(new StringReader(new String(this.messageData))));
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			saxReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			this.document = saxReader.read(new InputSource(new StringReader(new String(this.messageData))));
+		} catch (DocumentException | SAXException e) {
+			throw new CommonException("");
 		}
-
-		MessageBean messageBean = this.getMessageBeann(this.message);
-		return messageBean;
+		return this.getMessageBean(this.message);
 	}
 
-	private MessageBean getMessageBeann(Message message) {
-		return this.getMessageBeann(message, null);
+	private MessageBean getMessageBean(Message message) {
+		return this.getMessageBean(message, null);
 	}
 
-	private MessageBean getMessageBeann(Message message, Node node) {
+	private MessageBean getMessageBean(Message message, Node node) {
 		String className = message.getClassName();
 		if (StrUtil.isEmpty(className)) {
 			throw new CommonException("XmlMessageParser.beanAssignment.message.className.null");
@@ -141,7 +142,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 		} else if ("long".equals(var1)) {
 			return Long.TYPE;
 		} else {
-			throw new RuntimeException("ddd");
+			throw new CommonException("ddd");
 		}
 	}
 
@@ -159,7 +160,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 			return Integer.parseInt(var1);
 		} else if ("byte".equals(var2)) {
-			return !"".equals(var1) ? var1.getBytes()[0] : new Byte("0");
+			return !"".equals(var1) ? var1.getBytes()[0] : Byte.parseByte("0");
 		} else if ("short".equals(var2)) {
 			if ("".equals(var1)) {
 				var1 = "0";
@@ -173,7 +174,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 			return Long.parseLong(var1);
 		} else {
-			throw new RuntimeException("eeee");
+			throw new CommonException("eeee");
 		}
 	}
 
@@ -275,7 +276,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 		case 2012:
 			return "pboc-length-field";
 		default:
-			throw new RuntimeException("aaa");
+			throw new CommonException("aaa");
 		}
 	}
 
@@ -307,7 +308,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 		} else if ("pboc-length-field".equalsIgnoreCase(var0)) {
 			return 2012;
 		} else {
-			throw new RuntimeException("bbb");
+			throw new CommonException("bbb");
 		}
 	}
 
@@ -332,7 +333,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 		case 3009:
 			return "long";
 		default:
-			throw new RuntimeException("ccc");
+			throw new CommonException("ccc");
 		}
 	}
 

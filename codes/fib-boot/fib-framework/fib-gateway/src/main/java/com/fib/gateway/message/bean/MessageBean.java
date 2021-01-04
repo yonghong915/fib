@@ -14,7 +14,8 @@ import lombok.Data;
  */
 @Data
 public abstract class MessageBean {
-	public static final String COMMON_MESSAGEBEAN_CLASS = "com.fib.gateway.message.bean.CommonMessageBean";
+
+	public static final String COMMON_MESSAGEBEAN_CLASS = CommonMessageBean.class.getName();
 	public static final String NEW_LINE = System.getProperty("line.separator");
 	private MessageBean parent;
 	private Message metadata;
@@ -37,7 +38,7 @@ public abstract class MessageBean {
 	}
 
 	public Object getAttribute(String name) {
-		return null;
+		return name;
 	}
 
 	public void setAttribute(String name, Object value) {

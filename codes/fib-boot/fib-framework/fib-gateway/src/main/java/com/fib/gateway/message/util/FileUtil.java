@@ -1,4 +1,4 @@
-package com.fib.gateway.message.xml.message.bean.generator;
+package com.fib.gateway.message.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,10 +12,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Stack;
 
-import com.fib.gateway.message.xml.message.CodeUtil;
 import com.fib.gateway.message.xml.message.MultiLanguageResourceBundle;
 
+import cn.hutool.core.util.HexUtil;
+
 public class FileUtil {
+	private FileUtil() {
+	}
+
 	public static String loadData(String var0, String var1) {
 		if (null != var0 && 0 != var0.length()) {
 			File var2 = new File(var0);
@@ -35,7 +39,7 @@ public class FileUtil {
 					var5 = new InputStreamReader(var4, var1);
 					var5.read(var3);
 				} catch (Exception var20) {
-					//ExceptionUtil.throwActualException(var20);
+					// ExceptionUtil.throwActualException(var20);
 				} finally {
 					if (null != var5) {
 						try {
@@ -263,11 +267,6 @@ public class FileUtil {
 		}
 	}
 
-	/** @deprecated */
-	public static boolean isExits(String var0) {
-		return isExist(var0);
-	}
-
 	public static byte[] getDigest(String var0) {
 		File var1 = checkFileName(var0);
 		MessageDigest var2 = null;
@@ -313,10 +312,6 @@ public class FileUtil {
 		return null;
 	}
 
-	public static String getDigestAsString(String var0) {
-		return new String(CodeUtil.BytetoHex(getDigest(var0)));
-	}
-
 	public static boolean verifyDigest(String var0, byte[] var1) {
 		if (null == var1) {
 			throw new IllegalArgumentException(
@@ -339,7 +334,7 @@ public class FileUtil {
 
 	public static boolean verifyDigest(String var0, String var1) {
 		if (null != var1 && 0 != var1.length()) {
-			byte[] var2 = CodeUtil.HextoByte(var1);
+			byte[] var2 = HexUtil.decodeHex(var1);
 			return verifyDigest(var0, var2);
 		} else {
 			throw new IllegalArgumentException(MultiLanguageResourceBundle.getInstance().getString("parameter.null",
@@ -406,7 +401,7 @@ public class FileUtil {
 
 	public static void waitForAccess(File var0) {
 		if (var0 != null && var0.exists()) {
-			Stack var1 = new Stack();
+			Stack<Long> var1 = new Stack<>();
 			int var2 = 0;
 
 			while (true) {
@@ -420,9 +415,9 @@ public class FileUtil {
 
 				++var2;
 				if (var2 == 3) {
-					Long var3 = (Long) var1.pop();
-					Long var4 = (Long) var1.pop();
-					Long var5 = (Long) var1.pop();
+					Long var3 = var1.pop();
+					Long var4 = var1.pop();
+					Long var5 = var1.pop();
 					if (var3.equals(var4) && var3.equals(var5)) {
 						return;
 					}
@@ -507,7 +502,7 @@ public class FileUtil {
 				throw new IllegalArgumentException(
 						MultiLanguageResourceBundle.getInstance().getString("FileUtil.sourcePath.destPath.same"));
 			} else {
-				//copyAllFromDirectory(var2, var3);
+				// copyAllFromDirectory(var2, var3);
 			}
 		}
 	}

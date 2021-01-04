@@ -3,14 +3,16 @@ package com.fib.gateway.message.bean.generator;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 
 import com.fib.gateway.message.bean.MessageBean;
 import com.fib.gateway.message.metadata.Field;
 import com.fib.gateway.message.metadata.Message;
+import com.fib.gateway.message.util.FileUtil;
+import com.fib.gateway.message.util.StringUtil;
 import com.fib.gateway.message.xml.message.Constant;
-import com.fib.gateway.message.xml.message.MultiLanguageResourceBundle;
-import com.fib.gateway.message.xml.message.bean.generator.FileUtil;
-import com.fib.gateway.message.xml.message.bean.generator.StringUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * MessageBean代码生成器
@@ -23,4290 +25,2338 @@ import com.fib.gateway.message.xml.message.bean.generator.StringUtil;
 public class MessageBeanCodeGenerator {
 	private static final String NEW_LINE = System.getProperty("line.separator");
 	private String outputDir;
-	public static String operBlank = "1";
-
-	public void generate(Message var1, String var2) {
-		if (null == var1) {
-			throw new IllegalArgumentException(MultiLanguageResourceBundle.getInstance().getString("parameter.null",
-					new String[] { "messageMeta" }));
-		} else {
-			String var3 = var1.getClassName().substring(0, var1.getClassName().lastIndexOf("."));
-			String var4 = var1.getClassName().substring(var1.getClassName().lastIndexOf(".") + 1);
-			StringBuffer var5 = new StringBuffer(10240);
-			new HashMap();
-			var5.append("package ");
-			var5.append(var3.toLowerCase());
-			var5.append(";");
-			var5.append(NEW_LINE);
-			var5.append(NEW_LINE);
-			var5.append("import com.fib.gateway.message.bean.*;");
-			var5.append(NEW_LINE);
-			var5.append("import com.fib.gateway.message.xml.message.*;");
-			var5.append(NEW_LINE);
-			var5.append("import com.fib.gateway.message.*;");
-			var5.append(NEW_LINE);
-
-			var5.append("import java.math.BigDecimal;");
-			var5.append(NEW_LINE);
-			var5.append("import java.io.UnsupportedEncodingException;");
-			var5.append(NEW_LINE);
-			var5.append("import com.fib.gateway.message.xml.message.MultiLanguageResourceBundle;");
-			var5.append(NEW_LINE);
-			var5.append("import java.util.*;");
-			var5.append(NEW_LINE);
-			var5.append(NEW_LINE);
-			var5.append("/**");
-			var5.append(NEW_LINE);
-			var5.append(" * ");
-			var5.append(var1.getShortText());
-			var5.append(NEW_LINE);
-			var5.append(" */");
-			var5.append(NEW_LINE);
-			var5.append("public class ");
-			var5.append(StringUtil.toUpperCaseFirstOne(var4));
-			var5.append(" extends MessageBean{");
-			var5.append(NEW_LINE);
-			var5.append(NEW_LINE);
-			Iterator var7 = var1.getFields().values().iterator();
-			Iterator var8 = null;
-			Field var9 = null;
-			Field var10 = null;
-			String var11 = null;
-			String var12 = null;
-
-			while (true) {
-				do {
-					do {
-						if (!var7.hasNext()) {
-							var5.append("\tpublic Object getAttribute(String name){");
-							var5.append(NEW_LINE);
-							var7 = var1.getFields().values().iterator();
-							if (var7.hasNext()) {
-								var9 = (Field) var7.next();
-								var5.append("\t\tif(");
-								var5.append("\"");
-								var5.append(var9.getName());
-								var5.append("\"");
-								var5.append(".equals(name)){");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\treturn  ");
-								var5.append(this.getType(var9, var1));
-								var5.append(";");
-								var5.append(NEW_LINE);
-								var5.append("\t\t}");
-							}
-
-							while (var7.hasNext()) {
-								var9 = (Field) var7.next();
-								var5.append("else if(");
-								var5.append("\"");
-								var5.append(var9.getName());
-								var5.append("\"");
-								var5.append(".equals(name)){");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\treturn  ");
-								var5.append(this.getType(var9, var1));
-								var5.append(";");
-								var5.append(NEW_LINE);
-								var5.append("\t\t}");
-							}
-
-							var5.append(NEW_LINE);
-							var5.append("\t\treturn null;");
-							var5.append(NEW_LINE);
-							var5.append("\t}");
-							var5.append(NEW_LINE);
-							var5.append(NEW_LINE);
-							var5.append("\tpublic void setAttribute(String name,Object value){");
-							var5.append(NEW_LINE);
-							var7 = var1.getFields().values().iterator();
-							boolean var18 = true;
-
-							while (var7.hasNext()) {
-								var9 = (Field) var7.next();
-								if (var9.isEditable()) {
-									if (var18) {
-										var5.append("\t\tif(");
-										var5.append("\"");
-										var5.append(var9.getName());
-										var5.append("\"");
-										var5.append(".equals(name)){");
-										var5.append(NEW_LINE);
-										var5.append("\t\t\tthis.set");
-										var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-										var5.append("(");
-										var5.append(this.getSetAttType(var9, var1));
-										var5.append(")");
-										var5.append(";");
-										var5.append(NEW_LINE);
-										var5.append("\t\t}");
-										var18 = false;
-									} else {
-										var5.append("else if(");
-										var5.append("\"");
-										var5.append(var9.getName());
-										var5.append("\"");
-										var5.append(".equals(name)){");
-										var5.append(NEW_LINE);
-										var5.append("\t\t\tthis.set");
-										var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-										var5.append("(");
-										var5.append(this.getSetAttType(var9, var1));
-										var5.append(")");
-										var5.append(";");
-										var5.append(NEW_LINE);
-										var5.append("\t\t}");
-									}
-								}
-							}
-
-							var5.append(NEW_LINE);
-							var5.append("\t}");
-							var5.append(NEW_LINE);
-							var5.append(NEW_LINE);
-							var5.append("\tpublic void cover(MessageBean bean){");
-							var5.append(NEW_LINE);
-							var5.append("\t\t");
-							var5.append(StringUtil.toUpperCaseFirstOne(var4));
-							var5.append(" newBean = ");
-							var5.append("(");
-							var5.append(StringUtil.toUpperCaseFirstOne(var4));
-							var5.append(") bean;");
-							var5.append(NEW_LINE);
-							var7 = var1.getFields().values().iterator();
-
-							while (true) {
-								String var14;
-								label1371: do {
-									while (true) {
-										while (true) {
-											String var15;
-											do {
-												do {
-													do {
-														do {
-															if (!var7.hasNext()) {
-																var5.append(NEW_LINE);
-																var5.append("\t}");
-																var5.append(NEW_LINE);
-																var5.append(NEW_LINE);
-																var5.append("\tpublic void validate(){");
-																var5.append(NEW_LINE);
-																var7 = var1.getFields().values().iterator();
-
-																while (true) {
-																	HashMap var6;
-																	do {
-																		do {
-																			do {
-																				do {
-																					do {
-																						do {
-																							do {
-																								do {
-																									if (!var7
-																											.hasNext()) {
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\tpublic String toString(){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\treturn toString(false);");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\tpublic String toString(boolean isWrap){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\treturn toString(isWrap,false);");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\tpublic String toString(boolean isWrap,boolean isTable){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\tStringBuffer buf = new StringBuffer(10240);");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\tStringBuffer tableBuf = new StringBuffer(2048);");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\tString str = null;");
-																										var5.append(
-																												NEW_LINE);
-																										var7 = var1
-																												.getFields()
-																												.values()
-																												.iterator();
-
-																										while (true) {
-																											label989: do {
-																												while (true) {
-																													while (true) {
-																														do {
-																															if (!var7
-																																	.hasNext()) {
-																																var5.append(
-																																		"\t\tif( 0 == buf.length()){");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\treturn null;");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t}else{");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\tif ( isTable ){");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t\tbuf.insert(0,\"<b>\");");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t}else{");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t\tbuf.insert(0,\"<b c=\\\"");
-																																var5.append(
-																																		var1.getClassName());
-																																var5.append(
-																																		"\\\">\");");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t}");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\tbuf.append(\"</b>\");");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\tif( !isWrap ){");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t\tbuf = new StringBuffer(buf.toString());");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t\tbuf.insert(0,\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\");");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t\treturn buf.toString();");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t}else{");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t\treturn buf.toString();");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\t}");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t}");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t}");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\tpublic boolean isNull(){");
-																																var5.append(
-																																		NEW_LINE);
-																																var7 = var1
-																																		.getFields()
-																																		.values()
-																																		.iterator();
-
-																																while (true) {
-																																	label940: do {
-																																		while (true) {
-																																			while (var7
-																																					.hasNext()) {
-																																				var9 = (Field) var7
-																																						.next();
-																																				if (2002 != var9
-																																						.getFieldType()
-																																						&& 2003 != var9
-																																								.getFieldType()
-																																						&& 2008 != var9
-																																								.getFieldType()
-																																						&& 2009 != var9
-																																								.getFieldType()) {
-																																					if (2004 != var9
-																																							.getFieldType()
-																																							&& 2011 != var9
-																																									.getFieldType()) {
-																																						continue label940;
-																																					}
-
-																																					if (var9.getReference() != null) {
-																																						var11 = var9
-																																								.getReference()
-																																								.getClassName();
-																																					} else if (!"dynamic"
-																																							.equalsIgnoreCase(
-																																									var9.getReferenceType())
-																																							&& !"expression"
-																																									.equalsIgnoreCase(
-																																											var9.getReferenceType())) {
-																																						var11 = var9
-																																								.getCombineOrTableFieldClassName();
-																																						if (null == var11) {
-																																							var11 = var1
-																																									.getClassName()
-																																									+ StringUtil
-																																											.toUpperCaseFirstOne(
-																																													var9.getName());
-																																						}
-																																					} else {
-																																						var11 = MessageBean.class
-																																								.getName();
-																																					}
-
-																																					var5.append(
-																																							"\t\t");
-																																					var5.append(
-																																							var11);
-																																					var5.append(
-																																							" ");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							"Field = null;");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\tfor( int i =0; i < ");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							".size(); i++) {");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t\t");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							"Field = (");
-																																					var5.append(
-																																							var11);
-																																					var5.append(
-																																							") ");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							".get(i);");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t\tif ( null != ");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							" && !");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							"Field.isNull() ){");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t\t\treturn false;");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t\t}");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t}");
-																																					var5.append(
-																																							NEW_LINE);
-																																				} else {
-																																					var5.append(
-																																							"\t\tif( null != ");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							"){");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t\tif (  !");
-																																					var5.append(
-																																							StringUtil
-																																									.toLowerCaseFirstOne(
-																																											var9.getName()));
-																																					var5.append(
-																																							".isNull() ){");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t\t\treturn false;");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t\t}");
-																																					var5.append(
-																																							NEW_LINE);
-																																					var5.append(
-																																							"\t\t}");
-																																					var5.append(
-																																							NEW_LINE);
-																																				}
-																																			}
-
-																																			var5.append(
-																																					"\t\treturn true;");
-																																			var5.append(
-																																					NEW_LINE);
-																																			var5.append(
-																																					"\t}");
-																																			var5.append(
-																																					NEW_LINE);
-																																			var5.append(
-																																					"}");
-																																			var5.append(
-																																					NEW_LINE);
-																																			var14 = var5
-																																					.toString();
-																																			var15 = this.outputDir
-																																					+ var1.getClassName()
-																																							.replaceAll(
-																																									"\\.",
-																																									"/")
-																																					+ ".java";
-
-																																			try {
-																																				FileUtil.saveAsData(
-																																						var15,
-																																						var14.getBytes(
-																																								var2),
-																																						false);
-																																			} catch (UnsupportedEncodingException var17) {
-																																				var17.printStackTrace();
-																																			}
-
-																																			return;
-																																		}
-																																	} while (3000 != var9
-																																			.getDataType()
-																																			&& 3001 != var9
-																																					.getDataType()
-																																			&& 3006 != var9
-																																					.getDataType()
-																																			&& 3002 != var9
-																																					.getDataType()
-																																			&& 3010 != var9
-																																					.getDataType());
-
-																																	var5.append(
-																																			"\t\tif( null != ");
-																																	var5.append(
-																																			StringUtil
-																																					.toLowerCaseFirstOne(
-																																							var9.getName()));
-																																	if ("0" == operBlank) {
-																																		var5.append(
-																																				" && 0 !=");
-																																		var5.append(
-																																				StringUtil
-																																						.toLowerCaseFirstOne(
-																																								var9.getName()));
-																																		if (3002 == var9
-																																				.getDataType()) {
-																																			var5.append(
-																																					".length ");
-																																		} else {
-																																			var5.append(
-																																					".length() ");
-																																		}
-																																	}
-
-																																	var5.append(
-																																			"){");
-																																	var5.append(
-																																			NEW_LINE);
-																																	var5.append(
-																																			"\t\t\treturn false;");
-																																	var5.append(
-																																			NEW_LINE);
-																																	var5.append(
-																																			"\t\t}");
-																																	var5.append(
-																																			NEW_LINE);
-																																}
-																															}
-
-																															var9 = (Field) var7
-																																	.next();
-																														} while (!var9
-																																.isEditable());
-
-																														if (2002 != var9
-																																.getFieldType()
-																																&& 2003 != var9
-																																		.getFieldType()
-																																&& 2008 != var9
-																																		.getFieldType()
-																																&& 2009 != var9
-																																		.getFieldType()) {
-																															if (2004 != var9
-																																	.getFieldType()
-																																	&& 2011 != var9
-																																			.getFieldType()) {
-																																if (3000 == var9
-																																		.getDataType()
-																																		|| 3001 == var9
-																																				.getDataType()
-																																		|| 3006 == var9
-																																				.getDataType()
-																																		|| 3002 == var9
-																																				.getDataType()
-																																		|| 3010 == var9
-																																				.getDataType()) {
-																																	var5.append(
-																																			"\t\tif( null != ");
-																																	var5.append(
-																																			StringUtil
-																																					.toLowerCaseFirstOne(
-																																							var9.getName()));
-																																	var5.append(
-																																			"){");
-																																}
-
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\tbuf.append(\"<a n=\\\"");
-																																var5.append(
-																																		StringUtil
-																																				.toLowerCaseFirstOne(
-																																						var9.getName()));
-																																var5.append(
-																																		"\\\" t=\\\"");
-																																var5.append(
-																																		Constant.getDataTypeText(
-																																				var9.getDataType()));
-																																var5.append(
-																																		"\\\">\");");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\tbuf.append(");
-																																if (3002 == var9
-																																		.getDataType()) {
-																																	var5.append(
-																																			"new String(CodeUtil.BytetoHex(");
-																																	var5.append(
-																																			StringUtil
-																																					.toLowerCaseFirstOne(
-																																							var9.getName()));
-																																	var5.append(
-																																			"))");
-																																} else {
-																																	var5.append(
-																																			StringUtil
-																																					.toLowerCaseFirstOne(
-																																							var9.getName()));
-																																}
-
-																																var5.append(
-																																		");");
-																																var5.append(
-																																		NEW_LINE);
-																																var5.append(
-																																		"\t\t\tbuf.append(\"</a>\");");
-																																var5.append(
-																																		NEW_LINE);
-																																continue label989;
-																															}
-
-																															if (var9.getReference() != null) {
-																																var11 = var9
-																																		.getReference()
-																																		.getClassName();
-																															} else if (!"dynamic"
-																																	.equalsIgnoreCase(
-																																			var9.getReferenceType())
-																																	&& !"expression"
-																																			.equalsIgnoreCase(
-																																					var9.getReferenceType())) {
-																																var11 = var9
-																																		.getCombineOrTableFieldClassName();
-																																if (null == var11) {
-																																	var11 = var1
-																																			.getClassName()
-																																			+ StringUtil
-																																					.toUpperCaseFirstOne(
-																																							var9.getName());
-																																}
-																															} else {
-																																var11 = MessageBean.class
-																																		.getName();
-																															}
-
-																															var5.append(
-																																	"\t\t");
-																															var5.append(
-																																	var11);
-																															var5.append(
-																																	" ");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	"Field = null;");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\tfor( int i =0; i < ");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	".size(); i++) {");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\t");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	"Field = (");
-																															var5.append(
-																																	var11);
-																															var5.append(
-																																	") ");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	".get(i);");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\tstr = ");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	"Field.toString(true,true);");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\tif( null != str){");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\t\ttableBuf.append(str);");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\t}");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t}");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\tif ( 0 != tableBuf.length()){");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\tbuf.append(\"<a n=\\\"");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	"\\\" t=\\\"list\\\" c=\\\"java.util.ArrayList\\\" rc=\\\"");
-																															var5.append(
-																																	var11);
-																															var5.append(
-																																	"\\\">\");");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\tbuf.append(tableBuf);");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\tbuf.append(\"</a>\");");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\ttableBuf.delete(0,tableBuf.length());");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t}");
-																															var5.append(
-																																	NEW_LINE);
-																														} else {
-																															var5.append(
-																																	"\t\tif( null != ");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	"){");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\tstr = ");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	".toString(true);");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\tif( null != str){");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\t\tbuf.append(\"<a n=\\\"");
-																															var5.append(
-																																	StringUtil
-																																			.toLowerCaseFirstOne(
-																																					var9.getName()));
-																															var5.append(
-																																	"\\\" t=\\\"bean\\\">\");");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\t\tbuf.append(str);");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\t\tbuf.append(\"");
-																															var5.append(
-																																	"</a>\");");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t\t}");
-																															var5.append(
-																																	NEW_LINE);
-																															var5.append(
-																																	"\t\t}");
-																															var5.append(
-																																	NEW_LINE);
-																														}
-																													}
-																												}
-																											} while (3000 != var9
-																													.getDataType()
-																													&& 3001 != var9
-																															.getDataType()
-																													&& 3006 != var9
-																															.getDataType()
-																													&& 3002 != var9
-																															.getDataType()
-																													&& 3010 != var9
-																															.getDataType());
-
-																											var5.append(
-																													"\t\t}");
-																											var5.append(
-																													NEW_LINE);
-																										}
-																									}
-
-																									var9 = (Field) var7
-																											.next();
-																								} while (2007 == var9
-																										.getFieldType());
-																							} while (2005 == var9
-																									.getFieldType());
-																						} while (2006 == var9
-																								.getFieldType());
-																					} while (!var9.isEditable());
-
-																					if (var9.isRequired()
-																							&& 3003 != var9
-																									.getDataType()
-																							&& 3007 != var9
-																									.getDataType()
-																							&& 3004 != var9
-																									.getDataType()
-																							&& 3005 != var9
-																									.getDataType()
-																							&& 3008 != var9
-																									.getDataType()
-																							&& 2000 != var9
-																									.getFieldType()) {
-																						var5.append("\t\t//");
-																						var5.append(
-																								var9.getShortText());
-																						var5.append("闈炵┖妫�鏌�");
-																						var5.append(NEW_LINE);
-																						if (2002 != var9.getFieldType()
-																								&& 2008 != var9
-																										.getFieldType()
-																								&& 2003 != var9
-																										.getFieldType()
-																								&& 2009 != var9
-																										.getFieldType()) {
-																							if (2004 != var9
-																									.getFieldType()
-																									&& 2011 != var9
-																											.getFieldType()) {
-																								var5.append(
-																										"\t\tif ( null == ");
-																								var5.append(StringUtil
-																										.toLowerCaseFirstOne(
-																												var9.getName()));
-																							} else {
-																								var5.append(
-																										"\t\tif (null == ");
-																								var5.append(StringUtil
-																										.toLowerCaseFirstOne(
-																												var9.getName()));
-																								var5.append(" || ");
-																								var5.append(" 0 == ");
-																								var5.append(StringUtil
-																										.toLowerCaseFirstOne(
-																												var9.getName()));
-																								var5.append(".size() ");
-																							}
-																						} else {
-																							var5.append(
-																									"\t\tif ( null == ");
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																							var5.append(" || ");
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																							var5.append(".isNull() ");
-																						}
-
-																						var5.append("){");
-																						var5.append(NEW_LINE);
-																						var5.append(
-																								"\t\t\tthrow new RuntimeException(");
-																						var5.append(NEW_LINE);
-																						var5.append("\t\t\t\t");
-																						var5.append(
-																								"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.null\", new String[]{\"");
-																						if (null != var9
-																								.getShortText()) {
-																							var5.append(var9
-																									.getShortText());
-																							var5.append("(");
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																							var5.append(")");
-																						} else {
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																						}
-
-																						var5.append("\"}));");
-																						var5.append(NEW_LINE);
-																						var5.append("\t\t}");
-																						var5.append(NEW_LINE);
-																						var5.append(NEW_LINE);
-																					}
-
-																					if (2002 != var9.getFieldType()
-																							&& 2003 != var9
-																									.getFieldType()
-																							&& 2008 != var9
-																									.getFieldType()
-																							&& 2009 != var9
-																									.getFieldType()) {
-																						if (2004 != var9.getFieldType()
-																								&& 2011 != var9
-																										.getFieldType()) {
-																							String[] var20;
-																							if (2000 == var9
-																									.getFieldType()) {
-																								var11 = Constant
-																										.getJavaTypeByDataType(
-																												var9.getDataType());
-																								if ("String"
-																										.equals(var11)
-																										|| "byte[]"
-																												.equals(var11)) {
-																									if (var9.isRequired()) {
-																										var5.append(
-																												"\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"闈炵┖妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\tif ( null == ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												"){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.null\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\"}));");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									} else {
-																										var5.append(
-																												"\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"涓嶄负绌哄垯鎸変互涓嬭鍒欐牎楠�");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\tif( null != ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("0" == operBlank) {
-																											var5.append(
-																													" && 0!= ");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											if ("String"
-																													.equals(var11)) {
-																												var5.append(
-																														".length()");
-																											} else {
-																												var5.append(
-																														".length");
-																											}
-																										}
-
-																										var5.append(
-																												"){");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									if (var9.getLength() != -1) {
-																										var5.append(
-																												"\t\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"鏁版嵁闀垮害妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										if ("String"
-																												.equals(var11)
-																												&& (null != var9
-																														.getDataCharset()
-																														|| null != var1
-																																.getMsgCharset())) {
-																											var5.append(
-																													"\t\t\ttry{");
-																											var5.append(
-																													NEW_LINE);
-																										}
-
-																										var5.append(
-																												"\t\t\tif ( ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("String"
-																												.equals(var11)) {
-																											if (null != var9
-																													.getDataCharset()) {
-																												var5.append(
-																														".getBytes(\""
-																																+ var9.getDataCharset()
-																																+ "\").length ");
-																											} else if (null != var1
-																													.getMsgCharset()) {
-																												var5.append(
-																														".getBytes(\""
-																																+ var1.getMsgCharset()
-																																+ "\").length");
-																											} else {
-																												var5.append(
-																														".getBytes().length ");
-																											}
-																										}
-
-																										if ("byte[]"
-																												.equals(var11)) {
-																											var5.append(
-																													".length ");
-																										}
-
-																										if (!var9
-																												.isStrictDataLength()
-																												&& 3002 != var9
-																														.getDataType()) {
-																											var5.append(
-																													"> ");
-																										} else {
-																											var5.append(
-																													"!= ");
-																										}
-
-																										var5.append(var9
-																												.getLength());
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"");
-																										if (!var9
-																												.isStrictDataLength()
-																												&& 3002 != var9
-																														.getDataType()) {
-																											var5.append(
-																													"Message.field.maxLength");
-																										} else {
-																											var5.append(
-																													"Message.field.length");
-																										}
-
-																										var5.append(
-																												"\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\", \"");
-																										var5.append(var9
-																												.getLength());
-																										var5.append(
-																												"\"");
-																										var5.append(
-																												"}));");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										if ("String"
-																												.equals(var11)
-																												&& (null != var9
-																														.getDataCharset()
-																														|| null != var1
-																																.getMsgCharset())) {
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t}catch (UnsupportedEncodingException e) {");
-																											var5.append(
-																													NEW_LINE);
-																											if (null != var9
-																													.getDataCharset()) {
-																												var5.append(
-																														"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
-																												if (null != var9
-																														.getShortText()) {
-																													var5.append(
-																															var9.getShortText());
-																													var5.append(
-																															"(");
-																													var5.append(
-																															StringUtil
-																																	.toLowerCaseFirstOne(
-																																			var9.getName()));
-																													var5.append(
-																															")");
-																												} else {
-																													var5.append(
-																															StringUtil
-																																	.toLowerCaseFirstOne(
-																																			var9.getName()));
-																												}
-
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var9.getDataCharset());
-																												var5.append(
-																														"\"}));");
-																											} else {
-																												var5.append(
-																														"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
-																												var5.append(
-																														var1.getId());
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var1.getMsgCharset());
-																												var5.append(
-																														"\"}));");
-																											}
-
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t}");
-																										}
-
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									if (3010 == var9
-																											.getDataType()) {
-																										var5.append(
-																												"\t\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"杈撳叆绫诲瀷妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\tBigDecimal big");
-																										var5.append(
-																												StringUtil
-																														.toUpperCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												" = null;");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\ttry{");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tbig");
-																										var5.append(
-																												StringUtil
-																														.toUpperCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												" = new BigDecimal(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												");");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t} catch (Exception e) {");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustBigDecimal\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\"}) + e.getMessage(), e);");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var20 = var9
-																												.getPattern()
-																												.split(",");
-																										var5.append(
-																												"\t\t\tif ( ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												".indexOf(\".\") == -1 && ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												".length() > ");
-																										if (var20.length > 1) {
-																											var5.append(
-																													Integer.parseInt(
-																															var20[0])
-																															- Integer
-																																	.parseInt(
-																																			var20[1]));
-																										} else {
-																											var5.append(
-																													Integer.parseInt(
-																															var20[0]));
-																										}
-
-																										var5.append(
-																												"){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.wrong\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\", \"");
-																										var5.append(var9
-																												.getPattern());
-																										var5.append(
-																												"\"}));");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}else{");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tif( -1 != ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												".indexOf(\".\")){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\tif ( ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												".substring(0, ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												".indexOf(\".\")).length() > ");
-																										if (var20.length > 1) {
-																											var5.append(
-																													Integer.parseInt(
-																															var20[0])
-																															- Integer
-																																	.parseInt(
-																																			var20[1]));
-																										} else {
-																											var5.append(
-																													Integer.parseInt(
-																															var20[0]));
-																										}
-
-																										var5.append(
-																												"){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.wrong\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\", \"");
-																										var5.append(var9
-																												.getPattern());
-																										var5.append(
-																												"\"}));");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												" = big");
-																										var5.append(
-																												StringUtil
-																														.toUpperCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												".divide(new BigDecimal(1), ");
-																										if (var20.length > 1) {
-																											var5.append(
-																													var20[1]);
-																										} else {
-																											var5.append(
-																													"0");
-																										}
-
-																										var5.append(
-																												", BigDecimal.ROUND_HALF_UP).toString();");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									if (3001 == var9
-																											.getDataType()) {
-																										var5.append(
-																												"\t\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"杈撳叆绫诲瀷妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\tif(!CodeUtil.isNumeric(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												")){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustNum\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\"}));");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									if (3006 == var9
-																											.getDataType()) {
-																										var5.append(
-																												"\t\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"鏍煎紡妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\ttry{");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tjava.text.DateFormat dateformat = new java.text.SimpleDateFormat(\"");
-																										var5.append(var9
-																												.getPattern());
-																										var5.append(
-																												"\");");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tdateformat.setLenient(false);");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tdateformat.parse(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												");");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t} catch (Exception e) {");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\", \"");
-																										var5.append(var9
-																												.getPattern());
-																										var5.append(
-																												"\"}) + e.getMessage(), e);");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									if (3000 == var9
-																											.getDataType()
-																											&& null != var9
-																													.getPattern()) {
-																										var5.append(
-																												"\t\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"鏍煎紡妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\tjava.util.regex.Pattern ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												"Pattern = java.util.regex.Pattern.compile(\"");
-																										var5.append(var9
-																												.getPattern());
-																										var5.append(
-																												"\");");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\tjava.util.regex.Matcher ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												"Matcher = ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												"Pattern.matcher(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												");");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\tif ( !");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												"Matcher.matches() ){");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
-																										if (null != var9
-																												.getShortText()) {
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"(");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													")");
-																										} else {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																										}
-
-																										var5.append(
-																												"\", \"");
-																										var5.append(var9
-																												.getPattern());
-																										var5.append(
-																												"\"}));");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-																								}
-																							} else if (2001 == var9
-																									.getFieldType()) {
-																								var11 = Constant
-																										.getJavaTypeByDataType(
-																												var9.getDataType());
-																								int var19;
-																								if (var9.getRefLengthField() != null) {
-																									var10 = var9
-																											.getRefLengthField();
-																									if (3001 != var10
-																											.getDataType()
-																											&& 3004 != var10
-																													.getDataType()
-																											|| !"String"
-																													.equals(var11)
-																													&& !"byte[]"
-																															.equalsIgnoreCase(
-																																	var11)) {
-																										if (("String"
-																												.equals(var11)
-																												|| "byte[]"
-																														.equalsIgnoreCase(
-																																var11))
-																												&& (var9.getMaxLength() != -1
-																														|| var9.getMinLength() != -1)) {
-																											if (!var9
-																													.isRequired()) {
-																												var5.append(
-																														"\t\tif ( null != ");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												if ("0" == operBlank) {
-																													var5.append(
-																															" && 0 != ");
-																													var5.append(
-																															StringUtil
-																																	.toLowerCaseFirstOne(
-																																			var9.getName()));
-																													if ("String"
-																															.equals(var11)) {
-																														var5.append(
-																																".length()");
-																													} else {
-																														var5.append(
-																																".length");
-																													}
-																												}
-
-																												var5.append(
-																														" ) {");
-																												var5.append(
-																														NEW_LINE);
-																											}
-
-																											var5.append(
-																													"\t\t\t//");
-																											var5.append(
-																													var9.getShortText());
-																											var5.append(
-																													"闀垮害妫�鏌�");
-																											var5.append(
-																													NEW_LINE);
-																											if ("String"
-																													.equals(var11)
-																													&& (null != var9
-																															.getDataCharset()
-																															|| null != var1
-																																	.getMsgCharset())) {
-																												var5.append(
-																														"\t\t\ttry{");
-																												var5.append(
-																														NEW_LINE);
-																											}
-
-																											var5.append(
-																													"\t\t\tif ( ");
-																											if (var9.getMaxLength() != -1) {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												if ("String"
-																														.equals(var11)) {
-																													if (null != var9
-																															.getDataCharset()) {
-																														var5.append(
-																																".getBytes(\""
-																																		+ var9.getDataCharset()
-																																		+ "\").length > ");
-																													} else if (null != var1
-																															.getMsgCharset()) {
-																														var5.append(
-																																".getBytes(\""
-																																		+ var1.getMsgCharset()
-																																		+ "\").length > ");
-																													} else {
-																														var5.append(
-																																".getBytes().length > ");
-																													}
-																												} else if ("byte[]"
-																														.equalsIgnoreCase(
-																																var11)) {
-																													var5.append(
-																															".length > ");
-																												}
-
-																												var5.append(
-																														var9.getMaxLength());
-																											}
-
-																											if (var9.getMaxLength() != -1
-																													&& var9.getMinLength() != -1) {
-																												var5.append(
-																														" || ");
-																											}
-
-																											if (var9.getMinLength() != -1) {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												if ("String"
-																														.equals(var11)) {
-																													if (null != var9
-																															.getDataCharset()) {
-																														var5.append(
-																																".getBytes(\""
-																																		+ var9.getDataCharset()
-																																		+ "\").length < ");
-																													} else if (null != var1
-																															.getMsgCharset()) {
-																														var5.append(
-																																".getBytes(\""
-																																		+ var1.getMsgCharset()
-																																		+ "\").length < ");
-																													} else {
-																														var5.append(
-																																".getBytes().length < ");
-																													}
-																												} else if ("byte[]"
-																														.equalsIgnoreCase(
-																																var11)) {
-																													var5.append(
-																															".length < ");
-																												}
-
-																												var5.append(
-																														var9.getMinLength());
-																											}
-
-																											var5.append(
-																													" ) {");
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t\tthrow new RuntimeException(");
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t\t\t");
-																											if (var9.getMaxLength() != -1
-																													&& var9.getMinLength() != -1) {
-																												var5.append(
-																														"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var9.getMaxLength());
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var9.getMinLength());
-																												var5.append(
-																														"\"}));");
-																											} else if (var9
-																													.getMaxLength() != -1) {
-																												var5.append(
-																														"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var9.getMaxLength());
-																												var5.append(
-																														"\"}));");
-																											} else if (var9
-																													.getMinLength() != -1) {
-																												var5.append(
-																														"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.minLength\", new String[]{\"");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var9.getMinLength());
-																												var5.append(
-																														"\"}));");
-																											}
-
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t}");
-																											if ("String"
-																													.equals(var11)
-																													&& (null != var9
-																															.getDataCharset()
-																															|| null != var1
-																																	.getMsgCharset())) {
-																												var5.append(
-																														NEW_LINE);
-																												var5.append(
-																														"\t\t\t}catch (UnsupportedEncodingException e) {");
-																												var5.append(
-																														NEW_LINE);
-																												if (null != var9
-																														.getDataCharset()) {
-																													var5.append(
-																															"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
-																													if (null != var9
-																															.getShortText()) {
-																														var5.append(
-																																var9.getShortText());
-																														var5.append(
-																																"(");
-																														var5.append(
-																																StringUtil
-																																		.toLowerCaseFirstOne(
-																																				var9.getName()));
-																														var5.append(
-																																")");
-																													} else {
-																														var5.append(
-																																StringUtil
-																																		.toLowerCaseFirstOne(
-																																				var9.getName()));
-																													}
-
-																													var5.append(
-																															"\", \"");
-																													var5.append(
-																															var9.getDataCharset());
-																													var5.append(
-																															"\"}));");
-																												} else {
-																													var5.append(
-																															"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
-																													var5.append(
-																															var1.getId());
-																													var5.append(
-																															"\", \"");
-																													var5.append(
-																															var1.getMsgCharset());
-																													var5.append(
-																															"\"}));");
-																												}
-
-																												var5.append(
-																														NEW_LINE);
-																												var5.append(
-																														"\t\t\t}");
-																											}
-
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													NEW_LINE);
-																											if (!var9
-																													.isRequired()) {
-																												var5.append(
-																														"\t\t}");
-																												var5.append(
-																														NEW_LINE);
-																												var5.append(
-																														NEW_LINE);
-																											}
-																										}
-																									} else {
-																										if (!var9
-																												.isRequired()) {
-																											var5.append(
-																													"\t\tif ( null != ");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											if ("0" == operBlank) {
-																												var5.append(
-																														" && 0 != ");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												if ("String"
-																														.equals(var11)) {
-																													var5.append(
-																															".length()");
-																												} else {
-																													var5.append(
-																															".length");
-																												}
-																											}
-
-																											var5.append(
-																													" ) {");
-																											var5.append(
-																													NEW_LINE);
-																										}
-
-																										var5.append(
-																												"\t\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"闀垮害妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										if ("String"
-																												.equals(var11)
-																												&& (null != var9
-																														.getDataCharset()
-																														|| null != var1
-																																.getMsgCharset())) {
-																											var5.append(
-																													"\t\t\ttry{");
-																											var5.append(
-																													NEW_LINE);
-																										}
-
-																										var5.append(
-																												"\t\t\tif ( ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("String"
-																												.equals(var11)) {
-																											if (null != var9
-																													.getDataCharset()) {
-																												var5.append(
-																														".getBytes(\""
-																																+ var9.getDataCharset()
-																																+ "\").length > ");
-																											} else if (null != var1
-																													.getMsgCharset()) {
-																												var5.append(
-																														".getBytes(\""
-																																+ var1.getMsgCharset()
-																																+ "\").length > ");
-																											} else {
-																												var5.append(
-																														".getBytes().length > ");
-																											}
-																										} else if ("byte[]"
-																												.equalsIgnoreCase(
-																														var11)) {
-																											var5.append(
-																													".length > ");
-																										}
-
-																										if (var9.getMaxLength() != -1) {
-																											var5.append(
-																													var9.getMaxLength());
-																										} else if (3001 == var10
-																												.getDataType()) {
-																											for (var19 = 0; var19 < var10
-																													.getLength(); ++var19) {
-																												var5.append(
-																														"9");
-																											}
-																										} else if (3004 == var10
-																												.getDataType()) {
-																											var5.append(
-																													"255");
-																										}
-
-																										if (var9.getMinLength() != -1) {
-																											var5.append(
-																													" || ");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											if ("String"
-																													.equals(var11)) {
-																												if (null != var9
-																														.getDataCharset()) {
-																													var5.append(
-																															".getBytes(\""
-																																	+ var9.getDataCharset()
-																																	+ "\").length < ");
-																												} else if (null != var1
-																														.getMsgCharset()) {
-																													var5.append(
-																															".getBytes(\""
-																																	+ var1.getMsgCharset()
-																																	+ "\").length < ");
-																												} else {
-																													var5.append(
-																															".getBytes().length < ");
-																												}
-																											} else if ("byte[]"
-																													.equalsIgnoreCase(
-																															var11)) {
-																												var5.append(
-																														".length < ");
-																											}
-
-																											var5.append(
-																													var9.getMinLength());
-																										}
-
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																										if (var9.getMinLength() != -1) {
-																											var5.append(
-																													"\t\t\t\tthrow new RuntimeException(");
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t\t\t");
-																											var5.append(
-																													"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
-																											if (null != var9
-																													.getShortText()) {
-																												var5.append(
-																														var9.getShortText());
-																												var5.append(
-																														"(");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														")");
-																											} else {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																											}
-
-																											var5.append(
-																													"\", \"");
-																											if (var9.getMaxLength() != -1) {
-																												var5.append(
-																														var9.getMaxLength());
-																											} else if (3001 == var10
-																													.getDataType()) {
-																												for (var19 = 0; var19 < var10
-																														.getLength(); ++var19) {
-																													var5.append(
-																															"9");
-																												}
-																											} else if (3004 == var10
-																													.getDataType()) {
-																												var5.append(
-																														"255");
-																											}
-
-																											var5.append(
-																													"\", \"");
-																											var5.append(
-																													var9.getMinLength());
-																											var5.append(
-																													"\"}));");
-																										} else {
-																											var5.append(
-																													"\t\t\t\tthrow new RuntimeException(");
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t\t\t");
-																											var5.append(
-																													"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
-																											if (null != var9
-																													.getShortText()) {
-																												var5.append(
-																														var9.getShortText());
-																												var5.append(
-																														"(");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														")");
-																											} else {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																											}
-
-																											var5.append(
-																													"\", \"");
-																											if (var9.getMaxLength() != -1) {
-																												var5.append(
-																														var9.getMaxLength());
-																											} else if (3001 == var10
-																													.getDataType()) {
-																												for (var19 = 0; var19 < var10
-																														.getLength(); ++var19) {
-																													var5.append(
-																															"9");
-																												}
-																											} else if (3004 == var10
-																													.getDataType()) {
-																												var5.append(
-																														"255");
-																											}
-
-																											var5.append(
-																													"\"}));");
-																										}
-
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										if ("String"
-																												.equals(var11)
-																												&& (null != var9
-																														.getDataCharset()
-																														|| null != var1
-																																.getMsgCharset())) {
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t}catch (UnsupportedEncodingException e) {");
-																											var5.append(
-																													NEW_LINE);
-																											if (null != var9
-																													.getDataCharset()) {
-																												var5.append(
-																														"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
-																												if (null != var9
-																														.getShortText()) {
-																													var5.append(
-																															var9.getShortText());
-																													var5.append(
-																															"(");
-																													var5.append(
-																															StringUtil
-																																	.toLowerCaseFirstOne(
-																																			var9.getName()));
-																													var5.append(
-																															")");
-																												} else {
-																													var5.append(
-																															StringUtil
-																																	.toLowerCaseFirstOne(
-																																			var9.getName()));
-																												}
-
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var9.getDataCharset());
-																												var5.append(
-																														"\"}));");
-																											} else {
-																												var5.append(
-																														"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
-																												var5.append(
-																														var1.getId());
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var1.getMsgCharset());
-																												var5.append(
-																														"\"}));");
-																											}
-
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t}");
-																										}
-
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																										if (!var9
-																												.isRequired()) {
-																											var5.append(
-																													"\t\t}");
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													NEW_LINE);
-																										}
-																									}
-																								} else if (3001 != var9
-																										.getLengthFieldDataType()
-																										&& 3002 != var9
-																												.getLengthFieldDataType()
-																										|| !"String"
-																												.equals(var11)
-																												&& !"byte[]"
-																														.equalsIgnoreCase(
-																																var11)) {
-																									if (("String"
-																											.equals(var11)
-																											|| "byte[]"
-																													.equalsIgnoreCase(
-																															var11))
-																											&& (var9.getMaxLength() != -1
-																													|| var9.getMinLength() != -1)) {
-																										if (!var9
-																												.isRequired()) {
-																											var5.append(
-																													"\t\tif ( null != ");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											if ("0" == operBlank) {
-																												var5.append(
-																														" && 0 != ");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												if ("String"
-																														.equals(var11)) {
-																													var5.append(
-																															".length()");
-																												} else {
-																													var5.append(
-																															".length");
-																												}
-																											}
-
-																											var5.append(
-																													" ) {");
-																											var5.append(
-																													NEW_LINE);
-																										}
-
-																										var5.append(
-																												"\t\t\t//");
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"闀垮害妫�鏌�");
-																										var5.append(
-																												NEW_LINE);
-																										if ("String"
-																												.equals(var11)
-																												&& (null != var9
-																														.getDataCharset()
-																														|| null != var1
-																																.getMsgCharset())) {
-																											var5.append(
-																													"\t\t\ttry{");
-																											var5.append(
-																													NEW_LINE);
-																										}
-
-																										var5.append(
-																												"\t\t\tif ( ");
-																										if (var9.getMaxLength() != -1) {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											if ("String"
-																													.equals(var11)) {
-																												if (null != var9
-																														.getDataCharset()) {
-																													var5.append(
-																															".getBytes(\""
-																																	+ var9.getDataCharset()
-																																	+ "\").length > ");
-																												} else if (null != var1
-																														.getMsgCharset()) {
-																													var5.append(
-																															".getBytes(\""
-																																	+ var1.getMsgCharset()
-																																	+ "\").length > ");
-																												} else {
-																													var5.append(
-																															".getBytes().length > ");
-																												}
-																											} else if ("byte[]"
-																													.equalsIgnoreCase(
-																															var11)) {
-																												var5.append(
-																														".length > ");
-																											}
-
-																											var5.append(
-																													var9.getMaxLength());
-																										}
-
-																										if (var9.getMaxLength() != -1
-																												&& var9.getMinLength() != -1) {
-																											var5.append(
-																													" || ");
-																										}
-
-																										if (var9.getMinLength() != -1) {
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											if ("String"
-																													.equals(var11)) {
-																												if (null != var9
-																														.getDataCharset()) {
-																													var5.append(
-																															".getBytes(\""
-																																	+ var9.getDataCharset()
-																																	+ "\").length < ");
-																												} else if (null != var1
-																														.getMsgCharset()) {
-																													var5.append(
-																															".getBytes(\""
-																																	+ var1.getMsgCharset()
-																																	+ "\").length < ");
-																												} else {
-																													var5.append(
-																															".getBytes().length < ");
-																												}
-																											} else if ("byte[]"
-																													.equalsIgnoreCase(
-																															var11)) {
-																												var5.append(
-																														".length < ");
-																											}
-
-																											var5.append(
-																													var9.getMinLength());
-																										}
-
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t");
-																										if (var9.getMaxLength() != -1
-																												&& var9.getMinLength() != -1) {
-																											var5.append(
-																													"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
-																											if (null != var9
-																													.getShortText()) {
-																												var5.append(
-																														var9.getShortText());
-																												var5.append(
-																														"(");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														")");
-																											} else {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																											}
-
-																											var5.append(
-																													"\", \"");
-																											var5.append(
-																													var9.getMaxLength());
-																											var5.append(
-																													"\", \"");
-																											var5.append(
-																													var9.getMinLength());
-																											var5.append(
-																													"\"}));");
-																										} else if (var9
-																												.getMaxLength() != -1) {
-																											var5.append(
-																													"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
-																											if (null != var9
-																													.getShortText()) {
-																												var5.append(
-																														var9.getShortText());
-																												var5.append(
-																														"(");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														")");
-																											} else {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																											}
-
-																											var5.append(
-																													"\", \"");
-																											var5.append(
-																													var9.getMaxLength());
-																											var5.append(
-																													"\"}));");
-																										} else if (var9
-																												.getMinLength() != -1) {
-																											var5.append(
-																													"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.minLength\", new String[]{\"");
-																											if (null != var9
-																													.getShortText()) {
-																												var5.append(
-																														var9.getShortText());
-																												var5.append(
-																														"(");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														")");
-																											} else {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																											}
-
-																											var5.append(
-																													"\", \"");
-																											var5.append(
-																													var9.getMinLength());
-																											var5.append(
-																													"\"}));");
-																										}
-
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																										if ("String"
-																												.equals(var11)
-																												&& (null != var9
-																														.getDataCharset()
-																														|| null != var1
-																																.getMsgCharset())) {
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t}catch (UnsupportedEncodingException e) {");
-																											var5.append(
-																													NEW_LINE);
-																											if (null != var9
-																													.getDataCharset()) {
-																												var5.append(
-																														"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
-																												if (null != var9
-																														.getShortText()) {
-																													var5.append(
-																															var9.getShortText());
-																													var5.append(
-																															"(");
-																													var5.append(
-																															StringUtil
-																																	.toLowerCaseFirstOne(
-																																			var9.getName()));
-																													var5.append(
-																															")");
-																												} else {
-																													var5.append(
-																															StringUtil
-																																	.toLowerCaseFirstOne(
-																																			var9.getName()));
-																												}
-
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var9.getDataCharset());
-																												var5.append(
-																														"\"}));");
-																											} else {
-																												var5.append(
-																														"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
-																												var5.append(
-																														var1.getId());
-																												var5.append(
-																														"\", \"");
-																												var5.append(
-																														var1.getMsgCharset());
-																												var5.append(
-																														"\"}));");
-																											}
-
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													"\t\t\t}");
-																										}
-
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																										if (!var9
-																												.isRequired()) {
-																											var5.append(
-																													"\t\t}");
-																											var5.append(
-																													NEW_LINE);
-																											var5.append(
-																													NEW_LINE);
-																										}
-																									}
-																								} else {
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\tif ( null != ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("0" == operBlank) {
-																											var5.append(
-																													" && 0 != ");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											if ("String"
-																													.equals(var11)) {
-																												var5.append(
-																														".length()");
-																											} else {
-																												var5.append(
-																														".length");
-																											}
-																										}
-
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									var5.append(
-																											"\t\t\t//");
-																									var5.append(var9
-																											.getShortText());
-																									var5.append(
-																											"闀垮害妫�鏌�");
-																									var5.append(
-																											NEW_LINE);
-																									if ("String".equals(
-																											var11)
-																											&& (null != var9
-																													.getDataCharset()
-																													|| null != var1
-																															.getMsgCharset())) {
-																										var5.append(
-																												"\t\t\ttry{");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									var5.append(
-																											"\t\t\tif ( ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									if ("String".equals(
-																											var11)) {
-																										if (null != var9
-																												.getDataCharset()) {
-																											var5.append(
-																													".getBytes(\""
-																															+ var9.getDataCharset()
-																															+ "\").length > ");
-																										} else if (null != var1
-																												.getMsgCharset()) {
-																											var5.append(
-																													".getBytes(\""
-																															+ var1.getMsgCharset()
-																															+ "\").length > ");
-																										} else {
-																											var5.append(
-																													".getBytes().length > ");
-																										}
-																									} else if ("byte[]"
-																											.equalsIgnoreCase(
-																													var11)) {
-																										var5.append(
-																												".length > ");
-																									}
-
-																									if (var9.getMaxLength() != -1) {
-																										var5.append(var9
-																												.getMaxLength());
-																									} else if (3001 == var9
-																											.getLengthFieldDataType()) {
-																										for (var19 = 0; var19 < var9
-																												.getLengthFieldLength(); ++var19) {
-																											var5.append(
-																													"9");
-																										}
-																									} else if (3004 == var9
-																											.getLengthFieldDataType()) {
-																										var5.append(
-																												"255");
-																									}
-
-																									if (var9.getMinLength() != -1) {
-																										var5.append(
-																												" || ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("String"
-																												.equals(var11)) {
-																											if (null != var9
-																													.getDataCharset()) {
-																												var5.append(
-																														".getBytes(\""
-																																+ var9.getDataCharset()
-																																+ "\").length < ");
-																											} else if (null != var1
-																													.getMsgCharset()) {
-																												var5.append(
-																														".getBytes(\""
-																																+ var1.getMsgCharset()
-																																+ "\").length < ");
-																											} else {
-																												var5.append(
-																														".getBytes().length < ");
-																											}
-																										} else if ("byte[]"
-																												.equalsIgnoreCase(
-																														var11)) {
-																											var5.append(
-																													".length < ");
-																										}
-
-																										var5.append(var9
-																												.getMinLength());
-																									}
-
-																									var5.append(" ) {");
-																									var5.append(
-																											NEW_LINE);
-																									if (var9.getMinLength() != -1) {
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												"\", \"");
-																										if (var9.getMaxLength() != -1) {
-																											var5.append(
-																													var9.getMaxLength());
-																										} else if (3001 == var9
-																												.getLengthFieldDataType()) {
-																											for (var19 = 0; var19 < var9
-																													.getLengthFieldLength(); ++var19) {
-																												var5.append(
-																														"9");
-																											}
-																										} else if (3004 == var9
-																												.getLengthFieldDataType()) {
-																											var5.append(
-																													"255");
-																										}
-
-																										var5.append(
-																												"\", \"");
-																										var5.append(var9
-																												.getMinLength());
-																										var5.append(
-																												"\"}));");
-																									} else {
-																										var5.append(
-																												"\t\t\t\tthrow new RuntimeException(");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t\t\t");
-																										var5.append(
-																												"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												"\", \"");
-																										if (var9.getMaxLength() != -1) {
-																											var5.append(
-																													var9.getMaxLength());
-																										} else if (3001 == var9
-																												.getLengthFieldDataType()) {
-																											for (var19 = 0; var19 < var9
-																													.getLengthFieldLength(); ++var19) {
-																												var5.append(
-																														"9");
-																											}
-																										} else if (3004 == var9
-																												.getLengthFieldDataType()) {
-																											var5.append(
-																													"255");
-																										}
-
-																										var5.append(
-																												"\"}));");
-																									}
-
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t}");
-																									if ("String".equals(
-																											var11)
-																											&& (null != var9
-																													.getDataCharset()
-																													|| null != var1
-																															.getMsgCharset())) {
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}catch (UnsupportedEncodingException e) {");
-																										var5.append(
-																												NEW_LINE);
-																										if (null != var9
-																												.getDataCharset()) {
-																											var5.append(
-																													"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
-																											if (null != var9
-																													.getShortText()) {
-																												var5.append(
-																														var9.getShortText());
-																												var5.append(
-																														"(");
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																												var5.append(
-																														")");
-																											} else {
-																												var5.append(
-																														StringUtil
-																																.toLowerCaseFirstOne(
-																																		var9.getName()));
-																											}
-
-																											var5.append(
-																													"\", \"");
-																											var5.append(
-																													var9.getDataCharset());
-																											var5.append(
-																													"\"}));");
-																										} else {
-																											var5.append(
-																													"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
-																											var5.append(
-																													var1.getId());
-																											var5.append(
-																													"\", \"");
-																											var5.append(
-																													var1.getMsgCharset());
-																											var5.append(
-																													"\"}));");
-																										}
-
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												"\t\t\t}");
-																									}
-
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-																								}
-
-																								if (3001 == var9
-																										.getDataType()) {
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\tif ( null != ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("0" == operBlank) {
-																											var5.append(
-																													" && 0 !=");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													".length()");
-																										}
-
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									var5.append(
-																											"\t\t//");
-																									var5.append(var9
-																											.getShortText());
-																									var5.append(
-																											"杈撳叆绫诲瀷妫�鏌�");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\tif(!CodeUtil.isNumeric(");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(")){");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tthrow new RuntimeException(");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustNum\", new String[]{\"");
-																									if (null != var9
-																											.getShortText()) {
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												")");
-																									} else {
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																									}
-
-																									var5.append(
-																											"\"}));");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t}");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-																								}
-
-																								if (3006 == var9
-																										.getDataType()) {
-																									var5.append(
-																											"\t\t//");
-																									var5.append(var9
-																											.getShortText());
-																									var5.append(
-																											"鏍煎紡妫�鏌�");
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\tif ( null != ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("0" == operBlank) {
-																											var5.append(
-																													" && 0 !=");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													".length()");
-																										}
-
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									var5.append(
-																											"\t\ttry{");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\tjava.text.DateFormat dateformat = new java.text.SimpleDateFormat(\"");
-																									var5.append(var9
-																											.getPattern());
-																									var5.append("\");");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\tdateformat.setLenient(false);");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\tdateformat.parse(");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(");");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t} catch (Exception e) {");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tthrow new RuntimeException(");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\t");
-																									var5.append(
-																											"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
-																									if (null != var9
-																											.getShortText()) {
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												")");
-																									} else {
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																									}
-
-																									var5.append(
-																											"\", \"");
-																									var5.append(var9
-																											.getPattern());
-																									var5.append(
-																											"\"}) + e.getMessage(), e);");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t}");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-																								}
-
-																								if (3000 == var9
-																										.getDataType()
-																										&& null != var9
-																												.getPattern()) {
-																									var5.append(
-																											"\t\t\t//");
-																									var5.append(var9
-																											.getShortText());
-																									var5.append(
-																											"鏍煎紡妫�鏌�");
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\tif ( null != ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("0" == operBlank) {
-																											var5.append(
-																													" && 0 !=");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													".length()");
-																										}
-
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									var5.append(
-																											"\t\t\tjava.util.regex.Pattern ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											"Pattern = java.util.regex.Pattern.compile(\"");
-																									var5.append(var9
-																											.getPattern());
-																									var5.append("\");");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\tjava.util.regex.Matcher ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											"Matcher = ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											"Pattern.matcher(");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(");");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\tif ( !");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											"Matcher.matches() ){");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tthrow new RuntimeException(");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\t");
-																									var5.append(
-																											"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
-																									if (null != var9
-																											.getShortText()) {
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												")");
-																									} else {
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																									}
-
-																									var5.append(
-																											"\", \"");
-																									var5.append(var9
-																											.getPattern());
-																									var5.append(
-																											"\"}));");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t}");
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-																								}
-
-																								if (3010 == var9
-																										.getDataType()) {
-																									var5.append(
-																											"\t\t\t//");
-																									var5.append(var9
-																											.getShortText());
-																									var5.append(
-																											"杈撳叆绫诲瀷妫�鏌�");
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\tif ( null != ");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										if ("0" == operBlank) {
-																											var5.append(
-																													" && 0 !=");
-																											var5.append(
-																													StringUtil
-																															.toLowerCaseFirstOne(
-																																	var9.getName()));
-																											var5.append(
-																													".length()");
-																										}
-
-																										var5.append(
-																												" ) {");
-																										var5.append(
-																												NEW_LINE);
-																									}
-
-																									var5.append(
-																											"\t\t\tBigDecimal big");
-																									var5.append(
-																											StringUtil
-																													.toUpperCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											" = null;");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\ttry{");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tbig");
-																									var5.append(
-																											StringUtil
-																													.toUpperCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											" = new BigDecimal(");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(");");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t} catch (Exception e) {");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tthrow new RuntimeException(");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustBigDecimal\", new String[]{\"");
-																									if (null != var9
-																											.getShortText()) {
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												")");
-																									} else {
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																									}
-
-																									var5.append(
-																											"\"}) + e.getMessage(), e);");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t}");
-																									var5.append(
-																											NEW_LINE);
-																									var20 = var9
-																											.getPattern()
-																											.split(",");
-																									var5.append(
-																											"\t\t\tif ( ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											".indexOf(\".\") == -1 && ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											".length() > ");
-																									if (var20.length > 1) {
-																										var5.append(
-																												Integer.parseInt(
-																														var20[0])
-																														- Integer
-																																.parseInt(
-																																		var20[1]));
-																									} else {
-																										var5.append(
-																												Integer.parseInt(
-																														var20[0]));
-																									}
-
-																									var5.append("){");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tthrow new RuntimeException(");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\t");
-																									var5.append(
-																											"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
-																									if (null != var9
-																											.getShortText()) {
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												")");
-																									} else {
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																									}
-
-																									var5.append(
-																											"\", \"");
-																									var5.append(var9
-																											.getPattern());
-																									var5.append(
-																											"\"}));");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t}else{");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tif( -1 != ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											".indexOf(\".\")){");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\tif ( ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											".substring(0, ");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											".indexOf(\".\")).length() > ");
-																									if (var20.length > 1) {
-																										var5.append(
-																												Integer.parseInt(
-																														var20[0])
-																														- Integer
-																																.parseInt(
-																																		var20[1]));
-																									} else {
-																										var5.append(
-																												Integer.parseInt(
-																														var20[0]));
-																									}
-
-																									var5.append("){");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\tthrow new RuntimeException(");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\t");
-																									var5.append(
-																											"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
-																									if (null != var9
-																											.getShortText()) {
-																										var5.append(var9
-																												.getShortText());
-																										var5.append(
-																												"(");
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																										var5.append(
-																												")");
-																									} else {
-																										var5.append(
-																												StringUtil
-																														.toLowerCaseFirstOne(
-																																var9.getName()));
-																									}
-
-																									var5.append(
-																											"\", \"");
-																									var5.append(var9
-																											.getPattern());
-																									var5.append(
-																											"\"}));");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t\t}");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t}");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t\t");
-																									var5.append(
-																											StringUtil
-																													.toLowerCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											" = big");
-																									var5.append(
-																											StringUtil
-																													.toUpperCaseFirstOne(
-																															var9.getName()));
-																									var5.append(
-																											".divide(new BigDecimal(1), ");
-																									if (var20.length > 1) {
-																										var5.append(
-																												var20[1]);
-																									} else {
-																										var5.append(
-																												"0");
-																									}
-
-																									var5.append(
-																											", BigDecimal.ROUND_HALF_UP).toString();");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											"\t\t\t}");
-																									var5.append(
-																											NEW_LINE);
-																									var5.append(
-																											NEW_LINE);
-																									if (!var9
-																											.isRequired()) {
-																										var5.append(
-																												"\t\t}");
-																										var5.append(
-																												NEW_LINE);
-																										var5.append(
-																												NEW_LINE);
-																									}
-																								}
-																							}
-																						} else {
-																							if (var9.getReference() != null) {
-																								var11 = var9
-																										.getReference()
-																										.getClassName();
-																							} else if (!"dynamic"
-																									.equalsIgnoreCase(
-																											var9.getReferenceType())
-																									&& !"expression"
-																											.equalsIgnoreCase(
-																													var9.getReferenceType())) {
-																								var11 = var9
-																										.getCombineOrTableFieldClassName();
-																								if (null == var11) {
-																									var11 = var1
-																											.getClassName()
-																											+ StringUtil
-																													.toUpperCaseFirstOne(
-																															var9.getName());
-																								}
-																							} else {
-																								var11 = MessageBean.class
-																										.getName();
-																							}
-
-																							if (!var9.isRequired()) {
-																								var5.append(
-																										"\t\tif ( 0 != ");
-																								var5.append(StringUtil
-																										.toLowerCaseFirstOne(
-																												var9.getName()));
-																								var5.append(
-																										".size() ) { ");
-																							}
-
-																							var5.append("\t\t//");
-																							var5.append(var9
-																									.getShortText());
-																							var5.append("姝ｇ‘鎬ф鏌�");
-																							var5.append(NEW_LINE);
-																							var5.append(
-																									"\t\tfor( int i = 0; i < ");
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																							var5.append(
-																									".size(); i++){");
-																							var5.append(NEW_LINE);
-																							var5.append("\t\t\t((");
-																							var5.append(var11);
-																							var5.append(")");
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																							var5.append(
-																									".get(i)).validate();");
-																							var5.append(NEW_LINE);
-																							var5.append("\t\t}");
-																							var5.append(NEW_LINE);
-																							var5.append(NEW_LINE);
-																							if (!var9.isRequired()) {
-																								var5.append("\t\t}");
-																								var5.append(NEW_LINE);
-																								var5.append(NEW_LINE);
-																							}
-																						}
-																					} else {
-																						var5.append("\t\t//");
-																						var5.append(
-																								var9.getShortText());
-																						var5.append("姝ｇ‘鎬ф鏌�");
-																						var5.append(NEW_LINE);
-																						if (!var9.isRequired()) {
-																							var5.append("\t\t");
-																							var5.append(
-																									"if ( null != ");
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																							var5.append(" && !");
-																							var5.append(StringUtil
-																									.toLowerCaseFirstOne(
-																											var9.getName()));
-																							var5.append(
-																									".isNull() ){ ");
-																							var5.append(NEW_LINE);
-																						}
-
-																						var5.append("\t\t\t");
-																						var5.append(StringUtil
-																								.toLowerCaseFirstOne(
-																										var9.getName()));
-																						var5.append(".validate();");
-																						var5.append(NEW_LINE);
-																						if (!var9.isRequired()) {
-																							var5.append("\t\t}");
-																						}
-
-																						var5.append(NEW_LINE);
-																						var5.append(NEW_LINE);
-																					}
-																				} while (2000 != var9.getFieldType()
-																						&& 2001 != var9.getFieldType());
-
-																				var6 = (HashMap) var9.getValueRange();
-																			} while (var6 == null);
-																		} while (0 == var6.size());
-																	} while (null != var6.get("default-ref"));
-
-																	var5.append("\t\t//");
-																	var5.append(var9.getShortText());
-																	var5.append("鎸囧畾鍊煎煙妫�鏌�");
-																	var5.append(NEW_LINE);
-																	if (!var9.isRequired()) {
-																		if (!"String".equals(var11)
-																				&& !"byte[]".equals(var11)) {
-																			var5.append("\t\tif ( 0 != ");
-																		} else {
-																			var5.append("\t\tif ( null != ");
-																		}
-
-																		var5.append(StringUtil
-																				.toLowerCaseFirstOne(var9.getName()));
-																		if (("String".equals(var11)
-																				|| "byte[]".equals(var11))
-																				&& "0" == operBlank) {
-																			var5.append(" && 0 !=");
-																			var5.append(StringUtil.toLowerCaseFirstOne(
-																					var9.getName()));
-																			if ("String".equals(var11)) {
-																				var5.append(".length()");
-																			} else {
-																				var5.append(".length");
-																			}
-																		}
-
-																		var5.append(" ) {");
-																		var5.append(NEW_LINE);
-																	}
-
-																	var5.append("\t\tif ( ");
-																	var8 = var6.keySet().iterator();
-
-																	while (true) {
-																		while (var8.hasNext()) {
-																			var12 = (String) var8.next();
-																			if (!"String".equals(var11)
-																					&& !"byte[]".equals(var11)) {
-																				var5.append(var12);
-																				var5.append(" != ");
-																				var5.append(
-																						StringUtil.toLowerCaseFirstOne(
-																								var9.getName()));
-																				var5.append(" && ");
-																			} else {
-																				var5.append("!\"");
-																				var5.append(var12);
-																				var5.append("\".equals( ");
-																				var5.append(
-																						StringUtil.toLowerCaseFirstOne(
-																								var9.getName()));
-																				var5.append(") && ");
-																			}
-																		}
-
-																		var5.delete(var5.length() - 3, var5.length());
-																		var5.append(") {");
-																		var5.append(NEW_LINE);
-																		StringBuffer var21 = new StringBuffer();
-																		var8 = var6.keySet().iterator();
-
-																		while (var8.hasNext()) {
-																			var21.append(var8.next());
-																			var21.append("/");
-																		}
-
-																		var21.delete(var21.length() - 1,
-																				var21.length());
-																		var5.append(
-																				"\t\t\tthrow new RuntimeException(");
-																		var5.append(NEW_LINE);
-																		var5.append(
-																				"\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.field.value.in\", new String[]{\")");
-																		if (null != var9.getShortText()) {
-																			var5.append(var9.getShortText());
-																			var5.append("(");
-																			var5.append(StringUtil.toLowerCaseFirstOne(
-																					var9.getName()));
-																			var5.append(")");
-																		} else {
-																			var5.append(StringUtil.toLowerCaseFirstOne(
-																					var9.getName()));
-																		}
-
-																		var5.append("\", \"");
-																		var5.append(var21.toString());
-																		var5.append("\"}));");
-																		var5.append(NEW_LINE);
-																		var5.append("\t\t}");
-																		var5.append(NEW_LINE);
-																		var5.append(NEW_LINE);
-																		if (!var9.isRequired()) {
-																			var5.append("\t\t}");
-																			var5.append(NEW_LINE);
-																			var5.append(NEW_LINE);
-																		}
-																		break;
-																	}
-																}
-															}
-
-															var9 = (Field) var7.next();
-															var14 = StringUtil.toLowerCaseFirstOne(var9.getName());
-														} while (2005 == var9.getFieldType());
-													} while (2006 == var9.getFieldType());
-												} while (2007 == var9.getFieldType());
-											} while (2010 == var9.getFieldType());
-
-											if (2000 != var9.getFieldType() && 2001 != var9.getFieldType()) {
-												if (2002 != var9.getFieldType() && 2003 != var9.getFieldType()
-														&& 2008 != var9.getFieldType() && 2009 != var9.getFieldType()) {
-													continue label1371;
-												}
-
-												var5.append(NEW_LINE);
-												var5.append("\t\t");
-												var5.append("if( null != " + var14 + "&&null != newBean.get"
-														+ StringUtil.toUpperCaseFirstOne(var14) + "()){");
-												var5.append(NEW_LINE);
-												var5.append("\t\t\t");
-												var5.append(var14 + ".cover(newBean.get"
-														+ StringUtil.toUpperCaseFirstOne(var14) + "());");
-												var5.append(NEW_LINE);
-												var5.append("\t\t}");
-											} else {
-												var15 = Constant.getJavaTypeByDataType(var9.getDataType());
-												if ("String".equals(var15)) {
-													var5.append(NEW_LINE);
-													var5.append("\t\t");
-													var5.append("if( null != newBean.get"
-															+ StringUtil.toUpperCaseFirstOne(var14)
-															+ "() && 0 != newBean.get"
-															+ StringUtil.toUpperCaseFirstOne(var14) + "().length()){");
-													var5.append(NEW_LINE);
-													var5.append("\t\t\t");
-													var5.append(var14 + " = newBean.get"
-															+ StringUtil.toUpperCaseFirstOne(var14) + "();");
-													var5.append(NEW_LINE);
-													var5.append("\t\t}");
-												} else if (!"int".equals(var15) && !"byte".equals(var15)
-														&& !"short".equals(var15) && !"long".equals(var15)) {
-													if ("byte[]".equals(var15)) {
-														var5.append(NEW_LINE);
-														var5.append("\t\t");
-														var5.append("if( null != newBean.get"
-																+ StringUtil.toUpperCaseFirstOne(var14)
-																+ "()&&0!=newBean.get"
-																+ StringUtil.toUpperCaseFirstOne(var14)
-																+ "().length){");
-														var5.append(NEW_LINE);
-														var5.append("\t\t\t");
-														var5.append(var14 + " = newBean.get"
-																+ StringUtil.toUpperCaseFirstOne(var14) + "();");
-														var5.append(NEW_LINE);
-														var5.append("\t\t}");
-													}
-												} else {
-													var5.append(NEW_LINE);
-													var5.append("\t\t");
-													var5.append("if( 0 != newBean.get"
-															+ StringUtil.toUpperCaseFirstOne(var14) + "()){");
-													var5.append(NEW_LINE);
-													var5.append("\t\t\t");
-													var5.append(var14 + " = newBean.get"
-															+ StringUtil.toUpperCaseFirstOne(var14) + "();");
-													var5.append(NEW_LINE);
-													var5.append("\t\t}");
-												}
-											}
-										}
-									}
-								} while (2004 != var9.getFieldType() && 2011 != var9.getFieldType());
-
-								var5.append(NEW_LINE);
-								var5.append("\t\t");
-								var5.append("if(null!=" + var14 + "&&null!=newBean.get"
-										+ StringUtil.toUpperCaseFirstOne(var14) + "()){");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\t");
-								var5.append("int " + var14 + "Size=" + var14 + ".size();");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\t");
-								var5.append("if(" + var14 + "Size>newBean.get" + StringUtil.toUpperCaseFirstOne(var14)
-										+ "().size()){");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\t\t");
-								var5.append(var14 + "Size=newBean.get" + StringUtil.toUpperCaseFirstOne(var14)
-										+ "().size();");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\t}");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\t");
-								var5.append("for( int i =0; i < " + var14 + "Size; i++) {");
-								var5.append(NEW_LINE);
-								var5.append("\t\t\t\t");
-								if (!"dynamic".equals(var9.getReferenceType())
-										&& !"expression".equals(var9.getReferenceType())) {
-									var5.append(
-											"get" + StringUtil.toUpperCaseFirstOne(var14) + "At(i).cover(newBean.get"
-													+ StringUtil.toUpperCaseFirstOne(var14) + "At(i));");
-								} else {
-									var5.append("((com.giantstone.message.bean.MessageBean)" + var14
-											+ ".get(i)).cover((com.giantstone.message.bean.MessageBean)newBean.get"
-											+ StringUtil.toUpperCaseFirstOne(var14) + "().get(i));");
-								}
-
-								var5.append(NEW_LINE);
-								var5.append("\t\t\t}");
-								var5.append(NEW_LINE);
-								var5.append("\t\t}");
-							}
-						}
-
-						var9 = (Field) var7.next();
-						if (2002 != var9.getFieldType() && 2003 != var9.getFieldType() && 2004 != var9.getFieldType()
-								&& 2011 != var9.getFieldType() && 2008 != var9.getFieldType()
-								&& 2009 != var9.getFieldType()) {
-							var11 = Constant.getJavaTypeByDataType(var9.getDataType());
-						} else if (var9.getReference() != null) {
-							var11 = var9.getReference().getClassName();
-						} else if (!"dynamic".equalsIgnoreCase(var9.getReferenceType())
-								&& !"expression".equalsIgnoreCase(var9.getReferenceType())) {
-							var11 = var9.getCombineOrTableFieldClassName();
-							if (null == var11) {
-								var11 = var1.getClassName() + StringUtil.toUpperCaseFirstOne(var9.getName());
-							}
-
-							Message var13 = new Message();
-							var13.setId(var1.getId() + "-" + var9.getName());
-							var13.setClassName(var11);
-							var13.setShortText(var9.getShortText());
-							var13.setFields(var9.getSubFields());
-							if (null != var9.getDataCharset()) {
-								var13.setMsgCharset(var9.getDataCharset());
-							} else if (null != var1.getMsgCharset()) {
-								var13.setMsgCharset(var1.getMsgCharset());
-							}
-
-							this.generate(var13, var2);
-						} else {
-							var11 = MessageBean.class.getName();
-						}
-
-						var5.append("\t//");
-						var5.append(var9.getShortText());
-						var5.append(NEW_LINE);
-						var5.append("\tprivate ");
-						if (2004 != var9.getFieldType() && 2011 != var9.getFieldType()) {
-							var5.append(var11);
-						} else {
-							var5.append("List");
-						}
-
-						var5.append(" ");
-						var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-						if (2004 != var9.getFieldType() && 2011 != var9.getFieldType()) {
-							if ((2002 == var9.getFieldType() || 2003 == var9.getFieldType()
-									|| 2008 == var9.getFieldType() || 2009 == var9.getFieldType())
-									&& !"dynamic".equalsIgnoreCase(var9.getReferenceType())
-									&& !"expression".equalsIgnoreCase(var9.getReferenceType())) {
-								var5.append(" = new ");
-								var5.append(var11);
-								var5.append("()");
-							} else if (var9.getValue() != null) {
-								switch (var9.getDataType()) {
-								case 3000:
-								case 3001:
-								case 3006:
-								case 3010:
-								case 3011:
-									var5.append(" = \"");
-									var5.append(var9.getValue());
-									var5.append("\"");
-									break;
-								case 3002:
-									var5.append(" = CodeUtil.HextoByte(\"");
-									var5.append(var9.getValue());
-									var5.append("\")");
-									break;
-								case 3003:
-								case 3007:
-									var5.append(" = ");
-									var5.append(var9.getValue());
-									break;
-								case 3004:
-								case 3005:
-								case 3008:
-								default:
-									var5.append(" = (");
-									var5.append(Constant.getJavaTypeByDataType(var9.getDataType()));
-									var5.append(")");
-									var5.append(var9.getValue());
-									break;
-								case 3009:
-									var5.append(" = ");
-									var5.append(var9.getValue());
-									var5.append("l");
-								}
-							}
-						} else {
-							var5.append(" = new ArrayList(20)");
-						}
-
-						var5.append(";");
-						var5.append(NEW_LINE);
-						var5.append(NEW_LINE);
-						var5.append("\tpublic ");
-						if (2004 != var9.getFieldType() && 2011 != var9.getFieldType()) {
-							var5.append(var11);
-						} else {
-							var5.append("List");
-						}
-
-						var5.append(" get");
-						var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-						var5.append("(){");
-						var5.append(NEW_LINE);
-						var5.append("\t\treturn ");
-						var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-						var5.append(";");
-						var5.append(NEW_LINE);
-						var5.append("\t}");
-						var5.append(NEW_LINE);
-						var5.append(NEW_LINE);
-						if ((2004 == var9.getFieldType() || 2011 == var9.getFieldType())
-								&& !"dynamic".equalsIgnoreCase(var9.getReferenceType())
-								&& !"expression".equalsIgnoreCase(var9.getReferenceType())) {
-							var5.append("\tpublic ");
-							var5.append(var11);
-							var5.append(" get");
-							var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-							var5.append("At(int index){");
-							var5.append(NEW_LINE);
-							var5.append("\t\treturn (");
-							var5.append(var11);
-							var5.append(")");
-							var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-							var5.append(".get(index);");
-							var5.append(NEW_LINE);
-							var5.append("\t}");
-							var5.append(NEW_LINE);
-							var5.append(NEW_LINE);
-							var5.append("\tpublic int get");
-							var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-							var5.append("RowNum(){");
-							var5.append(NEW_LINE);
-							var5.append("\t\treturn ");
-							var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-							var5.append(".size();");
-							var5.append(NEW_LINE);
-							var5.append("\t}");
-							var5.append(NEW_LINE);
-							var5.append(NEW_LINE);
-						}
-					} while (!var9.isEditable());
-
-					var5.append("\tpublic void set");
-					var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-					var5.append("(");
-					if (2004 != var9.getFieldType() && 2011 != var9.getFieldType()) {
-						var5.append(var11);
-					} else {
-						var5.append("List");
-					}
-
-					var5.append(" ");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append("){");
-					var5.append(NEW_LINE);
-					var5.append("\t\tthis.");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append(" = ");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append(";");
-					var5.append(NEW_LINE);
-					var5.append("\t}");
-					var5.append(NEW_LINE);
-					var5.append(NEW_LINE);
-				} while (2004 != var9.getFieldType() && 2011 != var9.getFieldType());
-
-				if (!"dynamic".equalsIgnoreCase(var9.getReferenceType())
-						&& !"expression".equalsIgnoreCase(var9.getReferenceType())) {
-					var5.append("\tpublic ");
-					var5.append(var11);
-					var5.append(" create");
-					var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-					var5.append("(){");
-					var5.append(NEW_LINE);
-					var5.append("\t\t");
-					var5.append(var11);
-					var5.append(" newRecord = new ");
-					var5.append(var11);
-					var5.append("();");
-					var5.append(NEW_LINE);
-					var5.append("\t\t");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append(".add(newRecord);");
-					var5.append(NEW_LINE);
-					var5.append("\t\treturn newRecord;");
-					var5.append(NEW_LINE);
-					var5.append("\t}");
-					var5.append(NEW_LINE);
-					var5.append(NEW_LINE);
-					var5.append("\tpublic void add");
-					var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-					var5.append("(");
-					var5.append(var11);
-					var5.append(" newRecord){");
-					var5.append(NEW_LINE);
-					var5.append("\t\t");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append(".add(newRecord);");
-					var5.append(NEW_LINE);
-					var5.append("\t}");
-					var5.append(NEW_LINE);
-					var5.append(NEW_LINE);
-					var5.append("\tpublic void set");
-					var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-					var5.append("At(int index, ");
-					var5.append(var11);
-					var5.append(" newRecord){");
-					var5.append(NEW_LINE);
-					var5.append("\t\t");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append(".set(index, newRecord);");
-					var5.append(NEW_LINE);
-					var5.append("\t}");
-					var5.append(NEW_LINE);
-					var5.append(NEW_LINE);
-					var5.append("\tpublic ");
-					var5.append(var11);
-					var5.append(" remove");
-					var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-					var5.append("At(int index){");
-					var5.append(NEW_LINE);
-					var5.append("\t\treturn (");
-					var5.append(var11);
-					var5.append(")");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append(".remove(index);");
-					var5.append(NEW_LINE);
-					var5.append("\t}");
-					var5.append(NEW_LINE);
-					var5.append(NEW_LINE);
-					var5.append("\tpublic void clear");
-					var5.append(StringUtil.toUpperCaseFirstOne(var9.getName()));
-					var5.append("(){");
-					var5.append(NEW_LINE);
-					var5.append("\t\t");
-					var5.append(StringUtil.toLowerCaseFirstOne(var9.getName()));
-					var5.append(".clear();");
-					var5.append(NEW_LINE);
-					var5.append("\t}");
-					var5.append(NEW_LINE);
-					var5.append(NEW_LINE);
+	private static String operBlank = "1";
+
+	public MessageBeanCodeGenerator() {
+		//
+	}
+
+	public void buildHeader(Message message, StringBuilder stringbuffer) {
+		// pkgPath
+		String pkgPath = message.getClassName().substring(0, message.getClassName().lastIndexOf("."));
+		stringbuffer.append("package ");
+		stringbuffer.append(pkgPath.toLowerCase());
+		stringbuffer.append(";");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("import com.fib.gateway.message.bean.*;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("import com.fib.gateway.message.xml.message.*;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("import com.fib.gateway.message.*;");
+		stringbuffer.append(NEW_LINE);
+
+		stringbuffer.append("import com.fib.gateway.message.util.*;");
+		stringbuffer.append(NEW_LINE);
+
+		stringbuffer.append("import java.math.BigDecimal;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("import java.io.UnsupportedEncodingException;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("import com.fib.gateway.message.xml.message.MultiLanguageResourceBundle;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("import java.util.*;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("/**");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(" * ");
+		stringbuffer.append(message.getShortText());
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(" */");
+		stringbuffer.append(NEW_LINE);
+	}
+
+	private void buildAttrGetSet(Message message, StringBuilder stringbuffer) {
+		Iterator<?> iterator = message.getFields().values().iterator();
+		String s3 = null;
+		do {
+			if (!iterator.hasNext())
+				break;
+			Field field = (Field) iterator.next();
+			if (2002 == field.getFieldType() || 2003 == field.getFieldType() || 2004 == field.getFieldType()
+					|| 2011 == field.getFieldType() || 2008 == field.getFieldType() || 2009 == field.getFieldType()) {
+				if (field.getReference() != null)
+					s3 = field.getReference().getClassName();
+				else if ("dynamic".equalsIgnoreCase(field.getReferenceType())
+						|| "expression".equalsIgnoreCase(field.getReferenceType())) {
+					s3 = MessageBean.class.getName();
+				} else {
+					s3 = field.getCombineOrTableFieldClassName();
+					if (null == s3)
+						s3 = (new StringBuilder()).append(message.getClassName())
+								.append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
+					Message message1 = new Message();
+					message1.setId((new StringBuilder()).append(message.getId()).append("-").append(field.getName())
+							.toString());
+					message1.setClassName(s3);
+					message1.setShortText(field.getShortText());
+					message1.setFields(field.getSubFields());
+					generate(message1, "UTF-8");
+				}
+			} else {
+				s3 = Constant.getJavaTypeByDataType(field.getDataType());
+			}
+			stringbuffer.append("\t//");
+			stringbuffer.append(field.getShortText());
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append("\tprivate ");
+			if (2004 == field.getFieldType() || 2011 == field.getFieldType())
+				stringbuffer.append("List");
+			else
+				stringbuffer.append(s3);
+			stringbuffer.append(" ");
+			stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+			if (2004 == field.getFieldType() || 2011 == field.getFieldType())
+				stringbuffer.append(" = new ArrayList(20)");
+			else if ((2002 == field.getFieldType() || 2003 == field.getFieldType() || 2008 == field.getFieldType()
+					|| 2009 == field.getFieldType()) && !"dynamic".equalsIgnoreCase(field.getReferenceType())
+					&& !"expression".equalsIgnoreCase(field.getReferenceType())) {
+				stringbuffer.append(" = new ");
+				stringbuffer.append(s3);
+				stringbuffer.append("()");
+			} else if (field.getValue() != null)
+				switch (field.getDataType()) {
+				case 3000:
+				case 3001:
+				case 3006:
+				case 3010:
+				case 3011:
+					stringbuffer.append(" = \"");
+					stringbuffer.append(field.getValue());
+					stringbuffer.append("\"");
+					break;
+
+				case 3002:
+					stringbuffer.append(" = CodeUtil.HextoByte(\"");
+					stringbuffer.append(field.getValue());
+					stringbuffer.append("\")");
+					break;
+
+				case 3003:
+				case 3007:
+					stringbuffer.append(" = ");
+					stringbuffer.append(field.getValue());
+					break;
+
+				case 3009:
+					stringbuffer.append(" = ");
+					stringbuffer.append(field.getValue());
+					stringbuffer.append("l");
+					break;
+
+				case 3004:
+				case 3005:
+				case 3008:
+				default:
+					stringbuffer.append(" = (");
+					stringbuffer.append(Constant.getJavaTypeByDataType(field.getDataType()));
+					stringbuffer.append(")");
+					stringbuffer.append(field.getValue());
+					break;
+				}
+			stringbuffer.append(";");
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append("\tpublic ");
+			if (2004 == field.getFieldType() || 2011 == field.getFieldType())
+				stringbuffer.append("List");
+			else
+				stringbuffer.append(s3);
+			stringbuffer.append(" get");
+			stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+			stringbuffer.append("(){");
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append("\t\treturn ");
+			stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+			stringbuffer.append(";");
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append("\t}");
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append(NEW_LINE);
+			if ((2004 == field.getFieldType() || 2011 == field.getFieldType())
+					&& !"dynamic".equalsIgnoreCase(field.getReferenceType())
+					&& !"expression".equalsIgnoreCase(field.getReferenceType())) {
+				stringbuffer.append("\tpublic ");
+				stringbuffer.append(s3);
+				stringbuffer.append(" get");
+				stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+				stringbuffer.append("At(int index){");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\treturn (");
+				stringbuffer.append(s3);
+				stringbuffer.append(")");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+				stringbuffer.append(".get(index);");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t}");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\tpublic int get");
+				stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+				stringbuffer.append("RowNum(){");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\treturn ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+				stringbuffer.append(".size();");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t}");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append(NEW_LINE);
+			}
+			if (field.isEditable()) {
+				stringbuffer.append("\tpublic void set");
+				stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+				stringbuffer.append("(");
+				if (2004 == field.getFieldType() || 2011 == field.getFieldType())
+					stringbuffer.append("List");
+				else
+					stringbuffer.append(s3);
+				stringbuffer.append(" ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+				stringbuffer.append("){");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\tthis.");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+				stringbuffer.append(" = ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+				stringbuffer.append(";");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t}");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append(NEW_LINE);
+				if ((2004 == field.getFieldType() || 2011 == field.getFieldType())
+						&& !"dynamic".equalsIgnoreCase(field.getReferenceType())
+						&& !"expression".equalsIgnoreCase(field.getReferenceType())) {
+					stringbuffer.append("\tpublic ");
+					stringbuffer.append(s3);
+					stringbuffer.append(" create");
+					stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+					stringbuffer.append("(){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t");
+					stringbuffer.append(s3);
+					stringbuffer.append(" newRecord = new ");
+					stringbuffer.append(s3);
+					stringbuffer.append("();");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+					stringbuffer.append(".add(newRecord);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\treturn newRecord;");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\tpublic void add");
+					stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+					stringbuffer.append("(");
+					stringbuffer.append(s3);
+					stringbuffer.append(" newRecord){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+					stringbuffer.append(".add(newRecord);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\tpublic void set");
+					stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+					stringbuffer.append("At(int index, ");
+					stringbuffer.append(s3);
+					stringbuffer.append(" newRecord){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+					stringbuffer.append(".set(index, newRecord);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\tpublic ");
+					stringbuffer.append(s3);
+					stringbuffer.append(" remove");
+					stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+					stringbuffer.append("At(int index){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\treturn (");
+					stringbuffer.append(s3);
+					stringbuffer.append(")");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+					stringbuffer.append(".remove(index);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\tpublic void clear");
+					stringbuffer.append(StringUtil.toUpperCaseFirstOne(field.getName()));
+					stringbuffer.append("(){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field.getName()));
+					stringbuffer.append(".clear();");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
 				}
 			}
+		} while (true);
+	}
+
+	private void buildGetAttribute(Message message, StringBuilder stringbuffer) {
+		stringbuffer.append("\tpublic Object getAttribute(String name){");
+		stringbuffer.append(NEW_LINE);
+		Iterator<?> iterator = message.getFields().values().iterator();
+		if (iterator.hasNext()) {
+			Field field1 = (Field) iterator.next();
+			stringbuffer.append("\t\tif(");
+			stringbuffer.append("\"");
+			stringbuffer.append(field1.getName());
+			stringbuffer.append("\"");
+			stringbuffer.append(".equals(name)){");
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append("\t\t\treturn  ");
+			stringbuffer.append(getType(field1, message));
+			stringbuffer.append(";");
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append("\t\t}");
+		}
+		for (; iterator.hasNext(); stringbuffer.append("\t\t}")) {
+			Field field2 = (Field) iterator.next();
+			stringbuffer.append("else if(");
+			stringbuffer.append("\"");
+			stringbuffer.append(field2.getName());
+			stringbuffer.append("\"");
+			stringbuffer.append(".equals(name)){");
+			stringbuffer.append(NEW_LINE);
+			stringbuffer.append("\t\t\treturn  ");
+			stringbuffer.append(getType(field2, message));
+			stringbuffer.append(";");
+			stringbuffer.append(NEW_LINE);
+		}
+
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\treturn null;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+	}
+
+	private void buildSetAttribute(Message message, StringBuilder stringbuffer) {
+		stringbuffer.append("\tpublic void setAttribute(String name,Object value){");
+		stringbuffer.append(NEW_LINE);
+		Iterator<?> iterator = message.getFields().values().iterator();
+		boolean flag = true;
+		do {
+			if (!iterator.hasNext())
+				break;
+			Field field3 = (Field) iterator.next();
+			if (field3.isEditable())
+				if (flag) {
+					stringbuffer.append("\t\tif(");
+					stringbuffer.append("\"");
+					stringbuffer.append(field3.getName());
+					stringbuffer.append("\"");
+					stringbuffer.append(".equals(name)){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tthis.set");
+					stringbuffer.append(StringUtil.toUpperCaseFirstOne(field3.getName()));
+					stringbuffer.append("(");
+					stringbuffer.append(getSetAttType(field3, message));
+					stringbuffer.append(")");
+					stringbuffer.append(";");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+					flag = false;
+				} else {
+					stringbuffer.append("else if(");
+					stringbuffer.append("\"");
+					stringbuffer.append(field3.getName());
+					stringbuffer.append("\"");
+					stringbuffer.append(".equals(name)){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tthis.set");
+					stringbuffer.append(StringUtil.toUpperCaseFirstOne(field3.getName()));
+					stringbuffer.append("(");
+					stringbuffer.append(getSetAttType(field3, message));
+					stringbuffer.append(")");
+					stringbuffer.append(";");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+				}
+		} while (true);
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+	}
+
+	private void buildCover(Message message, StringBuilder stringbuffer) {
+		String className = message.getClassName().substring(message.getClassName().lastIndexOf(".") + 1);
+		stringbuffer.append("\tpublic void cover(MessageBean bean){");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t");
+		stringbuffer.append(StringUtil.toUpperCaseFirstOne(className));
+		stringbuffer.append(" newBean = ");
+		stringbuffer.append("(");
+		stringbuffer.append(StringUtil.toUpperCaseFirstOne(className));
+		stringbuffer.append(") bean;");
+		stringbuffer.append(NEW_LINE);
+		Iterator<?> iterator = message.getFields().values().iterator();
+		do {
+			if (!iterator.hasNext())
+				break;
+			Field field4 = (Field) iterator.next();
+			String s7 = StringUtil.toLowerCaseFirstOne(field4.getName());
+			if (2005 != field4.getFieldType() && 2006 != field4.getFieldType() && 2007 != field4.getFieldType()
+					&& 2010 != field4.getFieldType())
+				if (2000 == field4.getFieldType() || 2001 == field4.getFieldType()) {
+					String s9 = Constant.getJavaTypeByDataType(field4.getDataType());
+					if ("String".equals(s9)) {
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t");
+						stringbuffer.append((new StringBuilder()).append("if( null != newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("() && 0 != newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("().length()){").toString());
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t");
+						stringbuffer.append((new StringBuilder()).append(s7).append(" = newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("();").toString());
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t}");
+					} else if ("int".equals(s9) || "byte".equals(s9) || "short".equals(s9) || "long".equals(s9)) {
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t");
+						stringbuffer.append((new StringBuilder()).append("if( 0 != newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("()){").toString());
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t");
+						stringbuffer.append((new StringBuilder()).append(s7).append(" = newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("();").toString());
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t}");
+					} else if ("byte[]".equals(s9)) {
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t");
+						stringbuffer.append((new StringBuilder()).append("if( null != newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("()&&0!=newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("().length){").toString());
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t");
+						stringbuffer.append((new StringBuilder()).append(s7).append(" = newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("();").toString());
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t}");
+					}
+				} else if (2002 == field4.getFieldType() || 2003 == field4.getFieldType()
+						|| 2008 == field4.getFieldType() || 2009 == field4.getFieldType()) {
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t");
+					stringbuffer.append(
+							(new StringBuilder()).append("if( null != ").append(s7).append("&&null != newBean.get")
+									.append(StringUtil.toUpperCaseFirstOne(s7)).append("()){").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t");
+					stringbuffer.append((new StringBuilder()).append(s7).append(".cover(newBean.get")
+							.append(StringUtil.toUpperCaseFirstOne(s7)).append("());").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+				} else if (2004 == field4.getFieldType() || 2011 == field4.getFieldType()) {
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t");
+					stringbuffer
+							.append((new StringBuilder()).append("if(null!=").append(s7).append("&&null!=newBean.get")
+									.append(StringUtil.toUpperCaseFirstOne(s7)).append("()){").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t");
+					stringbuffer.append((new StringBuilder()).append("int ").append(s7).append("Size=").append(s7)
+							.append(".size();").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t");
+					stringbuffer.append((new StringBuilder()).append("if(").append(s7).append("Size>newBean.get")
+							.append(StringUtil.toUpperCaseFirstOne(s7)).append("().size()){").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t\t");
+					stringbuffer.append((new StringBuilder()).append(s7).append("Size=newBean.get")
+							.append(StringUtil.toUpperCaseFirstOne(s7)).append("().size();").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t");
+					stringbuffer.append((new StringBuilder()).append("for( int i =0; i < ").append(s7)
+							.append("Size; i++) {").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t\t");
+					if ("dynamic".equals(field4.getReferenceType()) || "expression".equals(field4.getReferenceType()))
+						stringbuffer.append(
+								(new StringBuilder()).append("((com.giantstone.message.bean.MessageBean)").append(s7)
+										.append(".get(i)).cover((com.giantstone.message.bean.MessageBean)newBean.get")
+										.append(StringUtil.toUpperCaseFirstOne(s7)).append("().get(i));").toString());
+					else
+						stringbuffer.append((new StringBuilder()).append("get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("At(i).cover(newBean.get")
+								.append(StringUtil.toUpperCaseFirstOne(s7)).append("At(i));").toString());
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+				}
+		} while (true);
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+	}
+
+	private void buildValidate(Message message, StringBuilder stringbuffer) {
+		String s3 = null;
+		stringbuffer.append("\tpublic void validate(){");
+		stringbuffer.append(NEW_LINE);
+		Iterator<?> iterator = message.getFields().values().iterator();
+		do {
+			if (!iterator.hasNext())
+				break;
+			Field field5 = (Field) iterator.next();
+			if (2007 != field5.getFieldType() && 2005 != field5.getFieldType() && 2006 != field5.getFieldType()
+					&& field5.isEditable()) {
+				if (field5.isRequired() && 3003 != field5.getDataType() && 3007 != field5.getDataType()
+						&& 3004 != field5.getDataType() && 3005 != field5.getDataType() && 3008 != field5.getDataType()
+						&& 2000 != field5.getFieldType()) {
+					stringbuffer.append("\t\t//");
+					stringbuffer.append(field5.getShortText());
+					stringbuffer.append("非空检查");
+					stringbuffer.append(NEW_LINE);
+					if (2002 == field5.getFieldType() || 2008 == field5.getFieldType() || 2003 == field5.getFieldType()
+							|| 2009 == field5.getFieldType()) {
+						stringbuffer.append("\t\tif ( null == ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(" || ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".isNull() ");
+					} else if (2004 == field5.getFieldType() || 2011 == field5.getFieldType()) {
+						stringbuffer.append("\t\tif ( 0 == ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".size() ");
+					} else {
+						stringbuffer.append("\t\tif ( null == ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+					}
+					stringbuffer.append("){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tthrow new RuntimeException(");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t\t");
+					stringbuffer.append(
+							"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.null\", new String[]{\"");
+					if (null != field5.getShortText()) {
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("(");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(")");
+					} else {
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+					}
+					stringbuffer.append("\"}));");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
+				}
+				if (2002 == field5.getFieldType() || 2003 == field5.getFieldType() || 2008 == field5.getFieldType()
+						|| 2009 == field5.getFieldType()) {
+					stringbuffer.append("\t\t//");
+					stringbuffer.append(field5.getShortText());
+					stringbuffer.append("正确性检查");
+					stringbuffer.append(NEW_LINE);
+					if (!field5.isRequired()) {
+						stringbuffer.append("\t\t");
+						stringbuffer.append("if ( null != ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(" && !");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".isNull() ){ ");
+						stringbuffer.append(NEW_LINE);
+					}
+					stringbuffer.append("\t\t\t");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+					stringbuffer.append(".validate();");
+					stringbuffer.append(NEW_LINE);
+					if (!field5.isRequired())
+						stringbuffer.append("\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
+				} else if (2004 == field5.getFieldType() || 2011 == field5.getFieldType()) {
+					if (field5.getReference() != null)
+						s3 = field5.getReference().getClassName();
+					else if ("dynamic".equalsIgnoreCase(field5.getReferenceType())
+							|| "expression".equalsIgnoreCase(field5.getReferenceType())) {
+						s3 = MessageBean.class.getName();
+					} else {
+						s3 = field5.getCombineOrTableFieldClassName();
+						if (null == s3)
+							s3 = (new StringBuilder()).append(message.getClassName())
+									.append(StringUtil.toUpperCaseFirstOne(field5.getName())).toString();
+					}
+					if (!field5.isRequired()) {
+						stringbuffer.append("\t\tif ( 0 != ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".size() ) { ");
+					}
+					stringbuffer.append("\t\t//");
+					stringbuffer.append(field5.getShortText());
+					stringbuffer.append("正确性检查");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\tfor( int i = 0; i < ");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+					stringbuffer.append(".size(); i++){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t((");
+					stringbuffer.append(s3);
+					stringbuffer.append(")");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+					stringbuffer.append(".get(i)).validate();");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append(NEW_LINE);
+					if (!field5.isRequired()) {
+						stringbuffer.append("\t\t}");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(NEW_LINE);
+					}
+				} else if (2000 == field5.getFieldType()) {
+					s3 = Constant.getJavaTypeByDataType(field5.getDataType());
+					if ("String".equals(s3) || "byte[]".equals(s3)) {
+						if (field5.isRequired()) {
+							stringbuffer.append("\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("非空检查");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\tif ( null == ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append("){");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t");
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.null\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\"}));");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						} else {
+							stringbuffer.append("\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("不为空则按以下规则校验");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\tif( null != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("0" == operBlank) {
+								stringbuffer.append(" && 0!= ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("String".equals(s3))
+									stringbuffer.append(".length()");
+								else
+									stringbuffer.append(".length");
+							}
+							stringbuffer.append("){");
+							stringbuffer.append(NEW_LINE);
+						}
+						if (field5.getLength() != -1) {
+							stringbuffer.append("\t\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("数据长度检查");
+							stringbuffer.append(NEW_LINE);
+							if ("String".equals(s3)
+									&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+								stringbuffer.append("\t\t\ttry{");
+								stringbuffer.append(NEW_LINE);
+							}
+							stringbuffer.append("\t\t\tif ( ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("String".equals(s3))
+								if (null != field5.getDataCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(field5.getDataCharset()).append("\").length ").toString());
+								else if (null != message.getMsgCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(message.getMsgCharset()).append("\").length").toString());
+								else
+									stringbuffer.append(".getBytes().length ");
+							if ("byte[]".equals(s3))
+								stringbuffer.append(".length ");
+							if (field5.isStrictDataLength() || 3002 == field5.getDataType())
+								stringbuffer.append("!= ");
+							else
+								stringbuffer.append("> ");
+							stringbuffer.append(field5.getLength());
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t");
+							stringbuffer.append("MultiLanguageResourceBundle.getInstance().getString(\"");
+							if (field5.isStrictDataLength() || 3002 == field5.getDataType())
+								stringbuffer.append("Message.field.length");
+							else
+								stringbuffer.append("Message.field.maxLength");
+							stringbuffer.append("\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getLength());
+							stringbuffer.append("\"");
+							stringbuffer.append("}));");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							if ("String".equals(s3)
+									&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t}catch (UnsupportedEncodingException e) {");
+								stringbuffer.append(NEW_LINE);
+								if (null != field5.getDataCharset()) {
+									stringbuffer.append(
+											"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
+									if (null != field5.getShortText()) {
+										stringbuffer.append(field5.getShortText());
+										stringbuffer.append("(");
+										stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+										stringbuffer.append(")");
+									} else {
+										stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									}
+									stringbuffer.append("\", \"");
+									stringbuffer.append(field5.getDataCharset());
+									stringbuffer.append("\"}));");
+								} else {
+									stringbuffer.append(
+											"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
+									stringbuffer.append(message.getId());
+									stringbuffer.append("\", \"");
+									stringbuffer.append(message.getMsgCharset());
+									stringbuffer.append("\"}));");
+								}
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t}");
+							}
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+						if (3010 == field5.getDataType()) {
+							stringbuffer.append("\t\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("输入类型检查");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\tBigDecimal big");
+							stringbuffer.append(StringUtil.toUpperCaseFirstOne(field5.getName()));
+							stringbuffer.append(" = null;");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\ttry{");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tbig");
+							stringbuffer.append(StringUtil.toUpperCaseFirstOne(field5.getName()));
+							stringbuffer.append(" = new BigDecimal(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(");");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t} catch (Exception e) {");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(
+									"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustBigDecimal\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\"}) + e.getMessage(), e);");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							stringbuffer.append(NEW_LINE);
+							String as[] = field5.getPattern().split(",");
+							stringbuffer.append("\t\t\tif ( ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(".indexOf(\".\") == -1 && ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(".length() > ");
+							if (as.length > 1)
+								stringbuffer.append(Integer.parseInt(as[0]) - Integer.parseInt(as[1]));
+							else
+								stringbuffer.append(Integer.parseInt(as[0]));
+							stringbuffer.append("){");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t");
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.wrong\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getPattern());
+							stringbuffer.append("\"}));");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}else{");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tif( -1 != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(".indexOf(\".\")){");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\tif ( ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(".substring(0, ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(".indexOf(\".\")).length() > ");
+							if (as.length > 1)
+								stringbuffer.append(Integer.parseInt(as[0]) - Integer.parseInt(as[1]));
+							else
+								stringbuffer.append(Integer.parseInt(as[0]));
+							stringbuffer.append("){");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t");
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.wrong\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getPattern());
+							stringbuffer.append("\"}));");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(" = big");
+							stringbuffer.append(StringUtil.toUpperCaseFirstOne(field5.getName()));
+							stringbuffer.append(".divide(new BigDecimal(1), ");
+							if (as.length > 1)
+								stringbuffer.append(as[1]);
+							else
+								stringbuffer.append("0");
+							stringbuffer.append(", BigDecimal.ROUND_HALF_UP).toString();");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+						if (3001 == field5.getDataType()) {
+							stringbuffer.append("\t\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("输入类型检查");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\tif(!CodeUtil.isNumeric(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")){");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(
+									"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustNum\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\"}));");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+						if (3006 == field5.getDataType()) {
+							stringbuffer.append("\t\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("格式检查");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\ttry{");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(
+									"\t\t\t\tjava.text.DateFormat dateformat = new java.text.SimpleDateFormat(\"");
+							stringbuffer.append(field5.getPattern());
+							stringbuffer.append("\");");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tdateformat.setLenient(false);");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tdateformat.parse(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(");");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t} catch (Exception e) {");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t");
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getPattern());
+							stringbuffer.append("\"}) + e.getMessage(), e);");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+						if (3000 == field5.getDataType() && null != field5.getPattern()) {
+							stringbuffer.append("\t\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("格式检查");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\tjava.util.regex.Pattern ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append("Pattern = java.util.regex.Pattern.compile(\"");
+							stringbuffer.append(field5.getPattern());
+							stringbuffer.append("\");");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\tjava.util.regex.Matcher ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append("Matcher = ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append("Pattern.matcher(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(");");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\tif ( !");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append("Matcher.matches() ){");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t");
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getPattern());
+							stringbuffer.append("\"}));");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							stringbuffer.append(NEW_LINE);
+						}
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					}
+				} else if (2001 == field5.getFieldType()) {
+					s3 = Constant.getJavaTypeByDataType(field5.getDataType());
+					if (field5.getRefLengthField() != null) {
+						Field field8 = field5.getRefLengthField();
+						if ((3001 == field8.getDataType() || 3004 == field8.getDataType())
+								&& ("String".equals(s3) || "byte[]".equalsIgnoreCase(s3))) {
+							if (!field5.isRequired()) {
+								stringbuffer.append("\t\tif ( null != ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("0" == operBlank) {
+									stringbuffer.append(" && 0 != ");
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									if ("String".equals(s3))
+										stringbuffer.append(".length()");
+									else
+										stringbuffer.append(".length");
+								}
+								stringbuffer.append(" ) {");
+								stringbuffer.append(NEW_LINE);
+							}
+							stringbuffer.append("\t\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("长度检查");
+							stringbuffer.append(NEW_LINE);
+							if ("String".equals(s3)
+									&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+								stringbuffer.append("\t\t\ttry{");
+								stringbuffer.append(NEW_LINE);
+							}
+							stringbuffer.append("\t\t\tif ( ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("String".equals(s3)) {
+								if (null != field5.getDataCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(field5.getDataCharset()).append("\").length > ").toString());
+								else if (null != message.getMsgCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(message.getMsgCharset()).append("\").length > ").toString());
+								else
+									stringbuffer.append(".getBytes().length > ");
+							} else if ("byte[]".equalsIgnoreCase(s3))
+								stringbuffer.append(".length > ");
+							if (field5.getMaxLength() != -1)
+								stringbuffer.append(field5.getMaxLength());
+							else if (3001 == field8.getDataType()) {
+								for (int i = 0; i < field8.getLength(); i++)
+									stringbuffer.append("9");
+
+							} else if (3004 == field8.getDataType())
+								stringbuffer.append("255");
+							if (field5.getMinLength() != -1) {
+								stringbuffer.append(" || ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("String".equals(s3)) {
+									if (null != field5.getDataCharset())
+										stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+												.append(field5.getDataCharset()).append("\").length < ").toString());
+									else if (null != message.getMsgCharset())
+										stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+												.append(message.getMsgCharset()).append("\").length < ").toString());
+									else
+										stringbuffer.append(".getBytes().length < ");
+								} else if ("byte[]".equalsIgnoreCase(s3))
+									stringbuffer.append(".length < ");
+								stringbuffer.append(field5.getMinLength());
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+							if (field5.getMinLength() != -1) {
+								stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t\t\t");
+								stringbuffer.append(
+										"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
+								if (null != field5.getShortText()) {
+									stringbuffer.append(field5.getShortText());
+									stringbuffer.append("(");
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									stringbuffer.append(")");
+								} else {
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								}
+								stringbuffer.append("\", \"");
+								if (field5.getMaxLength() != -1)
+									stringbuffer.append(field5.getMaxLength());
+								else if (3001 == field8.getDataType()) {
+									for (int j = 0; j < field8.getLength(); j++)
+										stringbuffer.append("9");
+
+								} else if (3004 == field8.getDataType())
+									stringbuffer.append("255");
+								stringbuffer.append("\", \"");
+								stringbuffer.append(field5.getMinLength());
+								stringbuffer.append("\"}));");
+							} else {
+								stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t\t\t");
+								stringbuffer.append(
+										"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
+								if (null != field5.getShortText()) {
+									stringbuffer.append(field5.getShortText());
+									stringbuffer.append("(");
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									stringbuffer.append(")");
+								} else {
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								}
+								stringbuffer.append("\", \"");
+								if (field5.getMaxLength() != -1)
+									stringbuffer.append(field5.getMaxLength());
+								else if (3001 == field8.getDataType()) {
+									for (int k = 0; k < field8.getLength(); k++)
+										stringbuffer.append("9");
+
+								} else if (3004 == field8.getDataType())
+									stringbuffer.append("255");
+								stringbuffer.append("\"}));");
+							}
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							if ("String".equals(s3)
+									&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t}catch (UnsupportedEncodingException e) {");
+								stringbuffer.append(NEW_LINE);
+								if (null != field5.getDataCharset()) {
+									stringbuffer.append(
+											"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
+									if (null != field5.getShortText()) {
+										stringbuffer.append(field5.getShortText());
+										stringbuffer.append("(");
+										stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+										stringbuffer.append(")");
+									} else {
+										stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									}
+									stringbuffer.append("\", \"");
+									stringbuffer.append(field5.getDataCharset());
+									stringbuffer.append("\"}));");
+								} else {
+									stringbuffer.append(
+											"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
+									stringbuffer.append(message.getId());
+									stringbuffer.append("\", \"");
+									stringbuffer.append(message.getMsgCharset());
+									stringbuffer.append("\"}));");
+								}
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t}");
+							}
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+							if (!field5.isRequired()) {
+								stringbuffer.append("\t\t}");
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append(NEW_LINE);
+							}
+						} else if (("String".equals(s3) || "byte[]".equalsIgnoreCase(s3))
+								&& (field5.getMaxLength() != -1 || field5.getMinLength() != -1)) {
+							if (!field5.isRequired()) {
+								stringbuffer.append("\t\tif ( null != ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("0" == operBlank) {
+									stringbuffer.append(" && 0 != ");
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									if ("String".equals(s3))
+										stringbuffer.append(".length()");
+									else
+										stringbuffer.append(".length");
+								}
+								stringbuffer.append(" ) {");
+								stringbuffer.append(NEW_LINE);
+							}
+							stringbuffer.append("\t\t\t//");
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("长度检查");
+							stringbuffer.append(NEW_LINE);
+							if ("String".equals(s3)
+									&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+								stringbuffer.append("\t\t\ttry{");
+								stringbuffer.append(NEW_LINE);
+							}
+							stringbuffer.append("\t\t\tif ( ");
+							if (field5.getMaxLength() != -1) {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("String".equals(s3)) {
+									if (null != field5.getDataCharset())
+										stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+												.append(field5.getDataCharset()).append("\").length > ").toString());
+									else if (null != message.getMsgCharset())
+										stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+												.append(message.getMsgCharset()).append("\").length > ").toString());
+									else
+										stringbuffer.append(".getBytes().length > ");
+								} else if ("byte[]".equalsIgnoreCase(s3))
+									stringbuffer.append(".length > ");
+								stringbuffer.append(field5.getMaxLength());
+							}
+							if (field5.getMaxLength() != -1 && field5.getMinLength() != -1)
+								stringbuffer.append(" || ");
+							if (field5.getMinLength() != -1) {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("String".equals(s3)) {
+									if (null != field5.getDataCharset())
+										stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+												.append(field5.getDataCharset()).append("\").length < ").toString());
+									else if (null != message.getMsgCharset())
+										stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+												.append(message.getMsgCharset()).append("\").length < ").toString());
+									else
+										stringbuffer.append(".getBytes().length < ");
+								} else if ("byte[]".equalsIgnoreCase(s3))
+									stringbuffer.append(".length < ");
+								stringbuffer.append(field5.getMinLength());
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t");
+							if (field5.getMaxLength() != -1 && field5.getMinLength() != -1) {
+								stringbuffer.append(
+										"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append("\", \"");
+								stringbuffer.append(field5.getMaxLength());
+								stringbuffer.append("\", \"");
+								stringbuffer.append(field5.getMinLength());
+								stringbuffer.append("\"}));");
+							} else if (field5.getMaxLength() != -1) {
+								stringbuffer.append(
+										"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append("\", \"");
+								stringbuffer.append(field5.getMaxLength());
+								stringbuffer.append("\"}));");
+							} else if (field5.getMinLength() != -1) {
+								stringbuffer.append(
+										"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.minLength\", new String[]{\"");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append("\", \"");
+								stringbuffer.append(field5.getMinLength());
+								stringbuffer.append("\"}));");
+							}
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+							if ("String".equals(s3)
+									&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t}catch (UnsupportedEncodingException e) {");
+								stringbuffer.append(NEW_LINE);
+								if (null != field5.getDataCharset()) {
+									stringbuffer.append(
+											"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
+									if (null != field5.getShortText()) {
+										stringbuffer.append(field5.getShortText());
+										stringbuffer.append("(");
+										stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+										stringbuffer.append(")");
+									} else {
+										stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									}
+									stringbuffer.append("\", \"");
+									stringbuffer.append(field5.getDataCharset());
+									stringbuffer.append("\"}));");
+								} else {
+									stringbuffer.append(
+											"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
+									stringbuffer.append(message.getId());
+									stringbuffer.append("\", \"");
+									stringbuffer.append(message.getMsgCharset());
+									stringbuffer.append("\"}));");
+								}
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append("\t\t\t}");
+							}
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+							if (!field5.isRequired()) {
+								stringbuffer.append("\t\t}");
+								stringbuffer.append(NEW_LINE);
+								stringbuffer.append(NEW_LINE);
+							}
+						}
+					} else if ((3001 == field5.getLengthFieldDataType() || 3002 == field5.getLengthFieldDataType())
+							&& ("String".equals(s3) || "byte[]".equalsIgnoreCase(s3))) {
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\tif ( null != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("0" == operBlank) {
+								stringbuffer.append(" && 0 != ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("String".equals(s3))
+									stringbuffer.append(".length()");
+								else
+									stringbuffer.append(".length");
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\t\t//");
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("长度检查");
+						stringbuffer.append(NEW_LINE);
+						if ("String".equals(s3)
+								&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+							stringbuffer.append("\t\t\ttry{");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\t\tif ( ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						if ("String".equals(s3)) {
+							if (null != field5.getDataCharset())
+								stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+										.append(field5.getDataCharset()).append("\").length > ").toString());
+							else if (null != message.getMsgCharset())
+								stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+										.append(message.getMsgCharset()).append("\").length > ").toString());
+							else
+								stringbuffer.append(".getBytes().length > ");
+						} else if ("byte[]".equalsIgnoreCase(s3))
+							stringbuffer.append(".length > ");
+						if (field5.getMaxLength() != -1)
+							stringbuffer.append(field5.getMaxLength());
+						else if (3001 == field5.getLengthFieldDataType()) {
+							for (int l = 0; l < field5.getLengthFieldLength(); l++)
+								stringbuffer.append("9");
+
+						} else if (3004 == field5.getLengthFieldDataType())
+							stringbuffer.append("255");
+						if (field5.getMinLength() != -1) {
+							stringbuffer.append(" || ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("String".equals(s3)) {
+								if (null != field5.getDataCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(field5.getDataCharset()).append("\").length < ").toString());
+								else if (null != message.getMsgCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(message.getMsgCharset()).append("\").length < ").toString());
+								else
+									stringbuffer.append(".getBytes().length < ");
+							} else if ("byte[]".equalsIgnoreCase(s3))
+								stringbuffer.append(".length < ");
+							stringbuffer.append(field5.getMinLength());
+						}
+						stringbuffer.append(" ) {");
+						stringbuffer.append(NEW_LINE);
+						if (field5.getMinLength() != -1) {
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t");
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append("\", \"");
+							if (field5.getMaxLength() != -1)
+								stringbuffer.append(field5.getMaxLength());
+							else if (3001 == field5.getLengthFieldDataType()) {
+								for (int i1 = 0; i1 < field5.getLengthFieldLength(); i1++)
+									stringbuffer.append("9");
+
+							} else if (3004 == field5.getLengthFieldDataType())
+								stringbuffer.append("255");
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getMinLength());
+							stringbuffer.append("\"}));");
+						} else {
+							stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t\t\t");
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append("\", \"");
+							if (field5.getMaxLength() != -1)
+								stringbuffer.append(field5.getMaxLength());
+							else if (3001 == field5.getLengthFieldDataType()) {
+								for (int j1 = 0; j1 < field5.getLengthFieldLength(); j1++)
+									stringbuffer.append("9");
+
+							} else if (3004 == field5.getLengthFieldDataType())
+								stringbuffer.append("255");
+							stringbuffer.append("\"}));");
+						}
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t}");
+						if ("String".equals(s3)
+								&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}catch (UnsupportedEncodingException e) {");
+							stringbuffer.append(NEW_LINE);
+							if (null != field5.getDataCharset()) {
+								stringbuffer.append(
+										"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
+								if (null != field5.getShortText()) {
+									stringbuffer.append(field5.getShortText());
+									stringbuffer.append("(");
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									stringbuffer.append(")");
+								} else {
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								}
+								stringbuffer.append("\", \"");
+								stringbuffer.append(field5.getDataCharset());
+								stringbuffer.append("\"}));");
+							} else {
+								stringbuffer.append(
+										"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
+								stringbuffer.append(message.getId());
+								stringbuffer.append("\", \"");
+								stringbuffer.append(message.getMsgCharset());
+								stringbuffer.append("\"}));");
+							}
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+						}
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					} else if (("String".equals(s3) || "byte[]".equalsIgnoreCase(s3))
+							&& (field5.getMaxLength() != -1 || field5.getMinLength() != -1)) {
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\tif ( null != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("0" == operBlank) {
+								stringbuffer.append(" && 0 != ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("String".equals(s3))
+									stringbuffer.append(".length()");
+								else
+									stringbuffer.append(".length");
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\t\t//");
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("长度检查");
+						stringbuffer.append(NEW_LINE);
+						if ("String".equals(s3)
+								&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+							stringbuffer.append("\t\t\ttry{");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\t\tif ( ");
+						if (field5.getMaxLength() != -1) {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("String".equals(s3)) {
+								if (null != field5.getDataCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(field5.getDataCharset()).append("\").length > ").toString());
+								else if (null != message.getMsgCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(message.getMsgCharset()).append("\").length > ").toString());
+								else
+									stringbuffer.append(".getBytes().length > ");
+							} else if ("byte[]".equalsIgnoreCase(s3))
+								stringbuffer.append(".length > ");
+							stringbuffer.append(field5.getMaxLength());
+						}
+						if (field5.getMaxLength() != -1 && field5.getMinLength() != -1)
+							stringbuffer.append(" || ");
+						if (field5.getMinLength() != -1) {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("String".equals(s3)) {
+								if (null != field5.getDataCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(field5.getDataCharset()).append("\").length < ").toString());
+								else if (null != message.getMsgCharset())
+									stringbuffer.append((new StringBuilder()).append(".getBytes(\"")
+											.append(message.getMsgCharset()).append("\").length < ").toString());
+								else
+									stringbuffer.append(".getBytes().length < ");
+							} else if ("byte[]".equalsIgnoreCase(s3))
+								stringbuffer.append(".length < ");
+							stringbuffer.append(field5.getMinLength());
+						}
+						stringbuffer.append(" ) {");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t\t");
+						if (field5.getMaxLength() != -1 && field5.getMinLength() != -1) {
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxAndMin\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getMaxLength());
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getMinLength());
+							stringbuffer.append("\"}));");
+						} else if (field5.getMaxLength() != -1) {
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.maxLength\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getMaxLength());
+							stringbuffer.append("\"}));");
+						} else if (field5.getMinLength() != -1) {
+							stringbuffer.append(
+									"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.minLength\", new String[]{\"");
+							if (null != field5.getShortText()) {
+								stringbuffer.append(field5.getShortText());
+								stringbuffer.append("(");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(")");
+							} else {
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							}
+							stringbuffer.append("\", \"");
+							stringbuffer.append(field5.getMinLength());
+							stringbuffer.append("\"}));");
+						}
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t}");
+						if ("String".equals(s3)
+								&& (null != field5.getDataCharset() || null != message.getMsgCharset())) {
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}catch (UnsupportedEncodingException e) {");
+							stringbuffer.append(NEW_LINE);
+							if (null != field5.getDataCharset()) {
+								stringbuffer.append(
+										"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"field.encoding.unsupport\", new String[]{\"");
+								if (null != field5.getShortText()) {
+									stringbuffer.append(field5.getShortText());
+									stringbuffer.append("(");
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+									stringbuffer.append(")");
+								} else {
+									stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								}
+								stringbuffer.append("\", \"");
+								stringbuffer.append(field5.getDataCharset());
+								stringbuffer.append("\"}));");
+							} else {
+								stringbuffer.append(
+										"\t\t\t\tthrow new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(\"message.encoding.unsupport\", new String[]{\"");
+								stringbuffer.append(message.getId());
+								stringbuffer.append("\", \"");
+								stringbuffer.append(message.getMsgCharset());
+								stringbuffer.append("\"}));");
+							}
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append("\t\t\t}");
+						}
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					}
+					if (3001 == field5.getDataType()) {
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\tif ( null != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("0" == operBlank) {
+								stringbuffer.append(" && 0 !=");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(".length()");
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\t//");
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("输入类型检查");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\tif(!CodeUtil.isNumeric(");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(")){");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(
+								"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustNum\", new String[]{\"");
+						if (null != field5.getShortText()) {
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")");
+						} else {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						}
+						stringbuffer.append("\"}));");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t}");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					}
+					if (3006 == field5.getDataType()) {
+						stringbuffer.append("\t\t//");
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("格式检查");
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\tif ( null != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("0" == operBlank) {
+								stringbuffer.append(" && 0 !=");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(".length()");
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\ttry{");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer
+								.append("\t\t\tjava.text.DateFormat dateformat = new java.text.SimpleDateFormat(\"");
+						stringbuffer.append(field5.getPattern());
+						stringbuffer.append("\");");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\tdateformat.setLenient(false);");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\tdateformat.parse(");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(");");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t} catch (Exception e) {");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t\t");
+						stringbuffer.append(
+								"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
+						if (null != field5.getShortText()) {
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")");
+						} else {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						}
+						stringbuffer.append("\", \"");
+						stringbuffer.append(field5.getPattern());
+						stringbuffer.append("\"}) + e.getMessage(), e);");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t}");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					}
+					if (3000 == field5.getDataType() && null != field5.getPattern()) {
+						stringbuffer.append("\t\t\t//");
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("格式检查");
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\tif ( null != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("0" == operBlank) {
+								stringbuffer.append(" && 0 !=");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(".length()");
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\t\tjava.util.regex.Pattern ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append("Pattern = java.util.regex.Pattern.compile(\"");
+						stringbuffer.append(field5.getPattern());
+						stringbuffer.append("\");");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\tjava.util.regex.Matcher ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append("Matcher = ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append("Pattern.matcher(");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(");");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\tif ( !");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append("Matcher.matches() ){");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t\t");
+						stringbuffer.append(
+								"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
+						if (null != field5.getShortText()) {
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")");
+						} else {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						}
+						stringbuffer.append("\", \"");
+						stringbuffer.append(field5.getPattern());
+						stringbuffer.append("\"}));");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t}");
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					}
+					if (3010 == field5.getDataType()) {
+						stringbuffer.append("\t\t\t//");
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("输入类型检查");
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\tif ( null != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if ("0" == operBlank) {
+								stringbuffer.append(" && 0 !=");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(".length()");
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\t\tBigDecimal big");
+						stringbuffer.append(StringUtil.toUpperCaseFirstOne(field5.getName()));
+						stringbuffer.append(" = null;");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\ttry{");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tbig");
+						stringbuffer.append(StringUtil.toUpperCaseFirstOne(field5.getName()));
+						stringbuffer.append(" = new BigDecimal(");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(");");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t} catch (Exception e) {");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(
+								"\t\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.parameter.type.mustBigDecimal\", new String[]{\"");
+						if (null != field5.getShortText()) {
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")");
+						} else {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						}
+						stringbuffer.append("\"}) + e.getMessage(), e);");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t}");
+						stringbuffer.append(NEW_LINE);
+						String as1[] = field5.getPattern().split(",");
+						stringbuffer.append("\t\t\tif ( ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".indexOf(\".\") == -1 && ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".length() > ");
+						if (as1.length > 1)
+							stringbuffer.append(Integer.parseInt(as1[0]) - Integer.parseInt(as1[1]));
+						else
+							stringbuffer.append(Integer.parseInt(as1[0]));
+						stringbuffer.append("){");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t\t");
+						stringbuffer.append(
+								"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
+						if (null != field5.getShortText()) {
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")");
+						} else {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						}
+						stringbuffer.append("\", \"");
+						stringbuffer.append(field5.getPattern());
+						stringbuffer.append("\"}));");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t}else{");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tif( -1 != ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".indexOf(\".\")){");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t\tif ( ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".substring(0, ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(".indexOf(\".\")).length() > ");
+						if (as1.length > 1)
+							stringbuffer.append(Integer.parseInt(as1[0]) - Integer.parseInt(as1[1]));
+						else
+							stringbuffer.append(Integer.parseInt(as1[0]));
+						stringbuffer.append("){");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t\t");
+						stringbuffer.append(
+								"MultiLanguageResourceBundle.getInstance().getString(\"Message.field.pattern.illegal\", new String[]{\"");
+						if (null != field5.getShortText()) {
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")");
+						} else {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						}
+						stringbuffer.append("\", \"");
+						stringbuffer.append(field5.getPattern());
+						stringbuffer.append("\"}));");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t\t}");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t}");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t\t");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						stringbuffer.append(" = big");
+						stringbuffer.append(StringUtil.toUpperCaseFirstOne(field5.getName()));
+						stringbuffer.append(".divide(new BigDecimal(1), ");
+						if (as1.length > 1)
+							stringbuffer.append(as1[1]);
+						else
+							stringbuffer.append("0");
+						stringbuffer.append(", BigDecimal.ROUND_HALF_UP).toString();");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t\t}");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					}
+				}
+				if (2000 == field5.getFieldType() || 2001 == field5.getFieldType()) {
+					HashMap<?, ?> hashmap1 = (HashMap<?, ?>) field5.getValueRange();
+					if (hashmap1 != null && 0 != hashmap1.size() && null == hashmap1.get("default-ref")) {
+						stringbuffer.append("\t\t//");
+						stringbuffer.append(field5.getShortText());
+						stringbuffer.append("指定值域检查");
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							if ("String".equals(s3) || "byte[]".equals(s3))
+								stringbuffer.append("\t\tif ( null != ");
+							else
+								stringbuffer.append("\t\tif ( 0 != ");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							if (("String".equals(s3) || "byte[]".equals(s3)) && "0" == operBlank) {
+								stringbuffer.append(" && 0 !=");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								if ("String".equals(s3))
+									stringbuffer.append(".length()");
+								else
+									stringbuffer.append(".length");
+							}
+							stringbuffer.append(" ) {");
+							stringbuffer.append(NEW_LINE);
+						}
+						stringbuffer.append("\t\tif ( ");
+						for (Iterator<?> iterator1 = hashmap1.keySet().iterator(); iterator1.hasNext();) {
+							String s6 = (String) iterator1.next();
+							if ("String".equals(s3) || "byte[]".equals(s3)) {
+								stringbuffer.append("!\"");
+								stringbuffer.append(s6);
+								stringbuffer.append("\".equals( ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(") && ");
+							} else {
+								stringbuffer.append(s6);
+								stringbuffer.append(" != ");
+								stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+								stringbuffer.append(" && ");
+							}
+						}
+
+						stringbuffer.delete(stringbuffer.length() - 3, stringbuffer.length());
+						stringbuffer.append(") {");
+						stringbuffer.append(NEW_LINE);
+						StringBuffer stringbuffer1 = new StringBuffer();
+						for (Iterator<?> iterator2 = hashmap1.keySet().iterator(); iterator2.hasNext(); stringbuffer1
+								.append("/"))
+							stringbuffer1.append(iterator2.next());
+
+						stringbuffer1.delete(stringbuffer1.length() - 1, stringbuffer1.length());
+						stringbuffer.append("\t\t\tthrow new RuntimeException(");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(
+								"\t\t\t\tMultiLanguageResourceBundle.getInstance().getString(\"Message.field.value.in\", new String[]{\")");
+						if (null != field5.getShortText()) {
+							stringbuffer.append(field5.getShortText());
+							stringbuffer.append("(");
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+							stringbuffer.append(")");
+						} else {
+							stringbuffer.append(StringUtil.toLowerCaseFirstOne(field5.getName()));
+						}
+						stringbuffer.append("\", \"");
+						stringbuffer.append(stringbuffer1.toString());
+						stringbuffer.append("\"}));");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append("\t\t}");
+						stringbuffer.append(NEW_LINE);
+						stringbuffer.append(NEW_LINE);
+						if (!field5.isRequired()) {
+							stringbuffer.append("\t\t}");
+							stringbuffer.append(NEW_LINE);
+							stringbuffer.append(NEW_LINE);
+						}
+					}
+				}
+			}
+		} while (true);
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+	}
+
+	private void buildToString(Message message, StringBuilder stringbuffer) {
+		stringbuffer.append("\tpublic String toString(){");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\treturn toString(false);");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\tpublic String toString(boolean isWrap){");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\treturn toString(isWrap,false);");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\tpublic String toString(boolean isWrap,boolean isTable){");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\tStringBuffer buf = new StringBuffer(10240);");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\tStringBuffer tableBuf = new StringBuffer(2048);");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\tString str = null;");
+		stringbuffer.append(NEW_LINE);
+		Iterator<?> iterator = message.getFields().values().iterator();
+		do {
+			if (!iterator.hasNext())
+				break;
+			Field field6 = (Field) iterator.next();
+			if (field6.isEditable())
+				if (2002 == field6.getFieldType() || 2003 == field6.getFieldType() || 2008 == field6.getFieldType()
+						|| 2009 == field6.getFieldType()) {
+					stringbuffer.append("\t\tif( null != ");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append("){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tstr = ");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append(".toString(true);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tif( null != str){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t\tbuf.append(\"<a n=\\\"");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append("\\\" t=\\\"bean\\\">\");");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t\tbuf.append(str);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t\tbuf.append(\"");
+					stringbuffer.append("</a>\");");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+					stringbuffer.append(NEW_LINE);
+				} else if (2004 == field6.getFieldType() || 2011 == field6.getFieldType()) {
+					String s4;
+					if (field6.getReference() != null)
+						s4 = field6.getReference().getClassName();
+					else if ("dynamic".equalsIgnoreCase(field6.getReferenceType())
+							|| "expression".equalsIgnoreCase(field6.getReferenceType())) {
+						s4 = MessageBean.class.getName();
+					} else {
+						s4 = field6.getCombineOrTableFieldClassName();
+						if (null == s4)
+							s4 = (new StringBuilder()).append(message.getClassName())
+									.append(StringUtil.toUpperCaseFirstOne(field6.getName())).toString();
+					}
+					stringbuffer.append("\t\t");
+					stringbuffer.append(s4);
+					stringbuffer.append(" ");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append("Field = null;");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\tfor( int i =0; i < ");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append(".size(); i++) {");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append("Field = (");
+					stringbuffer.append(s4);
+					stringbuffer.append(") ");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append(".get(i);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tstr = ");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append("Field.toString(true,true);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tif( null != str){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t\ttableBuf.append(str);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\tif ( 0 != tableBuf.length()){");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tbuf.append(\"<a n=\\\"");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append("\\\" t=\\\"list\\\" c=\\\"java.util.ArrayList\\\" rc=\\\"");
+					stringbuffer.append(s4);
+					stringbuffer.append("\\\">\");");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tbuf.append(tableBuf);");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tbuf.append(\"</a>\");");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\ttableBuf.delete(0,tableBuf.length());");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t}");
+					stringbuffer.append(NEW_LINE);
+				} else {
+					if (3000 == field6.getDataType() || 3001 == field6.getDataType() || 3006 == field6.getDataType()
+							|| 3002 == field6.getDataType() || 3010 == field6.getDataType()) {
+						stringbuffer.append("\t\tif( null != ");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+						stringbuffer.append("){");
+					}
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tbuf.append(\"<a n=\\\"");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					stringbuffer.append("\\\" t=\\\"");
+					stringbuffer.append(Constant.getDataTypeText(field6.getDataType()));
+					stringbuffer.append("\\\">\");");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tbuf.append(");
+					if (3002 == field6.getDataType()) {
+						stringbuffer.append("new String(CodeUtil.BytetoHex(");
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+						stringbuffer.append("))");
+					} else {
+						stringbuffer.append(StringUtil.toLowerCaseFirstOne(field6.getName()));
+					}
+					stringbuffer.append(");");
+					stringbuffer.append(NEW_LINE);
+					stringbuffer.append("\t\t\tbuf.append(\"</a>\");");
+					stringbuffer.append(NEW_LINE);
+					if (3000 == field6.getDataType() || 3001 == field6.getDataType() || 3006 == field6.getDataType()
+							|| 3002 == field6.getDataType() || 3010 == field6.getDataType()) {
+						stringbuffer.append("\t\t}");
+						stringbuffer.append(NEW_LINE);
+					}
+				}
+		} while (true);
+		stringbuffer.append("\t\tif( 0 == buf.length()){");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\treturn null;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t}else{");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\tif ( isTable ){");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t\tbuf.insert(0,\"<b>\");");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t}else{");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t\tbuf.insert(0,\"<b c=\\\"");
+		stringbuffer.append(message.getClassName());
+		stringbuffer.append("\\\">\");");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\tbuf.append(\"</b>\");");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\tif( !isWrap ){");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t\tbuf = new StringBuffer(buf.toString());");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t\tbuf.insert(0,\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\");");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t\treturn buf.toString();");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t}else{");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t\treturn buf.toString();");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+	}
+
+	private void buildIsNull(Message message, StringBuilder stringbuffer) {
+		stringbuffer.append("\tpublic boolean isNull(){");
+		stringbuffer.append(NEW_LINE);
+		Iterator<?> iterator = message.getFields().values().iterator();
+		do {
+			if (!iterator.hasNext())
+				break;
+			Field field7 = (Field) iterator.next();
+			if (2002 == field7.getFieldType() || 2003 == field7.getFieldType() || 2008 == field7.getFieldType()
+					|| 2009 == field7.getFieldType()) {
+				stringbuffer.append("\t\tif( null != ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append("){");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\tif (  !");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append(".isNull() ){");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\t\treturn false;");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\t}");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t}");
+				stringbuffer.append(NEW_LINE);
+			} else if (2004 == field7.getFieldType() || 2011 == field7.getFieldType()) {
+				String s5;
+				if (field7.getReference() != null)
+					s5 = field7.getReference().getClassName();
+				else if ("dynamic".equalsIgnoreCase(field7.getReferenceType())
+						|| "expression".equalsIgnoreCase(field7.getReferenceType())) {
+					s5 = MessageBean.class.getName();
+				} else {
+					s5 = field7.getCombineOrTableFieldClassName();
+					if (null == s5)
+						s5 = (new StringBuilder()).append(message.getClassName())
+								.append(StringUtil.toUpperCaseFirstOne(field7.getName())).toString();
+				}
+				stringbuffer.append("\t\t");
+				stringbuffer.append(s5);
+				stringbuffer.append(" ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append("Field = null;");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\tfor( int i =0; i < ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append(".size(); i++) {");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\t");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append("Field = (");
+				stringbuffer.append(s5);
+				stringbuffer.append(") ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append(".get(i);");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\tif ( null != ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append(" && !");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				stringbuffer.append("Field.isNull() ){");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\t\treturn false;");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\t}");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t}");
+				stringbuffer.append(NEW_LINE);
+			} else if (3000 == field7.getDataType() || 3001 == field7.getDataType() || 3006 == field7.getDataType()
+					|| 3002 == field7.getDataType() || 3010 == field7.getDataType()) {
+				stringbuffer.append("\t\tif( null != ");
+				stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+				if ("0" == operBlank) {
+					stringbuffer.append(" && 0 !=");
+					stringbuffer.append(StringUtil.toLowerCaseFirstOne(field7.getName()));
+					if (3002 == field7.getDataType())
+						stringbuffer.append(".length ");
+					else
+						stringbuffer.append(".length() ");
+				}
+				stringbuffer.append("){");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t\treturn false;");
+				stringbuffer.append(NEW_LINE);
+				stringbuffer.append("\t\t}");
+				stringbuffer.append(NEW_LINE);
+			}
+		} while (true);
+		stringbuffer.append("\t\treturn true;");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("\t}");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append("}");
+		stringbuffer.append(NEW_LINE);
+	}
+
+	public void generate(Message message, String s) {
+		if (Objects.isNull(message)) {
+			return;
+		}
+		String classPath = message.getClassName();
+		if (StrUtil.isEmpty(classPath)) {
+			return;
+		}
+		String className = message.getClassName().substring(message.getClassName().lastIndexOf(".") + 1);
+		StringBuilder stringbuffer = new StringBuilder(10240);
+
+		buildHeader(message, stringbuffer);
+
+		stringbuffer.append("public class ");
+		stringbuffer.append(StringUtil.toUpperCaseFirstOne(className));
+		stringbuffer.append(" extends MessageBean{");
+		stringbuffer.append(NEW_LINE);
+		stringbuffer.append(NEW_LINE);
+
+		buildAttrGetSet(message, stringbuffer);
+
+		buildGetAttribute(message, stringbuffer);
+
+		buildSetAttribute(message, stringbuffer);
+
+		buildCover(message, stringbuffer);
+
+		buildValidate(message, stringbuffer);
+
+		buildToString(message, stringbuffer);
+
+		buildIsNull(message, stringbuffer);
+
+		String s8 = stringbuffer.toString();
+		String s10 = (new StringBuilder()).append(outputDir).append(message.getClassName().replaceAll("\\.", "/"))
+				.append(".java").toString();
+		try {
+			FileUtil.saveAsData(s10, s8.getBytes(s), false);
+		} catch (UnsupportedEncodingException unsupportedencodingexception) {
+			unsupportedencodingexception.printStackTrace();
 		}
 	}
 
 	public String getOutputDir() {
-		return this.outputDir;
+		return outputDir;
 	}
 
-	public void setOutputDir(String var1) {
-		this.outputDir = var1;
+	public void setOutputDir(String s) {
+		this.outputDir = s;
 		if (!this.outputDir.endsWith("/")) {
 			this.outputDir = this.outputDir + "/";
 		}
-
 	}
 
-	private String getType(Field var1, Message var2) {
-		String var3 = null;
-		if (0 != var1.getDataType()) {
-			var3 = Constant.getJavaTypeByDataType(var1.getDataType());
-			if ("int".equals(var3)) {
-				return "Integer.valueOf(this.get" + StringUtil.toUpperCaseFirstOne(var1.getName()) + "())";
-			} else if ("long".equals(var3)) {
-				return "Long.valueOf(this.get" + StringUtil.toUpperCaseFirstOne(var1.getName()) + "())";
-			} else if ("byte".equals(var3)) {
-				return "Byte.valueOf(this.get" + StringUtil.toUpperCaseFirstOne(var1.getName()) + "())";
-			} else {
-				return "short".equals(var3)
-						? "Short.valueOf(this.get" + StringUtil.toUpperCaseFirstOne(var1.getName()) + "())"
-						: "this.get" + StringUtil.toUpperCaseFirstOne(var1.getName()) + "()";
-			}
+	private String getType(Field field, Message message) {
+		if (0 != field.getDataType()) {
+			String s = Constant.getJavaTypeByDataType(field.getDataType());
+			if ("int".equals(s))
+				return (new StringBuilder()).append("Integer.valueOf(this.get")
+						.append(StringUtil.toUpperCaseFirstOne(field.getName())).append("())").toString();
+			if ("long".equals(s))
+				return (new StringBuilder()).append("Long.valueOf(this.get")
+						.append(StringUtil.toUpperCaseFirstOne(field.getName())).append("())").toString();
+			if ("byte".equals(s))
+				return (new StringBuilder()).append("Byte.valueOf(this.get")
+						.append(StringUtil.toUpperCaseFirstOne(field.getName())).append("())").toString();
+			if ("short".equals(s))
+				return (new StringBuilder()).append("Short.valueOf(this.get")
+						.append(StringUtil.toUpperCaseFirstOne(field.getName())).append("())").toString();
+			else
+				return (new StringBuilder()).append("this.get").append(StringUtil.toUpperCaseFirstOne(field.getName()))
+						.append("()").toString();
 		} else {
-			return "this.get" + StringUtil.toUpperCaseFirstOne(var1.getName()) + "()";
+			return (new StringBuilder()).append("this.get").append(StringUtil.toUpperCaseFirstOne(field.getName()))
+					.append("()").toString();
 		}
 	}
 
-	private String getSetAttType(Field var1, Message var2) {
-		String var3 = null;
-		String var4 = null;
-		if (2002 != var1.getFieldType() && 2003 != var1.getFieldType() && 2004 != var1.getFieldType()
-				&& 2011 != var1.getFieldType() && 2008 != var1.getFieldType() && 2009 != var1.getFieldType()) {
-			var3 = Constant.getJavaTypeByDataType(var1.getDataType());
-			if ("int".equals(var3)) {
-				var4 = "((Integer)value).intValue()";
-			} else if ("long".equals(var3)) {
-				var4 = "((Long)value).longValue()";
-			} else if ("byte".equals(var3)) {
-				var4 = "((Byte)value).byteValue()";
-			} else if ("short".equals(var3)) {
-				var4 = "((Short)value).shortValue()";
+	private String getSetAttType(Field field, Message message) {
+		String s3 = null;
+		if (2002 == field.getFieldType() || 2003 == field.getFieldType() || 2004 == field.getFieldType()
+				|| 2011 == field.getFieldType() || 2008 == field.getFieldType() || 2009 == field.getFieldType()) {
+			String s;
+			if (field.getReference() != null)
+				s = field.getReference().getClassName();
+			else if ("dynamic".equalsIgnoreCase(field.getReferenceType())
+					|| "expression".equalsIgnoreCase(field.getReferenceType())) {
+				s = MessageBean.class.getName();
 			} else {
-				var4 = "(" + var3 + ")value";
+				s = field.getCombineOrTableFieldClassName();
+				if (null == s)
+					s = (new StringBuilder()).append(message.getClassName())
+							.append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 			}
+			s3 = (new StringBuilder()).append("(").append(s).append(")value").toString();
 		} else {
-			if (var1.getReference() != null) {
-				var3 = var1.getReference().getClassName();
-			} else if (!"dynamic".equalsIgnoreCase(var1.getReferenceType())
-					&& !"expression".equalsIgnoreCase(var1.getReferenceType())) {
-				var3 = var1.getCombineOrTableFieldClassName();
-				if (null == var3) {
-					var3 = var2.getClassName() + StringUtil.toUpperCaseFirstOne(var1.getName());
-				}
-			} else {
-				var3 = MessageBean.class.getName();
-			}
-
-			var4 = "(" + var3 + ")value";
+			String s1 = Constant.getJavaTypeByDataType(field.getDataType());
+			if ("int".equals(s1))
+				s3 = "((Integer)value).intValue()";
+			else if ("long".equals(s1))
+				s3 = "((Long)value).longValue()";
+			else if ("byte".equals(s1))
+				s3 = "((Byte)value).byteValue()";
+			else if ("short".equals(s1))
+				s3 = "((Short)value).shortValue()";
+			else
+				s3 = (new StringBuilder()).append("(").append(s1).append(")value").toString();
 		}
-
-		if (2004 == var1.getFieldType() || 2011 == var1.getFieldType()) {
-			var3 = "List";
-			var4 = "(" + var3 + ")value";
+		if (2004 == field.getFieldType() || 2011 == field.getFieldType()) {
+			String s2 = "List";
+			s3 = (new StringBuilder()).append("(").append(s2).append(")value").toString();
 		}
-
-		return var4;
+		return s3;
 	}
 
-//	static {
-//		try {
-//			if (FileUtil.isExist(ConfigManager.getFullPathFileName("messagebean.properties"))) {
-//				Properties var0 = ConfigManager.loadProperties("messagebean.properties");
-//				if (null != var0.getProperty("oper_blank") && 0 != var0.getProperty("oper_blank").length()
-//						&& "0".equalsIgnoreCase(var0.getProperty("oper_blank"))) {
+//	static 
+//	{
+//		try
+//		{
+//			if (FileUtil.isExist(ConfigManager.getFullPathFileName("messagebean.properties")))
+//			{
+//				Properties properties = ConfigManager.loadProperties("messagebean.properties");
+//				if (null != properties.getProperty("oper_blank") && 0 != properties.getProperty("oper_blank").length() && "0".equalsIgnoreCase(properties.getProperty("oper_blank")))
 //					operBlank = "0";
-//				}
 //			}
-//		} catch (Exception var1) {
-//			var1.printStackTrace();
-//			ExceptionUtil.throwActualException(var1);
 //		}
-//
+//		catch (Exception exception)
+//		{
+//			exception.printStackTrace();
+//			ExceptionUtil.throwActualException(exception);
+//		}
 //	}
 }

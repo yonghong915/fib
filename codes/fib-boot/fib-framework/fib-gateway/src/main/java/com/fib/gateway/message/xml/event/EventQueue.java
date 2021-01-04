@@ -4,13 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class EventQueue {
-	private List queue = new LinkedList();
+	private List<Event> queue = new LinkedList<>();
 
-	public List getQueue() {
+	public List<Event> getQueue() {
 		return queue;
 	}
 
-	public void setQueue(List queue) {
+	public void setQueue(List<Event> queue) {
 		this.queue = queue;
 	}
 
@@ -19,23 +19,22 @@ public class EventQueue {
 			// 加入事件队列
 			queue.add(e);
 			// 唤醒处理线程
-			// queue.notify();
+			queue.notify();
 		}
 	}
 
 	public Event selectEvent() {
 		Event e = null;
 		synchronized (queue) {
-			if (queue.size() == 0) {
+			if (queue.isEmpty()) {
 				try {
 					queue.wait();
 				} catch (InterruptedException excp) {
-					// excp.printStackTrace();
+
 				}
 			}
-
-			if (queue.size() > 0) {
-				e = (Event) queue.remove(0);
+			if (!queue.isEmpty()) {
+				e = queue.remove(0);
 			}
 		}
 		return e;

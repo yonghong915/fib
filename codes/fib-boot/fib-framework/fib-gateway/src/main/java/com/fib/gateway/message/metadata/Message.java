@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.fib.gateway.message.util.EnumConstants;
+
 import lombok.Data;
 
 /**
@@ -22,12 +24,24 @@ import lombok.Data;
 public class Message {
 	private String databaseMessageId;
 	private String groupId;
+
+	/** 报文id */
 	private String id;
-	private int type = 1000;
+
+	/** 报文类型，默认common */
+	private int type = EnumConstants.MsgType.COMMON.getCode();
+
+	/** 描述信息 */
 	private String shortText;
+
+	/** 报文对应的 MessageBean类名 */
 	private String className;
 	private Map<String, Field> fields = new TreeMap<>();
+
+	/** XPath表达式 */
 	private String xpath;
+
+	/***/
 	private String template;
 	private Map<String, String> nameSpaces = new HashMap<>();
 	private String prePackEvent;
@@ -40,10 +54,14 @@ public class Message {
 	private String schemaValidPath;
 
 	private String prefixString;
+
+	/** 前缀 */
 	private byte[] prefix;
 	private String suffixString;
+
+	/** 后缀 */
 	private byte[] suffix;
-	private Map variable = new HashMap();
+	private Map<String, Variable> variable = new HashMap<>();
 	private String msgCharset;
 
 	private String extendedAttributeText;
@@ -65,7 +83,7 @@ public class Message {
 	}
 
 	public String getExtendAttribute(String var1) {
-		return null == this.extendedAttributes ? null : (String) this.extendedAttributes.get(var1);
+		return null == this.extendedAttributes ? null : this.extendedAttributes.get(var1);
 	}
 
 	public void setExtendAttribute(String var1, String var2) {
@@ -140,26 +158,24 @@ public class Message {
 			} else if (null == this.variable ^ null == var1.getVariable()) {
 				return false;
 			} else {
-				Iterator var2;
-				A var3;
+				Iterator<?> var2;
+				Variable var3;
 				if (null != this.variable && null != var1.getVariable()) {
 					if (this.variable.size() != var1.getVariable().size()) {
 						return false;
 					}
 
 					var2 = var1.getVariable().values().iterator();
-					var3 = null;
 
 					while (var2.hasNext()) {
-						var3 = (A) var2.next();
-						if (!var3.A((A) this.variable.get(var3.D()))) {
+						var3 = (Variable) var2.next();
+						if (!var3.equalsTo(this.variable.get(var3.getName()))) {
 							return false;
 						}
 					}
 				}
 
 				var2 = this.fields.values().iterator();
-				var3 = null;
 
 				Field var4;
 				do {

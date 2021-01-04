@@ -2,6 +2,9 @@ package com.fib.gateway.message.xml.event;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fib.commons.exception.CommonException;
 import com.fib.commons.serializer.SerializationUtils;
 import com.fib.commons.serializer.json.JsonSerializer;
@@ -12,28 +15,29 @@ import com.fib.gateway.message.metadata.MessageMetadataManager;
 import com.fib.gateway.message.xml.config.processor.Processor;
 
 public class DefaultEventHandler implements EventHandler {
+	private Logger logger = LoggerFactory.getLogger(DefaultEventHandler.class);
 
 	@Override
 	public void handleException(Event event) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
 	@Override
 	public void handleResponseSendError(Event event) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
 	@Override
 	public void handleRequestSent(Event event) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
 	@Override
 	public void handleResponseArrived(Event event) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
@@ -44,12 +48,12 @@ public class DefaultEventHandler implements EventHandler {
 		byte[] requestMessage = event.getRequestMessage();
 		Object sourceRequestData = parseMessage(Processor.MSG_OBJ_TYP_MB, messageBeanGroupId, messageId, "UTF-8",
 				requestMessage);
-		System.out.println("sourceRequestData=" + sourceRequestData);
+		logger.info("sourceRequestData={}", sourceRequestData);
 	}
 
 	@Override
 	public void handleResponseSent(Event event) {
-
+		//
 	}
 
 	protected Object parseMessage(int type, String messageBeanGroupId, String messageId, String mapCharset,

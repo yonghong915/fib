@@ -1,4 +1,4 @@
-package com.fib.gateway.message.xml.message;
+package com.fib.gateway.message.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -6,6 +6,9 @@ import java.util.Arrays;
 import com.fib.commons.exception.CommonException;
 
 public class CodeUtil {
+	private CodeUtil() {
+	}
+
 	public static String NEW_LINE = System.getProperty("line.separator");
 
 	public static void setBit(byte[] var0, int var1, int var2) {
@@ -835,6 +838,41 @@ public class CodeUtil {
 			}
 
 			return var0;
+		}
+	}
+
+	public static byte[] replaceAll(byte[] var0, byte[] var1, byte[] var2, int var3, int var4) {
+		if (var3 < 0) {
+			return var0;
+		} else if (var4 > var0.length) {
+			return var0;
+		} else {
+			int var6 = var1.length;
+			ByteBuffer var7 = new ByteBuffer(var0.length + 16);
+			int var8 = var3;
+
+			while (true) {
+				while (var8 < var4) {
+					if (var0[var8] != var1[0]) {
+						var7.append(var0[var8++]);
+					} else {
+						int var9;
+						for (var9 = 0; var9 < var6 && var0[var8 + var9] == var1[var9]; ++var9) {
+						}
+
+						if (var9 < var6) {
+							for (var9 = 0; var9 < var6; ++var9) {
+								var7.append(var0[var8++]);
+							}
+						} else {
+							var7.append(var2);
+							var8 += var6;
+						}
+					}
+				}
+
+				return var7.toBytes();
+			}
 		}
 	}
 

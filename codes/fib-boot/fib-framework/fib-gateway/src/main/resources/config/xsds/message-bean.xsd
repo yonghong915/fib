@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fib.com/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+	<xs:element name="message-bean">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="field" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="value-range" minOccurs="0">
+
+
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="short-text" type="xs:string" />
+						<xs:attribute name="field-type" type="xs:string" />
+						<xs:attribute name="data-type" type="xs:string" />
+						<xs:attribute name="length" type="xs:string" />
+						<xs:attribute name="value" type="xs:string" />
+						<xs:attribute name="editable" type="xs:string" />
+						<xs:attribute name="maxLength" type="xs:string" />
+						<xs:attribute name="pattern" type="xs:string" />
+						<xs:attribute name="required" type="xs:string" />
+						<xs:attribute name="suffix" type="xs:string" />
+						<xs:attribute name="xpath" type="xs:string" />
+						<xs:attribute name="shield" type="xs:boolean" />
+					</xs:complexType>
+
+				</xs:element>
+				<xs:element name="template" type="xs:string" minOccurs="0" />
+			</xs:sequence>
+
+
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="short-text" type="xs:string" />
+			<xs:attribute name="class" type="xs:string" />
+			<xs:attribute name="message-charset" type="xs:string" />
+			<xs:attribute name="pack-mode" type="xs:string" />
+			<xs:attribute name="type" type="xs:string" />
+			<xs:attribute name="xpath" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="messageBeanType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="common" />
+			<xs:enumeration value="xml" />
+			<xs:enumeration value="tag" />
+			<xs:enumeration value="swift" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

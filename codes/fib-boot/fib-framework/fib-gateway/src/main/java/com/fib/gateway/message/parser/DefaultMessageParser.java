@@ -6,7 +6,6 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 	@Override
 	public MessageBean parse() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

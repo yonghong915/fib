@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean message-charset="UTF-8" id="MsgHeader" short-text="报文头"
+	class="com.fib.upp.cnaps2.messagebean.recv.req.MsgHeader" xmlns="http://www.fib.com/schema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.fib.com/schema 
+	                    http://www.fib.com/schema/xsds/message-bean.xsd">
+	<field name="BeginFlag" short-text="起始标识" field-type="fixed-field" data-type="str" length="3" value="{H:"
+		editable="false" />
+	<!--固定为{:H -->
+	<field name="VersionID" short-text="版本号" field-type="fixed-field" data-type="num" length="2" /><!--固定为02 -->
+	<field name="OrigSender" short-text="报文发起人" field-type="fixed-field" data-type="str" length="14" /><!--报文原始业务发起方 -->
+	<field name="OrigSenderSID" short-text="发送系统号" field-type="fixed-field" data-type="str" length="4" /><!-- -->
+	<field name="OrigReceiver" short-text="报文接收人" field-type="fixed-field" data-type="str" length="14" /><!--报文最终业务接收方 -->
+	<field name="OrigReceiverSID" short-text="接收系统号" field-type="fixed-field" data-type="str" length="4" /><!-- -->
+	<field name="OrigSendDate" short-text="报文发起日期" field-type="fixed-field" data-type="datetime" pattern="yyyyMMdd"
+		length="8" /><!--标识报文发起方发出本报问的机器日期 -->
+	<field name="OrigSendTime" short-text="报文发起时间" field-type="fixed-field" data-type="datetime" pattern="HHmmss"
+		length="6" /><!-- -->
+	<field name="StructType" short-text="格式类型" field-type="fixed-field" data-type="str" length="3" /><!--CMT PKG XML,这里应该是XML -->
+	<field name="MesgType" short-text="报文类型代码" field-type="fixed-field" data-type="str" length="20" /><!-- -->
+	<field name="MesgID" short-text="通信级标识号" field-type="fixed-field" data-type="str" length="20" />
+	<field name="MesgRefID" short-text="通信级参考号" field-type="fixed-field" data-type="str" length="20" required="false" />
+	<field name="MesgPriority" short-text="报文优先级" field-type="fixed-field" data-type="num" length="1">
+		<value-range>
+			<value short-text="特急" value="1" />
+			<value short-text="紧急" value="2" />
+			<value short-text="普通" value="3" />
+		</value-range>
+	</field><!--1 特急 2 紧急 3 普通 -->
+	<field name="MesgDirection" short-text="报文传输方向" field-type="fixed-field" data-type="str" length="1">
+		<value-range>
+			<value value="U" />
+			<value value="D" />
+		</value-range>
+	</field><!--行内发出：U NPC发出：D -->
+	<field name="Reserve" short-text="保留域" field-type="fixed-field" data-type="str" length="9" required="false" />
+	<field name="EndFlag" short-text="结束标识" field-type="fixed-field" data-type="str" length="1" value="}"
+		suffix="0x0d0a" /><!--固定使用： }/r/n -->
+</message-bean>

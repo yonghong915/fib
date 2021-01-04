@@ -1,6 +1,11 @@
 package com.fib.gateway.message.xml.message;
 
+import com.fib.commons.exception.CommonException;
+
 public class Constant {
+	private Constant() {
+	}
+
 	public static final String REMOVE_OVER_LENGTH = "remove_over_length";
 	public static final String REMOVE_START = "remove_start";
 	public static final String REMOVE_PREFIX = "remove_prefix";
@@ -119,7 +124,7 @@ public class Constant {
 		} else if ("RELAXNG".equals(var0)) {
 			return 7001;
 		} else {
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -129,7 +134,7 @@ public class Constant {
 		} else if (7001 == var0) {
 			return "RELAXNG";
 		} else {
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -139,7 +144,7 @@ public class Constant {
 		} else if (7001 == var0) {
 			return "http://relaxng.org/ns/structure/1.0";
 		} else {
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -153,7 +158,7 @@ public class Constant {
 		} else if ("swift".equalsIgnoreCase(var0)) {
 			return 1003;
 		} else {
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -168,7 +173,7 @@ public class Constant {
 		case 1003:
 			return "swift";
 		default:
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -178,7 +183,7 @@ public class Constant {
 		} else if ("template".equalsIgnoreCase(var0)) {
 			return 6001;
 		} else {
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -189,7 +194,7 @@ public class Constant {
 		case 6001:
 			return "template";
 		default:
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -222,7 +227,7 @@ public class Constant {
 		case 2012:
 			return "pboc-length-field";
 		default:
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -254,7 +259,7 @@ public class Constant {
 		} else if ("pboc-length-field".equalsIgnoreCase(var0)) {
 			return 2012;
 		} else {
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -284,7 +289,7 @@ public class Constant {
 		} else if ("double".equalsIgnoreCase(var0)) {
 			return 3011;
 		} else {
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -315,7 +320,7 @@ public class Constant {
 		case 3011:
 			return "double";
 		default:
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 
@@ -340,7 +345,7 @@ public class Constant {
 		case 3009:
 			return "long";
 		default:
-			throw new RuntimeException("");
+			throw new CommonException("");
 		}
 	}
 }
