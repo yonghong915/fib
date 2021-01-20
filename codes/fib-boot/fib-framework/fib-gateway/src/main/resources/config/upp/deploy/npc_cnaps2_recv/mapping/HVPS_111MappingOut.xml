@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="HVPS_111MappingOut" source-type="message-bean" target-type="map">
+    <!--来账登记交流事件要素-->
+  	<mapping type="value" to="serviceId">processPaymentOrder</mapping>
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!--来账登记交流事件要素-->
+	<mapping type="value" to="salesChannelEnumId">CNAPS</mapping><!--触发ECA条件-->
+	<mapping type="value-mapping" from="HVPS_111_Out.MessageIdentification" to="externalId"></mapping><!--报文标识号-->
+	<mapping type="value" to="paymentMethodInfo.paymentMethodTypeId">EXT_CNAPS</mapping>
+	<mapping type="value" to="paymentMethodInfo.paymentMethodId">10001</mapping>
+	<mapping type="value" to="disbursement.voucherType">99</mapping>
+	<mapping type="value" to="cashOrTallyFlag">1</mapping><!--现转标识-->
+	<!-- 行内经过人行转发，区分来往-->
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping><!-- 来账标识-->
+	<!-- 人工认证号-->
+    <mapping type="value-mapping" to="paymentMethodInfo.manualRefNum" from="HVPS_111_Out.EndToEndIdentification"></mapping>
+	
+
+	<!--为方便990添加如下数据 报文类型号本身交流时间和订单一样 同上 -->
+	<mapping type="value-mapping" to="extendMap.origSendDate" from="MsgHeader.OrigSendDate"/>
+	<mapping type="value-mapping" to="extendMap.mesgID" from="MsgHeader.MesgID"/>
+	<mapping type="value-mapping" to="extendMap.mesgRefID" from="MsgHeader.MesgRefID"/>
+	<mapping type="value-mapping" to="extendMap.origSenderSID" from="MsgHeader.OrigSenderSID"/>
+	<mapping type="value-mapping" to="extendMap.origReceiverSID" from="MsgHeader.OrigReceiverSID"/>
+	<mapping type="value-mapping" to="contentMimeTypeId" from="MsgHeader.MesgType"></mapping><!--报文类型号-->
+	<mapping type="value-mapping" to="extendMap.origSender" from="MsgHeader.OrigSender"/><!--报文发起人 -->
+	<mapping type="value-mapping" to="extendMap.origReceiver" from="MsgHeader.OrigReceiver"/> <!--报文接收人 -->
+   
+
+	<mapping type="value-mapping" from="HVPS_111_Out.Identification2" to="InstructedParty"></mapping>
+	 <!--与平台约定，将报文类型传入answers，方便该业务退汇时确认报文类型-->
+	<mapping type="value-mapping" to="products[0].answers.gatewayTransactionId" from="MsgHeader.MesgType"></mapping><!-- 报文类型代码 -->
+
+  <mapping type="value-mapping" to="prodCatalogId" from="MsgHeader.OrigSenderSID"/>
+  <!--发送系统号 -->
+  <mapping type="value-mapping" to="prodCatalogId" from="MsgHeader.OrigReceiverSID"/>
+  <!--接收系统号--> 
+  <mapping type="value-mapping" to="products[0].answers.MesgID" from="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" to="products[0].answers.MesgRefID" from="MsgHeader.MesgRefID"/>
+  <!-- 报文优先级 -->
+  <mapping type="value-mapping" to="isRushOrder" from="MsgHeader.MesgPriority"/>
+
+  <!-- 来往帐标识没有-->
+
+  <!--报文体开始 -->
+  <mapping type="value-mapping" to="products[0].answers.MessageIdentification" from="HVPS_111_Out.MessageIdentification"/>
+   <!--报文标识号 -->
+  <mapping type="value-mapping" to="transactionId" from="HVPS_111_Out.EndToEndIdentification"/>
+  <!-- 端到端标识号 -->
+  <mapping type="value-mapping" to="products[0].answers.transactionIdentification" from="HVPS_111_Out.TransactionIdentification"/>
+  <!-- 交易标识号 -->
+  <mapping type="value-mapping" to="operationCategory" from="HVPS_111_Out.Proprietary"/>
+  <!-- 业务类型编码 -->
+  <mapping type="value-mapping" to="currencyUom" from="HVPS_111_Out.CurrencyType"/>
+  <!-- 币种 -->
+  <mapping type="script" to="products[0].quantity" >
+  <![CDATA[
+		return new java.math.BigDecimal(sourceBean.HVPS_111_Out.InterbankSettlementAmount);
+		]]>
+  </mapping>
+  <!-- 货币符号、金额 -->
+  <mapping type="value-translate" to="isRushOrder" from="HVPS_111_Out.SettlementPriority">
+    <value from="NORM" to="3" />
+    <!--普通-->
+    <value from="HIGH" to="2" />
+    <!--紧急-->
+    <value from="URGT" to="1" />
+    <!--特急-->
+  </mapping>
+  <!-- 业务优先级 -->
+  <mapping type="value-mapping" to="paymentMethodInfo.clearingBankCode" from="HVPS_111_Out.MemberIdentification"/>
+  <!-- 付款清算行行号 -->
+  <mapping type="value-mapping" to="paymentMethodInfo.bankCode" from="HVPS_111_Out.Identification"/>
+  <!-- 付款行行号 -->
+  <mapping type="value-mapping" to="disbursement.clearingBankCode" from="HVPS_111_Out.MemberIdentification2"/>
+  <!-- 收款清算行行号 -->
+  <mapping type="value-mapping" to="disbursement.bankCode" from="HVPS_111_Out.Identification2"></mapping>
+
+  <!-- 收款行行号
+  <mapping type="value-mapping" to="disbursement.clearingBankCode" from="HVPS_111_Out.MemberIdentification3"/>
+   中介机构1
+  <mapping type="value-mapping" to="disbursement.acctBankName" from="HVPS_111_Out.Name"/>
+   中介机构2名称 
+  <mapping type="value-mapping" to="products[0].answers.bankCode" from="HVPS_111_Out.MemberIdentification4"/>
+  中介机构2 
+  <mapping type="value-mapping" to="disbursement.acctBankName" from="HVPS_111_Out.Name2"/>
+  中介机构2名称-->
+  <mapping type="value-mapping" to="paymentMethodInfo.accountName" from="HVPS_111_Out.Name3"/>
+  <!-- 付款人名称 -->
+  <mapping type="value-mapping" to="placingCustomer.address" from="HVPS_111_Out.AddressLine"/>
+  <!-- 付款人地址 -->
+  <mapping type="value-mapping" to="paymentMethodInfo.accountNumber" from="HVPS_111_Out.Identification3"/>
+  <!-- 付款人账号 -->
+  <mapping type="value-mapping" to="paymentMethodInfo.acctBankCode" from="HVPS_111_Out.MemberIdentification5"/>
+  <!-- 付款人开户行行号 -->
+  <mapping type="value-mapping" to="paymentMethodInfo.acctBankName" from="HVPS_111_Out.Name4"/>
+  <!-- 付款人开户行名称 -->
+  <mapping type="value-mapping" to="disbursement.acctBankCode" from="HVPS_111_Out.MemberIdentification6"/>
+  <!-- 收款人开户行行号 -->
+  <mapping type="value-mapping" to="disbursement.acctBankName" from="HVPS_111_Out.Name5"/>
+  <!-- 收款人开户行名称 -->
+  <mapping type="value-mapping" to="disbursement.accountName" from="HVPS_111_Out.Name6"/>
+  <!-- 收款人名称 -->
+  <mapping type="value-mapping" to="endUserCustomer.address" from="HVPS_111_Out.AddressLine2"/>
+  <!-- 收款人地址 -->
+  <mapping type="value-mapping" to="disbursement.accountNumber" from="HVPS_111_Out.Identification4"/>
+
+   <!--业务种类编码-->
+  <mapping type="value-mapping" to="businessType" from="HVPS_111_Out.Proprietary2"></mapping>
+
+
+  <mapping type="script" to="products[0].productId"><![CDATA[
+		String operationType=sourceBean.HVPS_111_Out.Proprietary + sourceBean.HVPS_111_Out.Proprietary2;
+		return operationType;
+		]]></mapping>
+
+  <mapping type="value-mapping" from="HVPS_111_Out.InterbankSettlementAmount" to="disbursement.maxAmount"></mapping>
+  <mapping type="value-mapping" from="HVPS_111_Out.InterbankSettlementAmount" to="paymentMethodInfo.maxAmount"></mapping>
+
+<manual-mapping> <![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import com.giantstone.cnaps2.messagebean.recv.req.HVPS_111_OutHvps;
+
+		//以下是list结构，含附加域或者tag
+		List ccti = sourceBean.HVPS_111_Out.hvps;
+		Map prodcut = target.get("products").get(0);
+		Map answers = prodcut.get("answers");
+
+
+		//对端到端标识号进行处理，根据业务类型进行处理
+		String endToEnd = sourceBean.HVPS_111_Out.EndToEndIdentification;//端到端标识号
+		String m3 = sourceBean.HVPS_111_Out.MemberIdentification3;//中介机构1
+		String m3Name = sourceBean.HVPS_111_Out.Name;//中介机构1名称
+		String m4 = sourceBean.HVPS_111_Out.MemberIdentification4;//中介机构2
+		String m4Name = sourceBean.HVPS_111_Out.Name2;//中介机构2名称
+		String flag = sourceBean.HVPS_111_Out.Proprietary;//业务类型
+		String flag2 = sourceBean.HVPS_111_Out.Proprietary2;//业务种类
+		Map paymentMethodInfo = target.get("paymentMethodInfo");
+		Map disbursement = target.get("disbursement");
+		//String transactionId = sourceBean.HVPS_111_Out;
+
+			// 如果收付款账号、名称为空，默认为“0”
+			String accountNumber = disbursement.get("accountNumber");
+			if(accountNumber == null || "".equals(accountNumber)){
+				disbursement.put("accountNumber","0");
+			}
+			String accountName = disbursement.get("accountName");
+			if(accountName == null || "".equals(accountName)){
+				disbursement.put("accountName","0");
+			}
+
+			accountNumber = paymentMethodInfo.get("accountNumber");
+			if(accountNumber == null || "".equals(accountNumber)){
+				paymentMethodInfo.put("accountNumber","0");
+			}
+			accountName = paymentMethodInfo.get("accountName");
+			if(accountName == null || "".equals(accountName)){
+				paymentMethodInfo.put("accountName","0");
+			}
+
+		    //委托收款（划回）、托收承付（划回）、商业汇票、支票、银行汇票、银行本票、城市商业银行汇票
+			if("A109".equals(flag) || "A110".equals(flag) || "A111".equals(flag) || "A201".equals(flag) || "A203".equals(flag) || "A204".equals(flag) || "A202".equals(flag)){
+				if(endToEnd != null){
+					paymentMethodInfo.put("voucherNumber",endToEnd);
+				}
+				
+			}else if("A113".equals(flag)){//跨境支付
+				if(!"".equals(endToEnd)){
+					paymentMethodInfo.put("transactionId",endToEnd);//关联业务参考号,找需求待定
+				}
+				
+				//跨境支付往帐时，中介机构1填“收款人开户行代理行”，中介机构2不填
+				if(m3 != null){
+					target.put("operationCategory",m3);//中介机构1
+				}
+				if(m3Name != null){
+					target.put("operationCategory",m3Name);//中介机构1名称
+				}
+				if(m4 != null){
+					target.put("operationCategory",m4);//中介机构2
+				}
+				if(m4Name != null){
+					target.put("operationCategory",m4Name);//中介机构2名称
+				}
+			}
+
+
+
+		//处理附加域
+		String str1 = "";//为了将附言和附言2合并
+		String str2 = "";//为了将备注和备注2合并
+
+		//退汇中的字段，用在交流事件中
+		String originalMessageIdentification = "";//原报文标识号
+		String originalInstructingParty = "";//原发起参与机构 
+		String originalMessageType = "";// 原报文类型
+		String note = "";//退汇原因
+
+		for(HVPS_111_OutHvps hvps111Ccti : ccti){
+			
+			String value = hvps111Ccti.Ustrd;
+			String name = "";//放在answers中
+			String name0 = "";//不放在answers中
+			
+
+			if(value.contains("H01")){//备注
+				name0="internalNote";
+
+				value=value.substring(5);
+				str1 = value;
+				
+			}else if(value.contains("H02")){//备注2
+				name0="internalNote";
+					
+				value=value.substring(5);
+				str1+=value;
+				value=str1;
+				
+			}else if(value.contains("H03")){//附言
+				name0="publicNote";
+
+				value=value.substring(5);
+				str2 = value;
+				
+			}else if(value.contains("H04")){//附言2
+				name0="publicNote";
+
+				value=value.substring(5);
+				str2+=value;
+				value=str2;
+				
+			}else if(value.contains("C00")){//清算日期
+				name="settlementDate";
+			}else if(value.contains("C03")){//出票日期
+				name="billViseDate";
+			}else if(value.contains("D15")){// 出票金额
+				name="parAmount";
+			}else if(value.contains("B18")){//申请人账号
+				name="applicantAccNo";
+			}else if(value.contains("B15")){//申请人名称
+				name="applicantAccName";
+			}else if(value.contains("D16")){//实际结算金额
+				name="actuallySettleSum";
+			}else if(value.contains("D17")){//多余金额
+				name="marginSum";
+			}else if(value.contains("C0C")){//票据日期
+				name="billViseDate";
+			}else if(value.contains("F1A")){//凭证种类
+				name="voucherType";
+			}else if(value.contains("C0D")){//票据日期
+				name="billViseDate";
+			}else if(value.contains("D38")){//赔偿金额
+				name="compensatedAmount";
+			}else if(value.contains("D39")){//拒付金额
+				name="repudiatedAmount";
+			}else if(value.contains("D0M")){//原托金额
+				name="oldTrustSum";
+			}else if(value.contains("D0N")){//支付金额
+				name="transactionAmount";
+			}else if(value.contains("D0O")){//多付金额
+				name="extraAmount";
+			}else if(value.contains("E51")){//原报文标识号
+				name="oldMessageMarkID";
+				originalMessageIdentification = value.substring(5);
+			}else if(value.contains("A70")){//原发起参与机构
+				name="oldLaunchBankNo";
+				originalInstructingParty = value.substring(5);
+			}else if(value.contains("F40")){//原报文类型代码
+				name="oldMessageType";
+				originalMessageType = value.substring(5);
+			}else if(value.contains("H20")){//退汇原因
+				name="backRemitReason";
+				note = value.substring(5);
+			}else if(value.contains("C14")){//关联业务委托日期
+				name="relatedBussEntrustDate";
+			}else if(value.contains("F56")){//费用编码
+				name="exesCode";
+			}else if(value.contains("D63")){// 发报行的收费
+				name="LaunchBankCharges";
+			}else if(value.contains("D64")){//收报行的收费
+				name="payeeBankCharges";
+			}else if(value.contains("H19")){//跨境业务附言
+				name="outerBorderBussSummary";
+			}else if(value.contains("C17")){//支票-出票日期
+				name="billViseDate";
+			}else if(value.contains("B21")){//出票人名称
+				name="billViserName";
+			}else if(value.contains("D30")){//票据金额
+				name="parAmount";
+			}else if(value.contains("D0A")){//牌价
+				name="cashExchangeRate";
+			}else if(value.contains("E41")){//票据张数
+				name="billSheets";
+			}
+
+
+			if(!name.equals("")){
+				value=value.substring(5);
+				answers.put(name,value);
+			}else if(!name0.equals("")){
+				answers.put(name0,value);
+				// 附言放在Map最外层
+				if("publicNote".equals(name0)){
+					target.put(name0,value);
+				}
+			}
+			
+			//maps.put("answers",answers);
+		}
+		
+		//来帐业务类型为退汇时处理
+		if("A105".equals(flag)){
+			//修改 serviceId
+			target.put("serviceId","processCommunicationEvent,processPaymentOrder");
+
+			//communicationEventTypeId MESSAGE_IN_COMM
+			target.put("communicationEventTypeId","MESSAGE_IN_COMM");
+
+			//报文标识号 subject
+			String subject = sourceBean.HVPS_111_Out.MessageIdentification;
+			target.put("subject",subject);
+
+			//发起参与机构 partyIdFrom
+			String partyIdFrom = sourceBean.HVPS_111_Out.Identification;
+			target.put("partyIdFrom",partyIdFrom);
+
+			//接收参与机构 partyIdTo
+			String partyIdTo = sourceBean.HVPS_111_Out.Identification2;
+			target.put("partyIdTo",partyIdTo);
+
+			//报文标识号 messageIdentification
+			String messageIdentification = sourceBean.HVPS_111_Out.MessageIdentification;
+			target.put("messageIdentification",messageIdentification);
+
+			//接收参与机构 InstructedParty
+			String InstructedParty = sourceBean.HVPS_111_Out.Identification2;
+			target.put("InstructedParty",InstructedParty);
+
+			//退汇原因 note
+			target.put("note",note);
+			target.put("internalNote",note);//将退汇原因放到银行附言中，返回给前台
+			//产品
+			String productId = sourceBean.HVPS_111_Out.Proprietary + sourceBean.HVPS_111_Out.Proprietary2;
+			target.put("productId",productId);
+
+			Map extendMap = target.get("extendMap");
+
+			//原报文标识号 extendMap.originalMessageIdentification
+			extendMap.put("originalMessageIdentification",originalMessageIdentification);
+
+			//原发起参与机构 extendMap.originalInstructingParty
+			extendMap.put("originalInstructingParty",originalInstructingParty);
+
+			// 原报文类型 extendMap.originalMessageType
+			extendMap.put("originalMessageType",originalMessageType);
+			// add by tangyunyu; date: 2013-5-3;此处理原业务为行内转发时，原业务会有一来一往相同业务
+			// 原报文来往标识
+			extendMap.put("communicationEventTypeId","MESSAGE_OUT_COMM");
+		}
+
+		]]> </manual-mapping>
+</message-bean-mapping>

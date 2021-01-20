@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="SAPS_369MappingOut" source-type="message-bean" target-type="map">
+
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.MessageIdentification" to="subject"></mapping><!-- 报文标识号-->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value" to="productId">J006sp369</mapping>
+
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.StructType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<!--<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping> 结束标识 -->
+
+	<!-- 报文体 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.CreationDateTime" to="CreationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.InstructingDirectParty" to="extendMap.InstructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.InstructedDirectParty" to="extendMap.InstructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.InstructedParty" to="extendMap.InstructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.SystemCode" to="prodCatalogId"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+	<!-- 报文分片组件 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.Prttn.TotalNumber" to="extendMap.total"/><!-- 总记录数 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.Prttn.StartNumber" to="extendMap.startNumber"/><!-- 本报文记录起始序号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.Prttn.EndNumber" to="extendMap.endNumber"/><!-- 本报文记录截止序号 -->
+
+	<!-- 原报文主键 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/><!-- 原发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/><!-- 原报文类型-->
+
+	<!-- 其他 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.QueryType" to="extendMap.queryType"></mapping><!--查询方式 -->
+
+	<mapping type="value-mapping" from="SAPS_369_Out.ManagerIdentification" to="extendMap.dealClearBankNo"></mapping><!--被查询人行行号/被查询清算行行号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.PartyIdentification" to="extendMap.rejectProBankNo"></mapping><!--拒绝业务的参与机构行号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.PartyProcessCode" to="extendMap.rejectCode"></mapping><!-- 参与机构业务拒绝码 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.ProcessDate" to="extendMap.processDate"></mapping><!--处理日期（终态日期） -->
+
+
+
+	<mapping type="value-mapping" from="SAPS_369_Out.ProcessStatus" to="extendMap.NPCPrcInf.NPCProcessStatus"></mapping><!--业务状态 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.ProcessCode" to="extendMap.NPCPrcInf.NPCProcessCode"></mapping><!--业务处理码 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.RejectInformation" to="extendMap.NPCPrcInf.NPCRejectInfo"></mapping><!--业务拒绝信息 -->
+
+	<mapping type="value-mapping" from="SAPS_369_Out.TotalAccount" to="extendMap.totalAccount"></mapping><!--清算账户和非清算账户合计数 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.TotalBalance" to="extendMap.totalBalance"></mapping><!--全面流动性汇总余额 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.TotalCurrentAmount" to="extendMap.totalCurrentAmount"></mapping><!--全面流动性汇总可用头寸 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.TotalExpectedAmount" to="extendMap.totalExpectedAmount"></mapping><!-- 全面流动性汇总预期头寸 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.NumberOfSettlementAccount" to="extendMap.numberOfSettleAcc"></mapping><!--清算账户数 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementBalance" to="extendMap.settleBalance"></mapping><!--清算账户流动性汇总余额-->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementCurrentAmount" to="extendMap.settleCurrentAmount"></mapping><!--清算账户汇总可用头寸 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementExpectedAmount" to="extendMap.settleExpAmount"></mapping><!-- 清算账户汇总预期头寸 -->
+
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].MemberIdentification" to="extendMap.clearAccountInfoList[].accountOfBankNo"></mapping><!--清算账户行号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].SettlementAccountName" to="extendMap.clearAccountInfoList[].accountName"></mapping><!--清算账户户名 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].Balance" to="extendMap.clearAccountInfoList[].accountBalance"></mapping><!--清算账户余额 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].CurrentAmount" to="extendMap.clearAccountInfoList[].currentAmount"></mapping><!-- 清算账户可用头寸 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].ExpectedAmount" to="extendMap.clearAccountInfoList[].expectedAmount"></mapping><!--清算账户预期头寸 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].DebitAmount" to="extendMap.clearAccountInfoList[].debitAmount"></mapping><!--排队借记总金额 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].CreditAmount" to="extendMap.clearAccountInfoList[].creditAmount"></mapping><!--排队贷记总金额 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].NumberOfMember" to="extendMap.clearAccountInfoList[].count"></mapping><!-- 所辖非清算账户数 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountBalance" to="extendMap.clearAccountInfoList[].otherAccBalance"></mapping><!--所辖非清算账户流动性汇总余额 -->
+
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountInformation[].MemberIdentification2" to="extendMap.clearAccountInfoList[].nonClearAccountInfoList[].accountOfBankNo"></mapping><!--非清算账户行号 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountInformation[].Name" to="extendMap.clearAccountInfoList[].nonClearAccountInfoList[].accountName"></mapping><!--非清算账户户名 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountInformation[].Balance2" to="extendMap.clearAccountInfoList[].nonClearAccountInfoList[].accountBalance"></mapping><!-- 当前余额 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountInformation[].CurrentAmount2" to="extendMap.clearAccountInfoList[].nonClearAccountInfoList[].currentAmount"></mapping><!--可用头寸 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountInformation[].ExpectedAmount2" to="extendMap.clearAccountInfoList[].nonClearAccountInfoList[].expectedAmount"></mapping><!--预期头寸 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountInformation[].DebitAmount2" to="extendMap.clearAccountInfoList[].nonClearAccountInfoList[].debitAmount"></mapping><!--排队借记总金额 -->
+	<mapping type="value-mapping" from="SAPS_369_Out.SettlementAccountInformation[].OtherAccountInformation[].CreditAmount2" to="extendMap.clearAccountInfoList[].nonClearAccountInfoList[].creditAmount"></mapping><!-- 排队贷记总金额 -->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+</message-bean-mapping>

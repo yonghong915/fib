@@ -1,46 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="http://www.fib.com/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	elementFormDefault="qualified">
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+
 	<xs:element name="message-bean">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="field" minOccurs="1" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="value-range" minOccurs="0">
-
-
-							</xs:element>
-						</xs:sequence>
-						<xs:attribute name="name" type="xs:string" use="required" />
-						<xs:attribute name="short-text" type="xs:string" />
-						<xs:attribute name="field-type" type="xs:string" />
-						<xs:attribute name="data-type" type="xs:string" />
-						<xs:attribute name="length" type="xs:string" />
-						<xs:attribute name="value" type="xs:string" />
-						<xs:attribute name="editable" type="xs:string" />
-						<xs:attribute name="maxLength" type="xs:string" />
-						<xs:attribute name="pattern" type="xs:string" />
-						<xs:attribute name="required" type="xs:string" />
-						<xs:attribute name="suffix" type="xs:string" />
-						<xs:attribute name="xpath" type="xs:string" />
-						<xs:attribute name="shield" type="xs:boolean" />
-					</xs:complexType>
-
-				</xs:element>
+				<xs:element ref="field" minOccurs="1" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="event" minOccurs="0" xmlns="http://www.fib.com/schema" />
 				<xs:element name="template" type="xs:string" minOccurs="0" />
 			</xs:sequence>
-
-
-			<xs:attribute name="id" type="xs:string" use="required" />
-			<xs:attribute name="short-text" type="xs:string" />
-			<xs:attribute name="class" type="xs:string" />
-			<xs:attribute name="message-charset" type="xs:string" />
-			<xs:attribute name="pack-mode" type="xs:string" />
-			<xs:attribute name="type" type="xs:string" />
-			<xs:attribute name="xpath" type="xs:string" />
+			<xs:attributeGroup ref="message-bean-attrgroup" xmlns="http://www.fib.com/schema" />
 		</xs:complexType>
 	</xs:element>
+
+	<xs:attributeGroup name="message-bean-attrgroup">
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="short-text" type="xs:string" />
+		<xs:attribute name="type" type="messageBeanType" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="class" type="xs:string" use="required" />
+		<xs:attribute name="message-charset" type="xs:string" />
+		<xs:attribute name="pack-mode" type="packMode" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="prefix" type="xs:string" />
+		<xs:attribute name="suffix" type="xs:string" />
+		<xs:attribute name="xpath" type="xs:string" />
+	</xs:attributeGroup>
+
+	<xs:element name="field">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="value-range" minOccurs="0" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attributeGroup ref="field-attrgroup" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="value-range">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="value" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="short-text" type="xs:string" />
+						<xs:attribute name="value" type="xs:string" />
+						<xs:attribute name="reference" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:attributeGroup name="field-attrgroup">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="short-text" type="xs:string" />
+		<xs:attribute name="field-type" type="fieldType" xmlns="http://www.fib.com/schema" use="required" />
+		<xs:attribute name="data-type" type="dataType" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="iso8583-no" type="xs:string" />
+		<xs:attribute name="data-encoding" type="dataEncoding" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="length" type="xs:string" />
+		<xs:attribute name="strict-data-length" type="logicFlag" default="false"
+			xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="reference" type="xs:string" />
+		<xs:attribute name="reference-type" type="xs:string" />
+		<xs:attribute name="length-field-data-type" type="dataType" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="length-field-data-encoding" type="dataEncoding" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="length-field-length" type="xs:string" />
+		<xs:attribute name="ref-length-field" type="xs:string" />
+		<xs:attribute name="ref-length-field-offset" type="xs:string" />
+		<xs:attribute name="min-length" type="xs:string" />
+		<xs:attribute name="maxLength" type="xs:string" />
+		<xs:attribute name="start-field" type="xs:string" />
+		<xs:attribute name="end-field" type="xs:string" />
+		<xs:attribute name="prefix" type="xs:string" />
+		<xs:attribute name="suffix" type="xs:string" />
+		<xs:attribute name="padding" type="xs:string" />
+		<xs:attribute name="padding-direction" type="paddingDirection" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="table" type="xs:string" />
+		<xs:attribute name="row-num-field" type="xs:string" />
+		<xs:attribute name="tag" type="xs:string" />
+		<xs:attribute name="row-xpath" type="xs:string" />
+		<xs:attribute name="calc-typ" type="xs:string" />
+		<xs:attribute name="value" type="xs:string" />
+		<xs:attribute name="editable" type="logicFlag" default="true" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="pattern" type="xs:string" />
+		<xs:attribute name="required" type="logicFlag" default="true" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="xpath" type="xs:string" />
+		<xs:attribute name="shield" type="xs:boolean" />
+	</xs:attributeGroup>
+
+	<xs:element name="event">
+		<xs:complexType>
+			<xs:attribute name="type" type="eventType" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="eventType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="pre-pack" />
+			<xs:enumeration value="post-pack" />
+			<xs:enumeration value="pre-parse" />
+			<xs:enumeration value="post-parse" />
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="messageBeanType">
 		<xs:restriction base="xs:string">
@@ -48,6 +109,68 @@
 			<xs:enumeration value="xml" />
 			<xs:enumeration value="tag" />
 			<xs:enumeration value="swift" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="packMode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="normal" />
+			<xs:enumeration value="template" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="fieldType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="fixed-field" />
+			<xs:enumeration value="length-field" />
+			<xs:enumeration value="var-field" />
+			<xs:enumeration value="combine-field" />
+			<xs:enumeration value="var-combine-field" />
+			<xs:enumeration value="reference-field" />
+			<xs:enumeration value="var-reference-field" />
+			<xs:enumeration value="table" />
+			<xs:enumeration value="table-row-num-field" />
+			<xs:enumeration value="bitmap-field" />
+			<xs:enumeration value="mac-field" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="dataType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="str" />
+			<xs:enumeration value="num" />
+			<xs:enumeration value="bin" />
+			<xs:enumeration value="int" />
+			<xs:enumeration value="net-int" />
+			<xs:enumeration value="short" />
+			<xs:enumeration value="net-short" />
+			<xs:enumeration value="byte" />
+			<xs:enumeration value="long" />
+			<xs:enumeration value="decimal" />
+			<xs:enumeration value="datetime" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="dataEncoding">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="asc" />
+			<xs:enumeration value="bcd" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="logicFlag">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="false" />
+			<xs:enumeration value="true" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="paddingDirection">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="right" />
+			<xs:enumeration value="left" />
+			<xs:enumeration value="none" />
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

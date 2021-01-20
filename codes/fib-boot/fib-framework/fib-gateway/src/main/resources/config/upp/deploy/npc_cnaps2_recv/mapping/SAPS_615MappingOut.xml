@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="SAPS_615MappingOut" source-type="message-bean" target-type="map">
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.StructType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<!--<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping> 结束标识 -->
+
+	<!-- 报文体 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.MessageIdentification" to="MessageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.CreationDateTime" to="CreationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.InstructingDirectParty" to="InstructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.InstructingParty" to="InstructingParty"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.InstructedDirectParty" to="InstructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.SystemCode" to="prodCatalogId"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.Remark" to="Remark"/><!-- 备注 -->
+	<!-- 原报文主键 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/><!-- 原发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/><!-- 原报文类型-->
+	<!-- NPC信息组件，这个由NPC填写，非必输的组件 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.ProcessStatus" to="extendMap.NPCPrcInfo.processStatus"/><!-- NPC处理状态 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.ProcessCode" to="extendMap.NPCPrcInfo.processCode"/><!-- NPC处理码 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.RejectInformation" to="extendMap.NPCPrcInfo.rejectInformation"/><!-- NPC拒绝信息 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.NettingDate" to="extendMap.NPCPrcInfo.nettingDate"/><!-- NPC轧差日期 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.NettingRound" to="extendMap.NPCPrcInfo.nettingRound"/><!-- NPC轧差场次 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.SettlementDate" to="extendMap.NPCPrcInfo.settlementDate"/><!-- NPC清算日期/终态日期 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.ReceiveTime" to="extendMap.NPCPrcInfo.receiveTime"/><!-- NPC接收时间 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NPCPrcInf.TransmitTime" to="extendMap.NPCPrcInfo.transmitTime"/><!-- NPC转发时间 -->
+	<!-- 其他 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.QueryType" to="extendMap.queryType"></mapping><!--查询类型 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.NumberOfTransaction" to="extendMap.numberOfTransaction"></mapping><!-- 明细数目-->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].Creditor" to="extendMap.transactionList[].creditor"></mapping><!--贷记清算行行号 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].Debtor" to="extendMap.transactionList[].debtor"></mapping><!-- 借记清算行行号 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].ProtocolNumber" to="extendMap.transactionList[].protocolNumber"></mapping><!--业务协议号 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].CurrencyType" to="extendMap.transactionList[].currencyType"></mapping><!-- 币种 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].RemainingAmount" to="extendMap.transactionList[].remainingAmount"></mapping><!-- 拆入行剩余可用拆借额度 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].NumberOfDetail" to="extendMap.transactionList[].numberOfDetail"></mapping><!-- 明细数目 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].TransactionDetail[].TransactionIdentification" to="extendMap.transactionList[].transactionDetail[].transactionIdentification"></mapping><!--支付交易序号 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].TransactionDetail[].CurrencyType2" to="extendMap.transactionList[].transactionDetail[].currencyType2"></mapping><!-- 币种 -->
+	<mapping type="value-mapping" from="SAPS_615_Out.TransactionList[].TransactionDetail[].Amount" to="extendMap.transactionList[].transactionDetail[].amount"></mapping><!-- 金额 -->
+	
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.MessageIdentification" to="subject"></mapping><!-- 报文标识号-->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="SAPS_615_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value" to="productId">X016sp615</mapping>
+	
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+</message-bean-mapping>

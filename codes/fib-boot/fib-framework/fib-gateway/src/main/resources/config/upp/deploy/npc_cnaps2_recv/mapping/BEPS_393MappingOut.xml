@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="BEPS_393MappingOut" source-type="message-bean" target-type="map">
+	<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="extendMap.beginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="extendMap.versionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.structType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="extendMap.mesgType"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!-- 通信级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.mesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.mesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.reserve"></mapping><!--保留域-->
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="extendMap.endFlag"></mapping><!-- 结束标识 -->
+    <!-- 报文头 end-->
+
+	<!-- 报文体内容 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.MessageIdentification" to="subject"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.MessageIdentification" to="extendMap.messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.CreationDateTime" to="extendMap.creationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.InstructingDirectParty" to="extendMap.instructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.InstructingParty" to="extendMap.instructingParty"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.InstructedDirectParty" to="extendMap.instructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.InstructedParty" to="partyIdTo"/><!-- 接收参与机构 -->
+    <mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.InstructedParty" to="extendMap.instructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.SystemCode" to="extendMap.systemCode"/><!--系统编号 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+
+	<!-- 原报文主键 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/><!-- 原发起参与机构 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/><!-- 原报文类型-->
+
+	<!-- 其他 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.AccountCount" to="extendMap.accountCount"></mapping><!-- 协议数目 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].AgreementNumber" to="extendMap.table_01[].AgreementNumber"></mapping><!-- 协议号 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].Name" to="extendMap.table_01[].Name"></mapping><!-- 付款人名称 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].Identification" to="extendMap.table_01[].Identification"></mapping><!-- 付款人账号 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].Issuer" to="extendMap.table_01[].Issuer"></mapping><!--  付款人开户行行号 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].Name2" to="extendMap.table_01[].Name2"></mapping><!-- 收款人名称 -->
+
+	<!--业务应答信息组件 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].RspnInf.Status" to="extendMap.table_01[].Status"/><!-- 业务状态 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].RspnInf.RejectCode" to="extendMap.table_01[].RejectCode"/><!-- 业务拒绝处理码 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].RspnInf.RejectInformation" to="extendMap.table_01[].RejectInformation"/><!-- 业务拒绝信息 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].RspnInf.ProcessParty" to="extendMap.table_01[].ProcessParty"/><!-- 业务处理参与机构 -->
+	<!-- end业务应答信息组件 -->
+	<mapping type="value-mapping" from="BEPS_393_Out.ccti[].AccountStatus" to="extendMap.table_01[].AccountStatus"></mapping><!-- 付款人账户状态 -->
+
+    <mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="productId">M215bp393</mapping> 
+	<mapping type="value" to="extendMap.productId">M215bp393</mapping> 
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="prodCatalogId"></mapping><!--接收系统号-->
+  
+
+  </message-bean-mapping>

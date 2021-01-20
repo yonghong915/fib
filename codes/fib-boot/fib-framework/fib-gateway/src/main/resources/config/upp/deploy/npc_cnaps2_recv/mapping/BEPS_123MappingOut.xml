@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="BEPS_123MappingOut" source-type="message-bean" target-type="map">
+	<mapping type="value" to="serviceId">receiveBatchPaymentOrder</mapping>
+	<mapping type="value" to="batchType">immTICIn</mapping>
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value" to="prodCatalogId">BEPS</mapping><!--接收系统号-->	
+		<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="OrigSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="StructType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="messageTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 990用：原来账报文的报文类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="MesgPriority"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="MesgDirection"></mapping>
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="Reserve"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping><!-- 结束标识 -->
+
+    <!-- 报文头 end-->
+
+	<!-- 报文体内容 -->
+
+	<!-- 报文正文其他信息 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.CreationDateTime" to="CreationDateTime"/><!-- 报文发送时间 -->
+    <mapping type="value-mapping" from="BEPS_123_Out.NumberOfTransactions" to="itemNumber"></mapping><!-- 明细业务总笔数 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.ControlSum" to="itemTotal"/><!-- 明细业务总金额 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.SettlementMethod" to="SettlementMethod"></mapping><!-- SettlementMethod -->
+	<mapping type="value-mapping" from="BEPS_123_Out.EndToEndIdentification" to="orderList[0].endToEndIdentification"/><!-- 端到端标识号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.TransactionIdentification" to="orderList[0].transactionIdentification"/><!-- 明细标识号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.Proprietary" to="categoryPurpose"/><!-- 业务类型编码-->
+	<mapping type="value-mapping" from="BEPS_123_Out.CurrencyType" to="orderList[0].currencyCategory"/><!-- 币种 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.InterbankSettlementAmount" to="orderList[0].transactionSum"/><!-- 货币符号、结算金额 -->
+    <mapping type="value-mapping" from="BEPS_123_Out.ChargeBearer" to="ChargeBearer"></mapping><!-- ChargeBearer -->
+	<mapping type="value-mapping" from="BEPS_123_Out.MemberIdentification" to="orderList[0].launchLiquidationBankNo"/><!-- 付款清算行行号-->
+	<mapping type="value-mapping" from="BEPS_123_Out.MemberIdentification" to="instructingParty"/><!-- 发起直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.Identification" to="orderList[0].paymentBankCode"/><!-- 付款行行号-->
+	<mapping type="value-mapping" from="BEPS_123_Out.MemberIdentification2" to="orderList[0].receiveLiquidationBankNo"/><!-- 收款清算行行号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.MemberIdentification2" to="instructedParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.Identification2" to="orderList[0].gatheringBankCode"/><!--  收款行行号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.Name" to="orderList[0].draweeAccName"/><!-- 付款人名称-->
+	<mapping type="value-mapping" from="BEPS_123_Out.AddressLine" to="orderList[0].draweeAddress"/><!-- 付款人地址-->
+	<mapping type="value-mapping" from="BEPS_123_Out.Identification3" to="orderList[0].draweeAccNo"/><!-- 付款人账号-->
+	<mapping type="value-mapping" from="BEPS_123_Out.MemberIdentification3" to="orderList[0].draweeBankCode"/><!-- 付款人开户行行号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.Name2" to="orderList[0].draweeBankName"/><!--付款人开户行名称-->
+	<mapping type="value-mapping" from="BEPS_123_Out.MemberIdentification4" to="orderList[0].payeeBankCode"/><!--  收款人开户行行号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.Name3" to="orderList[0].payeeBankName"/><!--  收款人开户行名称-->
+	<mapping type="value-mapping" from="BEPS_123_Out.Name4" to="orderList[0].payeeAccName"/><!-- 收款人名称-->
+	<mapping type="value-mapping" from="BEPS_123_Out.AddressLine2" to="orderList[0].payeeAddress"/><!-- 收款人地址-->
+	<mapping type="value-mapping" from="BEPS_123_Out.Identification4" to="orderList[0].payeeAccNo"/><!--  收款人账号 -->
+	<mapping type="value-mapping" from="BEPS_123_Out.Proprietary2" to="orderList[0].operationCategory"/><!-- 业务种类编码-->
+
+	<manual-mapping>
+    <![CDATA[
+			import java.util.Map;
+			import java.util.ArrayList;
+			import java.util.List;
+			import java.util.HashMap;
+			import com.giantstone.cnaps2.messagebean.recv.req.BEPS_123_Out;
+			import com.giantstone.cnaps2.messagebean.recv.req.BEPS_123_OutBeps;
+
+			BEPS_123_Out beps123Out = sourceBean.BEPS_123_Out;
+
+			// NPC处理信息
+			List npcList = beps123Out.getBeps();
+
+			Map orderMap = target.get("orderList").get(0);
+
+			for(BEPS_123_OutBeps beps : npcList) {
+				String value = beps.getUstrd();
+				if(value.contains("H01")) {
+					//附言
+					orderMap.put("postscript",value.substring(5, value.length()));
+				} else if(value.contains("H02")){
+					//附言2
+					orderMap.put("Unstructured2",value.substring(5, value.length()));
+				} else if(value.contains("HA1")){
+					//备注
+					orderMap.put("Unstructured3",value.substring(5, value.length()));
+				} else if(value.contains("HA2")){
+					//备注2
+					orderMap.put("Unstructured4",value.substring(5, value.length()));
+				}
+			}
+
+	]]>
+	</manual-mapping>
+
+  </message-bean-mapping>

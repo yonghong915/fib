@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="HVPS_711MappingOut" source-type="message-bean" target-type="map">
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="extendMap.beginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="extendMap.versionID"></mapping><!-- 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="prodCatalogId"></mapping><!-- 发送系统号  BEPS-->
+	<!-- 为适应于平台990回执报文，在extendMap中添加字段origSenderSID -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!-- 接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.structType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码beps.008.001.01-->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID" ></mapping><!-- 通信级参考号00000000000000000000 -->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.mesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.mesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.reserve"></mapping><!--保留域-->
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="extendMap.endFlag"></mapping><!-- 结束标识 -->
+
+	<!-- 报文体 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.MessageIdentification" to="subject" /><!--报文标识号  -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.CreationDateTime" to="extendMap.creationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.InstructingDirectParty" to="extendMap.instructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!-- 发起参与机构  -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.InstructedDirectParty" to="extendMap.instructedDirectParty"/><!-- 接收直接参与机构  -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构  -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.SystemCode" to="extendMap.systemCode"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+
+	<!-- 原报文主键 -->
+		<mapping type="value-mapping" from="HVPS_711_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/><!-- 原报文标识号 -->
+		<mapping type="value-mapping" from="HVPS_711_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/><!-- 原发起参与机构 -->
+		<mapping type="value-mapping" from="HVPS_711_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/><!-- 原报文类型-->
+	<!-- 其他 -->
+		<mapping type="value-mapping" from="HVPS_711_Out.CheckDate" to="extendMap.checkDate"></mapping><!--对账日期 -->
+		<mapping type="value-mapping" from="HVPS_711_Out.TotalPayment" to="extendMap.TotalPayment"></mapping><!-- 业务报文对账记录数 -->
+	<mapping type="value-mapping" from="HVPS_711_Out.TotalMessage" to="extendMap.TotalMessage"></mapping><!--信息报文对账记录数 -->	
+	<!-- 当为人行主动下发时，对账清算行字段必输 -->
+	<mapping type="value-mapping" from="HVPS_711_Out.GrpHdr.InstructedParty" to="extendMap.checkInstgPty"/><!-- 接收参与机构  -->
+
+	<mapping type="value" to="productId">ACCTCHCK_HVPS_SUM</mapping>
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping>
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping>
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+
+		<manual-mapping> <![CDATA[
+
+			import com.giantstone.security.TccrbSignature;   //包名
+			import com.giantstone.tcrcb.util.CommUtils;
+			import com.giantstone.cnaps2.messagebean.recv.req.*;
+			import java.util.List;
+			import java.util.ArrayList;
+			import java.util.HashMap;
+			import java.lang.Long;
+			import java.math.BigDecimal;
+
+			Map extendMap = target.get("extendMap");
+			extendMap.put("dataTypeId","DT1001");
+			List AcctChckSum = new ArrayList();
+			List CheckPaymentInformationDetails = sourceBean.HVPS_711_Out.CheckPaymentInformationDetails;
+			for(HVPS_711_OutCheckPaymentInformationDetails checkPaymentInfo : CheckPaymentInformationDetails){
+				String MessageType = checkPaymentInfo.MessageType;
+				String TransactionTypeCode = checkPaymentInfo.TransactionTypeCode;
+				String SendingNumberOfTransactions = checkPaymentInfo.SendingNumberOfTransactions;
+				String SendingControlSum = checkPaymentInfo.SendingControlSum;
+				String ReceivingNumberOfTransactions = checkPaymentInfo.ReceivingNumberOfTransactions;
+				String ReceivingControlSum = checkPaymentInfo.ReceivingControlSum;
+				String ProcessStatus = checkPaymentInfo.ProcessStatus;
+				Map sumSend = new HashMap();
+				sumSend.put("mT", MessageType);
+				sumSend.put("txTpCd", TransactionTypeCode);
+				sumSend.put("prcSts", ProcessStatus);
+				sumSend.put("sndRcvTp", "SR00");
+				sumSend.put("ccy",SendingControlSum.substring(0,3));
+				Long nb = Long.valueOf(SendingNumberOfTransactions);
+				sumSend.put("nb", nb);
+				BigDecimal amt = new BigDecimal(SendingControlSum.substring(3));
+				sumSend.put("amt", amt);
+				sumSend.put("sumTypeId","ST1002");
+				sumSend.put("dimTypeId","DIMT101");
+
+				Map sumReceive = new HashMap();
+				sumReceive.put("mT", MessageType);
+				sumReceive.put("txTpCd", TransactionTypeCode);
+				sumReceive.put("prcSts", ProcessStatus);
+				sumReceive.put("sndRcvTp", "SR01");
+				sumReceive.put("ccy",ReceivingControlSum.substring(0,3));
+				Long nb2 = Long.valueOf(ReceivingNumberOfTransactions);
+				sumReceive.put("nb", nb2);
+				BigDecimal amt2 = new BigDecimal(ReceivingControlSum.substring(3));
+				sumReceive.put("amt", amt2);
+				sumReceive.put("sumTypeId","ST1002");
+				sumReceive.put("dimTypeId","DIMT101");
+
+				Long temp = new Long(0);
+				if(nb.compareTo(temp)>0){
+					AcctChckSum.add(sumSend);
+				}
+				if(nb2.compareTo(temp)>0){
+					AcctChckSum.add(sumReceive);
+				}
+		
+			}
+		List CheckMessage = sourceBean.HVPS_711_Out.CheckMessage;
+		for(HVPS_711_OutCheckMessage message : CheckMessage){
+			String MessageType = message.MessageType2;
+			String TransactionTypeCode = message.TransactionTypeCode2;
+			String SendingNumberOfTransactions = message.SendingNumberOfTransactions2;
+			String ReceivingNumberOfTransactions = message.ReceivingNumberOfTransactions2;
+			String ProcessStatus = message.ProcessStatus2;
+				Map sumSend = new HashMap();
+				sumSend.put("mT", MessageType);
+				sumSend.put("txTpCd", TransactionTypeCode);
+				sumSend.put("prcSts", ProcessStatus);
+				sumSend.put("sndRcvTp", "SR00");
+				Long nb = Long.valueOf(SendingNumberOfTransactions);
+				sumSend.put("nb", nb);
+				sumSend.put("ccy", "CNY");
+				sumSend.put("amt", new BigDecimal("0.00"));
+				sumSend.put("sumTypeId","ST1001");
+				sumSend.put("dimTypeId","DIMT101");
+
+				Map sumReceive = new HashMap();
+				sumReceive.put("mT", MessageType);
+				sumReceive.put("txTpCd", TransactionTypeCode);
+				sumReceive.put("prcSts", ProcessStatus);
+				sumReceive.put("sndRcvTp", "SR01");
+				Long nb2 = Long.valueOf(ReceivingNumberOfTransactions);
+				sumReceive.put("nb", nb2);
+				sumReceive.put("ccy", "CNY");
+				sumReceive.put("amt", new BigDecimal("0.00"));
+				sumReceive.put("sumTypeId","ST1001");
+				sumReceive.put("dimTypeId","DIMT101");
+
+				Long temp = new Long(0);
+				if(nb.compareTo(temp)>0){
+					AcctChckSum.add(sumSend);
+				}
+				if(nb2.compareTo(temp)>0){
+					AcctChckSum.add(sumReceive);
+				}
+				
+			}
+			extendMap.put("AcctChckSum",AcctChckSum);
+
+			]]> </manual-mapping>
+</message-bean-mapping>

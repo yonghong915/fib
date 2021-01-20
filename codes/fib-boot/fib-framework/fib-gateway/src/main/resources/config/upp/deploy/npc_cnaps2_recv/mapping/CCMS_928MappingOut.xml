@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="CCMS_928MappingOut" source-type="message-bean" target-type="map">
+	<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="extendMap.BeginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="extendMap.VersionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.StructType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="extendMap.mesgType"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!-- 通信级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="extendMap.EndFlag"></mapping><!-- 结束标识 -->
+    <!-- 报文头 end-->
+	<!-- 报文体内容 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.MessageIdentification" to="subject"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.MessageIdentification" to="extendMap.messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.CreationDateTime" to="extendMap.CreationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.InstructingDirectParty" to="extendMap.instructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.InstructingParty" to="extendMap.instructingParty"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.InstructedDirectParty" to="extendMap.instructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.InstructedParty" to="partyIdTo"/><!-- 接收参与机构 -->
+    <mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.InstructedParty" to="extendMap.instructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.SystemCode" to="extendMap.SystemCode"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.GrpHdr.Remark" to="extendMap.Remark"/><!-- 备注 -->
+
+	<!-- 其他 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.MessageType" to="extendMap.messageType"></mapping><!-- 报文类型 -->
+	<mapping type="value-mapping" from="CCMS_928_Out.ManageType" to="extendMap.manageType"></mapping><!-- 管理类型 -->
+
+<!-- 	<mapping type="value" to="serviceId">busMtNotice</mapping>新交流事件 -->
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping>
+	<mapping type="value" to="productId">ccms928</mapping>
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：ccms.928.001.02-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="prodCatalogId"></mapping><!--接收系统号-->
+  </message-bean-mapping>

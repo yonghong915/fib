@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="SAPS_606MappingOut" source-type="message-bean" target-type="map">
+	
+	<!--<mapping type="value" to="serviceId">thirdPartyReplyMessage</mapping>第三方回调-->
+<!--第三方回调需要入参-->
+	<!--查找原交易需要入参-->
+
+	<!--1、MessageBeanServlet中去CommunicationEvent表中查找原交易
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/> 原报文标识号 
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/> 原发起参与机构
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/> 原报文类型
+	
+	2、ServicesForPaymentOrder.thirdPartyReplyMessage中创建动态视图查找原交易
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="originalMessageIdentification"/> 原报文标识号 
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalInstructingParty" to="originalInstructingParty"/> 原发起参与机构
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageType" to="originalMessageNameIdentification"/> 原报文类型
+
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="origReceiverSID"></mapping> 发送系统号  BEPS
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.ProcessStatus" to="returnOrderStatusId"/> NPC处理状态 -->
+<!--第三方回调需要参数结束-->
+	
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="productId">X013sp606</mapping> 
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.MessageIdentification" to="subject"></mapping><!-- 报文标识号-->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.StructType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<!--<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping> 结束标识 -->
+
+	<!-- 报文体 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.CreationDateTime" to="extendMap.messageSendTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.InstructingDirectParty" to="InstructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.InstructedDirectParty" to="InstructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.InstructedParty" to="partyIdTo"/><!-- 接收参与机构 -->
+	<!-- add by zhou_jlong -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.InstructedDirectParty" to="extendMap.instdDrctPty"/><!-- 接收清算行行号 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.InstructedParty" to="extendMap.instdPty"/><!-- 接收行行号 -->
+	<!-- add by zhou_jlong end -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.SystemCode" to="prodCatalogId"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+	<!-- 原报文主键 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/><!-- 原发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/><!-- 原报文类型-->
+
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.oldMessageMarkID"/><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.oldLaunchBankNo"/><!-- 原发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.oldMessageType"/><!-- 原报文类型-->
+
+	<!-- NPC信息组件，这个由NPC填写，非必输的组件 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.ProcessStatus" to="extendMap.NPCPrcInf.NPCProcessStatus"/><!-- NPC处理状态 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.ProcessCode" to="extendMap.NPCPrcInf.NPCProcessCode"/><!-- NPC处理码 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.RejectInformation" to="extendMap.NPCPrcInf.NPCRejectInfo"/><!-- NPC拒绝信息 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.NettingDate" to="extendMap.NPCPrcInf.NPCNettingDate"/><!-- NPC轧差日期 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.NettingRound" to="extendMap.NPCPrcInf.NPCNettingRound"/><!-- NPC轧差场次 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.SettlementDate" to="extendMap.NPCPrcInf.NPCSettlementDate"/><!-- NPC清算日期/终态日期 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.ReceiveTime" to="extendMap.NPCPrcInf.NPCReceiveTime"/><!-- NPC接收时间 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NPCPrcInf.TransmitTime" to="extendMap.NPCPrcInf.NPCTransmitTime"/><!-- NPC转发时间 -->
+	<!-- 其他 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.TransactionType" to="extendMap.operationCategory"></mapping><!--业务类型编码 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.CategoryPurposeCode" to="extendMap.operationType"></mapping><!-- 业务种类编码 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.BookingIdentification" to="extendMap.keepAccountsBankNo"></mapping><!--被记账行行号 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.NettingRound" to="extendMap.clearScene"></mapping><!-- 轧差场次 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.DebitCreditIdentification" to="extendMap.DCFlag"></mapping><!--借贷标识 -->
+	<mapping type="script" to="extendMap.currencyType"><![CDATA[
+		if(sourceBean.SAPS_606_Out.Amount != null && !"".equals(sourceBean.SAPS_606_Out.Amount.trim()))
+		    return sourceBean.SAPS_606_Out.Amount.trim().substring(0,3);
+	]]>
+	</mapping><!-- 币种 -->
+	<mapping type="script" to="extendMap.amount"><![CDATA[
+		if(sourceBean.SAPS_606_Out.Amount != null && !"".equals(sourceBean.SAPS_606_Out.Amount.trim()))
+			return sourceBean.SAPS_606_Out.Amount.trim().substring(3);
+	]]>
+	</mapping><!-- 金额 -->
+	<mapping type="script" to="extendMap.currencyType1"><![CDATA[
+		if(sourceBean.SAPS_606_Out.Balance != null && !"".equals(sourceBean.SAPS_606_Out.Balance.trim()))
+			return sourceBean.SAPS_606_Out.Balance.trim().substring(0,3);
+	]]>
+	</mapping><!-- 币种 -->
+	<mapping type="script" to="extendMap.balance"><![CDATA[
+		if(sourceBean.SAPS_606_Out.Balance != null && !"".equals(sourceBean.SAPS_606_Out.Balance.trim()))
+			return sourceBean.SAPS_606_Out.Balance.trim().substring(3);
+	]]>
+	</mapping><!-- 当前余额 -->
+	<mapping type="value-mapping" from="SAPS_606_Out.ZeroBalanceAccount" to="extendMap.accountNo"></mapping>
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+
+</message-bean-mapping>

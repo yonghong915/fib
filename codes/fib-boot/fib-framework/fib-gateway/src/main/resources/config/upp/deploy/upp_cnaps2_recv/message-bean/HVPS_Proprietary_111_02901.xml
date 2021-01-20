@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="HVPS_Proprietary_111_02901" type="xml" pack-mode="template" short-text="城市商业银行汇票_城市商业银行汇票资金移存" message-charset="UTF-8" class="com.giantstone.cnaps2.messagebean.send.req.HVPS_Proprietary_111_02901">
+	
+	<!-- 业务类型为“城市商业银行汇票”业务种类为“城市商业银行汇票资金移存” -->
+	<!-- 原报文主键 -->
+	<field name="Unstructured" short-text="出票日期" field-type="fixed-field" required="true" shield="true" xpath="Ustrd/text()" pattern="yyyy-MM-dd" data-type="datetime" length="140"/>
+	<field name="Unstructured2" short-text="汇票密押" field-type="fixed-field" required="true" shield="true" xpath="Ustrd/text()" data-type="str" length="140"/>
+	<field name="Unstructured3" short-text="汇票种类" field-type="fixed-field" required="true" shield="true" xpath="Ustrd/text()" data-type="str" length="140">
+		<value-range>
+		  <value short-text="可转让汇票" value="/F52/CT00"/> 
+		  <value short-text="不可转让汇票" value="/F52/CT01"/> 
+		  <value short-text="现金汇票" value="/F52/CT02"/> 
+	  	</value-range>
+	</field>
+	<field name="Unstructured4" short-text="票面记载的收款人名称" field-type="fixed-field" required="false" shield="true" xpath="Ustrd/text()" data-type="str" length="180"/>
+	<field name="Unstructured5" short-text="现金汇票兑付行" field-type="fixed-field" required="false" shield="true" xpath="Ustrd/text()" data-type="str" length="140"/>
+	<template>
+		<![CDATA[
+			<Ustrd>${Unstructured}</Ustrd>
+			<Ustrd>${Unstructured2}</Ustrd>
+			<Ustrd>${Unstructured3}</Ustrd>
+			<Ustrd>${Unstructured4}</Ustrd>
+			<Ustrd>${Unstructured5}</Ustrd>
+		]]>
+	</template>
+</message-bean>

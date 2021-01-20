@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="HVPS_715MappingOut" source-type="message-bean" target-type="map">
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="extendMap.beginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="extendMap.versionID"></mapping><!-- 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="prodCatalogId"></mapping><!-- 发送系统号  BEPS-->
+	<!-- 为适应于平台990回执报文，在extendMap中添加字段origSenderSID -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping>
+
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!-- 接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.structType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码beps.008.001.01-->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID" ></mapping><!-- 通信级参考号00000000000000000000 -->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.mesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.mesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.reserve"></mapping><!--保留域-->
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="extendMap.endFlag"></mapping><!-- 结束标识 -->
+    <!-- 报文头 end-->
+
+	<!-- 报文体 -->
+		<!-- 业务头 -->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.MessageIdentification" to="subject" /><!--报文标识号  -->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.CreationDateTime" to="extendMap.creationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.InstructingDirectParty" to="extendMap.instructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!-- 发起参与机构  -->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.InstructedDirectParty" to="extendMap.instructedDirectParty"/><!-- 接收直接参与机构  -->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构  -->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.SystemCode" to="extendMap.systemCode"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="HVPS_715_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+
+	<!-- 原报文主键 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/><!-- 原报文标识号 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/><!-- 原发起参与机构 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/><!-- 原报文类型-->
+
+	<!-- 其他 -->
+	<!-- NPC信息组件 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.ProcessStatus" to="extendMap.ProcessStatus"/><!-- NPC处理状态 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.ProcessCode" to="extendMap.NPC.ProcessCode"/><!-- NPC处理码 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.RejectInformation" to="extendMap.RejectInformation"/><!-- NPC拒绝信息 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.NettingDate" to="extendMap.NPC.NettingDate"/><!-- NPC轧差日期 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.NettingRound" to="extendMap.NPC.NettingRound"/><!-- NPC轧差场次 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.SettlementDate" to="extendMap.NPC.SettlementDate"/><!-- NPC清算日期/终态日期 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.ReceiveTime" to="extendMap.NPC.ReceiveTime"/><!-- NPC接收时间 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.NPCPrcInf.TransmitTime" to="extendMap.NPC.TransmitTime"/><!-- NPC转发时间 -->
+
+	<!-- 业务明细信息 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.Content" to="extendMap.AcctChckTransDetails.content"></mapping><!-- 应答报文内容原文 -->
+		<mapping type="value-mapping" from="HVPS_715_Out.ProcessStatus" to="extendMap.AcctChckTransDetails.prcSts"></mapping><!--处理状态 -->
+
+	<mapping type="value" to="extendMap.dataTypeId">DT1003</mapping>
+
+	<mapping type="value" to="productId">ACCTCHCK_HVPS_BUS</mapping>
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping>
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping>
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!--ZOUFAJUAN-->
+</message-bean-mapping>

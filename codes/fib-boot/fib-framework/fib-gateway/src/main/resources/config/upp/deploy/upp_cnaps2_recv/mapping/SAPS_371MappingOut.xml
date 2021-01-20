@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="SAPS_371MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.SAPS_371_bean">
+  <!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping><!--版本 -->  
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/><!--报文发起人 -->  
+  <mapping type="value" to="MsgHeader.OrigSenderSID">SAPS</mapping><!--发送系统号 -->  
+  <mapping type="value-mapping" from="origReceiver" to="MsgHeader.OrigReceiver"/><!--报文接收人 -->  
+  <mapping type="value" to="MsgHeader.OrigReceiverSID">SAPS</mapping><!--接收系统号 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping><!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">saps.371.001.01</mapping><!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/><!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value-mapping" from="MesgPriority" to="MsgHeader.MesgPriority"/>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+  <!-- 报文体 -->
+  <!-- 业务头 -->
+  <mapping type="value-mapping" from="messageIdentification" to="SAPS_371_Out.GrpHdr.MessageIdentification"/>
+  <!-- 报文标识号 -->
+  <mapping type="script" to="SAPS_371_Out.GrpHdr.CreationDateTime"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+		]]></mapping>
+  <!-- 报文发送时间 -->
+  <mapping type="value-mapping" from="instructingDirectParty" to="SAPS_371_Out.GrpHdr.InstructingDirectParty"/><!-- 发起直接参与机构-->
+  <mapping type="value-mapping" from="instructingDirectParty" to="SAPS_371_Out.GrpHdr.InstructingParty"/><!--发起参与机构 -->
+  <mapping type="value-mapping" from="instructedDirectParty" to="SAPS_371_Out.GrpHdr.InstructedDirectParty"/><!-- 接收直接参与机构 -->
+  <mapping type="value-mapping" from="instructedParty" to="SAPS_371_Out.GrpHdr.InstructedParty"/><!-- 接收参与机构 -->
+  <mapping type="value" to="SAPS_371_Out.GrpHdr.SystemCode">SAPS</mapping><!-- 系统编号 -->
+  <mapping type="value-mapping" from="extendMap.remark" to="SAPS_371_Out.GrpHdr.Remark"/><!-- 备注 -->
+  <!-- 其他 -->
+  <mapping type="value-mapping" from="extendMap.clearBankNo" to="SAPS_371_Out.MemberIdentification"/><!--清算行行号 -->
+  <mapping type="value-mapping" from="extendMap.maintenanceType" to="SAPS_371_Out.MaintenanceType"/><!-- 维护类别 -->
+  <manual-mapping> <![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import com.giantstone.util.AmountUtil;
+		import com.giantstone.cnaps2.messagebean.send.req.SAPS_ServiceElement371_MA00;
+		import com.giantstone.cnaps2.messagebean.send.req.SAPS_ServiceElement371_MA01;
+		import com.giantstone.common.util.CodeUtil;
+		
+		String flag = (String) ((Map)sourceMap.get("extendMap")).get("maintenanceType");
+			if("MA00".equals(flag)){
+				SAPS_ServiceElement371_MA00  se = new SAPS_ServiceElement371_MA00();
+				se.Name =  (String) ((Map)sourceMap.get("extendMap")).get("clearingBankName");
+				String currencyCategory = (String) ((Map)sourceMap.get("extendMap")).get("currencyCategory");
+				se.CurrencyType = currencyCategory;
+				se.OverdraftLimit =  (String) ((Map)sourceMap.get("extendMap")).get("overdraftQuota");
+				String balanceMinConAmount = (String) ((Map)sourceMap.get("extendMap")).get("balanceMinConAmount");
+				se.RestrictAmountLowerLimit = currencyCategory + balanceMinConAmount;
+				se.DebitRestrictSetting = (String) ((Map)sourceMap.get("extendMap")).get("DRestrictType");
+				se.CreditRestrictSetting = (String) ((Map)sourceMap.get("extendMap")).get("CRestrictType");
+				target.getSAPS_371_Out().setAccountInformation(se);
+			}else if ("MA01".equals(flag)){
+			    SAPS_ServiceElement371_MA01 se=new SAPS_ServiceElement371_MA01();
+			    se.InterbankLoanRemainingLimit = (String) ((Map)sourceMap.get("extendMap")).get("autoLendMinConAmount");
+				se.FundsOfPoolRemainingLimit = (String) ((Map)sourceMap.get("extendMap")).get("capitalPoolMinConAmount");
+				target.getSAPS_371_Out().setAccountInformation(se);
+			}
+	]]> </manual-mapping>
+</message-bean-mapping>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="CCMS_315MappingOut" source-type="message-bean" target-type="map">
+<mapping type="value" to="serviceId">processCommunicationEvent</mapping>
+<mapping type="value" to="productId">K101cm315</mapping>
+<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码beps.008.001.01-->
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.structType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.mesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.mesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<!--<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping> 结束标识 -->
+
+	<!-- 报文体 begin-->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.MessageIdentification" to="subject"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.CreationDateTime" to="extendMap.CreationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.InstructingDirectParty" to="extendMap.InstructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.InstructedDirectParty" to="extendMap.InstructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.InstructedParty" to="partyIdTo"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.SystemCode" to="prodCatalogId"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+
+	<!-- 原报文主键 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlGrpHdr.OriginalMessageIdentification" to="extendMap.originalMessageIdentification"/><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlGrpHdr.OriginalInstructingParty" to="extendMap.originalInstructingParty"/><!-- 原发起参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlGrpHdr.OriginalMessageType" to="extendMap.originalMessageType"/><!-- 原报文类型-->
+
+
+	<mapping type="value-mapping" from="CCMS_315_Out.QueryType" to="QueryType"></mapping><!-- 查询类型 -->
+
+	<!-- 原报文主键 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlGrpHdr2.OriginalMessageIdentification" to="extendMap.originalMessageIdentification2"/><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlGrpHdr2.OriginalInstructingParty" to="extendMap.originalInstructingParty2"/><!-- 原发起参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlGrpHdr2.OriginalMessageType" to="extendMap.originalMessageType2"/><!-- 原报文类型-->
+
+	<!-- 原业务主键 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlTx.InstructingIndirectParty" to="extendMap.oldLaunchBankNo"/><!-- 原发起间接参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlTx.InstructedIndirectParty" to="extendMap.oldReceiveBankNo"/><!-- 原接收间接参与机构 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlTx.OriginalTransactionIdentification" to="extendMap.originalTransactionIdentification"/><!-- 原明细标识号 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OrgnlTx.OriginalTransactionTypeCode" to="extendMap.originalTransactionTypeCode"/><!-- 原业务类型编码 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.CurrencyType" to="extendMap.oldCurrencyCategory"></mapping><!-- 币种 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.OriginalAmount" to="extendMap.oldTransactionSum"></mapping><!-- 待查询业务货币符号、金额 -->
+	<mapping type="value-mapping" from="CCMS_315_Out.Content" to="extendMap.responseContent"></mapping><!-- 查复内容 -->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+
+	<!-- 报文体 end-->
+</message-bean-mapping>

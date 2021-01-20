@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="CCMS_312MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.CCMS_312_bean"> 
+  <!-- 报文头 -->  
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>  
+  <!--版本 -->  
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/>  
+  <!--报文发起人 -->  
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigSenderSID"/>  
+  <!--发送系统号 -->  
+  <mapping type="value-mapping" from="origReceiver" to="MsgHeader.OrigReceiver"/>  
+  <!--报文接收人 -->  
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigReceiverSID"/>  
+  <!--接收系统号 -->  
+  <mapping type="script" to="MsgHeader.OrigSendDate"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起日期 -->  
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起时间-->  
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>  
+  <!-- 格式类型 -->  
+  <mapping type="value" to="MsgHeader.MesgType">ccms.312.001.01</mapping>  
+  <!-- 报文类型代码 -->  
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/>  
+  <!-- 通信级标识号 -->  
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>  
+  <mapping type="value-mapping" from="MesgPriority" to="MsgHeader.MesgPriority"/>  
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>  
+  <!-- 报文头 end-->  
+  <!-- 报文体 begin-->  
+  <mapping type="value-mapping" from="messageIdentification" to="CCMS_312_Out.GrpHdr.MessageIdentification"/>  
+  <!-- 报文标识号 -->  
+  <mapping type="script" to="CCMS_312_Out.GrpHdr.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>  
+  <!-- 报文发送时间 -->  
+  <mapping type="value-mapping" from="instructingDirectParty" to="CCMS_312_Out.GrpHdr.InstructingDirectParty"/>  
+  <!-- 发起直接参与机构-->  
+  <mapping type="value-mapping" from="instructingParty" to="CCMS_312_Out.GrpHdr.InstructingParty"/>  
+  <!--发起参与机构 -->  
+  <mapping type="value-mapping" from="instructedDirectParty" to="CCMS_312_Out.GrpHdr.InstructedDirectParty"/>  
+  <!-- 接收直接参与机构 -->  
+  <mapping type="script" to="CCMS_312_Out.GrpHdr.InstructedParty"><![CDATA[
+		 String instructedParty = sourceMap.get("instructedParty");
+		 String prodCatalogId = sourceMap.get("prodCatalogId");
+		 String instructedDirectParty = sourceMap.get("instructedDirectParty");
+		 if("BEPS".equals(prodCatalogId)){
+			return instructedDirectParty;
+		 }else{
+			return instructedParty;
+		 }
+		]]></mapping>
+  <!-- 接收参与机构 -->  
+  <mapping type="value-mapping" from="prodCatalogId" to="CCMS_312_Out.GrpHdr.SystemCode"/>  
+  <!-- 系统编号 -->  
+  <mapping type="value-mapping" from="extendMap.remark" to="CCMS_312_Out.GrpHdr.Remark"/>  
+  <!-- 备注 -->  
+  <mapping type="value-mapping" from="extendMap.categoryPurposeCode" to="CCMS_312_Out.categoryPurposeCode"/> 
+  <!-- 业务种类编码 -->  
+  <mapping type="value-mapping" from="extendMap.transactionTypeCode" to="CCMS_312_Out.TransactionTypeCode"/> 
+  <!-- 业务类型编码 -->  
+  <mapping type="value-mapping" from="extendMap.title" to="CCMS_312_Out.Title"/>  
+  <!-- 信息标题 -->  
+  <mapping type="value-mapping" from="extendMap.msgContent" to="CCMS_312_Out.Content"/>  
+  <!-- 信息内容 -->  
+ 
+
+  <mapping type="value-mapping" from="extendMap.psFileName" to="CCMS_312_Out.AttachmentName"/>
+  <!-- 附件长度 -->
+   <mapping type="script" to="CCMS_312_Out.AttachmentLength"><![CDATA[
+		 String contentString = (String)sourceMap.get("extendMap").get("content");
+		 return contentString == null ? 0 : contentString.length();
+		]]></mapping>
+      
+  <!-- 附件名称 -->  
+  <mapping type="script" to="CCMS_312_Out.Content2"><![CDATA[
+	
+	String contentString = (String)sourceMap.get("extendMap").get("content");
+	//转换成BASE64
+	//String str = new sun.misc.BASE64Encoder().encode(contentString.getBytes());
+	
+	//print(str);
+	
+	//return str;
+	return contentString;
+   ]]></mapping>
+  <!-- 附件内容 -->  
+  <!-- 报文体 end--> 
+</message-bean-mapping>

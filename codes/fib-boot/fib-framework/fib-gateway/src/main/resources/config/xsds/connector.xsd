@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fib.com/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="connector">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="connection" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="reader" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="writer" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="connection">
+		<xs:complexType>
+			<xs:attribute name="type" type="connectionType" use="required" xmlns="http://www.fib.com/schema" />
+			<xs:attribute name="server-address" type="xs:string" />
+			<xs:attribute name="port" type="xs:string" />
+			<xs:attribute name="backlog" type="xs:int" />
+			<xs:attribute name="comm-buffer-size" type="xs:int" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="reader">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameter" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="filter" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attribute name="class" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filter">
+		<xs:complexType>
+			<xs:attribute name="class" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="writer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="filter" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attribute name="class" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="name" type="xs:string" use="required" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="connectionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SERVER" />
+			<xs:enumeration value="CLIENT" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

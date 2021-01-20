@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="HVPS_111_Out" type="xml" xpath="." pack-mode="template" message-charset="UTF-8" class="com.giantstone.cnaps2.messagebean.recv.req.HVPS_111_Out" name-space="default=urn:iso:std:iso:20022:tech:xsd:pacs.008.001.02">
+	
+	<!--客户发起汇兑业务报文<HVPS.111.001.01> -->
+    <!--报文信息-->
+	<field name="MessageIdentification" short-text="报文标识号" field-type="fixed-field" data-type="str" length="35" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:GrpHdr/default:MsgId/text()"/>
+
+    <field name="CreationDateTime" short-text="报文发送时间" field-type="fixed-field" data-type="datetime" length="19" required="false" shield="true" pattern="yyyy-MM-dd'T'HH:mm:ss" xpath="default:Document/default:FIToFICstmrCdtTrf/default:GrpHdr/default:CreDtTm/text()"/>
+		
+    <field name="NumberOfTransactions" short-text="明细业务总笔数" field-type="fixed-field" data-type="str" length="15" required="true" shield="false" xpath="default:Document/default:FIToFICstmrCdtTrf/default:GrpHdr/default:NbOfTxs/text()"/>
+	
+	<field name="SettlementMethod" short-text="Code" field-type="fixed-field" data-type="str" length="4" required="true" shield="false" xpath="default:Document/default:FIToFICstmrCdtTrf/default:GrpHdr/default:SttlmInf/default:SttlmMtd/text()"/>
+  
+ 	
+	<field name="EndToEndIdentification" short-text="端到端标识号" field-type="fixed-field" data-type="str" length="35" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:PmtId/default:EndToEndId/text()"/>
+
+	<field name="TransactionIdentification" short-text="交易标识号" field-type="fixed-field" data-type="str" length="35" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:PmtId/default:TxId/text()"/>
+		
+	<!-- 业务类型附加域  开始 -->
+		<field name="Proprietary" short-text="业务类型编码" field-type="fixed-field" data-type="str" length="4" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:PmtTpInf/default:CtgyPurp/default:Prtry/text()">
+		</field>
+		<!-- 业务类型附加域  结束 -->
+		<field name="CurrencyType" short-text="币种" field-type="fixed-field" data-type="str" length="5" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:IntrBkSttlmAmt/@Ccy"/>
+		<field name="InterbankSettlementAmount" short-text="货币符号、金额" field-type="fixed-field" data-type="str" length="19" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:IntrBkSttlmAmt/text()"/>
+		
+	<field name="SettlementPriority" short-text="业务优先级" field-type="fixed-field" data-type="str" length="16" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:SttlmPrty/text()">
+		<value-range>
+			<value short-text="普通" value="NORM"/>
+			<value short-text="紧急" value="HIGH"/>
+			<value short-text="特急" value="URGT"/>
+		</value-range>
+	</field>
+		
+		<field name="ChargeBearer" short-text="Code" field-type="fixed-field" data-type="str" length="4" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:ChrgBr/text()"/>
+		
+		<field name="MemberIdentification" short-text="付款清算行行号" field-type="fixed-field" data-type="str" length="14" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:InstgAgt/default:FinInstnId/default:ClrSysMmbId/default:MmbId/text()"/>
+		
+		<field name="Identification" short-text="付款行行号" field-type="fixed-field" data-type="str" length="14" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:InstgAgt/default:BrnchId/default:Id/text()"/>
+		
+		<field name="MemberIdentification2" short-text="收款清算行行号" field-type="fixed-field" data-type="str" length="14" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:InstdAgt/default:FinInstnId/default:ClrSysMmbId/default:MmbId/text()"/>	
+		
+		<field name="Identification2" short-text="收款行行号" field-type="fixed-field" data-type="str" length="14" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:InstdAgt/default:BrnchId/default:Id/text()"/>
+		
+		<field name="MemberIdentification3" short-text="中介机构1" field-type="fixed-field" data-type="str" length="35" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:IntrmyAgt1/default:FinInstnId/default:ClrSysMmbId/default:MmbId/text()"/>	
+		
+		<field name="Name" short-text="中介机构1名称" field-type="fixed-field" data-type="str" length="140" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:IntrmyAgt1/default:FinInstnId/default:Nm/text()"/>		
+		
+		<field name="MemberIdentification4" short-text="中介机构2" field-type="fixed-field" data-type="str" length="35" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:IntrmyAgt2/default:FinInstnId/default:ClrSysMmbId/default:MmbId/text()"/>	
+		
+		<field name="Name2" short-text="中介机构2名称" field-type="fixed-field" data-type="str" length="140" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:IntrmyAgt2/default:FinInstnId/default:Nm/text()"/>	
+		
+		<field name="Name3" short-text="付款人名称" field-type="fixed-field" data-type="str" length="140" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:Dbtr/default:Nm/text()"/>	
+			
+		<field name="AddressLine" short-text="付款人地址" field-type="fixed-field" data-type="str" length="70" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:Dbtr/default:PstlAdr/default:AdrLine/text()"/>
+			
+		<field name="Identification3" short-text="付款人账号" field-type="fixed-field" data-type="str" length="34" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:DbtrAcct/default:Id/default:Othr/default:Id/text()"/>	
+		
+		<field name="MemberIdentification5" short-text="付款人开户行行号" field-type="fixed-field" data-type="str" length="35" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:DbtrAgt/default:FinInstnId/default:ClrSysMmbId/default:MmbId/text()"/>
+	
+		<field name="Name4" short-text="付款人开户行名称" field-type="fixed-field" data-type="str" length="140" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:DbtrAgt/default:FinInstnId/default:Nm/text()"/>
+	
+		<field name="MemberIdentification6" short-text="收款人开户行行号" field-type="fixed-field" data-type="str" length="35" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:CdtrAgt/default:FinInstnId/default:ClrSysMmbId/default:MmbId/text()"/>	
+	
+		<field name="Name5" short-text="收款人开户行名称" field-type="fixed-field" data-type="str" length="140" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:CdtrAgt/default:FinInstnId/default:Nm/text()"/>
+	
+		<field name="Name6" short-text="收款人名称" field-type="fixed-field" data-type="str" length="140" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:Cdtr/default:Nm/text()"/>
+	
+		<field name="AddressLine2" short-text="收款人地址" field-type="fixed-field" data-type="str" length="70" required="false" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:Cdtr/default:PstlAdr/default:AdrLine/text()"/>
+	
+		<field name="Identification4" short-text="收款人账号" field-type="fixed-field" data-type="str" length="34" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:CdtrAcct/default:Id/default:Othr/default:Id/text()"/>	
+	
+		<field name="Proprietary2" short-text="业务种类编码" field-type="fixed-field" data-type="str" length="35" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:Purp/default:Prtry/text()">
+		</field>	
+
+		<!-- 业务种类附加域  开始 -->
+		<field name="hvps" short-text="附加域list" field-type="table" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:RmtInf"  row-xpath="default:Ustrd">
+		<field name="Ustrd" short-text="list" field-type="fixed-field" data-type="str" length="35"  xpath="./text()"/>
+		</field>
+		<!-- 业务种类附加域  开始
+		<field name="RmtInf" short-text="RmtInf" field-type="combine-field" reference="Proprietary" reference-type="dynamic" required="false" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:RmtInf"/>
+		
+		<field name="RmtInf2" short-text="RmtInf" field-type="combine-field" reference="Proprietary2" reference-type="dynamic" required="false" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:RmtInf"/>		
+		 -->	
+<!-- 大额暂时配置业务类型为普通汇兑，不需要配置附加数据的 -->	
+<template><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+	<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.02">
+		<FIToFICstmrCdtTrf>
+			<GrpHdr>
+				<MsgId>${MessageIdentification}</MsgId>
+				<CreDtTm>${CreationDateTime}</CreDtTm>
+				<NbOfTxs>${NumberOfTransactions}</NbOfTxs>
+				<SttlmInf>
+					<SttlmMtd>${SettlementMethod}</SttlmMtd>
+				</SttlmInf>
+			</GrpHdr>
+			
+			<CdtTrfTxInf>
+				<PmtId>
+					<EndToEndId>${EndToEndIdentification}</EndToEndId>
+					<TxId>${TransactionIdentification}</TxId>
+				</PmtId>
+				
+				<PmtTpInf>
+					<CtgyPurp>
+						<Prtry>${Proprietary}</Prtry>
+					</CtgyPurp>
+				</PmtTpInf>
+				
+				<IntrBkSttlmAmt Ccy="${CurrencyType}">${InterbankSettlementAmount}</IntrBkSttlmAmt>
+				
+				<SttlmPrty>${SettlementPriority}</SttlmPrty>
+				
+				<ChrgBr>${ChargeBearer}</ChrgBr>
+				
+				<InstgAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification}</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+					<BrnchId>
+						<Id>${Identification}</Id>
+					</BrnchId>				
+				</InstgAgt>
+				
+				<InstdAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification2}</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+					<BrnchId>
+						<Id>${Identification2}</Id>
+					</BrnchId>
+				</InstdAgt>
+				
+				<IntrmyAgt1>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification3}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name}</Nm>
+					</FinInstnId>
+				</IntrmyAgt1>
+				
+				<IntrmyAgt2>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification4}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name2}</Nm>
+					</FinInstnId>
+				</IntrmyAgt2>
+				
+				<Dbtr>
+					<Nm>${Name3}</Nm>
+					<PstlAdr>
+						<AdrLine>${AddressLine}</AdrLine>
+					</PstlAdr>
+				</Dbtr>
+				
+				<DbtrAcct>
+					<Id>
+						<Othr>
+							<Id>${Identification3}</Id>
+						</Othr>
+					</Id>
+				</DbtrAcct>
+				
+				<DbtrAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification5}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name4}</Nm>
+					</FinInstnId>
+				</DbtrAgt>
+				
+				<CdtrAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification6}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name5}</Nm>
+					</FinInstnId>
+				</CdtrAgt>
+				
+				<Cdtr>
+					<Nm>${Name6}</Nm>
+					<PstlAdr>
+						<AdrLine>${AddressLine2}</AdrLine>
+					</PstlAdr>
+				</Cdtr>
+				
+				<CdtrAcct>
+					<Id>
+						<Othr>
+							<Id>${Identification4}</Id>
+						</Othr>
+					</Id>
+				</CdtrAcct>
+				
+				<Purp>
+					<Prtry>${Proprietary2}</Prtry>
+				</Purp>
+				<RmtInf>
+					<#list hvps#
+						<Ustrd>${Ustrd}</Ustrd>
+					#>
+				</RmtInf>
+			</CdtTrfTxInf>
+		</FIToFICstmrCdtTrf>
+	</Document>
+	]]>
+	</template>
+</message-bean>

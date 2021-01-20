@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="SAPS_375MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.SAPS_375_bean"> 
+  <!-- 报文头 begin -->  
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>  <!--版本 -->  
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/><!--报文发起人 -->  
+  <mapping type="value" to="MsgHeader.OrigSenderSID">SAPS</mapping><!--发送系统号 -->  
+  <mapping type="value-mapping" from="instructedDirectParty" to="MsgHeader.OrigReceiver"/><!--报文接收人 -->  
+  <mapping type="value" to="MsgHeader.OrigReceiverSID">SAPS</mapping><!--接收系统号 -->  
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起日期 -->  
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起时间-->  
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping><!-- 格式类型 -->  
+  <mapping type="value" to="MsgHeader.MesgType">saps.375.001.01</mapping><!-- 报文类型代码 -->  
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/><!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/><!-- 通信级参考号 -->
+  <mapping type="value" to="MsgHeader.MesgPriority">3</mapping>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>  
+  <!-- 报文头 end-->
+  <!-- 报文体 -->  
+  <!-- 业务头 -->  
+  <mapping type="value-mapping" from="messageIdentification" to="SAPS_375_Out.GrpHdr.MessageIdentification"/>  
+  <!-- 报文标识号 -->  
+  <mapping type="script" to="SAPS_375_Out.GrpHdr.CreationDateTime"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date; 
+		]]></mapping>  
+  <!-- 报文发送时间 -->
+  <mapping type="value-mapping" from="instructingDirectParty" to="SAPS_375_Out.GrpHdr.InstructingDirectParty"/>  
+  <!-- 发起直接参与机构-->  
+  <mapping type="value-mapping" from="instructingDirectParty" to="SAPS_375_Out.GrpHdr.InstructingParty"/>  
+  <!--发起参与机构 -->
+  <mapping type="value-mapping" from="instructedParty" to="SAPS_375_Out.GrpHdr.InstructedDirectParty"/><!-- 接收直接参与机构 -->  
+  <mapping type="value-mapping" from="instructedParty" to="SAPS_375_Out.GrpHdr.InstructedParty"/><!-- 接收参与机构 --> 
+  <mapping type="value" to="SAPS_375_Out.GrpHdr.SystemCode">SAPS</mapping><!-- 系统编号 -->
+  <mapping type="value" to="SAPS_375_Out.GrpHdr.Remark">REMARK</mapping><!-- 备注 -->
+    
+  <!-- 原报文主键 -->  
+  <mapping type="value-mapping" from="extendMap.orgnlMessageId" to="SAPS_375_Out.OrgnlGrpHdr.OriginalMessageIdentification"/>  
+  <!-- 原报文标识号 -->  
+  <mapping type="value-mapping" from="extendMap.orgnlInstructingParty" to="SAPS_375_Out.OrgnlGrpHdr.OriginalInstructingParty"/>  
+  <!-- 原发起参与机构 -->  
+  <mapping type="value-mapping" from="extendMap.orgnlMessageType" to="SAPS_375_Out.OrgnlGrpHdr.OriginalMessageType"/>  
+  <!-- 原报文类型-->  
+  <!-- 业务应答信息 -->  
+  <mapping type="value-mapping" from="extendMap.status" to="SAPS_375_Out.RspnInf.Status"/>  
+  <!-- 业务状态 -->  
+  <mapping type="value-mapping" from="extendMap.rejectCode" to="SAPS_375_Out.RspnInf.RejectCode"/>  
+  <!-- 业务拒绝处理码 -->  
+  <mapping type="value-mapping" from="extendMap.rejectInformation" to="SAPS_375_Out.RspnInf.RejectInformation"/>  
+  <!-- 业务拒绝信息 -->  
+  <mapping type="value-mapping" from="extendMap.processParty" to="SAPS_375_Out.RspnInf.ProcessParty"/><!-- 业务处理参与机构 -->  
+  <!-- 其他 -->
+  <mapping type="value-mapping" from="extendMap.orgnlProtocolNumber" to="SAPS_375_Out.OriginalProtocolNumber"/>  
+  <!--原拆借协议号 --> 
+</message-bean-mapping>

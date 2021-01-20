@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel class="com.fib.gateway.channel.http.impl.BosentServletClientChannel" mode="CLIENT" xmlns="http://www.fib.com/schema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.fib.com/schema 
+	                    http://www.fib.com/schema/xsds/channel.xsd">
+	<content-charset>UTF-8</content-charset>
+	<description>人行二代发送bosent通道</description>
+
+	<!-- 连接器：通讯设置 -->
+	<connector config="connector.xml" />
+
+</channel>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="BEPS_122MappingOut" source-type="message-bean" target-type="map">
+	<mapping type="value" to="serviceId">receiveBatchPaymentOrder</mapping>
+	<mapping type="value" to="batchType">commTICIn</mapping>
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value" to="prodCatalogId">BEPS</mapping><!--接收系统号-->
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="OrigSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="StructType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="messageTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 990用：原来账报文的报文类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="MesgPriority"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="MesgDirection"></mapping>
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="Reserve"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping><!-- 结束标识 -->
+    <!-- 报文头 end-->
+
+	<!-- 报文体内容 -->
+	<!-- 批量报文组头 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.MessageIdentification" to="messageIdentification"></mapping><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.CreationDateTime" to="CreationDateTime">
+
+	</mapping><!-- 报文发送时间，需要自己写脚本new出个时间 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.InstructingDirectParty" to="instructingParty"></mapping><!-- 发起直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.InstructedDirectParty" to="instructedParty"></mapping><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.NumberOfTransactions" to="itemNumber"></mapping><!-- 明细业务总笔数 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.CurrencyType" to="CurrencyType"></mapping><!-- 币种 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.ControlSum" to="itemTotal"></mapping><!-- 明细业务总金额 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.SystemCode" to="systemCode"></mapping>
+	<mapping type="value-mapping" from="BEPS_122_Out.PKGGrpHdr.Remark" to="Remark"></mapping><!-- 备注postscript？？ -->
+	<!-- NPC信息组件，这个由NPC填写，非必输的组件 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.ProcessStatus" to="processStatus" />
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.ProcessCode" to="ProcessCode" /><!-- 处理码 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.RejectInformation" to="RejectInformation" /><!-- 拒绝信息 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.NettingDate" to="nettingDate" /><!-- 轧差日期 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.NettingRound" to="nettingRound" /><!-- 轧差场次 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.SettlementDate" to="settlementDate" /><!-- 清算日期 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.ReceiveTime" to="ReceiveTime" />
+	<mapping type="value-mapping" from="BEPS_122_Out.NPCPrcInf.TransmitTime" to="TransmitTime" />
+		<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+
+
+	<!-- 报文正文其他信息 -->
+
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].TransactionIdentification" to="orderList[].transactionIdentification"/><!-- 明细标识号 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Name" to="orderList[].draweeAccName"/><!-- 付款人名称 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].AddressLine" to="orderList[].draweeAddress"></mapping><!-- 付款人地址 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Identification" to="orderList[].draweeAccNo"/><!-- 付款人账号 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Issuer" to="orderList[].draweeBankCode"/><!-- 付款人开户行行号 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Identification2" to="orderList[].paymentBankCode"/><!-- 付款行行号 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Identification3" to="orderList[].gatheringBankCode"/><!-- 收款行行号 -->
+
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Name2" to="orderList[].payeeAccName"/><!-- 收款人名称-->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].AddressLine2" to="orderList[].payeeAddress"/><!-- 收款人地址 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Identification4" to="orderList[].payeeAccNo"/><!-- 收款人账号 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Issuer2" to="orderList[].payeeBankCode"/><!-- 收款人开户行行号 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].CurrencyType" to="orderList[].currencyCategory"></mapping>
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Amount" to="orderList[].transactionSum"></mapping>
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Proprietary" to="orderList[].operationType"></mapping><!-- 业务类型编码 -->
+	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].Proprietary2" to="orderList[].operationCategory"/><!-- 业务种类编码 -->
+ 	<mapping type="value-mapping" from="BEPS_122_Out.ccti[].AdditionalInformation" to="orderList[].postscript"/><!-- 附言summary？？ -->
+
+	<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+
+	<manual-mapping>
+		<![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import java.util.Date;
+	   	import java.text.SimpleDateFormat;
+		import com.giantstone.cnaps2.messagebean.recv.req.BEPS_122_OutCcti;
+		import com.giantstone.cnaps2.messagebean.recv.req.BEPS_ServiceElement122_A104;
+		import com.giantstone.cnaps2.messagebean.recv.req.BEPS_ServiceElement122_A104NationalTreasuryCreditInformationDetails;
+		import com.giantstone.cnaps2.messagebean.recv.req.BEPS_ServiceElement122_A105;
+		import com.giantstone.cnaps2.messagebean.recv.req.FslInf;
+		List orderList = (List)target.get("orderList");
+		for(int i = 0;i<orderList.size();i++){
+			Map bean = (Map)orderList.get(i);
+			String flag = bean.get("operationType");
+			List products = new ArrayList();
+			BEPS_122_OutCcti outCcti = (BEPS_122_OutCcti)sourceBean.BEPS_122_Out.getCctiAt(i);
+			if("A105".equals(flag)){
+				//退汇业务
+				BEPS_ServiceElement122_A105 se = (BEPS_ServiceElement122_A105)outCcti.getFinancialCreditTransferAdditionalInformation();
+				Map product = new HashMap();
+				Map answers = new HashMap();
+				answers.put("originalMessageIdentification",se.getOrgnlGrpHdr().getOriginalMessageIdentification());
+				answers.put("originalInstructingParty",se.getOrgnlGrpHdr().getOriginalInstructingParty());
+				answers.put("originalMessageType",se.getOrgnlGrpHdr().getOriginalMessageType());
+				answers.put("instructingIndirectParty",se.getOrgnlTx().getInstructingIndirectParty());
+				answers.put("instructedIndirectParty",se.getOrgnlTx().getInstructedIndirectParty());
+				answers.put("originalTransactionIdentification",se.getOrgnlTx().getOriginalTransactionIdentification());
+				answers.put("originalTransactionTypeCode",se.getOrgnlTx().getOriginalTransactionTypeCode());
+				answers.put("content",se.getContent());
+				product.put("answers",answers);
+				products.add(product);
+				bean.put("products",products);
+				bean.put("postscript",se.getContent());//将退汇原因放入客户附言中
+			}else if("A104".equals(flag)){
+				BEPS_ServiceElement122_A104 se = (BEPS_ServiceElement122_A104)outCcti.getFinancialCreditTransferAdditionalInformation();
+				Map answers = new HashMap();
+				answers.put("flowNumber",se.getFslInf().getFlowNumber());
+				answers.put("currencyType",se.getFslInf().getCurrencyType());
+				answers.put("amount",se.getFslInf().getAmount());
+				answers.put("reportCode",se.getFslInf().getReportCode());
+				answers.put("receiveCode",se.getFslInf().getReceiveCode());
+				String  reportForms = (String)se.getFslInf().getReportForms();
+				if((reportForms!=null)&&(!"".equals(reportForms))){
+					//对日期进行处理									 
+					Date reportFormsPlat=new SimpleDateFormat("yyyy-MM-dd").parse(reportForms);
+					String date =  new SimpleDateFormat("yyyyMMdd").format(reportFormsPlat);
+				answers.put("reportForms",date);
+				}else
+				{
+					//对日期进行处理
+			     answers.put("reportForms",reportForms);
+				}
+				answers.put("reportNumber",se.getFslInf().getReportNumber());
+				answers.put("budgetLevel",se.getBudgetLevel());
+				answers.put("indicator",se.getIndicator());
+				answers.put("budgetType",se.getBudgetType());
+				answers.put("numberOfTransactions",se.getNumberOfTransactions());
+				List details = se.getNationalTreasuryCreditInformationDetails();
+				List returnList = new ArrayList();
+				for(BEPS_ServiceElement122_A104NationalTreasuryCreditInformationDetails ntcInfoDetails : details){
+					Map returnMap = new HashMap();
+					returnMap.put("typeCode",ntcInfoDetails.getTypeCode());
+					returnMap.put("subjectCode",ntcInfoDetails.getSubjectCode());
+					returnMap.put("currencyType",ntcInfoDetails.getCurrencyType());
+					returnMap.put("amount",ntcInfoDetails.getAmount());
+					returnList.add(returnMap);
+				}
+				answers.put("nationalTreasuryCreditInformationDetails",returnList);
+				products.add(answers);
+				bean.put("products",products);
+			}
+		}
+		target.put("orderList",orderList);
+		]]>
+	</manual-mapping>
+  </message-bean-mapping>

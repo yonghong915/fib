@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="BeijingInternalError" source-type="message-bean" target-type="Map">
+	<mapping type="value-mapping" from="errorCode" to="errorCode"/>
+	<mapping type="value-mapping" from="errorInfo" to="errorInfo"/>
+</message-bean-mapping>

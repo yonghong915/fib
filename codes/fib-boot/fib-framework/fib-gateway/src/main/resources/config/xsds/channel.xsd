@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fib.com/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="channel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="content-charset" type="xs:string" minOccurs="0" />
+				<xs:element name="description" type="xs:string" minOccurs="0" />
+				<xs:element ref="connector" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="message-type-recognizer" minOccurs="0" maxOccurs="unbounded"
+					xmlns="http://www.fib.com/schema" />
+				<xs:element ref="recognizer-table" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="processor-table" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="route-table" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="channel-symbol-table" minOccurs="0" maxOccurs="unbounded"
+					xmlns="http://www.fib.com/schema" />
+				<xs:element name="event-handler" minOccurs="0" />
+
+			</xs:sequence>
+			<xs:attributeGroup ref="channel-attrgroup" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="channel-attrgroup">
+		<xs:attribute name="type" type="channelType" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="class" type="xs:string" />
+		<xs:attribute name="mode" type="modeType" use="required" xmlns="http://www.fib.com/schema" />
+	</xs:attributeGroup>
+
+	<xs:element name="connector">
+		<xs:complexType>
+			<xs:attribute name="type" type="xs:string" />
+			<xs:attribute name="config" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="processor-attrgroup">
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="type" type="processorType" use="required" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="local-source" type="logicFlag" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="sync" type="xs:string" />
+		<xs:attribute name="route-rule" type="xs:string" />
+		<xs:attribute name="source-async" type="logicFlag" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="dest-async" type="logicFlag" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="source-channel-message-object-type" type="messageObjectType"
+			xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="dest-channel-message-object-type" type="messageObjectType"
+			xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="timeout" type="xs:string" />
+		<xs:attribute name="source-map-charset" type="xs:string" />
+		<xs:attribute name="dest-map-charset" type="xs:string" />
+	</xs:attributeGroup>
+	<xs:simpleType name="logicFlag">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="false" />
+			<xs:enumeration value="true" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="messageObjectType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MESSAGE-BEAN" />
+			<xs:enumeration value="MAP" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="message-type-recognizer">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element ref="message" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attribute name="recognizer-id" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:attribute name="message-type" type="xs:string" use="required" />
+			<xs:attribute name="processor" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="recognizer-table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="recognizer" xmlns="http://www.fib.com/schema" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="recognizer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameter" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="recognizer" xmlns="http://www.fib.com/schema" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" />
+			<xs:attribute name="type" type="recognizerType" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="name" type="xs:string" use="required" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="processor-table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="processor" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="processor">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="request-message-transformer" minOccurs="0" maxOccurs="unbounded"
+					xmlns="http://www.fib.com/schema" />
+				<xs:element ref="response-message-transformer" minOccurs="0" maxOccurs="unbounded"
+					xmlns="http://www.fib.com/schema" />
+				<xs:element ref="request-message-handler" minOccurs="0" maxOccurs="unbounded"
+					xmlns="http://www.fib.com/schema" />
+				<xs:element ref="error-mapping" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attributeGroup ref="processor-attrgroup" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="request-message-transformer">
+		<xs:complexType>
+			<xs:attribute name="bean-mapping" type="xs:string" />
+			<xs:attribute name="source-message-id" type="xs:string" />
+			<xs:attribute name="dest-message-id" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="response-message-transformer">
+		<xs:complexType>
+			<xs:attribute name="bean-mapping" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="request-message-handler">
+		<xs:complexType>
+			<xs:attribute name="class" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="error-mapping">
+		<xs:complexType>
+			<xs:attribute name="bean-mapping" type="xs:string" />
+			<xs:attribute name="source-message-id" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="route-table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="route-rule" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="route-rule">
+		<xs:complexType>
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="type" type="routeType" xmlns="http://www.fib.com/schema" />
+			<xs:attribute name="dest-channel-symbol" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="channel-symbol-table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="channel-symbol" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="channel-symbol">
+		<xs:complexType>
+			<xs:attribute name="symbol" type="xs:string" />
+			<xs:attribute name="name" type="xs:string" />
+			<xs:attribute name="channel-id" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:simpleType name="routeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="STATIC" />
+			<xs:enumeration value="DYNAMIC" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="modeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SERVER" />
+			<xs:enumeration value="CLIENT" />
+			<xs:enumeration value="DOUBLE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="channelType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SOCKET_CLIENT" />
+			<xs:enumeration value="SOCKET_SERVER" />
+			<xs:enumeration value="LONG_SOCKET" />
+			<xs:enumeration value="MQ_CLIENT" />
+			<xs:enumeration value="MQ_SERVER" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="processorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TRANSFORM" />
+			<xs:enumeration value="TRANSMIT" />
+			<xs:enumeration value="LOCAL" />
+			<xs:enumeration value="SAVE_AND_TRANSFORM" />
+			<xs:enumeration value="SAVE_AND_TRANSMIT" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="recognizerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INDEX" />
+			<xs:enumeration value="SEPARATOR" />
+			<xs:enumeration value="XPATH" />
+			<xs:enumeration value="SCRIPT" />
+			<xs:enumeration value="8583" />
+			<xs:enumeration value="COMPOSITE" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

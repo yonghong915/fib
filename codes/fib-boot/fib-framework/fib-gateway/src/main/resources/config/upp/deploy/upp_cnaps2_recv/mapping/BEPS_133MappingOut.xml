@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="BEPS_133MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.BEPS_133_bean">
+  <!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="table_01[0].disbursement.clearingBankCode" to="MsgHeader.OrigSender"/>
+  <!--报文发起人 -->
+  <mapping type="value-mapping" from="OrigSenderSID" to="MsgHeader.OrigSenderSID"/>
+  <!--发送系统号 -->
+  <mapping type="value-mapping" from="table_01[0].paymentMethodInfo.clearingBankCode" to="MsgHeader.OrigReceiver"/>
+  <!--报文接收人 -->
+  <mapping type="value-mapping" from="OrigReceiverSID" to="MsgHeader.OrigReceiverSID"/> <!--接收系统号 -->	
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date = new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">beps.133.001.01</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="MesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="MesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value-mapping" from="MesgPriority" to="MsgHeader.MesgPriority"/>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+
+  <!-- 报文体内容 -->
+  <!-- 报文正文其他信息 -->
+  <mapping type="value-mapping" from="MessageIdentification" to="BEPS_133_Out.MessageIdentification"/>
+  <!-- 报文标识号 -->
+  <mapping type="script" to="BEPS_133_Out.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!-- 报文发送时间 -->
+  <mapping type="value-mapping" from="numberOfTransactions" to="BEPS_133_Out.NumberOfTransactions"/>
+  <!-- 明细业务总笔数 -->
+  <mapping type="value-mapping" from="ControlSum" to="BEPS_133_Out.ControlSum"/>
+  <!-- 明细业务总金额 -->
+  <mapping type="value-mapping" from="SettlementInstruction" to="BEPS_133_Out.SettlementInstruction"/>
+  <!-- 转发日期 -->
+  <mapping type="value" to="BEPS_133_Out.SettlementMethod">CLRG</mapping>
+  <!-- SettlementMethod -->
+  <mapping type="value-mapping" from="PaymentType" to="BEPS_133_Out.Proprietary"/>
+  <!-- 业务类型编码 -->
+
+  <mapping type="value-mapping" from="ReturnLimited" to="BEPS_133_Out.Proprietary2"/>
+  <!-- 业务回执期限-->
+  <mapping type="value-mapping" from="table_01[].transactionIdentification" to="BEPS_133_Out.ccti[].EndToEndIdentification"/>
+  <!-- 端到端标识号 -->
+  <mapping type="value-mapping" from="table_01[].transactionIdentification" to="BEPS_133_Out.ccti[].TransactionIdentification"/>
+  <!-- 明细标识号 -->
+  <mapping type="value-mapping" from="table_01[].transactionIdentification" to="BEPS_133_Out.ccti[].ClearingSystemReference"/>
+  <!-- 明细业务参考号 -->
+  <mapping type="value-mapping" from="table_01[].currencyUom" to="BEPS_133_Out.ccti[].CurrencyType"/>
+  <!--币种-->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.maxAmount" to="BEPS_133_Out.ccti[].InterbankSettlementAmount"/>
+  <!-- 货币符号、结算金额-->
+  <mapping type="value-mapping" from="table_01[].disbursement.accountName" to="BEPS_133_Out.ccti[].Name"/>
+  <!-- 收款人名称 -->
+  <mapping type="value-mapping" from="table_01[].endUserCustomer.address" to="BEPS_133_Out.ccti[].AddressLine"/>
+  <!-- 收款人地址 -->
+  <mapping type="value-mapping" from="table_01[].disbursement.accountNumber" to="BEPS_133_Out.ccti[].Identification"/>
+  <!-- 收款人账号-->
+  <mapping type="value-mapping" from="table_01[].disbursement.acctBankCode" to="BEPS_133_Out.ccti[].Issuer"/>
+  <!-- 收款人开户行号 -->
+  <mapping type="value-mapping" from="table_01[].disbursement.clearingBankCode" to="BEPS_133_Out.ccti[].MemberIdentification"/>
+  <!-- 收款清算行行号 -->
+  <mapping type="value-mapping" from="table_01[].disbursement.bankCode" to="BEPS_133_Out.ccti[].Identification2"/>
+  <!-- 收款行行号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.accountName" to="BEPS_133_Out.ccti[].Name2"/>
+  <!-- 付款人名称 -->
+  <mapping type="value-mapping" from="table_01[].placingCustomer.address" to="BEPS_133_Out.ccti[].AddressLine2"/>
+  <!-- 付款人地址 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.accountNumber" to="BEPS_133_Out.ccti[].Identification3"/>
+  <!-- 付款人账号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.acctBankCode" to="BEPS_133_Out.ccti[].Issuer2"/>
+  <!-- 付款人开户行行号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.clearingBankCode" to="BEPS_133_Out.ccti[].MemberIdentification2"/>
+  <!-- 付款清算行行号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.bankCode" to="BEPS_133_Out.ccti[].Identification4"/>
+  <!-- 付款行行号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.operationCategory" to="BEPS_133_Out.ccti[].Proprietary3"/>
+  <!-- 业务种类编码 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.postscript" to="BEPS_133_Out.ccti[].Unstructured">
+	 <![CDATA[
+		String ud = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud = "/H01/"+currentValue;
+		 }
+		return ud;
+	]]>
+  </mapping>
+  <!-- 附言 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.manyAgreementId" to="BEPS_133_Out.ccti[].Unstructured2">
+	 <![CDATA[
+		String ud2 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud2 = "/E47/"+currentValue;
+		 }
+		return ud2;
+	]]>
+  </mapping>
+  <!-- 扣款合同编号 -->
+  <manual-mapping> <![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_133_OutCcti;
+
+		List beps = target.getBEPS_133_Out().ccti;
+
+		for(BEPS_133_OutCcti beps133Ccti : beps){
+			beps133Ccti.ChargeBearer = "CRED";
+		}
+
+	]]>
+  </manual-mapping>
+</message-bean-mapping>

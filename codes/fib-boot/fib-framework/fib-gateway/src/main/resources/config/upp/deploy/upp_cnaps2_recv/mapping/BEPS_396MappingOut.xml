@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="BEPS_396MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.BEPS_396_bean">
+  <!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="OrigSender" to="MsgHeader.OrigSender"/>
+  <!--报文发起人 -->
+  <mapping type="value-mapping" from="OrigSenderSID" to="MsgHeader.OrigSenderSID"/>
+  <!--发送系统号 -->
+  <mapping type="value-mapping" from="OrigReceiver" to="MsgHeader.OrigReceiver"/>
+  <!--报文接收人 -->
+  <mapping type="value-mapping" from="OrigReceiverSID" to="MsgHeader.OrigReceiverSID"/>  <!--接收系统号 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">beps.396.001.01</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="MesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="MesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value-mapping" from="MesgPriority" to="MsgHeader.MesgPriority"/>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+
+  <!-- 报文体内容 -->
+  <mapping type="value-mapping" from="Identification" to="BEPS_396_Out.Identification"/>
+  <!--  报文标识号 -->
+  <mapping type="value-mapping" from="TransactionReference" to="BEPS_396_Out.TransactionReference">
+    <![CDATA[
+		String tr = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   tr = "/A00/"+currentValue;
+		 }
+		return tr;
+	]]>
+  </mapping>
+  <!-- 发起直接参与者 -->
+  <mapping type="value-mapping" from="TransactionReference2" to="BEPS_396_Out.TransactionReference2">
+    <![CDATA[
+		String tr2 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   tr2 = "/A22/"+currentValue;
+		 }
+		return tr2;
+	]]>
+  </mapping>
+  <!--  发起参与机构 -->
+  <mapping type="value-mapping" from="TransactionReference3" to="BEPS_396_Out.TransactionReference3">
+    <![CDATA[
+		String tr3 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   tr3 = "/A01/"+currentValue;
+		 }
+		return tr3;
+	]]>
+  </mapping>
+  <!-- 接收直接参与者 -->
+  <mapping type="value-mapping" from="TransactionReference4" to="BEPS_396_Out.TransactionReference4">
+    <![CDATA[
+		String tr4 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   tr4 = "/FA5/"+currentValue;
+		 }
+		return tr4;
+	]]>
+  </mapping>
+  <!-- 业务种类编码 -->
+  <mapping type="value-mapping" from="TransactionReference5" to="BEPS_396_Out.TransactionReference5">
+    <![CDATA[
+		String tr5 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   tr5 = "/K35/"+currentValue;
+		 }
+		return tr5;
+	]]>
+  </mapping>
+  <!-- 费用标识 -->
+  <mapping type="value-mapping" from="TransactionReference6" to="BEPS_396_Out.TransactionReference6">
+    <![CDATA[
+		String tr6 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   tr6 = "/K37/"+currentValue;
+		 }
+		return tr6;
+	]]>
+  </mapping>
+  <!-- 企业标识 -->
+  <mapping type="value-mapping" from="TransactionReference7" to="BEPS_396_Out.TransactionReference7">
+    <![CDATA[
+		String tr7 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   tr7 = "/K36/"+currentValue;
+		 }
+		return tr7;
+	]]>
+  </mapping>
+  <!-- 客户标识 -->
+</message-bean-mapping>

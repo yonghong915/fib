@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="CCMS_903MappingOut" source-type="message-bean" target-type="map">
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="productId">X028cm903</mapping>
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.MessageIdentification" to="subject"></mapping><!-- 报文标识号-->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="InstructedParty"/><!-- 接收参与机构 -->
+	
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.structType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.mesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.mesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<mapping type="value-mapping" from="originalMessageIdentification" to="extendMap.originalMessageIdentification"></mapping><!--原报文标识号-->
+	<mapping type="value" to="extendMap.originalMessageType">ccms.921.001.01</mapping><!--原报文编号-->
+	<mapping type="value" to="extendMap.originalInstructingParty">0000</mapping><!--原发起参与机构-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"></mapping><!--验签结果-->
+
+	<!-- 报文体 begin-->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.CreationDateTime" to="extendMap.creationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.InstructingDirectParty" to="extendMap.instructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.InstructedDirectParty" to="extendMap.instructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+
+	<!-- Modify by zhao_dl; 为了兼容一代IBPS的证书绑定报文，该报文业务头的系统编号可以填写为"CCMS"或"IBPS"，此处都以CCMS处理 -->
+<!-- 	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.SystemCode" to="prodCatalogId"/>系统编号 -->
+	<mapping type="value" to="prodCatalogId">CCMS</mapping><!-- 系统编号 -->
+	
+	<mapping type="value-mapping" from="CCMS_903_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+
+
+	<mapping type="value-mapping" from="CCMS_903_Out.ChangeType" to="extendMap.changeType"></mapping><!-- 变更类型 -->
+
+	<!-- 报文体 end-->
+</message-bean-mapping>

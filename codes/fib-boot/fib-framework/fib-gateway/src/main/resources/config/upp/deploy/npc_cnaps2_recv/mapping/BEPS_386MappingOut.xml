@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="BEPS_386MappingOut" source-type="message-bean" target-type="map">
+	<mapping type="value" to="serviceId">receiveBatchPaymentOrder</mapping>
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value" to="prodCatalogId">BEPS</mapping><!--接收系统号-->	
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="OrigSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="StructType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="messageTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="MesgPriority"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="MesgDirection"></mapping>
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="Reserve"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping><!-- 结束标识 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.originalInstructingParty"></mapping><!--原发起参与机构-->
+    <!-- 报文头 end-->
+
+	<!-- 报文体内容 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.CreationDateTime" to="CreationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.InstructingDirectParty" to="InstructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.InstructingParty" to="instructingParty"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.InstructedDirectParty" to="InstructedDirectParty"/><!-- 接收直接参与机构 -->
+	<!--mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.InstructedParty" to="instructedParty"/> 接收参与机构 -->
+
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="instructedParty"></mapping><!--报文接收人 -->
+
+	<mapping type="value"  to="InstructedDirectParty">313684093748</mapping>
+	<mapping type="value"  to="instructedParty">313684093748</mapping>
+
+
+	<mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.SystemCode" to="systemCode"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.GrpHdr.Remark" to="Remark"/><!-- 备注 -->
+
+
+	<!-- 其他 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.BatchNumber" to="batchNumber"></mapping><!-- 批次序号 -->
+	<mapping type="value-translate" from="BEPS_386_Out.ReceiveType" to="batchType">
+		<value from="RT00" to="immBAPDrawee"/>
+		<value from="RT01" to="immBAPPayee"/>
+	</mapping><!-- 接收标识 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.TransactionIdentification" to="orderList[0].transactionIdentification"></mapping><!-- 明细标识号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Name" to="orderList[0].draweeAccName"></mapping><!-- 付款人名称 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Identification" to="orderList[0].draweeAccNo"></mapping><!-- 付款人账号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.MemberIdentification" to="orderList[0].launchLiquidationBankNo"></mapping><!-- 付款清算行行号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Identification2" to="orderList[0].paymentBankCode"></mapping><!-- 付款行行号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.MemberIdentification2" to="orderList[0].receiveLiquidationBankNo"></mapping><!-- 收款清算行行号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Identification3" to="orderList[0].gatheringBankCode"></mapping><!-- 收款行行号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Name2" to="orderList[0].payeeAccName"></mapping><!-- 收款人名称 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Identification4" to="orderList[0].payeeAccNo"></mapping><!-- 收款人账号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.CurrencyType" to="orderList[0].currencyCategory"></mapping><!-- 币种 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Amount" to="orderList[0].transactionSum">
+		target.put("itemNumber","1");
+		target.put("itemTotal",currentValue);
+		return currentValue;
+	</mapping><!-- 货币符号、金额 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Proprietary" to="categoryPurpose"></mapping><!-- 业务类型编码 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.Proprietary2" to="orderList[0].operationCategory"></mapping><!-- 业务种类编码 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.EndToEndIdentification" to="orderList[0].manyAgreementId"></mapping><!-- 合同（协议）号 -->
+	<mapping type="value-mapping" from="BEPS_386_Out.CheckFlag" to="orderList[0].CheckFlag"></mapping><!-- 核验标识 -->
+
+
+  </message-bean-mapping>

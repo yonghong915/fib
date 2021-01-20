@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="CCMS_916MappingOut" source-type="message-bean" target-type="map">
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="productId">X036cm916</mapping> 
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.MessageIdentification" to="subject"></mapping><!-- 报文标识号-->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="InstructedParty"/><!-- 接收参与机构 -->
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.StructType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<!--<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping> 结束标识 -->
+	
+	<!-- 报文体 begin-->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.CreationDateTime" to="extendMap.CreationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.InstructingDirectParty" to="extendMap.InstructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.InstructedDirectParty" to="extendMap.InstructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.InstructedParty" to="partyIdTo"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.SystemCode" to="prodCatalogId"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.GrpHdr.Remark" to="extendMap.Remark"/><!-- 备注 -->
+	
+	<!-- 报文分片组件 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.Prttn.TotalNumber" to="extendMap.TotalNumber"/><!-- 总记录数 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.Prttn.StartNumber" to="extendMap.StartNumber"/><!-- 本报文记录起始序号 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.Prttn.EndNumber" to="extendMap.EndNumber"/><!-- 本报文记录截止序号 -->
+	<!-- 期数信息 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.NbInf.ChangeNumber" to="extendMap.ChangeNumber"/><!-- 变更期数 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.NbInf.ChangeRecordNumber" to="extendMap.ChangeRecordNumber"/><!-- 变更记录数目 -->
+	
+	
+	<!-- 数据变更组件 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].ChngCtrl.ChangeType" to="extendMap.table_01[].changeType"/><!-- 变更类型 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].ChngCtrl.EffectiveType" to="extendMap.table_01[].effectiveType"/><!-- 生效类型 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].ChngCtrl.EffectiveDate" to="extendMap.table_01[].effectiveDate"/><!-- 生效日期 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].ChngCtrl.IneffectiveDate" to="extendMap.table_01[].ineffectiveDate"/><!-- 失效日期 -->
+
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].BankCode" to="extendMap.table_01[].bankCode"></mapping><!-- 参与机构行号 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].ParticipantType" to="extendMap.table_01[].participantType"></mapping><!-- 参与机构类别 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].BankCategoryCode" to="extendMap.table_01[].bankCategoryCode"></mapping><!-- 行别代码 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].DirectBankCode" to="extendMap.table_01[].directBankCode"></mapping><!-- 所属直参行号 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].LegalPerson" to="extendMap.table_01[].legalPerson"></mapping><!-- 所属法人 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].HigerParticipant" to="extendMap.table_01[].higerParticipant"></mapping><!-- 本行上级参与机构 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].BearBankCode" to="extendMap.table_01[].bearBankCode"></mapping><!-- 承接行行号 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].ChargeBankCode" to="extendMap.table_01[].chargeBankCode"></mapping><!-- 管辖人行行号 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].NodeCode" to="extendMap.table_01[].nodeCode"></mapping><!-- 所属CCPC -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].CityCode" to="extendMap.table_01[].cityCode"></mapping><!-- 所在城市代码 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].ParticipantName" to="extendMap.table_01[].participantName"></mapping><!-- 参与机构全称 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].Sign" to="extendMap.table_01[].sign"></mapping><!-- 加入业务系统标识 -->
+	<mapping type="value-mapping" from="CCMS_916_Out.ChangeInformation[].Telephone" to="extendMap.table_01[].telephone"></mapping><!-- 电话/电挂 -->
+	<!-- 报文体 end-->
+</message-bean-mapping>

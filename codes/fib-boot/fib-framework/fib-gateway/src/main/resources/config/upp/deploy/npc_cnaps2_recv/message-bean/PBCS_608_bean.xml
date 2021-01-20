@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean message-charset="UTF-8" id="PBCS_608_bean" short-text="PBCS_608_bean" class="com.giantstone.cnaps2.messagebean.recv.req.PBCS_608_bean">
+
+	<field name="MsgHeader" short-text="报文头" field-type="combine-field" reference="MsgHeader"/>
+	<field name="DigitalSignature" short-text="数字签名" field-type="fixed-field" data-type="str" length="2048" prefix="{S:" suffix="0x7D0D0A" padding-direction="none"/>
+ 	<field name="PBCS_608_Out" short-text="报文体" field-type="combine-field" reference="PBCS_608_Out"/>
+	<field name="checkEscortFlag" short-text="核押验签结果" field-type="fixed-field" length="12" data-type="str"/>
+	 
+	 <event type="pre-parse"><![CDATA[
+		messageParser.ignore("checkEscortFlag");
+	]]></event>
+	<event type="post-parse">
+	<![CDATA[
+		//来帐验签
+		import  com.giantstone.security.TccrbSignature;
+		import  com.giantstone.cnaps2.messagebean.recv.req.*;
+		import com.uisftech.tcrcb.ext.StringBuffer;
+
+		StringBuffer buf = new StringBuffer();
+		//GrpHdr业务头
+		String MessageIdentification = messageBean.PBCS_608_Out.GrpHdr.MessageIdentification;
+		String CreationDateTime = messageBean.PBCS_608_Out.GrpHdr.CreationDateTime;
+		String InstructingDirectParty = messageBean.PBCS_608_Out.GrpHdr.InstructingDirectParty;
+		String InstructingParty = messageBean.PBCS_608_Out.GrpHdr.InstructingParty;
+		String InstructedDirectParty = messageBean.PBCS_608_Out.GrpHdr.InstructedDirectParty;
+		String InstructedParty = messageBean.PBCS_608_Out.GrpHdr.InstructedParty;
+		String SystemCode = messageBean.PBCS_608_Out.GrpHdr.SystemCode;
+
+		buf.append(MessageIdentification);
+		buf.append("|");
+		buf.append(CreationDateTime);
+		buf.append("|");
+		buf.append(InstructingDirectParty);
+		buf.append("|");
+		buf.append(InstructingParty);
+		buf.append("|");
+		buf.append(InstructedDirectParty);
+		buf.append("|");
+		buf.append(InstructedParty);
+		buf.append("|");
+		buf.append(SystemCode);
+		buf.append("|");
+
+		//PBCS_608_Out
+		String ChargeType = messageBean.PBCS_608_Out.ChargeType;
+		String ChargeParticipant = messageBean.PBCS_608_Out.ChargeParticipant;
+		String ChargeMonth = messageBean.PBCS_608_Out.ChargeMonth;
+		String StartDate = messageBean.PBCS_608_Out.StartDate;
+		String EndDate = messageBean.PBCS_608_Out.EndDate;
+		String CurrencyType = messageBean.PBCS_608_Out.CurrencyType;
+		String TotalAmount = messageBean.PBCS_608_Out.TotalAmount;
+		String NumberOfSystem = messageBean.PBCS_608_Out.NumberOfSystem;
+
+		buf.append(ChargeType);
+		buf.append("|");
+		buf.append(ChargeParticipant);
+		buf.append("|");
+		buf.append(ChargeMonth);
+		buf.append("|");
+		buf.append(StartDate);
+		buf.append("|");
+		buf.append(EndDate);
+		buf.append("|");
+		buf.append(CurrencyType);
+		buf.append(TotalAmount);
+		buf.append("|");
+		buf.append(NumberOfSystem);
+		buf.append("|");
+
+		List ChargeInformation = messageBean.PBCS_608_Out.ChargeInformation;
+		for(PBCS_608_OutChargeInformation bean : ChargeInformation){
+			String ChargeSystem = bean.ChargeSystem;
+			String CurrencyType2 = bean.CurrencyType2;
+			String Amount = bean.Amount;
+			buf.append(ChargeSystem);
+			buf.append("|");
+			buf.append(CurrencyType2);
+			buf.append(Amount);
+			buf.append("|");
+		}
+
+		String DigitalSignature =  messageBean.DigitalSignature;
+		String OrigSender = messageBean.MsgHeader.OrigSender;
+		TccrbSignature s = new TccrbSignature ();
+		boolean flag= s.checkSign(buf.toString(),DigitalSignature,OrigSender);
+	    if(!flag){
+		 messageBean.setCheckEscortFlag("ErrorCheckEscort");
+		 }
+		]]>
+	</event>
+</message-bean>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="BEPS_133MappingOut" source-type="message-bean" target-type="map" >
+	<mapping type="value" to="serviceId">receiveBatchPaymentOrder</mapping>
+	<mapping type="value" to="batchType">sueBAGIn</mapping>
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value" to="prodCatalogId">BEPS</mapping><!--接收系统号-->	
+		<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="instructingParty"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="instructedParty"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="OrigSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="StructType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="messageTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="MesgPriority"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="MesgDirection"></mapping>
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="Reserve"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping><!-- 结束标识 -->
+    <!-- 报文头 end-->
+
+	<!-- 报文体内容 -->
+	<!-- 报文正文其他信息 -->
+
+	<mapping type="value-mapping" from="BEPS_133_Out.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.CreationDateTime" to="CreationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.NumberOfTransactions" to="itemNumber"></mapping><!-- 明细业务总笔数 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ControlSum" to="itemTotal"/><!-- 明细业务总金额 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.SettlementInstruction" to="transmitDate"/><!-- 转发日期 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.SettlementMethod" to="SettlementMethod"></mapping><!-- SettlementMethod -->
+	<mapping type="value-mapping" from="BEPS_133_Out.Proprietary" to="categoryPurpose"/><!-- 业务类型编码 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.Proprietary2" to="returnLimited"/><!-- 业务回执期限-->
+
+
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].EndToEndIdentification" to="orderList[].endToEndIdentification"/><!-- 端到端标识号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].TransactionIdentification" to="orderList[].transactionIdentification"/><!-- 明细标识号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].ClearingSystemReference" to="orderList[].clearingSystemReference"/><!-- 明细业务参考号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].CurrencyType" to="orderList[].currencyCategory"/><!-- 币种-->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].InterbankSettlementAmount" to="orderList[].transactionSum"/><!-- 货币符号、结算金额-->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].ChargeBearer" to="orderList[].ChargeBearer"></mapping><!-- ChargeBearer -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Name" to="orderList[].payeeAccName"/><!-- 收款人名称 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].AddressLine" to="orderList[].payeeAddress"/><!-- 收款人地址 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Identification" to="orderList[].payeeAccNo"/><!-- 收款人账号-->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Issuer" to="orderList[].payeeBankCode"/><!-- 收款人开户行号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].MemberIdentification" to="orderList[].receiveLiquidationBankNo"/><!-- 收款清算行行号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Identification2" to="orderList[].gatheringBankCode"/><!-- 收款行行号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Name2" to="orderList[].draweeAccName"/><!-- 付款人名称 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].AddressLine2" to="orderList[].draweeAddress"/><!-- 付款人地址 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Identification3" to="orderList[].draweeAccNo"/><!-- 付款人账号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Issuer2" to="orderList[].draweeBankCode"/><!-- 付款人开户行行号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].MemberIdentification2" to="orderList[].launchLiquidationBankNo"/><!-- 付款清算行行号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Identification4" to="orderList[].paymentBankCode"/><!-- 付款行行号 -->
+	<mapping type="value-mapping" from="BEPS_133_Out.ccti[].Proprietary3" to="orderList[].operationCategory"/><!-- 业务种类编码 -->
+	<manual-mapping>
+		<![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import com.giantstone.cnaps2.messagebean.recv.req.BEPS_133_Out;
+		import com.giantstone.cnaps2.messagebean.recv.req.BEPS_133_OutCcti;
+		import com.giantstone.cnaps2.messagebean.recv.req.BEPS_133_OutCctiAddInfos;
+		List orderList = (List)target.get("orderList");
+		print(sourceBean);
+		for(int i = 0;i<orderList.size();i++){
+			Map bean = (Map)orderList.get(i);
+			BEPS_133_Out outBean = sourceBean.BEPS_133_Out;
+			List ccti = outBean.getCcti();
+			BEPS_133_OutCcti outCcti = (BEPS_133_OutCcti)ccti.get(i);
+			List addInfos = outCcti.getAddInfos();
+			for(BEPS_133_OutCctiAddInfos addInfo : addInfos){
+				String value = addInfo.getUnstructured();
+				if(value.startsWith("/H01/")){
+					bean.put("postscript",value.substring(5));
+				}else if(value.startsWith("/E47/")){
+					bean.put("manyAgreementId",value.substring(5));
+				}
+			}
+		}
+		target.put("orderList",orderList);
+		]]>
+	</manual-mapping>
+  </message-bean-mapping>

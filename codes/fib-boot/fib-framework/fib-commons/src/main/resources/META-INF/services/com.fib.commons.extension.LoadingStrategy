@@ -1,0 +1,3 @@
+com.fib.commons.extension.strategy.FibInternalLoadingStrategy
+com.fib.commons.extension.strategy.FibLoadingStrategy
+com.fib.commons.extension.strategy.ServicesLoadingStrategy

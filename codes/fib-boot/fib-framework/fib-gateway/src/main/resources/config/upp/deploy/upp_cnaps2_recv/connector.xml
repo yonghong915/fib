@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector xmlns="http://www.fib.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.fib.com/schema 
+	                    http://www.fib.com/schema/xsds/connector.xsd">
+
+	<connection type="SERVER" port="1230" backlog="50" comm-buffer-size="8192" />
+
+	<reader class="com.fib.gateway.channel.nio.reader.impl.LengthCheckNioReader">
+		<parameter name="length-field-index">0</parameter>
+		<parameter name="length-field-data-type">num</parameter>
+		<parameter name="length-field-length">8</parameter>
+		<parameter name="length-offset">-8</parameter>
+		<filter class="com.fib.gateway.map.filter.LengthTrimFilter" />
+	</reader>
+
+	<writer class="com.fib.gateway.channel.nio.writer.impl.DefaultNioWriter">
+		<filter class="com.fib.gateway.map.filter.LengthAppendFilter" />
+	</writer>
+
+</connector>

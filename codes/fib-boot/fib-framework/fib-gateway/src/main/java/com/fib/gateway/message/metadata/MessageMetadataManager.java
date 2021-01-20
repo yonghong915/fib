@@ -19,6 +19,7 @@ import com.fib.gateway.message.util.EnumConstants;
 import com.fib.gateway.message.util.ExceptionUtil;
 import com.fib.gateway.message.xml.message.MultiLanguageResourceBundle;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 
 /**
@@ -59,6 +60,24 @@ public class MessageMetadataManager {
 		} else if (EnumConstants.FIELD_BEAN_NAME.equals(eleName)) {
 			buildField(ele);
 		}
+	}
+
+	public static boolean isMessageExist(String groupId, String messageId) {
+		if (StrUtil.isBlank(groupId)) {
+			throw new CommonException("groupId is null");
+		}
+
+		if (StrUtil.isBlank(messageId)) {
+			throw new CommonException("messageId is null");
+		}
+
+		Map<String, Message> groupCache = cache.get(groupId);
+		if (MapUtil.isEmpty(groupCache)) {
+			throw new CommonException("getMessage.group.null");
+		}
+
+		Message message = groupCache.get(messageId);
+		return Objects.nonNull(message);
 	}
 
 	private void buildMessageBean(Element ele) {
@@ -226,5 +245,15 @@ public class MessageMetadataManager {
 
 	static Map<String, Message> getClassCache() {
 		return cacheByClass;
+	}
+	
+	public static Message getMessageByClass(String var0) {
+		if (null == var0) {
+			throw new IllegalArgumentException(MultiLanguageResourceBundle.getInstance().getString("parameter.null",
+					new String[] { "messageBeanClassName" }));
+		} else {
+			Message var1 = (Message) cacheByClass.get(var0);
+			return var1;
+		}
 	}
 }

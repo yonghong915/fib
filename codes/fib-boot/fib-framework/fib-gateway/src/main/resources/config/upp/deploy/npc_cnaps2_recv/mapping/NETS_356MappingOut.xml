@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="NETS_356MappingOut" source-type="message-bean" target-type="map">
+
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="productId">J026nt356</mapping> 
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.MessageIdentification" to="subject"></mapping><!-- 报文标识号-->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.StructType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<!--<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping> 结束标识 -->
+	<!-- 报文体 -->
+
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.CreationDateTime" to="extendMap.creationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.InstructingDirectParty" to="extendMap.instructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.InstructedDirectParty" to="extendMap.instructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.InstructedParty" to="partyIdTo"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.SystemCode" to="prodCatalogId"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="NETS_356_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+
+	<!-- 其他 -->
+	<mapping type="value-mapping" from="NETS_356_Out.NotificationType" to="extendMap.NotificationType"></mapping><!-- 通知类型 -->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<manual-mapping>
+		<![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import com.giantstone.util.AmountUtil;
+		import com.giantstone.cnaps2.messagebean.recv.req.NETS_ServiceElement356_LC00;
+		import com.giantstone.cnaps2.messagebean.recv.req.NETS_ServiceElement356_LC01;
+		import com.giantstone.cnaps2.messagebean.recv.req.NETS_ServiceElement356_LC02;
+		import com.giantstone.cnaps2.messagebean.recv.req.NETS_ServiceElement356_LC03;
+		import com.giantstone.cnaps2.messagebean.recv.req.NETS_ServiceElement356_LC04;
+		import com.giantstone.cnaps2.messagebean.recv.req.NETS_ServiceElement356_LC04Nets;
+		import com.giantstone.common.util.CodeUtil;
+		
+		Map extendMap =target.get("extendMap");
+
+		String flag = sourceBean.NETS_356_Out.NotificationType;
+			if("LC00".equals(flag)){
+				NETS_ServiceElement356_LC00 se = (NETS_ServiceElement356_LC00)sourceBean.NETS_356_Out.NotificationContent;
+				extendMap.put("OperationClass",se.OperationClass);
+				extendMap.put("OperationType",se.OperationType);
+				extendMap.put("MemberIdentification",se.MemberIdentification);
+				extendMap.put("CurrencyType",se.CurrencyType);
+				extendMap.put("CreditLoad",se.CreditLoad);
+				extendMap.put("CurrencyType1",se.CurrencyType1);
+				extendMap.put("TotalPledgeValue",se.TotalPledgeValue);
+				extendMap.put("CurrencyType2",se.CurrencyType2);
+				extendMap.put("CreditExtensionLimit",se.CreditExtensionLimit);
+				extendMap.put("CurrencyType3",se.CurrencyType3);
+				extendMap.put("NetDebitLimit",se.NetDebitLimit);
+				extendMap.put("CurrencyType4",se.CurrencyType4);
+				extendMap.put("AvailableNetDebit",se.AvailableNetDebit);
+			}else if ("LC01".equals(flag)){
+			  NETS_ServiceElement356_LC01 se = (NETS_ServiceElement356_LC01)sourceBean.NETS_356_Out.NotificationContent;
+				extendMap.put("SwitchType",se.SwitchType);
+				extendMap.put("MemberIdentification2",se.MemberIdentification2);
+				extendMap.put("CurrencyType5",se.CurrencyType5);
+				extendMap.put("AvailableNetDebitWarningValue",se.AvailableNetDebitWarningValue);
+			}else if ("LC02".equals(flag)){
+			   NETS_ServiceElement356_LC02 se = (NETS_ServiceElement356_LC02)sourceBean.NETS_356_Out.NotificationContent;
+				extendMap.put("MemberIdentification3",se.MemberIdentification3);
+				extendMap.put("CurrencyType6",se.CurrencyType6);
+				extendMap.put("DistributionPledgeValue",se.DistributionPledgeValue);
+			}else if ("LC03".equals(flag)){
+               NETS_ServiceElement356_LC03 se = (NETS_ServiceElement356_LC03)sourceBean.NETS_356_Out.NotificationContent;
+				extendMap.put("ManagerIdentification",se.ManagerIdentification);
+				extendMap.put("NotificationType2",se.NotificationType2);
+				extendMap.put("CurrencyType7",se.CurrencyType7);
+				extendMap.put("OriginalNotDistribution",se.OriginalNotDistribution);
+				extendMap.put("CurrencyType8",se.CurrencyType8);
+				extendMap.put("OriginalIsDistribution",se.OriginalIsDistribution);
+				extendMap.put("CurrencyType9",se.CurrencyType9);
+				extendMap.put("NotDistribution",se.NotDistribution);
+				extendMap.put("CurrencyType10",se.CurrencyType10);
+				extendMap.put("IsDistribution",se.IsDistribution);
+			}else if ("LC04".equals(flag)){
+               NETS_ServiceElement356_LC04 se = (NETS_ServiceElement356_LC04)sourceBean.NETS_356_Out.NotificationContent;
+			     List list =se.nets;
+				extendMap.put("ManagerIdentification2",se.ManagerIdentification2);
+				extendMap.put("CurrencyType11",se.CurrencyType11);
+				extendMap.put("OriginalNotDistribution2",se.OriginalNotDistribution2);
+				extendMap.put("CurrencyType12",se.CurrencyType12);
+				extendMap.put("OriginalIsDistribution2",se.OriginalIsDistribution2);
+				extendMap.put("CurrencyType13",se.CurrencyType13);
+				extendMap.put("ForceDown",se.ForceDown);
+				extendMap.put("BranchQuantity",se.BranchQuantity);
+				
+                List resultList = new ArrayList();
+				for(NETS_ServiceElement356_LC04Nets nets : list){
+					Map map = new HashMap();
+					String MemberIdentification4 = nets.MemberIdentification4;
+					String CurrencyType14 = nets.CurrencyType14;
+					String DistributionAmount = nets.DistributionAmount;
+					map.put("MemberIdentification4",MemberIdentification4);
+					map.put("CurrencyType14",CurrencyType14);
+					map.put("DistributionAmount",DistributionAmount);
+					resultList.add(map);
+			   }
+			   extendMap.put("DstrbtnList",resultList);
+			}
+		]]>
+	</manual-mapping>
+</message-bean-mapping>
+

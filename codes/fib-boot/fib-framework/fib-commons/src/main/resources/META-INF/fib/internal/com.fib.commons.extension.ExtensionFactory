@@ -1,0 +1,2 @@
+adaptive=com.fib.commons.extension.factory.AdaptiveExtensionFactory
+spi=com.fib.commons.extension.factory.SpiExtensionFactory

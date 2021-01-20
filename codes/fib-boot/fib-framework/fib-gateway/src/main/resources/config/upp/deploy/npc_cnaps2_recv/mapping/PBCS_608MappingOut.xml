@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="PBCS_608MappingOut" source-type="message-bean" target-type="map">
+	 <!-- 来账登记交流事件要素 -->
+  	<mapping type="value" to="serviceId">processPaymentOrder</mapping>
+	<!--来账登记交流事件要素-->
+	<mapping type="value" to="salesChannelEnumId">CNAPS</mapping> <!--触发ECA条件-->
+	<mapping type="value" to="cashOrTallyFlag">1</mapping><!--现转标识-->
+	<mapping type="value-mapping" from="PBCS_608_Out.GrpHdr.MessageIdentification" to="externalId"/> <!--报文标识号-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<mapping type="value-mapping" to="products[0].answers.MessageIdentification" from="PBCS_608_Out.GrpHdr.MessageIdentification"></mapping><!-- 报文标识号 -->
+	<mapping type="script" to="products[0].answers.settlementDate" >
+	<![CDATA[
+		String settlementDate = sourceBean.PBCS_608_Out.GrpHdr.MessageIdentification;
+		if(settlementDate != null && settlementDate.length() == 16){
+			settlementDate = settlementDate.substring(0, 4) + "-" 
+			+ settlementDate.substring(4, 6) + "-" 
+			+ settlementDate.substring(6, 8);
+		}
+		return settlementDate;
+		]]>
+	</mapping>
+	
+	<mapping type="value-mapping" to="extendMap.origSendDate" from="MsgHeader.OrigSendDate"/>
+	<mapping type="value-mapping" to="extendMap.mesgID" from="MsgHeader.MesgID"/>
+	<mapping type="value-mapping" to="extendMap.mesgRefID" from="MsgHeader.MesgRefID"/>
+	<mapping type="value-mapping" to="extendMap.origSenderSID" from="MsgHeader.OrigSenderSID"/>
+	<mapping type="value-mapping" to="extendMap.origReceiverSID" from="MsgHeader.OrigReceiverSID"/>
+	<mapping type="value-mapping" to="contentMimeTypeId" from="MsgHeader.MesgType"/> <!--报文类型号-->
+	<mapping type="value-mapping" to="extendMap.origSender" from="MsgHeader.OrigSender"/> <!--报文发起人 -->
+	<mapping type="value-mapping" to="extendMap.origReceiver" from="MsgHeader.OrigReceiver"/> <!--报文接收人 -->
+	<mapping type="value-mapping" to="prodCatalogId" from="MsgHeader.OrigReceiverSID"/> <!--通道 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.GrpHdr.InstructedParty" to="InstructedParty"/>
+	<mapping type="value-mapping" from="PBCS_608_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+
+	<!-- paymentMethodInfo付款信息-->
+	<!-- 支付工具 -->
+	<!-- 计费/返还总金额 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.TotalAmount" to="paymentMethodInfo.maxAmount"/>
+	<!-- 付款人账号 -->
+	<mapping type="value" to="paymentMethodInfo.accountNumber">0</mapping>
+
+	<mapping type="script" to="products[0].quantity" >
+	<![CDATA[
+		return new java.math.BigDecimal(sourceBean.PBCS_608_Out.TotalAmount);
+		]]>
+	</mapping>
+	
+	<!-- disbursement 收款信息 -->
+	<!-- 支付工具 -->
+	<!-- 计费/返还总金额 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.TotalAmount" to="disbursement.maxAmount"/>
+	<!-- 收款人账号 -->
+	<mapping type="value" to="disbursement.accountNumber">0</mapping>
+
+	<!-- products 产品列表 -->
+	<mapping type="value" to="products[0].productId">X018pc608</mapping>
+	
+	<mapping type="value-mapping" to="products[0].answers.MesgRefID" from="MsgHeader.MesgRefID"/>
+
+	<mapping type="value-mapping" from="PBCS_608_Out.ChargeType" to="products[0].answers.chargeType"/><!-- 计费与返还类型 -->
+		
+	<mapping type="value-mapping" from="PBCS_608_Out.ChargeParticipant" to="products[0].answers.chargeParter"/><!-- 计费直接参与者 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.ChargeMonth" to="products[0].answers.rateMonth"/><!-- 计费月份 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.StartDate" to="products[0].answers.rateBeginDate"/><!-- 计费开始日期 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.EndDate" to="products[0].answers.rateEndDate"/><!-- 计费终止日期 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.TotalAmount" to="products[0].answers.chargeRate"/><!-- 计费/返还总金额 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.NumberOfSystem" to="products[0].answers.numberOfSystem"/><!-- 计费业务系统数目 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.ChargeInformation[].ChargeSystem" to="products[0].answers.chargeInfoList[].chargeSystem"/><!-- 计费所属系统 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.ChargeInformation[].CurrencyType2" to="products[0].answers.chargeInfoList[].currencyType"/><!-- 币种 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.ChargeInformation[].Amount" to="products[0].answers.chargeInfoList[].amount"/><!-- 计费/返还总金额 -->
+	<!-- add by zhou_jl date:2012-12-24 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.GrpHdr.CreationDateTime" to="products[0].answers.creationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="PBCS_608_Out.GrpHdr.InstructedDirectParty" to="products[0].answers.instructedDirectParty"/><!-- 接收直接参与机构  -->
+	<mapping type="value-mapping" from="PBCS_608_Out.GrpHdr.InstructedParty" to="products[0].answers.instructedParty"/><!-- 接收参与机构 -->
+	<manual-mapping>
+	<![CDATA[
+		import com.giantstone.cnaps2.messagebean.recv.req.*;
+		import java.util.HashMap;
+
+		//付款信息
+		Map paymentMethodInfo = target.get("paymentMethodInfo");
+ 
+		// 收款信息
+		Map disbursement = target.get("disbursement");
+		// 计费直接参与者
+		String clearingBankCode = sourceBean.PBCS_608_Out.getChargeParticipant();
+		
+		// 计费与返还类型
+		String chargeType= sourceBean.PBCS_608_Out.getChargeType();
+		// 收费通知
+		if("CT00".equals(chargeType)){
+			paymentMethodInfo.put("clearingBankCode", clearingBankCode);
+			paymentMethodInfo.put("bankCode", clearingBankCode);
+			paymentMethodInfo.put("accountName", clearingBankCode);
+			disbursement.put("accountName", sourceBean.MsgHeader.getOrigSender());
+			disbursement.put("clearingBankCode", sourceBean.MsgHeader.getOrigSender());
+			disbursement.put("bankCode", sourceBean.MsgHeader.getOrigSender());
+			disbursement.put("paymentMethodTypeId","EXT_CASH_RESERVE");
+			disbursement.put("paymentMethodId","10005");
+			
+			//人工认证号
+			disbursement.put("manualRefNum", sourceBean.PBCS_608_Out.getGrpHdr().getMessageIdentification());
+			paymentMethodInfo.put("voucherType","99");
+			
+			// Modify by zhao_dl 20141129 start，行方需计费与返还业务直接记内部账
+			//跳过支付环节
+			//target.put("paymentOrderStepSettingId","SKIP_PAYMENT");
+			paymentMethodInfo.put("accountNumber", "99990163210299990002"); // 账号
+			paymentMethodInfo.put("accountName", "支付系统手续费支出"); // 户名
+			// Modify by zhao_dl 20141129 end
+			
+		}else{
+			// 返还通知
+			disbursement.put("clearingBankCode", clearingBankCode);
+			disbursement.put("bankCode", clearingBankCode);
+			disbursement.put("accountName", clearingBankCode);
+			paymentMethodInfo.put("accountName", sourceBean.MsgHeader.getOrigSender());
+			paymentMethodInfo.put("clearingBankCode", sourceBean.MsgHeader.getOrigSender());
+			paymentMethodInfo.put("bankCode", sourceBean.MsgHeader.getOrigSender());
+			//人工认证号
+			paymentMethodInfo.put("manualRefNum", sourceBean.PBCS_608_Out.getGrpHdr().getMessageIdentification());
+			paymentMethodInfo.put("paymentMethodTypeId","EXT_CASH_RESERVE");
+			paymentMethodInfo.put("paymentMethodId","10005");
+			disbursement.put("voucherType","99");
+			
+			// Modify by zhao_dl 20141129 start，行方需计费与返还业务直接记内部账
+			//跳过交付环节
+			//target.put("paymentOrderStepSettingId","SKIP_FULFILL"); 
+			disbursement.put("accountNumber", "99990153219999990001"); // 账号
+			disbursement.put("accountName", "单位其他人民币结算业务收入"); // 户名
+			// Modify by zhao_dl 20141129 end
+		}
+	]]>
+	</manual-mapping>
+</message-bean-mapping>

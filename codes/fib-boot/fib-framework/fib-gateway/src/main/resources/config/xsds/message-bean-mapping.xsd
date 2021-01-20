@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fib.com/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="message-bean-mapping">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="include" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+				<xs:element ref="mapping" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element name="value" type="xs:string" minOccurs="0" />
+			</xs:sequence>
+			<xs:attributeGroup ref="message-bean-mapping-attrgroup" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="message-bean-mapping-attrgroup">
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="source-type" type="sourceType" xmlns="http://www.fib.com/schema" use="required" />
+		<xs:attribute name="target-type" type="targetType" xmlns="http://www.fib.com/schema" use="required" />
+		<xs:attribute name="target-bean-class" type="xs:string" />
+	</xs:attributeGroup>
+
+	<xs:element name="mapping">
+		<xs:complexType>
+			<xs:attributeGroup ref="mapping-attrgroup" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="mapping-attrgroup">
+		<xs:attribute name="type" type="mappingType" use="required" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="from" type="xs:string" use="required" />
+		<xs:attribute name="to" type="xs:string" use="required" />
+		<xs:attribute name="source-paramete" type="xs:string" />
+	</xs:attributeGroup>
+
+	<xs:element name="value">
+
+	</xs:element>
+
+	<xs:simpleType name="sourceType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="map" />
+			<xs:enumeration value="message-bean" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="targetType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="map" />
+			<xs:enumeration value="message-bean" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="mappingType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="value-mapping" />
+			<xs:enumeration value="value-translate" />
+			<xs:enumeration value="value" />
+			<xs:enumeration value="script" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

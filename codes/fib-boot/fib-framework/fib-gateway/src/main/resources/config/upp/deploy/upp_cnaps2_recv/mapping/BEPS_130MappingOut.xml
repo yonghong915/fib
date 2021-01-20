@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="BEPS_130MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.BEPS_130_bean">
+  <!-- 报文头 begin -->
+  
+  <!--版本 -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--报文发起人 -->
+  <mapping type="value-mapping" from="OrigSender" to="MsgHeader.OrigSender"/>
+  <!--发送系统号 -->
+  <mapping type="value-mapping" from="OrigSenderSID" to="MsgHeader.OrigSenderSID"/>
+  <!--报文接收人 -->
+  <mapping type="value-mapping" from="OrigReceiver" to="MsgHeader.OrigReceiver"/>
+  <!--接收系统号 -->
+  <mapping type="value-mapping" from="OrigReceiverSID" to="MsgHeader.OrigReceiverSID"/><!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value" to="MsgHeader.MesgType">beps.130.001.01</mapping>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="MesgID" to="MsgHeader.MesgID"/>
+  <mapping type="value-mapping" from="MesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value-mapping" from="MesgPriority" to="MsgHeader.MesgPriority"/>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+  
+  <!-- 报文正文其他信息 -->
+  
+  <!-- 报文体内容 -->
+  <!-- 报文标识号 -->
+  <mapping type="value-mapping" from="statusReportHeader.messageId" to="BEPS_130_Out.MessageIdentification"/>
+  <!-- 报文发送时间 -->
+  <mapping type="script" to="BEPS_130_Out.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!-- 回执明细业务成功总笔数 -->
+  <mapping type="value-mapping" from="statusReportHeader.successNumber" to="BEPS_130_Out.NumberOfTransactions"/>
+  <!-- 回执明细业务成功总金额 -->
+  <mapping type="value-mapping" from="statusReportHeader.successTotal" to="BEPS_130_Out.ControlSum">
+  <![CDATA[
+        String Amount = String.valueOf(currentValue);
+		if("0".equals(Amount)){
+			return "0.00";
+		 }else{
+			return Amount;
+		 }
+	]]>
+  </mapping>
+  <!-- 清算方式 -->
+  <mapping type="value" to="BEPS_130_Out.SettlementMethod">CLRG</mapping>
+  <!-- 回执明细总笔数 -->
+  <mapping type="value-mapping" from="statusReportHeader.originalItemNumber" to="BEPS_130_Out.Proprietary"/>
+  <!-- 端到端标识号 -->
+  <mapping type="value-mapping" from="groupDetailList[].endToEndIdentification" to="BEPS_130_Out.ccti[].EndToEndIdentification"/>
+  <!-- 明细标识号 -->
+  <mapping type="value-mapping" from="groupDetailList[].transactionId" to="BEPS_130_Out.ccti[].TransactionIdentification"/>
+  <!-- 业务类型编码 -->
+  <mapping type="value-mapping" from="groupDetailList[].categoryPurpose" to="BEPS_130_Out.ccti[].Proprietary2"/>
+  <!--货币符号-->
+  <mapping type="value-mapping" from="groupDetailList[].currencyUom" to="BEPS_130_Out.ccti[].CurrencyType"/>
+  <!--货币符号、结算金额-->
+  <mapping type="value-mapping" from="groupDetailList[].settlementAmount" to="BEPS_130_Out.ccti[].InterbankSettlementAmount"/>
+  <!-- ChargeBearer -->
+  <mapping type="value-mapping" from="groupDetailList[].chargeBearer" to="BEPS_130_Out.ccti[].ChargeBearer" />
+  <!-- 付款清算行行号 -->
+  <mapping type="value-mapping" from="groupDetailList[].debtorClearingBranch" to="BEPS_130_Out.ccti[].MemberIdentification"/>
+  <!-- 付款行行号 -->
+  <mapping type="value-mapping" from="groupDetailList[].debtorBranch" to="BEPS_130_Out.ccti[].Identification"/>
+  <!-- 收款清算行行号 -->
+  <mapping type="value-mapping" from="groupDetailList[].creditorClearingBranch" to="BEPS_130_Out.ccti[].MemberIdentification2"/>
+  <!--  收款行行号 -->
+  <mapping type="value-mapping" from="groupDetailList[].creditorBranch" to="BEPS_130_Out.ccti[].Identification2"/>
+  <!--付款人名称-->
+  <mapping type="value-mapping" from="groupDetailList[].debtorName" to="BEPS_130_Out.ccti[].Name"/>
+  <!--付款人地址 -->
+  <mapping type="value-mapping" from="groupDetailList[].debtorAddress" to="BEPS_130_Out.ccti[].AddressLine"/>
+  <!--付款人账号-->
+  <mapping type="value-mapping" from="groupDetailList[].debtorAccount" to="BEPS_130_Out.ccti[].Identification3"/>
+  <!-- 付款人开户行行号 -->
+  <mapping type="value-mapping" from="groupDetailList[].debtorAccountBranch" to="BEPS_130_Out.ccti[].MemberIdentification3"/>
+  <!--付款人开户行名称-->
+  <mapping type="value-mapping" from="groupDetailList[].debtorAccountBranchName" to="BEPS_130_Out.ccti[].Name2"/>
+  <!-- 收款人开户行行号 -->
+  <mapping type="value-mapping" from="groupDetailList[].creditorAccountBranch" to="BEPS_130_Out.ccti[].MemberIdentification4"/>
+  <!--收款人开户行名称-->
+  <mapping type="value-mapping" from="groupDetailList[].creditorAccountBranchName" to="BEPS_130_Out.ccti[].Name3"/>
+  <!--收款人名称-->
+  <mapping type="value-mapping" from="groupDetailList[].creditorName" to="BEPS_130_Out.ccti[].Name4"/>
+  <!-- 收款人地址 -->
+  <mapping type="value-mapping" from="groupDetailList[].creditorAddress" to="BEPS_130_Out.ccti[].AddressLine2"/>
+  <!-- 收款人账号 -->
+  <mapping type="value-mapping" from="groupDetailList[].creditorAccount" to="BEPS_130_Out.ccti[].Identification4"/>
+  <!-- 业务种类编码 -->
+  <mapping type="value-mapping" from="groupDetailList[].purpose" to="BEPS_130_Out.ccti[].Proprietary3"/>
+  <!--  银行附言 -->
+  <mapping type="value-mapping" from="groupDetailList[].summary" to="BEPS_130_Out.ccti[].Unstructured">
+   <![CDATA[
+		String ud = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud = "/H01/" + currentValue;
+		 }
+		return ud;
+	]]>
+  </mapping>
+  <!--  附言2 -->
+  <!--  
+  <mapping type="value-mapping" from="groupDetailList[].postscript" to="BEPS_130_Out.ccti[].Unstructured2">
+	 <![CDATA[
+		String ud2 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud2 = "/H02/"+currentValue;
+		 }
+		return ud2;
+	]]>
+  </mapping>
+   -->
+  <!--  客户 -->
+  <mapping type="value-mapping" from="groupDetailList[].postscript" to="BEPS_130_Out.ccti[].Unstructured3">
+	<![CDATA[
+		String ud3 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud3 = "/HA1/" + currentValue;
+		 }
+		return ud3;
+	]]>
+  </mapping>
+  <!--  备注2 -->
+  <!--
+  <mapping type="value-mapping" from="groupDetailList[].Unstructured4" to="BEPS_130_Out.ccti[].Unstructured4">
+	<![CDATA[
+		String ud4 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud4 = "/HA2/"+currentValue;
+		 }
+		return ud4;
+	]]>
+  </mapping>
+   -->
+  <!--  原CIS委托日期 -->
+  <mapping type="value-mapping" from="groupDetailList[].originalDetailEntryDate" to="BEPS_130_Out.ccti[].Unstructured5">
+	<![CDATA[
+		import java.util.Date;
+		import java.text.SimpleDateFormat;
+		String ud5 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+			Date dd = sdf1.parse(String.valueOf(currentValue));
+			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+			String issuedate = sdf2.format(dd);
+			ud5 = "/C14/" + issuedate;
+		 }
+		return ud5;
+	]]>
+  </mapping>
+  <!-- 原CIS交易序号 -->
+  <mapping type="value-mapping" from="groupDetailList[].cisTransactionSeq" to="BEPS_130_Out.ccti[].Unstructured6">
+  	<![CDATA[
+		String ud6 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud6 = "/EA2/" + currentValue;
+		 }
+		return ud6;
+	]]>
+  </mapping>
+  <!-- 原CIS票据号码 -->
+  <mapping type="value-mapping" from="groupDetailList[].billNo" to="BEPS_130_Out.ccti[].Unstructured7">
+  	<![CDATA[
+		String ud7 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud7 = "/E45/" + currentValue;
+		 }
+		return ud7;
+	]]>
+  </mapping>
+  <!-- 回执状态 -->
+  <mapping type="value-mapping" from="groupDetailList[].responseProcessCode" to="BEPS_130_Out.ccti[].Unstructured8">
+  	<![CDATA[
+		String ud8 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud8 = "/F60/" + currentValue;
+		 }
+		return ud8;
+	]]>
+  </mapping>
+  <!-- 业务拒绝处理码 -->
+  <mapping type="value-mapping" from="groupDetailList[].rejectCode" to="BEPS_130_Out.ccti[].Unstructured9">
+  	<![CDATA[
+		String ud9 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud9 = "/G00/"+currentValue;
+		 }
+		return ud9;
+	]]>
+  </mapping>
+  <!-- 业务拒绝信息 -->
+  <mapping type="value-mapping" from="groupDetailList[].rejectReason" to="BEPS_130_Out.ccti[].Unstructured10">
+  	<![CDATA[
+		String ud10 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud10 = "/H06/" + currentValue;
+		 }
+		return ud10;
+	]]>
+  </mapping>
+  <!-- NPC处理状态
+  <mapping type="value-mapping" from="groupDetailList[].Unstructured11" to="BEPS_130_Out.ccti[].Unstructured11">
+  	<![CDATA[
+		String ud11 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud11 = "/F61/"+currentValue;
+		 }
+		return ud11;
+	]]>
+  </mapping>-->
+  <!-- NPC轧差日期 
+  <mapping type="value-mapping" from="groupDetailList[].Unstructured12" to="BEPS_130_Out.ccti[].Unstructured12">
+    <![CDATA[
+		String ud12 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud12 = "/C01/"+currentValue;
+		 }
+		return ud12;
+	]]>
+  </mapping>-->
+  <!--  NPC轧差场次 
+  <mapping type="value-mapping" from="groupDetailList[].Unstructured13" to="BEPS_130_Out.ccti[].Unstructured13">
+    <![CDATA[
+		String ud13 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud13 = "/E05/"+currentValue;
+		 }
+		return ud13;
+	]]>
+  </mapping>-->
+  <!--  NPC清算日期/终态日期 
+  <mapping type="value-mapping" from="groupDetailList[].Unstructured14" to="BEPS_130_Out.ccti[].Unstructured14">
+    <![CDATA[
+		String ud14 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ud14 = "/C00/"+currentValue;
+		 }
+		return ud14;
+	]]>
+  </mapping>
+  -->
+</message-bean-mapping>

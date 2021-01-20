@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="CCMS_307MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.CCMS_307_bean">
+ <!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/>
+  <!--报文发起人 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigSenderSID"/>
+  <!--发送系统号 -->
+  <mapping type="value" to="MsgHeader.OrigReceiver">0000</mapping>
+  <!--报文接收人 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigReceiverSID"/>
+  <!--接收系统号 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">ccms.307.001.02</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value" to="MsgHeader.MesgPriority">1</mapping><!--目前先默认 -->
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+  <!-- 报文体 begin-->
+  <mapping type="value-mapping" from="messageIdentification" to="CCMS_307_Out.Identification" />
+  <!-- 报文标识号 -->
+  <!-- Modify by zhao_dl 20140521 start, 申请撤销时发起参与机构添写原业务的发起参与机构 -->
+  <!-- <mapping type="value-mapping" from="extendMap.oldLaunchBankNo" to="CCMS_307_Out.MemberIdentification"/> -->
+  <!-- <mapping type="value-mapping" from="instructingParty" to="CCMS_307_Out.MemberIdentification"/>发起参与机构 -->
+  <!-- Modify by zhao_dl 20140521 end -->
+  <mapping type="value" to="CCMS_307_Out.MemberIdentification2">0000</mapping>
+  <!-- 接收参与机构-->
+  <mapping type="script" to="CCMS_307_Out.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!--报文发送时间 -->
+  <mapping type="value-mapping" from="extendMap.oldTradeSeq" to="CCMS_307_Out.OriginalMessageIdentification"/> 
+  <!-- 原报文标识号 -->
+ <!-- <mapping type="value-mapping" from="extendMap.attrValue" to="CCMS_307_Out.OriginalMessageNameIdentification"/>
+  <mapping type="value" to="CCMS_307_Out.OriginalMessageNameIdentification">hvps.111.001.01</mapping>-->
+  <mapping type="value-mapping" from="extendMap.oldMessageType" to="CCMS_307_Out.OriginalMessageNameIdentification"/>
+  <!-- 原报文类型代码  -->
+  <mapping type="value-mapping" from="extendMap.remark" to="CCMS_307_Out.AdditionalInformation"/>
+  <!-- 备注-->
+  <!-- 报文体 end-->
+  
+  <!-- Add by zhao_dl 20140717 start -->
+  <manual-mapping> <![CDATA[
+		import java.util.Map;
+
+		Map extendMap = (Map) sourceMap.get("extendMap");
+		String oldLaunchBankNo = (String) extendMap.get("oldLaunchBankNo");//原发起参与机构
+		String instructingParty = (String) sourceMap.get("instructingParty");//发起直接参与机构
+		String prodCatalogId = (String) sourceMap.get("prodCatalogId"); // 通道
+		
+		if("HVPS".equals(prodCatalogId)){
+			target.getCCMS_307_Out().setMemberIdentification(oldLaunchBankNo);
+		} else if ("BEPS".equals(prodCatalogId)){
+			target.getCCMS_307_Out().setMemberIdentification(instructingParty);
+		}
+	]]> </manual-mapping>
+  <!-- Add by zhao_dl 20140717 end -->	
+</message-bean-mapping>

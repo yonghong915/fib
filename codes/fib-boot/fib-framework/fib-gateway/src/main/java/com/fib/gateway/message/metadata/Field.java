@@ -532,4 +532,70 @@ public class Field {
 			}
 		}
 	}
+	
+	public Field copy() {
+		Field var1 = new Field();
+		var1.setName(this.name);
+		var1.setFieldType(this.fieldType);
+		var1.setIso8583_no(this.iso8583_no);
+		var1.setReference(this.reference);
+		var1.setReferenceId(this.referenceId);
+		var1.setReferenceType(this.referenceType);
+		var1.setXpath(this.xpath);
+		var1.setRowXpath(this.rowXpath);
+		var1.setEditable(this.editable);
+		var1.setStrictDataLength(this.strictDataLength);
+		var1.setRequired(this.required);
+		var1.setDataType(this.dataType);
+		var1.setDataEncoding(this.dataEncoding);
+		var1.setLength(this.length);
+		var1.setLengthScript(this.lengthScript);
+		var1.setValue(this.value);
+		var1.setPattern(this.pattern);
+		var1.setLengthFieldDataType(this.lengthFieldDataType);
+		var1.setLengthFieldDataEncoding(this.lengthFieldDataEncoding);
+		var1.setLengthFieldLength(this.lengthFieldLength);
+		var1.setMaxLength(this.maxLength);
+		var1.setMinLength(this.minLength);
+		var1.setRefLengthFieldName(this.refLengthFieldName);
+		var1.setRefLengthField(this.refLengthField);
+		var1.setRefLengthFieldOffset(this.refLengthFieldOffset);
+		var1.setStartField(this.startField);
+		var1.setStartFieldName(this.startFieldName);
+		var1.setEndField(this.endField);
+		var1.setEndFieldName(this.endFieldName);
+		var1.setPrefix(this.prefix);
+		var1.setTabPrefix(this.tabPrefix);
+		var1.setFirRowPrefix(this.firRowPrefix);
+		var1.setSuffix(this.suffix);
+		var1.setTabSuffix(this.tabSuffix);
+		var1.setLastRowSuffix(this.lastRowSuffix);
+		var1.setRowCut(this.rowCut);
+		var1.setPadding(this.padding);
+		var1.setPaddingDirection(this.paddingDirection);
+		var1.setSubFields(this.subFields);
+		var1.setCombineOrTableFieldClassName(this.combineOrTableFieldClassName);
+		var1.setValueRange(this.valueRange);
+		var1.setRowNumFieldName(this.rowNumFieldName);
+		var1.setRowNumField(this.rowNumField);
+		var1.setTableName(this.tableName);
+		var1.setTable(this.table);
+		var1.setPrePackEvent(this.prePackEvent);
+		var1.setPostPackEvent(this.postPackEvent);
+		var1.setPreParseEvent(this.preParseEvent);
+		var1.setPostParseEvent(this.postParseEvent);
+		var1.setPreRowPackEvent(this.preRowPackEvent);
+		var1.setPostRowPackEvent(this.postRowPackEvent);
+		var1.setPreRowParseEvent(this.preRowParseEvent);
+		var1.setPostRowParseEvent(this.postRowParseEvent);
+		var1.setTag(this.tag);
+		var1.setCalcType(this.calcType);
+		var1.setExtendedAttributeText(this.extendedAttributeText);
+		var1.setExtendedAttributes(this.extendedAttributes);
+		var1.setMacFldDataCache(this.macFldDataCache);
+		var1.setExpression(this.expression);
+		var1.setDataCharset(this.dataCharset);
+		var1.setRemoveUnwatchable(this.isRemoveUnwatchable);
+		return var1;
+	}
 }

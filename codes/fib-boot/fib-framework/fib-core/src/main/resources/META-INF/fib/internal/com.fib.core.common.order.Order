@@ -1,0 +1,8 @@
+alipay=com.fib.core.common.order.support.AlipayOrder
+wechat=com.fib.core.common.order.support.WeChatOrder
+#adaptive=com.fib.core.common.order.support.AdaptiveOrder
+card=com.fib.core.common.order.support.CardOrder
+cash=com.fib.core.common.order.support.CashOrder
+coupon=com.fib.core.common.order.support.CouponOrder
+#wrapper=com.fib.core.common.order.support.OrderWrapper
+#wrapper2=com.fib.core.common.order.support.OrderWrapper2

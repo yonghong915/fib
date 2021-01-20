@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="BEPS_121MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.BEPS_121_bean">
+  <!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="OrigSender" to="MsgHeader.OrigSender"/>
+  <!--报文发起人 -->
+  <mapping type="value-mapping" from="OrigSenderSID" to="MsgHeader.OrigSenderSID"/>
+  <!--发送系统号 -->
+  <mapping type="value-mapping" from="OrigReceiver" to="MsgHeader.OrigReceiver"/>
+  <!--报文接收人 -->
+  <mapping type="value-mapping" from="OrigReceiverSID" to="MsgHeader.OrigReceiverSID"/>  <!--接收系统号 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">beps.121.001.01</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="MesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="MesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value-mapping" from="MesgPriority" to="MsgHeader.MesgPriority"/>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+  <!-- 报文体内容 -->
+  <!-- 批量报文组头 -->
+  <mapping type="value-mapping" from="MessageIdentification" to="BEPS_121_Out.PKGGrpHdr.MessageIdentification"/>
+  <!-- 报文标识号 -->
+  <mapping type="script" to="BEPS_121_Out.PKGGrpHdr.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!-- 报文发送时间，需要自己写脚本new出个时间 -->
+  <mapping type="value-mapping" from="InstructingDirectParty" to="BEPS_121_Out.PKGGrpHdr.InstructingDirectParty"/>
+  <!-- 发起直接参与机构 -->
+  <mapping type="value-mapping" from="InstructedDirectParty" to="BEPS_121_Out.PKGGrpHdr.InstructedDirectParty"/>
+  <!-- 接收直接参与机构 -->
+  <mapping type="value-mapping" from="numberOfTransactions" to="BEPS_121_Out.PKGGrpHdr.NumberOfTransactions"/>
+  <!-- 明细业务总笔数 -->
+  <mapping type="value-mapping" from="currencyUom" to="BEPS_121_Out.PKGGrpHdr.CurrencyType"/>
+  <!-- 币种 -->
+  <mapping type="value-mapping" from="ControlSum" to="BEPS_121_Out.PKGGrpHdr.ControlSum"/>
+  <!-- 明细业务总金额 -->
+  <mapping type="value" to="BEPS_121_Out.PKGGrpHdr.SystemCode">BEPS</mapping>
+  <mapping type="value-mapping" from="Remark" to="BEPS_121_Out.PKGGrpHdr.Remark"/>
+  <!-- 备注postscript？？ -->
+  <!-- NPC信息组件，这个由NPC填写，非必输的组件 -->
+  <mapping type="value-mapping" from="ProcessStatus" to="BEPS_121_Out.NPCPrcInf.ProcessStatus"/>
+  <mapping type="value-mapping" from="ProcessCode" to="BEPS_121_Out.NPCPrcInf.ProcessCode"/>
+  <!-- 处理码 -->
+  <mapping type="value-mapping" from="RejectInformation" to="BEPS_121_Out.NPCPrcInf.RejectInformation"/>
+  <!-- 拒绝信息 -->
+  <mapping type="value-mapping" from="NettingDate" to="BEPS_121_Out.NPCPrcInf.NettingDate"/>
+  <!-- 轧差日期 -->
+  <mapping type="value-mapping" from="NettingRound" to="BEPS_121_Out.NPCPrcInf.NettingRound"/>
+  <!-- 轧差场次 -->
+  <mapping type="value-mapping" from="SettlementDate" to="BEPS_121_Out.NPCPrcInf.SettlementDate"/>
+  <!-- 清算日期 -->
+  <mapping type="value-mapping" from="ReceiveTime" to="BEPS_121_Out.NPCPrcInf.ReceiveTime"/>
+  <mapping type="value-mapping" from="TransmitTime" to="BEPS_121_Out.NPCPrcInf.TransmitTime"/>
+  <!-- 报文正文其他信息 -->
+  <mapping type="value-mapping" from="table_01[].transactionIdentification" to="BEPS_121_Out.ccti[].TransactionIdentification"/>
+  <!-- 明细标识号 -->
+  <!-- 付款人名称 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.accountName" to="BEPS_121_Out.ccti[].Name"/>
+	<!-- 付款人地址 -->
+  <mapping type="value-mapping" from="table_01[].placingCustomer.address" to="BEPS_121_Out.ccti[].AddressLine"/>
+  <!-- 付款人账号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.accountNumber" to="BEPS_121_Out.ccti[].Identification"/>
+   <!-- 付款人开户行行号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.acctBankCode" to="BEPS_121_Out.ccti[].Issuer"/>
+  <!-- 付款行行号 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.acctBankCode" to="BEPS_121_Out.ccti[].Identification2"/>
+  <!-- 收款行行号 -->
+  <mapping type="value-mapping" from="table_01[].disbursement.acctBankCode" to="BEPS_121_Out.ccti[].Identification3"/>
+   <!-- 收款人名称-->
+  <mapping type="value-mapping" from="table_01[].disbursement.accountName" to="BEPS_121_Out.ccti[].Name2"/>
+   <!-- 收款人地址 -->
+  <mapping type="value-mapping" from="table_01[].endUserCustomer.address" to="BEPS_121_Out.ccti[].AddressLine2"/>
+  <!-- 收款人账号 -->
+  <mapping type="value-mapping" from="table_01[].disbursement.accountNumber" to="BEPS_121_Out.ccti[].Identification4"/>
+  <!-- 收款人开户行行号 -->
+  <mapping type="value-mapping" from="table_01[].disbursement.acctBankCode" to="BEPS_121_Out.ccti[].Issuer2"/>
+  <!-- 货币符号、金额 -->
+  <mapping type="value-mapping" from="table_01[].paymentMethodInfo.maxAmount" to="BEPS_121_Out.ccti[].Amount"/>
+  <!-- 币种 -->
+  <mapping type="value-mapping" from="table_01[].currencyUom" to="BEPS_121_Out.ccti[].CurrencyType"/>
+   <!-- 业务类型编码 -->
+  <mapping type="value-mapping" from="table_01[].operationCategory" to="BEPS_121_Out.ccti[].Proprietary"/>
+  <!-- 业务种类编码 -->
+  <mapping type="value-mapping" from="table_01[].businessType" to="BEPS_121_Out.ccti[].Proprietary2"/>
+  <!-- 附言summary？？ -->
+<mapping type="value-mapping" from="table_01[].publicNote" to="BEPS_121_Out.ccti[].AdditionalInformation"/>
+
+  <manual-mapping> <![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import com.giantstone.util.AmountUtil;
+		import java.text.SimpleDateFormat;
+		import java.util.Date;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A105;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A109;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A110;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A111;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A201;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A203;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A204;
+		import com.giantstone.cnaps2.messagebean.send.req.BEPS_ServiceElement121_A301;
+		import com.giantstone.common.util.CodeUtil;
+
+		List tables = (List) sourceMap.get("table_01");
+		String currencyType = (String)sourceMap.get("currencyUom");
+		for(int i=0;i<tables.size();i++){
+				Map tableMap = (Map) tables.get(i);
+				List prodects = (List)tableMap.get("products");
+				if(prodects == null || prodects.size() == 0) {
+						continue;
+				}
+				String flag = (String)tableMap.get("operationCategory");
+				Map answers = (Map) ((Map) prodects.get(0)).get("answers");
+				// 附言，将前台传入的备注赋值给报文中的附言
+				String remark = (String)answers.get("remark");
+				if(remark != null && remark != ""){
+					target.getBEPS_121_Out().getCctiAt(i).setAdditionalInformation(remark);
+				}
+				
+				Map paymentMethodInfo = (Map) tableMap.get("paymentMethodInfo");
+				Map disbursement = (Map) tableMap.get("disbursement");
+				Map placingCustomer = (Map) tableMap.get("placingCustomer");
+				Map endUserCustomer = (Map) tableMap.get("endUserCustomer");
+
+				//对现金汇款进行操作
+				//if("A108".equals(flag)||"A100".equals(flag)){
+					//现金汇款时，如果付款人账号没填，默认为0，付款人名称没填，取endUserCustomer里面的lastName，如果没有，赋空串
+					String accountNumber = paymentMethodInfo.get("accountNumber");
+					String accountName = paymentMethodInfo.get("accountName");
+					if(accountNumber==null||"".equals(accountNumber)){
+						accountNumber = "0";
+					}
+					if(accountName==null||"".equals(accountName)){
+						String endName = endUserCustomer.get("lastname");
+						if(endName==null||"".equals(endName)){
+							accountName = " ";
+						}else{
+							accountName = endName;
+						}
+					//}
+					target.getBEPS_121_Out().getCctiAt(i).setIdentification(accountNumber);
+					target.getBEPS_121_Out().getCctiAt(i).setName(accountName);
+				}
+            String date = answers.get("billViseDate");
+			if(date != null){
+				date = date.trim();
+			}
+			if ("A109".equals(flag)){
+		    //委托收款划回
+		    BEPS_ServiceElement121_A109 se=new BEPS_ServiceElement121_A109();
+				se.Type = answers.get("billViseType");
+				
+				if(date != null && !"".equals(date)){
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+					Date dd = sdf1.parse(date);
+					SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+					String billViseDate = sdf2.format(dd);
+					se.Date = billViseDate;
+				}
+				se.Number = answers.get("billViseNo");
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+			} else if ("A110".equals(flag)){
+				//托收承付划回
+			  BEPS_ServiceElement121_A110 se=new BEPS_ServiceElement121_A110();
+
+				if(date != null && !"".equals(date)){
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+					Date dd = sdf1.parse(date);
+					SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+					String billViseDate = sdf2.format(dd);
+					se.Date = billViseDate;
+				}
+				se.Number = answers.get("billViseNo");
+				String compensatedAmount =  answers.get("compensatedAmount");//赔偿金额
+				if(compensatedAmount != null && !"".equals(compensatedAmount)){
+					se.CurrencyType = currencyType;
+					se.AmendsAmount = compensatedAmount;
+				}
+				String repudiatedAmount = answers.get("repudiatedAmount");//拒付金额
+				if(repudiatedAmount != null && !"".equals(repudiatedAmount)){
+					se.CurrencyType2 = currencyType;
+					se.RejectAmount = repudiatedAmount;
+				}
+				String oldTrustSum = answers.get("oldTrustSum");//原托金额
+				if(oldTrustSum != null && !"".equals(oldTrustSum)){
+					se.CurrencyType3 = currencyType;
+					se.OriginalAmount = oldTrustSum;
+				}
+				String transactionAmount = answers.get("transactionAmount");//支付金额
+				if(transactionAmount != null && !"".equals(transactionAmount)){
+					se.CurrencyType4 = currencyType;
+					se.PaymentAmount = transactionAmount;
+				}
+				String extraAmount = answers.get("extraAmount");//多付金额
+				if(extraAmount != null && !"".equals(extraAmount)){
+					se.CurrencyType5 = currencyType;
+					se.OddAmount = extraAmount;
+				}
+				
+
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+			}else if ("A111".equals(flag)){
+				//商业汇票业务
+				BEPS_ServiceElement121_A111 se=new BEPS_ServiceElement121_A111();
+				if(date != null && !"".equals(date)){
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+					Date dd = sdf1.parse(date);
+					SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+					String billViseDate = sdf2.format(dd);
+					se.IssueDate = billViseDate;
+				}
+				se.DraftAmount = "CNY"+answers.get("parAmount");//出票金额
+				se.ApplyAccount = answers.get("applicantAccNo");//申请人账号
+				se.ApplyName = answers.get("applicantAccName");//申请人名称
+				String actuallySettleSum = answers.get("actuallySettleSum");//实际结算金额
+				if(actuallySettleSum != null &&  !"".equals(actuallySettleSum)){
+					se.SettlementAmount = "CNY"+actuallySettleSum;
+				}
+				String marginSum = answers.get("marginSum");//多余金额
+				if(marginSum != null && !"".equals(marginSum)){
+					se.OddAmount = "CNY"+marginSum;
+				}							
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+			}else if ("A201".equals(flag)){
+				//支票
+				BEPS_ServiceElement121_A201 se=new BEPS_ServiceElement121_A201();
+				if(date != null && !"".equals(date)){
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+					Date dd = sdf1.parse(date);
+					SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+					String billViseDate = sdf2.format(dd);
+					se.IssueDate = billViseDate;
+				}
+				
+				se.DrawerName = answers.get("billViserName");//出票人名称
+				String actuallySettleSum = answers.get("parAmount");//票据金额
+				if(actuallySettleSum != null){
+					se.CurrencyType = currencyType;
+					se.ChequeAmount = actuallySettleSum;
+				}
+				
+				String cashExchangeRate = answers.get("cashExchangeRate");//牌价
+				if(actuallySettleSum != null){
+					se.CurrencyType2 = currencyType;
+					se.Amount = actuallySettleSum;
+				}
+				se.Number = answers.get("billSheets");//票据张数	
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+				}else if ("A203".equals(flag)){
+				//银行汇票
+				BEPS_ServiceElement121_A203 se=new BEPS_ServiceElement121_A203();
+				if(date != null && !"".equals(date)){
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+					Date dd = sdf1.parse(date);
+					SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+					String billViseDate = sdf2.format(dd);
+					se.IssueDate = billViseDate;
+				}
+				//se.CurrencyType = currencyType;
+				se.DraftAmount = "CNY"+answers.get("parAmount");//出票金额
+				se.ApplyAccount = answers.get("applicantAccNo");//申请人账号
+				se.ApplyName = answers.get("applicantAccName");//申请人名称
+				String actuallySettleSum = answers.get("actuallySettleSum");//实际结算金额
+				if(actuallySettleSum != null){
+					//se.CurrencyType2 = currencyType;
+					se.SettlementAmount = "CNY"+actuallySettleSum;
+				}
+				String marginSum = answers.get("marginSum");//多余金额
+				if(marginSum != null){
+					//se.CurrencyType3 = currencyType;
+					se.OddAmount = "CNY"+marginSum;
+				}
+				String driftType = 	answers.get("driftType");//汇票种类
+				se.DraftType = driftType;	 
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+			}else if ("A204".equals(flag)){
+				//银行本票
+				BEPS_ServiceElement121_A204 se=new BEPS_ServiceElement121_A204();
+				if(date != null && !"".equals(date)){
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+					Date dd = sdf1.parse(date);
+					SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+					String billViseDate = sdf2.format(dd);
+					se.IssueDate = billViseDate;
+				}
+				//se.CurrencyType = currencyType;
+				se.DraftAmount = "CNY"+answers.get("parAmount");//出票金额
+				se.ApplyAccount = answers.get("applicantAccNo");//申请人账号
+				se.ApplyName = answers.get("applicantAccName");//申请人名称
+				String actuallySettleSum = answers.get("actuallySettleSum");//实际结算金额
+				if(actuallySettleSum != null){
+					//se.CurrencyType2 = currencyType;
+					se.SettlementAmount = "CNY"+actuallySettleSum;
+				}
+				String marginSum = answers.get("marginSum");//多余金额
+				if(marginSum != null){
+					//se.CurrencyType3 = currencyType;
+					se.OddAmount = "CNY"+marginSum;
+				}
+			    String billCategory = 	answers.get("billCategory");//本票种类
+				se.DraftType = billCategory;
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+			} else if("A105".equals(flag)){
+			    //退汇业务
+				BEPS_ServiceElement121_A105 se = new BEPS_ServiceElement121_A105();
+				se.OrgnlGrpHdr.OriginalMessageIdentification = answers.get("originalMessageIdentification");
+				se.OrgnlGrpHdr.OriginalInstructingParty = answers.get("originalInstructingParty");
+				se.OrgnlGrpHdr.OriginalMessageType = answers.get("originalMessageType");
+
+				se.OrgnlTx.InstructingIndirectParty = answers.get("instructingIndirectParty");
+				se.OrgnlTx.InstructedIndirectParty = answers.get("instructedIndirectParty");
+				se.OrgnlTx.OriginalTransactionIdentification = answers.get("originalTransactionIdentification");
+				se.OrgnlTx.OriginalTransactionTypeCode = answers.get("originalTransactionTypeCode");
+
+				se.content = answers.get("content");
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+			} else if("A301".equals(flag)){
+			    //缴费业务
+				BEPS_ServiceElement121_A301 se = new BEPS_ServiceElement121_A301();
+				se.FlowNumber = (String)tableMap.get("transactionIdentification");
+				se.Term = (String)tableMap.get("entryDate") + (String)tableMap.get("entryDate");
+				se.Type = "TP04";
+				se.Remark = (String)answers.get("remark");
+				target.getBEPS_121_Out().getCctiAt(i).setCustomerCreditTransfer(se);
+				}
+		}
+	]]> </manual-mapping>
+</message-bean-mapping>

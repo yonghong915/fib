@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="Prttn" type="xml" pack-mode="template" short-text="报文分片信息组件" message-charset="UTF-8" class="com.giantstone.cnaps2.messagebean.recv.req.Prttn">	
+	<!-- 报文中描述报文分片信息 -->
+	<field name="TotalNumber" short-text="总记录数" field-type="fixed-field" data-type="str" length="8" required="true" shield="true" xpath="default:TtlNb/text()"/>
+	<field name="StartNumber" short-text="本报文记录起始序号" field-type="fixed-field" data-type="str" length="8" required="true" shield="true" xpath="default:StartNb/text()"/>	
+	<field name="EndNumber" short-text="本报文记录截止序号" field-type="fixed-field" data-type="str" length="8" required="true" shield="true" xpath="default:EndNb/text()"/>		
+	<template>
+		<![CDATA[
+			<TtlNb>${TotalNumber}</TtlNb>
+			<StartNb>${StartNumber}</StartNb>
+			<EndNb>${EndNumber}</EndNb>
+		]]>
+	</template>
+</message-bean>

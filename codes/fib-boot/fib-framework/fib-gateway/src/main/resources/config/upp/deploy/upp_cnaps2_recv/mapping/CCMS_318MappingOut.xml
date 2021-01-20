@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="CCMS_318MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.CCMS_318_bean">
+   <!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/>
+  <!--报文发起人 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigSenderSID"/>
+  <!--发送系统号 -->
+  <mapping type="value-mapping" from="origReceiver" to="MsgHeader.OrigReceiver"/>
+  <!--报文接收人 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigReceiverSID"/>
+  <!--接收系统号 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">ccms.318.001.01</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value" to="MsgHeader.MesgPriority">1</mapping><!--目前先默认 -->
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+  <!-- 报文体 begin-->
+  <mapping type="value-mapping" from="messageIdentification" to="CCMS_318_Out.MessageIdentification"/>
+  <!-- 报文标识号 -->
+  <mapping type="script" to="CCMS_318_Out.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!-- 报文发送时间 -->
+  <mapping type="value" to="CCMS_318_Out.NumberOfTransactions">1</mapping>
+  <!-- NumberOfTransactions -->
+  <mapping type="value" to="CCMS_318_Out.SettlementMethod">CLRG</mapping>
+  <!-- SettlementInformation -->
+  <mapping type="value-mapping" from="instructingDirectParty" to="CCMS_318_Out.MemberIdentification"/>
+  <!-- 发起直接参与机构号 -->
+  <mapping type="value-mapping" from="instructingParty" to="CCMS_318_Out.Identification"/>
+  <!-- 发起参与机构行号 -->
+  <mapping type="value-mapping" from="instructedDirectParty" to="CCMS_318_Out.MemberIdentification2"/>
+  <!-- 接收直接参与机构号 -->
+  <mapping type="value-mapping" from="instructedParty" to="CCMS_318_Out.Identification2"/>
+  <!-- 接收参与机构行号 -->
+  <mapping type="value-mapping" from="extendMap.oldTradeSeq" to="CCMS_318_Out.OriginalMessageIdentification"/>
+  <!--  原报文标识号 
+  <mapping type="value-mapping" from="OriginalMessageNameIdentification" to="CCMS_318_Out.OriginalMessageNameIdentification"/>-->
+  <mapping type="value-mapping" from="extendMap.oldMessageType" to="CCMS_318_Out.OriginalMessageNameIdentification"></mapping>
+  <!-- 原报文类型代码 -->
+  <mapping type="value-mapping" from="extendMap.oldLaunchBankNo" to="CCMS_318_Out.Identification3"/>
+  <!-- 原报文发起参与者 -->
+  <!--<mapping type="value-mapping" from="AdditionalInformation" to="CCMS_318_Out.AdditionalInformation"/> -->
+  <mapping type="value-mapping" from="extendMap.returnType" to="CCMS_318_Out.AdditionalInformation">
+	<![CDATA[
+		String ai = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ai = "/F44/"+currentValue;
+		 }
+		return ai;
+	]]>
+  </mapping>
+  <!--  退回类型 -->
+  <!--<mapping type="value-mapping" from="AdditionalInformation2" to="CCMS_318_Out.AdditionalInformation2"/>-->
+  <mapping type="value-mapping" from="extendMap.postscript" to="CCMS_318_Out.AdditionalInformation2">
+	<![CDATA[
+		String ai2 = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ai2 = "/H01/"+currentValue;
+		 }
+		return ai2;
+	]]>
+  </mapping>
+  <!-- 附言 -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].originalTransactionIdentification" to="CCMS_318_Out.ccti[].OriginalTransactionIdentification"/>
+  <!-- 原明细标识号 -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].currencyType" to="CCMS_318_Out.ccti[].CurrencyType"/>
+  <!-- 币种 -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].returnedInterbankSettlementAmount" to="CCMS_318_Out.ccti[].ReturnedInterbankSettlementAmount"></mapping>
+  <!-- ReturnedInterbankSettlementAmount -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].memberIdentification3" to="CCMS_318_Out.ccti[].MemberIdentification3"/>
+  <!-- 原发起直接参与机构 -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].oldLaunchIndirectBankNo" to="CCMS_318_Out.ccti[].Identification4"/>
+  <!-- 原发起参与机构行 -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].identification4" to="CCMS_318_Out.ccti[].MemberIdentification4"/>
+  <!-- 原接收直接参与机构号 -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].oldReceiveIndirectBankNo" to="CCMS_318_Out.ccti[].Identification5"/>
+  <!-- 原接收参与机构行号 -->
+  <mapping type="value-mapping" from="extendMap.transactionInfos[].proprietary" to="CCMS_318_Out.ccti[].Proprietary"/>
+  <!-- 原业务类型 -->
+  <!-- 报文体 end-->
+
+</message-bean-mapping>

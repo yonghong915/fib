@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="BEPS_413MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.BEPS_413_bean">
+  <!-- 报文头 -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/>
+  <!--报文发起人 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigSenderSID"/>
+  <!--发送系统号 -->
+  <mapping type="value" to="MsgHeader.OrigReceiver">0000</mapping>
+  <!--报文接收人 -->
+  <mapping type="value" to="MsgHeader.OrigReceiverSID">BEPS</mapping>  <!--接收系统号 -->  
+  <mapping type="value" to="MsgHeader.MesgPriority">2</mapping>  <!--报文优先级-->
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">beps.413.001.01</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- mapping type="value-mapping" from="Reserve" to="MsgHeader.Reserve"></mapping>保留域 用空格填充 9位-->
+
+  <!-- 报文体内容 -->
+  <mapping type="value-mapping" from="messageIdentification" to="BEPS_413_Out.Identification"/>
+  <!--  报文标识号 -->
+  <mapping type="value-mapping" from="instructingDirectParty" to="BEPS_413_Out.MemberIdentification"/>
+  <!-- 发起直接参与机构 -->
+  <mapping type="value" to="BEPS_413_Out.MemberIdentification2">0000</mapping>
+  <!-- 接收直接参与机构 -->
+  <mapping type="script" to="BEPS_413_Out.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!-- 报文发送时间 -->
+  <mapping type="value" to="BEPS_413_Out.Identification2">1</mapping>    
+  <!-- Identification -->
+  <mapping type="value-mapping" from="instructingDirectParty" to="BEPS_413_Out.MemberIdentification3"/>
+  <!-- 原发起直接参与机构 -->
+  <mapping type="value-mapping" from="extendMap.originalMessageIdentification" to="BEPS_413_Out.OriginalMessageIdentification"/>
+  <!-- 原报文标识号 -->
+  <mapping type="value-mapping" from="extendMap.originalMessageNameIdentification" to="BEPS_413_Out.OriginalMessageNameIdentification"/>
+  <!-- 原报文类型号 -->
+  <mapping type="value-mapping" from="extendMap.summary" to="BEPS_413_Out.AdditionalInformation"/>
+  <!-- 附言 -->
+</message-bean-mapping>

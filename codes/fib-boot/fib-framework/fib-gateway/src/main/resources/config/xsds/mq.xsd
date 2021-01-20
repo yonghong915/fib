@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fib.com/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="mq-channel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="queue" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="message-key" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="code-recognizer" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attributeGroup ref="mq_channel-attrgroup" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="mq_channel-attrgroup">
+		<xs:attribute name="type" type="channelType" use="required" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="ccsid" type="xs:string" />
+		<xs:attribute name="timeout" type="xs:int" use="required" />
+	</xs:attributeGroup>
+
+	<xs:element name="queue">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="message-key-recognizer" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attributeGroup ref="queue-attrgroup" xmlns="http://www.fib.com/schema" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="message-key-recognizer">
+		<xs:complexType>
+			<xs:attribute name="recognizer-id" type="xs:string" />
+			<xs:attribute name="from-index" type="xs:int" />
+			<xs:attribute name="key-length" type="xs:int" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="message-key">
+		<xs:complexType>
+			<xs:attribute name="from-index" type="xs:int" />
+			<xs:attribute name="key-length" type="xs:int" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="queue-attrgroup">
+		<xs:attribute name="type" type="queueType" use="required" xmlns="http://www.fib.com/schema" />
+		<xs:attribute name="server-address" type="xs:string" use="required" />
+		<xs:attribute name="port" type="xs:int" use="required" />
+		<xs:attribute name="queue-manager" type="xs:string" use="required" />
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="channel" type="xs:string" use="required" />
+	</xs:attributeGroup>
+
+	<xs:element name="code-recognizer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="request-code-set" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="response-code-set" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+			<xs:attribute name="recognizer-id" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="request-code-set">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="code" type="xs:string" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="response-code-set">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="code" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="channelType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="client" />
+			<xs:enumeration value="server" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="queueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="send" />
+			<xs:enumeration value="receive" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="CCMS_990_Res_MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.CCMS_990_bean">
+<!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping><!--版本 -->  
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/><!--报文发起人 -->
+  <mapping type="value-mapping" from="senderSID" to="MsgHeader.OrigSenderSID"/><!--发送系统号 -->
+  <mapping type="value-mapping" from="origReceiver" to="MsgHeader.OrigReceiver"/><!--报文接收人 -->
+  <mapping type="value-mapping" from="receiverSID" to="MsgHeader.OrigReceiverSID"/><!--接收系统号 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping><!--报文发起日期 -->  
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping><!--报文发起时间-->  
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping><!-- 格式类型 -->  
+  <mapping type="value" to="MsgHeader.MesgType">ccms.990.001.02</mapping><!-- 报文类型代码 -->  
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/><!-- 通信级标识号 -->  
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>  
+  <mapping type="value" to="MsgHeader.MesgPriority">3</mapping>  
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->  
+
+  <!-- 报文体 begin-->
+  <mapping type="value-mapping" from="origRequestSender" to="CCMS_990_Out.OrigSender"></mapping><!-- 报文发起人 -->
+  <mapping type="value-mapping" from="origRequestSendDate" to="CCMS_990_Out.OrigSendDate" ></mapping><!-- 报文发起日期 -->
+  <mapping type="value-mapping" from="origRequestMesgType" to="CCMS_990_Out.MesgType2" ></mapping><!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="origRequestMesgID" to="CCMS_990_Out.MessageIdentification"></mapping><!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="origRequestMesgRefID" to="CCMS_990_Out.MessageReferenceIdentification" ></mapping><!-- 通信级参考号 -->
+  <mapping type="value-mapping" from="processStatus" to="CCMS_990_Out.MessageProcessCode"></mapping><!-- 处理状态 -->
+  <!-- 报文体 end-->
+</message-bean-mapping>

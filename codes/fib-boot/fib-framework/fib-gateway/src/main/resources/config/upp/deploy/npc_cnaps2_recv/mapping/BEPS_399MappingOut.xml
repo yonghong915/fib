@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="BEPS_399MappingOut" source-type="message-bean" target-type="map">
+	<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="paymentMethodInfo.bankCode"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="OrigSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="disbursement.bankCode"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="OrigReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="OrigSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="OrigSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="StructType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="MesgType"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="MesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="MesgRefID"></mapping><!-- 通信级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="Reserve"></mapping><!--保留域-->
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping><!-- 结束标识 -->
+    <!-- 报文头 end-->
+
+	<!-- 报文体内容 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.MessageIdentification" to="MessageIdentification"></mapping><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.CreationDateTime" to="CreationDateTime"></mapping><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.Name" to="Name"></mapping><!-- 发起直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.MemberIdentification" to="MemberIdentification"></mapping><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.OriginalMessageIdentification" to="OriginalMessageIdentification"></mapping><!-- 原报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.OriginalMessageNameIdentification" to="OriginalMessageNameIdentification"></mapping><!-- 原报文类型代码 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.OriginalPaymentInformationIdentification" to="OriginalPaymentInformationIdentification"></mapping><!-- OriginalPaymentInformationIdentification -->
+	<mapping type="value-mapping" from="BEPS_399_Out.AdditionalInformation" to="AdditionalInformation"></mapping><!--  附言 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.StatusIdentification" to="StatusIdentification"></mapping><!-- 业务回执状态 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.Proprietary" to="Proprietary"></mapping><!-- 业务拒绝处理码 -->
+	<mapping type="value-mapping" from="BEPS_399_Out.AdditionalInformation" to="AdditionalInformation"></mapping><!--  业务拒绝原因 -->
+
+  </message-bean-mapping>

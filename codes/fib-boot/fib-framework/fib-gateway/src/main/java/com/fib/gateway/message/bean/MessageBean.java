@@ -46,4 +46,12 @@ public abstract class MessageBean {
 
 	public void cover(MessageBean bean) {
 	}
+	
+	public void shieldSensitiveFields() {
+		this.shield = true;
+	}
+
+	public void unshieldSensitiveFields() {
+		this.shield = false;
+	}
 }

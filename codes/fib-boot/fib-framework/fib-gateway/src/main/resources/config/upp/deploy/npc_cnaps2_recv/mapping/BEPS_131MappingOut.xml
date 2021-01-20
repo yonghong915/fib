@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<message-bean-mapping id="BEPS_131MappingOut" source-type="message-bean" target-type="map">
+	<mapping type="value" to="serviceId">receiveBatchPaymentOrder</mapping>
+	<mapping type="value" to="batchType">immTIDIn</mapping>
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value" to="prodCatalogId">BEPS</mapping><!--接收系统号-->	
+		<!--验签结果-->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!-- 报文头 begin -->
+	<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping><!-- 开始标识 -->
+	<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID" ></mapping><!--版本 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!--报文发起人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!--发送系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!--报文接收人 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping><!--接收系统号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate"></mapping><!--报文发起日期 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="OrigSendTime"></mapping><!--报文发起时间-->
+	<mapping type="value-mapping" from="MsgHeader.StructType" to="StructType"></mapping><!-- 格式类型 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="messageTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID"></mapping><!-- 通信级标识号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="MesgPriority"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="MesgDirection"></mapping>
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="Reserve"></mapping>
+	<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping><!-- 结束标识 -->
+    <!-- 报文头 end-->
+
+
+	<!-- 报文体内容 -->
+	<!-- 批量报文组头 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.MessageIdentification" to="messageIdentification"></mapping><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.CreationDateTime" to="CreationDateTime"></mapping><!-- 报文发送时间，需要自己写脚本new出个时间 -->
+  	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.InstructingDirectParty" to="instructingParty"></mapping><!-- 发起直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.InstructedDirectParty" to="instructedParty"></mapping><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.NumberOfTransactions" to="itemNumber"></mapping><!-- 明细业务总笔数 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.CurrencyType" to="CurrencyType"></mapping><!-- 币种 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.ControlSum" to="itemTotal"></mapping><!-- 明细业务总金额 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.SystemCode" to="systemCode"></mapping>
+	<mapping type="value-mapping" from="BEPS_131_Out.PKGGrpHdr.Remark" to="Remark"></mapping><!-- 备注postscript？？ -->
+
+
+	<!-- 报文正文其他信息 -->
+
+	<mapping type="value-mapping" from="BEPS_131_Out.EndToEndIdentification" to="orderList[0].endToEndIdentification"/><!-- 端到端标识号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.TransactionIdentification" to="orderList[0].transactionIdentification"/><!-- 明细标识号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Name" to="orderList[0].draweeAccName"></mapping><!-- 付款人名称 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.AddressLine" to="orderList[0].draweeAddress"/><!-- 付款人地址 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Identification" to="orderList[0].draweeAccNo"/><!-- 付款人账号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Issuer" to="orderList[0].draweeBankCode"/><!-- 付款人开户行行号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Identification2" to="orderList[0].paymentBankCode"/><!-- 付款行行号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Identification3" to="creditorBranch"/><!-- 收款行行号-->
+	<mapping type="value-mapping" from="BEPS_131_Out.Name2" to="creditorName"/><!-- 收款人名称 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.AddressLine2" to="payeeAddress"/><!-- 收款人地址 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Identification4" to="creditorAccount"/><!-- 收款人账号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Issuer2" to="payeeBankCode"/><!-- 收款人开户行行号 -->
+    <mapping type="value-mapping" from="BEPS_131_Out.CurrencyType" to="orderList[0].currencyCategory"/><!-- 币种 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Amount" to="orderList[0].transactionSum"/><!-- 货币符号、金额 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Proprietary" to="categoryPurpose"/><!-- 业务类型编码 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Proprietary2" to="orderList[0].operationCategory"/><!-- 业务种类编码 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.ContractNumber" to="orderList[0].manyAgreementId"/><!-- 合同（协议）号 -->
+
+    <!-- 附加域 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.IssueDate" to="orderList[0].products[0].answers.billViseDate"><!-- 出票日期 -->
+	<![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+		 String date = ""; 
+		 if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			date = currentValue;
+		    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date dd = sdf1.parse(date);
+		    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
+		    String reportForms = sdf2.format(dd);
+		    return reportForms;
+		 }else{
+		 return  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 }
+		]]> 
+		</mapping>
+	<mapping type="value-mapping" from="BEPS_131_Out.CurrencyType2" to="orderList[0].products[0].answers.CurrencyType"/><!-- 币种 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Amount2" to="orderList[0].products[0].answers.parAmount"/><!-- 出票金额 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PayDate" to="orderList[0].products[0].answers.promptDate"><!-- 提示付款日期 -->
+	<![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+		 String date = ""; 
+		 if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			date = currentValue;
+		    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date dd = sdf1.parse(date);
+		    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");	 
+		    String reportForms = sdf2.format(dd);
+		    return reportForms;
+		 }else{
+		 return  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 }
+		]]> 
+   </mapping>
+	<mapping type="value-mapping" from="BEPS_131_Out.Number" to="orderList[0].products[0].answers.billNo"/><!-- 票据号码 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.PaymentPassword" to="orderList[0].products[0].answers.voucherPwd"/><!-- 支付密码 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.MaturityDate" to="orderList[0].products[0].answers.voucherFallInDate">
+  	<![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+		 String date = "";
+		 if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			date = currentValue;
+		    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date dd = sdf1.parse(date);
+		    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
+		    String reportForms = sdf2.format(dd);
+		    return reportForms;
+		 }else{
+		 return  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 }
+		]]> 
+    </mapping><!-- 票据到期日期 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Seal" to="orderList[0].products[0].answers.secretStamp"/><!-- 票据密押 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.AcceptanceagreementNumber" to="orderList[0].products[0].answers.acceptProtocolNo"/><!-- 承兑协议号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.AcceptanceDate" to="orderList[0].products[0].answers.acceptDate">
+    	<![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+		 String date = "";
+		 if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			date = currentValue;
+		    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date dd = sdf1.parse(date);
+		    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
+		    String reportForms = sdf2.format(dd);
+		    return reportForms;
+		 }else{
+		 return  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 }
+		]]>
+  </mapping><!-- 承兑日期 -->
+
+	<mapping type="value-mapping" from="BEPS_131_Out.AcceptanceName" to="orderList[0].products[0].answers.accepter"/><!-- 承兑人 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.ApplyName" to="orderList[0].products[0].answers.applyName"/><!-- 申请人名称 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.ApplyAccount" to="orderList[0].products[0].answers.applyAccount"/><!-- 申请人账号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.DrawerName" to="orderList[0].products[0].answers.arawerName"/><!-- 出票人全称 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.DrawerAccount" to="orderList[0].products[0].answers.remitterAccNo"/><!-- 出票人账号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.TransactionContractNumber" to="orderList[0].products[0].answers.tradePactNo"/><!-- 交易合同号 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.Purpose" to="orderList[0].products[0].answers.usering"/><!-- 用途 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.NumberOfEndorser" to="orderList[0].products[0].answers.numberOfEndorser"/><!-- 背书人数 -->
+	<mapping type="value-mapping" from="BEPS_131_Out.EndorsorDetails[].Name3" to="orderList[0].products[0].answers.details[].Name"/><!-- 背书人名称 -->
+    <mapping type="script"  to="orderList[0].products[0].answers.oldPayeeAccName">
+	<![CDATA[
+		//如果被书人人数大于0，即原收款人名称作为付款人名称，传给核心，如果不大于0，此字段部需要传，已和秦洁确认。传了就错了。
+		//原收款人名称因批次明细中没有字段映射，故取summary。否则不能存到answers
+		String numberOfEndorser = (String)sourceBean.BEPS_131_Out.getNumberOfEndorser();
+		String oldPayeeAccName = "";
+		if(!"0".equals(numberOfEndorser)){
+			oldPayeeAccName = (String)sourceBean.BEPS_131_Out.getOriginalCreditorName();		
+		}
+		return oldPayeeAccName;
+	]]>
+   </mapping>
+  </message-bean-mapping>

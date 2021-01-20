@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="SAPS_372MappingOut" source-type="message-bean" target-type="map">
+	<mapping type="value" to="serviceId">processCommunicationEvent</mapping><!-- 新交流事件 -->
+	<mapping type="value" to="extendMap.requestOrResponse">response</mapping> 
+	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>
+	<mapping type="value" to="productId">X008sp372</mapping>
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.MessageIdentification" to="subject"></mapping><!-- 报文标识号-->
+	<mapping type="value-mapping" from="MsgHeader.MesgType" to="contentMimeTypeId"></mapping><!-- 报文类型代码 例如：beps.008.001.01-->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.InstructedParty" to="InstructedParty"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="checkEscortFlag" to="checkEscortFlag"/> <!--核押验签结果 -->
+	<!-- 报文头 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.BeginFlag" to="BeginFlag"></mapping> 开始标识 -->
+	<!--<mapping type="value-mapping" from="MsgHeader.VersionID" to="VersionID"></mapping> 版本号 -->
+	<mapping type="value-mapping" from="MsgHeader.OrigSender" to="extendMap.origSender"></mapping><!-- 报文发起人，14位 不足则后补空格 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSenderSID" to="extendMap.origSenderSID"></mapping><!-- 发送系统号  BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigReceiver" to="extendMap.origReceiver"></mapping><!-- 报文接收人 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigReceiverSID" to="extendMap.origReceiverSID"></mapping> <!--接收系统号 BEPS-->
+	<mapping type="value-mapping" from="MsgHeader.OrigSendDate" to="extendMap.origSendDate" ></mapping><!-- 报文发起日期20100501 -->
+  	<mapping type="value-mapping" from="MsgHeader.OrigSendTime" to="extendMap.origSendTime"></mapping><!-- 报文发起时间094508-->
+  	<mapping type="value-mapping" from="MsgHeader.StructType" to="extendMap.StructType"></mapping><!-- 报文格式 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgID" to="extendMap.mesgID" ></mapping><!-- 通信级标志号 -->
+	<mapping type="value-mapping" from="MsgHeader.MesgRefID" to="extendMap.mesgRefID"></mapping><!--通讯级参考号-->
+  	<mapping type="value-mapping" from="MsgHeader.MesgPriority" to="extendMap.MesgPriority"></mapping><!-- 报文优先级-->
+	<mapping type="value-mapping" from="MsgHeader.MesgDirection" to="extendMap.MesgDirection"></mapping><!--报文传输方向 -->
+    <mapping type="value-mapping" from="MsgHeader.Reserve" to="extendMap.Reserve"></mapping><!--保留域-->
+	<!--<mapping type="value-mapping" from="MsgHeader.EndFlag" to="EndFlag"></mapping> 结束标识 -->
+
+	<!-- 报文体 -->
+	<!-- 业务头 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.MessageIdentification" to="messageIdentification"/><!-- 报文标识号 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.CreationDateTime" to="extendMap.creationDateTime"/><!-- 报文发送时间 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.InstructingDirectParty" to="extendMap.instructingDirectParty"/><!-- 发起直接参与机构-->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.InstructingParty" to="partyIdFrom"/><!--发起参与机构 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.InstructedDirectParty" to="extendMap.instructedDirectParty"/><!-- 接收直接参与机构 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.InstructedParty" to="extendMap.instructedParty"/><!-- 接收行行号 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.InstructedParty" to="partyIdTo"/><!-- 接收参与机构 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.SystemCode" to="prodCatalogId"/><!-- 系统编号 -->
+	<mapping type="value-mapping" from="SAPS_372_Out.GrpHdr.Remark" to="extendMap.remark"/><!-- 备注 -->
+
+	<!-- 其他 -->
+		<mapping type="value-mapping" from="SAPS_372_Out.NotificationType" to="extendMap.notificationType"></mapping><!--通知类型-->
+	<manual-mapping>
+		<![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import com.giantstone.util.AmountUtil;
+		import com.giantstone.cnaps2.messagebean.recv.req.SAPS_ServiceElement372_TC00;
+		import com.giantstone.cnaps2.messagebean.recv.req.SAPS_ServiceElement372_TC01;
+		import com.giantstone.cnaps2.messagebean.recv.req.SAPS_ServiceElement372_TC02;
+		import com.giantstone.cnaps2.messagebean.recv.req.SAPS_ServiceElement372_TC03;
+		import com.giantstone.cnaps2.messagebean.recv.req.SAPS_ServiceElement372_TC04;
+		import com.giantstone.cnaps2.messagebean.recv.req.SAPS_ServiceElement372_TC05;
+		import com.giantstone.cnaps2.messagebean.recv.req.SAPS_ServiceElement372_TC06;
+		import com.giantstone.common.util.CodeUtil;
+		
+		Map extendMap =target.get("extendMap");
+
+		String flag = sourceBean.SAPS_372_Out.NotificationType;
+			if("TC00".equals(flag)){
+				SAPS_ServiceElement372_TC00  se = (SAPS_ServiceElement372_TC00)sourceBean.SAPS_372_Out.NotificationContent;
+				extendMap.put("MemberIdentification",se.MemberIdentification);
+				extendMap.put("PartyCategory", se.PartyCategory);
+				extendMap.put("EffectiveDate", se.EffectiveDate);
+				extendMap.put("AccountStatus", se.AccountStatus);
+				if(se.Balance != null &&  !"".equals(se.Balance.trim())){
+					extendMap.put("CurrencyType3", se.Balance.trim().substring(0,3));
+					extendMap.put("Balance", se.Balance.trim().substring(3));
+				}
+				if(se.RestrictAmountLowerLimit != null &&  !"".equals(se.RestrictAmountLowerLimit.trim())){
+					extendMap.put("CurrencyType4", se.RestrictAmountLowerLimit.trim().substring(0,3));
+					extendMap.put("RestrictAmountLowerLimit", se.RestrictAmountLowerLimit.trim().substring(3));
+				}
+			}else if ("TC01".equals(flag)){
+			    SAPS_ServiceElement372_TC01 se = (SAPS_ServiceElement372_TC01)sourceBean.SAPS_372_Out.NotificationContent;
+			    extendMap.put("MemberIdentification", se.MemberIdentification);
+				extendMap.put("Name", se.Name);
+				extendMap.put("CurrencyType", se.CurrencyType);
+				extendMap.put("OverdraftUpperLimit", se.OverdraftUpperLimit);
+				if(se.RestrictAmountLowerLimit != null &&  !"".equals(se.RestrictAmountLowerLimit.trim())){
+					extendMap.put("CurrencyType5", se.RestrictAmountLowerLimit.trim().substring(0, 3));
+					extendMap.put("RestrictAmountLowerLimit", se.RestrictAmountLowerLimit.trim().substring(3));
+				}
+				extendMap.put("DebitRestrictSetting", se.DebitRestrictSetting);
+				extendMap.put("CreditRestrictSetting", se.CreditRestrictSetting);
+			}else if ("TC02".equals(flag)){
+			    SAPS_ServiceElement372_TC02 se=(SAPS_ServiceElement372_TC02)sourceBean.SAPS_372_Out.NotificationContent;
+			    extendMap.put("EffectiveDate", se.EffectiveDate);
+				extendMap.put("SwitchType", se.SwitchType);
+			}else if ("TC03".equals(flag)){
+			    SAPS_ServiceElement372_TC03 se=(SAPS_ServiceElement372_TC03)sourceBean.SAPS_372_Out.NotificationContent;
+			    extendMap.put("SwitchType", se.SwitchType);
+				extendMap.put("MemberIdentification", se.MemberIdentification);
+				extendMap.put("CurrencyType1", se.CurrencyType1);
+				extendMap.put("AvailableWarningValue", se.AvailableWarningValue);
+				extendMap.put("WarningPlusMinusType", se.WarningPlusMinusType);
+			}else if ("TC04".equals(flag)){
+			    SAPS_ServiceElement372_TC04 se=(SAPS_ServiceElement372_TC04)sourceBean.SAPS_372_Out.NotificationContent;
+			    extendMap.put("MemberIdentification", se.MemberIdentification);
+				extendMap.put("PledgeFinancingIdentification", se.PledgeFinancingIdentification);
+				extendMap.put("CurrencyType2", se.CurrencyType2);
+				extendMap.put("StartingPoint", se.StartingPoint);
+			}else if ("TC05".equals(flag)){
+			    SAPS_ServiceElement372_TC05 se=(SAPS_ServiceElement372_TC05)sourceBean.SAPS_372_Out.NotificationContent;
+			    extendMap.put("Debtor", se.Debtor);
+				extendMap.put("Creditor", se.Creditor);
+				extendMap.put("ProtocolNumber", se.ProtocolNumber);
+				extendMap.put("EffectiveIdentification", se.EffectiveIdentification);
+			}else if ("TC06".equals(flag)){
+			    SAPS_ServiceElement372_TC06 se=(SAPS_ServiceElement372_TC06)sourceBean.SAPS_372_Out.NotificationContent;
+			    extendMap.put("MemberIdentification", se.MemberIdentification);
+				extendMap.put("PartyCategory", se.PartyCategory);
+				extendMap.put("HVPSPayAccount", se.HVPSPayAccount);
+				if(se.HVPSPayBalance != null &&  !"".equals(se.HVPSPayBalance.trim())){
+					extendMap.put("CurrencyType6", se.HVPSPayBalance.trim().substring(0, 3));
+					extendMap.put("HVPSPayBalance", se.HVPSPayBalance.trim().substring(3));
+				}
+				extendMap.put("BEPSPayAccount", se.BEPSPayAccount);
+				if(se.BEPSPayBalance != null &&  !"".equals(se.BEPSPayBalance.trim())){
+					extendMap.put("CurrencyType7", se.BEPSPayBalance.trim().substring(0, 3));
+					extendMap.put("BEPSPayBalance", se.BEPSPayBalance.trim().substring(3));
+				}
+				extendMap.put("SettlementAccount", se.SettlementAccount);
+				if(se.SettlementBalance != null &&  !"".equals(se.SettlementBalance.trim())){
+					extendMap.put("CurrencyType8", se.SettlementBalance.trim().substring(0, 3));
+					extendMap.put("SettlementBalance", se.SettlementBalance.trim().substring(3));
+				}
+			}
+		]]>
+	</manual-mapping>
+</message-bean-mapping>

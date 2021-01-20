@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="NbInf" type="xml" pack-mode="template" short-text="期数信息" message-charset="UTF-8" class="com.giantstone.cnaps2.messagebean.recv.req.NbInf">
+
+	<!--是公共管理系统涉及到期数及业务系统的部分，包含系统期数、记录数目-->
+
+	<field name="ChangeNumber" short-text="变更期数" field-type="fixed-field" data-type="str" length="8" xpath="default:ChngNb/text()"/>
+	<field name="ChangeRecordNumber" short-text="变更记录数目" field-type="fixed-field" data-type="str" length="8" xpath="default:ChngRcrdNb/text()"/>
+	<template>
+		<![CDATA[
+				<ChngNb>${ChangeNumber}</ChngNb>
+				<ChngRcrdNb>${ChangeRecordNumber}</ChngRcrdNb>
+		]]>
+	</template>
+</message-bean>

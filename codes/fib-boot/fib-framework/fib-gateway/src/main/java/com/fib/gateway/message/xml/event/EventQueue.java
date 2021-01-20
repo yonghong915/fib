@@ -3,6 +3,8 @@ package com.fib.gateway.message.xml.event;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
 public class EventQueue {
 	private List<Event> queue = new LinkedList<>();
 
@@ -38,5 +40,20 @@ public class EventQueue {
 			}
 		}
 		return e;
+	}
+
+	public void startDispatch(int eventHandlerNumber) {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(eventHandlerNumber);
+		executor.setMaxPoolSize(eventHandlerNumber);
+		executor.setQueueCapacity(500);
+		executor.setKeepAliveSeconds(60);
+		executor.setThreadNamePrefix("EventHandlerAsync-");
+		executor.initialize();
+		for (int i = 0; i < eventHandlerNumber; i++) {
+			EventHandlerThread t = new EventHandlerThread();
+			t.setQueue(this);
+			executor.execute(t);
+		}
 	}
 }

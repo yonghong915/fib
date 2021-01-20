@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="HVPS_111_Out" type="xml" xpath="." pack-mode="template" message-charset="UTF-8" class="com.giantstone.cnaps2.messagebean.send.req.HVPS_111_Out">
+
+	<!--客户发起汇兑业务报文<HVPS.111.001.01> -->
+    <!--报文信息-->
+	<field name="MessageIdentification" short-text="报文标识号" field-type="fixed-field" data-type="str" length="35" required="true" shield="true" xpath="Document/FIToFICstmrCdtTrf/GrpHdr/MsgId/text()"/>
+
+	<field name="SettlementMethod" short-text="Code" field-type="fixed-field" data-type="str" length="4" required="true" shield="false" xpath="Document/FIToFICstmrCdtTrf/GrpHdr/SttlmInf/SttlmMtd/text()"/>
+
+		<field name="SettlementPriority" short-text="业务优先级" field-type="fixed-field" data-type="str" length="16" required="true" shield="true" xpath="Document/FIToFICstmrCdtTrf/CdtTrfTxInf/CdtTrfTxInf/SttlmPrty/text()">
+			<value-range>
+				<value short-text="普通" value="NORM"/>
+				<value short-text="紧急" value="HIGH"/>
+				<value short-text="特急" value="URGT"/>
+			</value-range>
+		</field>
+
+<field name="MemberIdentification" short-text="付款清算行行号" field-type="fixed-field" data-type="str" length="14" required="true" shield="true" xpath="default:Document/default:FIToFICstmrCdtTrf/default:CdtTrfTxInf/default:InstgAgt/default:FinInstnId/default:ClrSysMmbId/default:MmbId/text()"/>
+<!-- 大额暂时配置业务类型为普通汇兑，不需要配置附加数据的 -->
+<template><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+	<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.02">
+		<FIToFICstmrCdtTrf>
+			<GrpHdr>
+				<MsgId>${MessageIdentification}</MsgId>
+				<CreDtTm>${CreationDateTime}</CreDtTm>
+				<NbOfTxs>${NumberOfTransactions}</NbOfTxs>
+				<SttlmInf>
+					<SttlmMtd>${SettlementMethod}</SttlmMtd>
+				</SttlmInf>
+			</GrpHdr>
+
+			<CdtTrfTxInf>
+				<PmtId>
+					<EndToEndId>${EndToEndIdentification}</EndToEndId>
+					<TxId>${TransactionIdentification}</TxId>
+				</PmtId>
+
+				<PmtTpInf>
+					<CtgyPurp>
+						<Prtry>${Proprietary}</Prtry>
+					</CtgyPurp>
+				</PmtTpInf>
+
+				<IntrBkSttlmAmt Ccy="${CurrencyType}">${InterbankSettlementAmount}</IntrBkSttlmAmt>
+
+				<SttlmPrty>${SettlementPriority}</SttlmPrty>
+
+				<ChrgBr>${ChargeBearer}</ChrgBr>
+
+				<InstgAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification}</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+					<BrnchId>
+						<Id>${Identification}</Id>
+					</BrnchId>
+				</InstgAgt>
+
+				<InstdAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification2}</MmbId>
+						</ClrSysMmbId>
+					</FinInstnId>
+					<BrnchId>
+						<Id>${Identification2}</Id>
+					</BrnchId>
+				</InstdAgt>
+
+				<IntrmyAgt1>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification3}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name}</Nm>
+					</FinInstnId>
+				</IntrmyAgt1>
+
+				<IntrmyAgt2>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification4}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name2}</Nm>
+					</FinInstnId>
+				</IntrmyAgt2>
+
+				<Dbtr>
+					<Nm>${Name3}</Nm>
+					<PstlAdr>
+						<AdrLine>${AddressLine}</AdrLine>
+					</PstlAdr>
+				</Dbtr>
+
+				<DbtrAcct>
+					<Id>
+						<Othr>
+							<Id>${Identification3}</Id>
+						</Othr>
+					</Id>
+				</DbtrAcct>
+
+				<DbtrAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification5}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name4}</Nm>
+					</FinInstnId>
+				</DbtrAgt>
+
+				<CdtrAgt>
+					<FinInstnId>
+						<ClrSysMmbId>
+							<MmbId>${MemberIdentification6}</MmbId>
+						</ClrSysMmbId>
+						<Nm>${Name5}</Nm>
+					</FinInstnId>
+				</CdtrAgt>
+
+				<Cdtr>
+					<Nm>${Name6}</Nm>
+					<PstlAdr>
+						<AdrLine>${AddressLine2}</AdrLine>
+					</PstlAdr>
+				</Cdtr>
+
+				<CdtrAcct>
+					<Id>
+						<Othr>
+							<Id>${Identification4}</Id>
+						</Othr>
+					</Id>
+				</CdtrAcct>
+
+				<Purp>
+					<Prtry>${Proprietary2}</Prtry>
+				</Purp>
+				<RmtInf>
+					<Ustrd>${Unstructured}</Ustrd>
+					<Ustrd>${Unstructured2}</Ustrd>
+					<Ustrd>${Unstructured3}</Ustrd>
+					<Ustrd>${Unstructured4}</Ustrd>
+					<Ustrd>${Unstructured5}</Ustrd>
+					${RmtInf}
+					${RmtInf2}
+				</RmtInf>
+			</CdtTrfTxInf>
+		</FIToFICstmrCdtTrf>
+	</Document>
+	]]>
+	</template>
+</message-bean>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="CCMS_919MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.CCMS_919_bean"> 
+  <!-- 报文头 begin -->  
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping><!--版本 -->  
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/><!--报文发起人 -->
+  <mapping type="value"  to="MsgHeader.OrigSenderSID">CCMS</mapping><!--发送系统号 -->
+  <mapping type="value-mapping" from="origReceiver" to="MsgHeader.OrigReceiver"/><!--报文接收人 -->
+  <mapping type="value" to="MsgHeader.OrigReceiverSID">CCMS</mapping><!--接收系统号 -->  
+  <mapping type="script" to="MsgHeader.OrigSendDate"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起日期 -->  
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起时间-->  
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping><!-- 格式类型 -->  
+  <mapping type="value" to="MsgHeader.MesgType">ccms.919.001.01</mapping><!-- 报文类型代码 -->  
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/><!-- 通信级标识号 -->  
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>  
+  <mapping type="value-mapping" from="MesgPriority" to="MsgHeader.MesgPriority"/>  
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>  
+  <!-- 报文头 end-->  
+  <!-- 报文体 begin-->  
+  <!-- 业务头 -->  
+  <mapping type="value-mapping" from="messageIdentification" to="CCMS_919_Out.GrpHdr.MessageIdentification"/><!-- 报文标识号 -->  
+  <mapping type="script" to="CCMS_919_Out.GrpHdr.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!-- 报文发送时间 -->  
+  <mapping type="value-mapping" from="instructingDirectParty" to="CCMS_919_Out.GrpHdr.InstructingDirectParty"/><!-- 发起直接参与机构-->  
+  <mapping type="value-mapping" from="instructingParty" to="CCMS_919_Out.GrpHdr.InstructingParty"/><!--发起参与机构 -->
+  <mapping type="value-mapping" from="instructedDirectParty" to="CCMS_919_Out.GrpHdr.InstructedDirectParty"/><!-- 接收直接参与机构 -->  
+  <mapping type="value-mapping" from="instructedParty" to="CCMS_919_Out.GrpHdr.InstructedParty"/><!-- 接收参与机构 -->  
+  <mapping type="value" to="CCMS_919_Out.GrpHdr.SystemCode">CCMS</mapping><!-- 系统编号 -->
+  <mapping type="value-mapping" from="extendMap.remark" to="CCMS_919_Out.GrpHdr.Remark"/><!-- 备注 -->  
+  <mapping type="value-mapping" from="extendMap.bankNoList[].launchLiquidationBankNo" to="CCMS_919_Out.ccti[].MemberCode"/><!-- 直接参与机构号 -->  
+  <!-- 报文体 end--> 
+</message-bean-mapping>

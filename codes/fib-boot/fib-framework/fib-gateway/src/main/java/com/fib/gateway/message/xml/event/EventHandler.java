@@ -1,6 +1,6 @@
 package com.fib.gateway.message.xml.event;
 
-public interface EventHandler {
+public abstract class EventHandler {
 	public abstract void handleException(Event event);
 
 	public abstract void handleResponseSendError(Event event);
@@ -12,4 +12,8 @@ public interface EventHandler {
 	public abstract void handleRequestArrived(Event event);
 
 	public abstract void handleResponseSent(Event event);
+	
+	protected void logEvent(Event event) {
+		
+	}
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="PKGTx" type="xml" pack-mode="template" short-text="批量包业务明细组件" message-charset="UTF-8" class="com.giantstone.cnaps2.messagebean.recv.req.PKGTx">
+
+	<!--用于小额支付系统批量包明细业务-->
+
+	<field name="InstructingDirectParty" short-text="发起直接参与机构" field-type="fixed-field" data-type="str" length="19" xpath="default:InstgDrctPty/text()"/>
+	<field name="InstructedDirectParty" short-text="接收直接参与机构" field-type="fixed-field" data-type="str" length="19" xpath="default:InstdDrctPty/text()"/>
+	<field name="TransactionTypeCode" short-text="业务类型编号" field-type="fixed-field" data-type="str" length="15" xpath="default:TxTpCd/text()"/>
+	<field name="TransactionIdentification" short-text="明细标识号" field-type="fixed-field" data-type="str" length="15" xpath="default:TxId/text()"/>
+
+	<template>
+		<![CDATA[
+				<InstgDrctPty>${InstructingDirectParty}</InstgDrctPty>
+				<InstdDrctPty>${InstructedDirectParty}</InstdDrctPty>
+				<TxTpCd>${TransactionTypeCode}</TxTpCd>
+				<TxId>${TransactionIdentification}</TxId>
+		]]>
+	</template>
+</message-bean>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="BEPS_722MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.BEPS_722_bean">
+  <!-- 报文头 -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/>  
+  <!--报文发起人 -->  
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigSenderSID"/>  
+  <!--发送系统号 -->   
+  <mapping type="value" to="MsgHeader.OrigReceiver">0000</mapping>   
+  <!--报文接收人 -->  
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigReceiverSID"/> 
+  <!--接收系统号 -->  
+  <mapping type="script" to="MsgHeader.OrigSendDate"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起日期 -->  
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>  
+  <!--报文发起时间-->  
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>  
+  <!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">beps.722.001.01</mapping>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value" to="MsgHeader.MesgPriority">3</mapping>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- mapping type="value-mapping" from="Reserve" to="MsgHeader.Reserve"></mapping>保留域 用空格填充 9位-->
+
+  <!-- 报文体内容 -->
+  <!-- 业务头 -->
+  <mapping type="value-mapping" from="messageIdentification" to="BEPS_722_Out.GrpHdr.MessageIdentification"/>
+  <!-- 报文标识号 -->
+  <mapping type="script" to="BEPS_722_Out.GrpHdr.CreationDateTime"> <![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!-- 报文发送时间 -->
+  <mapping type="value-mapping" from="instructingDirectParty" to="BEPS_722_Out.GrpHdr.InstructingDirectParty"/>
+  <!-- 发起直接参与机构-->
+  <mapping type="value-mapping" from="instructingParty" to="BEPS_722_Out.GrpHdr.InstructingParty"/>
+  <!--发起参与机构 -->
+  <mapping type="value-mapping" from="instructedDirectParty" to="BEPS_722_Out.GrpHdr.InstructedDirectParty"/>
+  <!-- 接收直接参与机构 -->
+  <mapping type="value-mapping" from="instructedParty" to="BEPS_722_Out.GrpHdr.InstructedParty"/>
+  <!-- 接收参与机构 -->
+  <mapping type="value"  to="BEPS_722_Out.GrpHdr.SystemCode">BEPS</mapping>
+  <!-- 系统编号 -->
+  <mapping type="value" to="BEPS_722_Out.GrpHdr.Remark">REMARK</mapping>
+  <!-- 备注 -->
+
+  <!-- 其他 -->
+  <mapping type="value-mapping" from="extendMap.CheckingDate" to="BEPS_722_Out.CheckDate"/>
+  <!-- 对账日期 -->
+  <mapping type="value-mapping" from="extendMap.TotalCount" to="BEPS_722_Out.NumberOfTransactions"/>
+
+  <!-- 包处理状态 -->
+  <mapping type="value-mapping" from="extendMap.InfoTotalCount" to="BEPS_722_Out.NumberOfTransactions2"/>
+  <!-- 申请明细数目 -->
+
+
+		<manual-mapping> <![CDATA[
+
+			import com.giantstone.security.TccrbSignature;   //包名
+			import com.giantstone.tcrcb.util.CommUtils;
+			import com.giantstone.cnaps2.messagebean.send.req.*;
+			import java.util.List;
+			import java.util.ArrayList;
+			import java.util.HashMap;
+
+		Map extendMap = (Map) sourceMap.get("extendMap");
+		List Details = (List) extendMap.get("Details");
+		BEPS_722_Out out = target.getBEPS_722_Out();
+		List ccti = out.getCcti();
+		List ccti2 = out.getCcti2();
+		for(int i=0;i<Details.size();i++){
+			Map detail = (Map) Details.get(i);
+			String DetailsType = (String) detail.get("DetailsType");
+				if("100".equals(DetailsType)){
+					BEPS_722_OutCcti cctiTemp = new BEPS_722_OutCcti();
+					String MessageType = (String) detail.get("MessageType");
+					String SendReceiveType = (String) detail.get("SendReceiveType");
+					String TransactionNettingDate = (String) detail.get("TransactionNettingDate");
+					String TransactionNettingRound = (String)detail.get("TransactionNettingRound");
+					if(TransactionNettingRound == null){
+						TransactionNettingRound = "0";
+					}
+					
+					String ProcessStatus = (String) detail.get("ProcessStatus");
+					
+					cctiTemp.setMessageType(MessageType);
+					cctiTemp.setSendReceiveType(SendReceiveType);
+					cctiTemp.setTransactionNettingDate(TransactionNettingDate);
+					cctiTemp.setTransactionNettingRound(TransactionNettingRound);
+					cctiTemp.setProcessStatus(ProcessStatus);
+					ccti.add(cctiTemp);
+				}
+				if("101".equals(DetailsType)){
+					BEPS_722_OutCcti2 ccti2Temp = new BEPS_722_OutCcti2();
+					String MessageType = (String) detail.get("MessageType");
+					String SendReceiveType = (String) detail.get("SendReceiveType");
+					String ReceiveDate = (String) detail.get("ReceiveDate");
+					
+					ccti2Temp.setMessageType2(MessageType);
+					ccti2Temp.setReceiveDate(ReceiveDate);
+					ccti2Temp.setSendReceiveType2(SendReceiveType);
+					ccti2.add(ccti2Temp);
+				}
+		}
+		out.setCcti(ccti);
+		out.setCcti2(ccti2);
+
+			]]> </manual-mapping>
+
+</message-bean-mapping>

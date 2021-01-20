@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="HVPS_112MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.HVPS_112_bean">
+  <!-- 报文头 begin -->
+
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping> <!--版本 -->
+  <mapping type="value-mapping" from="paymentMethodInfo.clearingBankCode" to="MsgHeader.OrigSender"/><!--报文发起人 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigSenderSID"/><!--发送系统号 -->
+  <mapping type="value-mapping" from="disbursement.clearingBankCode" to="MsgHeader.OrigReceiver"/><!--报文接收人 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="MsgHeader.OrigReceiverSID"/><!--接收系统号 -->
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendDate">
+	<![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]>
+  </mapping>
+  <!--报文发起时间-->
+  <mapping type="script" to="MsgHeader.OrigSendTime">
+	<![CDATA[
+		 import java.util.Date;
+		 import java.text.SimpleDateFormat;
+		 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]>
+  </mapping>
+  
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping><!-- 格式类型 -->
+  <mapping type="value" to="MsgHeader.MesgType">hvps.112.001.01</mapping><!-- 报文类型代码 -->
+  
+  <mapping type="value-mapping" from="MesgID" to="MsgHeader.MesgID"/><!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/><!-- 通信级参考号 -->
+  <mapping type="value" to="MsgHeader.MesgPriority">1</mapping><!-- 报文优先级 -->
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping><!--报文传输方向由行内发出-->
+
+  <!-- 报文体标识开始 -->
+
+  <mapping type="value-mapping" from="MessageIdentification" to="HVPS_112_Out.MessageIdentification"/><!-- 报文标识号 -->
+  <!-- 报文发送时间 -->
+  <mapping type="script" to="HVPS_112_Out.CreationDateTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+		]]>
+  </mapping>
+  <mapping type="value" to="HVPS_112_Out.NumberOfTransactions">1</mapping><!-- 明细业务总笔数 -->
+  <mapping type="value" to="HVPS_112_Out.SettlementMethod">CLRG</mapping><!-- SettlementMethod -->
+  <!-- 端到端标识号(附加域中脚本对不同的业务做不同的处理) -->
+  <mapping type="value-mapping" from="transactionId" to="HVPS_112_Out.EndToEndIdentification"/>
+  <mapping type="value-mapping" from="MessageIdentification" to="HVPS_112_Out.TransactionIdentification"/><!-- 交易标识号 -->
+  <mapping type="value-mapping" from="operationCategory" to="HVPS_112_Out.Proprietary"/><!-- 业务类型编码 -->
+  <mapping type="value-mapping" from="currencyUom" to="HVPS_112_Out.CurrencyType"/><!-- 币种 -->
+  <mapping type="value-mapping" from="disbursement.maxAmount" to="HVPS_112_Out.InterbankSettlementAmount"/><!-- 货币符号、金额 -->
+  <!-- 业务优先级 
+  <mapping type="value-translate" from="isRushOrder" to="HVPS_112_Out.SettlementPriority">
+    <value from="3" to="NORM"/>-->
+    <!--普通
+    <value from="2" to="HIGH"/>-->
+    <!--紧急
+    <value from="1" to="URGT"/>-->
+    <!--特急
+  </mapping>-->
+  <mapping type="value-mapping"  from="isRushOrder" to="HVPS_112_Out.SettlementPriority"><![CDATA[
+		 String isRushOrder = "";
+		 if("1".equals(currentValue)){
+			isRushOrder = "URGT";
+		 }else if("2".equals(currentValue)){
+			isRushOrder = "HIGH";
+		 }else if("3".equals(currentValue)){
+			isRushOrder = "NORM";
+		 }else{
+			isRushOrder = "NORM";
+		 }
+		 return isRushOrder;
+		]]></mapping>
+  <mapping type="value-mapping" from="paymentMethodInfo.clearingBankCode" to="HVPS_112_Out.MemberIdentification"/><!-- 付款清算行行号 -->
+  <mapping type="value-mapping" from="paymentMethodInfo.bankCode" to="HVPS_112_Out.Identification"/><!-- 付款行行号 -->
+  
+  <mapping type="value-mapping" from="disbursement.clearingBankCode" to="HVPS_112_Out.MemberIdentification2"/><!-- 收款清算行行号 -->
+  <mapping type="value-mapping" from="disbursement.bankCode" to="HVPS_112_Out.Identification2"/><!-- 收款行行号-->
+  
+  <!--TODO 跨境支付，此处填写收款人开户行代理行-->
+  <mapping type="value-mapping" from="disbursement.bankCode" to="HVPS_112_Out.MemberIdentification3"></mapping><!-- 中介机构1 -->
+  <mapping type="value-mapping" from="disbursement.disBankName" to="HVPS_112_Out.Name"></mapping><!-- 中介机构1名称 -->
+  <mapping type="value-mapping" from="paymentMethodInfo.clearingBankCode" to="HVPS_112_Out.MemberIdentification4"></mapping><!-- 中介机构2 -->
+  <mapping type="value-mapping" from="paymentMethodInfo.payBankName" to="HVPS_112_Out.Name2"></mapping><!-- 中介机构2名称-->
+  <mapping type="value-mapping" from="paymentMethodInfo.accountName" to="HVPS_112_Out.Name3"/><!-- 付款人名称 -->
+  <mapping type="value-mapping" from="placingCustomer.address" to="HVPS_112_Out.AddressLine"/><!-- 付款人地址 -->
+  <mapping type="value-mapping" from="paymentMethodInfo.accountNumber" to="HVPS_112_Out.Identification3"/><!-- 付款人账号 -->
+  <mapping type="value-mapping" from="paymentMethodInfo.clearingBankCode" to="HVPS_112_Out.MemberIdentification5"/><!-- 付款人开户行行号 -->
+  <mapping type="value-mapping" from="paymentMethodInfo.payBankName" to="HVPS_112_Out.Name4"/><!-- 付款人开户行名称 -->
+  <mapping type="value-mapping" from="disbursement.bankCode" to="HVPS_112_Out.MemberIdentification6"/><!-- 收款人开户行行号 -->
+  <mapping type="value-mapping" from="disbursement.disBankName" to="HVPS_112_Out.Name5"/><!-- 收款人开户行名称 -->
+  <mapping type="value-mapping" from="disbursement.accountName " to="HVPS_112_Out.Name6"/><!-- 收款人名称 -->
+  <mapping type="value-mapping" from="endUserCustomer.address" to="HVPS_112_Out.AddressLine2"/><!-- 收款人地址 -->
+  <mapping type="value-mapping" from="disbursement.accountNumber" to="HVPS_112_Out.Identification4"/><!-- 收款人账号 -->
+  
+  <!-- 业务种类编码 -->
+  <mapping type="value-mapping" from="businessType" to="HVPS_112_Out.Unstructured">
+	<![CDATA[
+		String bt = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   bt = "/F25/"+currentValue;
+		 }
+		return bt;
+	]]>
+  </mapping>
+  <!-- 备注 -->
+  <mapping type="value-mapping" from="internalNote" to="HVPS_112_Out.Unstructured2">
+	<![CDATA[
+		String in = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   in = "/H01/"+currentValue;
+		 }
+		return in;
+	]]>
+  </mapping>
+  <!-- 备注2 -->
+  <mapping type="value-mapping" from="publicNote" to="HVPS_112_Out.Unstructured3">
+	<![CDATA[
+		String in = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   in = "/H02/"+currentValue;
+		 }
+		return in;
+	]]>
+  </mapping>
+  <!-- 清算日期 -->
+  <mapping type="value-mapping" from="products[0].answers.liquidationDate" to="HVPS_112_Out.Unstructured4">
+	<![CDATA[
+		String ld = "";
+		if((currentValue!=null)&&(!"".equals(currentValue.trim()))){
+			   ld = "/C00/"+currentValue;
+		 }
+		return ld;
+	]]>
+  </mapping>
+  
+  <manual-mapping> <![CDATA[
+		import java.util.Map;
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.HashMap;
+		import java.util.Date;
+	   	import java.text.SimpleDateFormat;
+		import com.giantstone.util.AmountUtil;
+		import com.giantstone.cnaps2.messagebean.send.req.HVPS_Proprietary_112_A105;
+		import com.giantstone.cnaps2.messagebean.send.req.HVPS_Proprietary_112_A113;
+		import com.giantstone.cnaps2.messagebean.send.req.HVPS_Proprietary_112_A200;
+		import com.giantstone.common.util.CodeUtil;
+		import java.text.DecimalFormat;
+
+		//String flag = sourceMap.get("operationCategory");
+		String productId = ((Map) sourceMap.get("products").get(0)).get("productId");
+		String flag = productId.substring(0,4);//业务类型Proprietary--modify by ShiXiaodong 20140109 为支持用112退汇，(仿111)
+		
+		String flag2 = productId.substring(4);//业务种类Proprietary2
+		target.getHVPS_112_Out().setProprietary(flag);
+
+		Map answers = (Map) sourceMap.get("products").get(0).get("answers");
+		Map paymentMethodInfo = (Map) sourceMap.get("paymentMethodInfo");
+		Map disbursement = (Map) sourceMap.get("disbursement");
+		Map placingCustomer = (Map) sourceMap.get("placingCustomer");
+		Map endUserCustomer = (Map) sourceMap.get("endUserCustomer");
+
+		//对端到端标识号进行处理，根据业务类型进行处理
+		Map paymentMethodInfo = (Map) sourceMap.get("paymentMethodInfo");
+		String endToEnd = "";
+
+		    //委托收款（划回）、托收承付（划回）、商业汇票、支票、银行汇票、银行本票、城市商业银行汇票
+			if("A115".equals(flag)){//再贷款
+				endToEnd = (String)answers.get("tradePactNo");
+			}else if("A116".equals(flag)){//再贴现
+				endToEnd = (String)answers.get("tradePactNo");
+			}else if("A113".equals(flag)){//跨境支付   
+				endToEnd = answers.get("relatedBussReferNum");//关联业务参考号,找需求待定
+				//跨境支付往帐时，中介机构1填“收款人开户行代理行”，中介机构2不填
+				String m3 = answers.get("payeeBankOpenAngent");//中介机构1
+				//String m3Name = answers.get("operationCategory");//中介机构1名称
+				//String m4 = answers.get("operationCategory");//中介机构2
+				target.getHVPS_112_Out().setMemberIdentification3(m3);
+				//target.getHVPS_112_Out().setName(m3Name);
+				//target.getHVPS_112_Out().setMemberIdentification4(m4);
+				
+			}else{
+				endToEnd = sourceMap.get("transactionId");//端到端默认流水号
+			}
+			target.getHVPS_112_Out().setEndToEndIdentification(endToEnd);
+
+			
+			//对现金汇款进行处理
+			if(!"A108".equals(flag)){
+				//现金汇款时，开户行行号非必输
+				String m5 = paymentMethodInfo.get("clearingBankCode");
+				String n4 = paymentMethodInfo.get("payClearBankName");
+				target.getHVPS_112_Out().setMemberIdentification5(m5);
+				target.getHVPS_112_Out().setName4(n4);
+			}
+			
+			//支取发行基金
+			if("A106".equals(flag)||"A115".equals(flag)||"A116".equals(flag)){
+				//与科技部沟通，此处做付款方映射
+				target.getHVPS_112_Out().setName3("凉山州商业银行准备金存款户");//付款人名称
+				target.getHVPS_112_Out().setIdentification3("129900034");//付款账号
+				
+				//将金额以千元为单位
+				//if("A106".equals(flag)){
+					//String maxAmount = disbursement.get("maxAmount")+"";
+					//if(maxAmount!=null&&!"".equals(maxAmount.trim())){
+				   		//Double l = Double.parseDouble(maxAmount);
+						//Double amount = l/1000.00;
+						//DecimalFormat decimalFormat = new DecimalFormat("0.00");
+						//String FUND_BAL_TMP = decimalFormat.format(amount);
+						
+						//target.getHVPS_112_Out().setInterbankSettlementAmount(FUND_BAL_TMP);
+			 		//}
+				//}
+			}
+
+
+			if("A105".equals(flag)){
+				//正常字段处理
+				//付款方
+				String clearingBankCode = paymentMethodInfo.get("clearingBankCode");//付款清算行行号
+				String bankCode = paymentMethodInfo.get("bankCode");//付款行行号
+				String accountName = paymentMethodInfo.get("accountName");//付款人名称
+				String address = placingCustomer.get("address");//付款人地址
+				String accountNumber = paymentMethodInfo.get("accountNumber");//付款人账号 
+				//String clearingBankCode = paymentMethodInfo.get("clearingBankCode");//付款人开户行行号 TODO:待后续开户行确定再修改
+				String payClearBankName = paymentMethodInfo.get("payClearBankName");//付款人开户行名称
+				
+				target.getHVPS_112_Out().setMemberIdentification(clearingBankCode);
+				target.getHVPS_112_Out().setIdentification(bankCode);
+				target.getHVPS_112_Out().setName3(accountName);
+				target.getHVPS_112_Out().setAddressLine(address);
+				target.getHVPS_112_Out().setIdentification3(accountNumber);
+				target.getHVPS_112_Out().setMemberIdentification5(clearingBankCode);
+				target.getHVPS_112_Out().setName4(payClearBankName);
+				
+				//收款方
+				String dclearingBankCode = disbursement.get("clearingBankCode");//收款清算行行号
+				String dbankCode = disbursement.get("bankCode");//收款行行号
+				//String dclearingBankCode = disbursement.get("clearingBankCode");//收款人开户行行号 TODO:待后续开户行确定再修改
+				String ddisBankName = disbursement.get("disBankName");//收款人开户行名称
+				String daccountName = disbursement.get("accountName");//收款人名称
+				String daddress = endUserCustomer.get("address");//收款人地址
+				String daccountNumber = disbursement.get("accountNumber");//收款人账号
+
+				target.getHVPS_112_Out().setMemberIdentification2(dclearingBankCode);
+				target.getHVPS_112_Out().setIdentification2(dbankCode);
+				target.getHVPS_112_Out().setMemberIdentification6(dclearingBankCode);
+				target.getHVPS_112_Out().setName5(ddisBankName);
+				target.getHVPS_112_Out().setName6(daccountName);
+				target.getHVPS_112_Out().setAddressLine2(daddress);
+				target.getHVPS_112_Out().setIdentification4(daccountNumber);
+
+				//金额处理
+				 String maxAmount = paymentMethodInfo.get("maxAmount");//金额
+				 target.getHVPS_112_Out().setInterbankSettlementAmount(maxAmount);
+
+
+				//附加域字段的处理
+				HVPS_Proprietary_112_A105  se = new HVPS_Proprietary_112_A105();
+				String externalId = sourceMap.get("externalId");//原报文标识号
+				if((externalId!=null)&&(!"".equals(externalId)))
+				{
+					se.Unstructured = "/E51/" + sourceMap.get("externalId");
+				}else
+				{
+					se.Unstructured = sourceMap.get("externalId");
+				}
+				Map sessionContext = (Map)sourceMap.get("sessionContext");//退汇时将一些字段放进了sessionContext
+				String oldLaunchBankNo =  sessionContext.get("partyIdTo");//原发起机构
+				if((oldLaunchBankNo!=null)&&(!"".equals(oldLaunchBankNo)))
+				{
+					se.Unstructured2 = "/A70/" + oldLaunchBankNo;
+				}else
+				{
+					se.Unstructured2 = oldLaunchBankNo;
+				}
+
+				String oldMessageType =  answers.get("gatewayTransactionId");
+				if((oldMessageType!=null)&&(!"".equals(oldMessageType)))
+				{
+					se.Unstructured3 = "/F40/" + oldMessageType;
+				}else
+				{
+					se.Unstructured3 = oldMessageType;
+				}
+
+				String backRemitReason =  sessionContext.get("extendMap").get("returnReason");
+				
+				if((backRemitReason!=null)&&(!"".equals(backRemitReason)))
+				{
+					se.Unstructured4 = "/H20/" + backRemitReason;
+				}else
+				{
+					se.Unstructured4 = backRemitReason;
+				}
+				target.getHVPS_112_Out().setRmtInf(se);
+				target.getHVPS_112_Out().setUnstructured("/F25/"+flag2);
+			}else if("A113".equals(flag)){
+				//跨境支付
+				HVPS_Proprietary_112_A113 se=new HVPS_Proprietary_112_A113();
+				String relatedBussEntrustDate =  answers.get("relatedBussEntrustDate");
+				if((relatedBussEntrustDate!=null)&&(!"".equals(relatedBussEntrustDate)))
+				{
+					Date billViseDatePlat=new SimpleDateFormat("yyyyMMdd").parse(relatedBussEntrustDate);
+					String date =  new SimpleDateFormat("yyyy-MM-dd").format(billViseDatePlat);
+					se.Unstructured = "/C14/" + date;
+				}else
+				{
+					se.Unstructured = answers.get("relatedBussEntrustDate");
+				}
+
+				//String exesCode =  answers.get("exesCode");
+				//if((exesCode!=null)&&(!"".equals(exesCode)))
+				//{
+				//	se.Unstructured2 = "/F56/SHA" + answers.get("exesCode");
+				//}else
+				//{
+				//	se.Unstructured2 = answers.get("exesCode");
+				//}
+                se.Unstructured2 = "/F56/SHA";
+				String LaunchBankCharges =  answers.get("LaunchBankCharges");
+				if((LaunchBankCharges!=null)&&(!"".equals(LaunchBankCharges)))
+				{
+					se.Unstructured3 = "/D63/CNY" + answers.get("LaunchBankCharges");
+				}else
+				{
+					se.Unstructured3 = answers.get("LaunchBankCharges");
+				}
+
+				String payeeBankCharges =  answers.get("payeeBankCharges");
+				if((payeeBankCharges!=null)&&(!"".equals(payeeBankCharges)))
+				{
+					se.Unstructured4 = "/D64/CNY" + answers.get("payeeBankCharges");
+				}else
+				{
+					se.Unstructured4 = answers.get("payeeBankCharges");
+				}
+
+				String outerBorderBussSummary =  answers.get("outerBorderBussSummary");
+				if((outerBorderBussSummary!=null)&&(!"".equals(outerBorderBussSummary)))
+				{
+					se.Unstructured5 = "/H19/" + answers.get("outerBorderBussSummary");
+				}else
+				{
+					se.Unstructured5 = answers.get("outerBorderBussSummary");
+				}
+
+				target.getHVPS_112_Out().setRmtInf(se);
+			}else if("A200".equals(flag)){
+				HVPS_Proprietary_112_A200 se = new HVPS_Proprietary_112_A200();
+
+				String loanInterest = answers.get("loanInterest");
+				
+				if((loanInterest!=null)&&(!"".equals(loanInterest)))
+				{
+					se.Unstructured = "/D27/" + answers.get("loanInterest");//以万分之一为单位
+				}else
+				{
+					se.Unstructured = answers.get("loanInterest");
+				}
+
+				String loanLimitDate = answers.get("loanLimitDate");
+				if((loanLimitDate!=null)&&(!"".equals(loanLimitDate)))
+				{
+					//Date billViseDatePlat=new SimpleDateFormat("yyyyMMdd").parse(loanLimitDate);
+					//String date =  new SimpleDateFormat("yyyy-MM-dd").format(billViseDatePlat);
+					se.Unstructured2 = "/C18/" + answers.get("loanLimitDate");
+				}else
+				{
+					se.Unstructured2 = answers.get("loanLimitDate");
+				}
+				target.getHVPS_112_Out().setRmtInf(se);
+			}
+
+	]]> </manual-mapping>
+</message-bean-mapping>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel type="MQ_SERVER" mode="DOUBLE" xmlns="http://www.fib.com/schema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.fib.com/schema 
+	                    http://www.fib.com/schema/xsds/channel.xsd">
+	<description>人行二代接收人行前置通道</description>
+
+	<!-- 连接器：通讯设置 -->
+	<connector type="SERVER" config="connector.xml" />
+
+	<!-- 报文类型识别器 -->
+	<message-type-recognizer recognizer-id="r01">
+		<message message-type="hvps.111.001.01" processor="hvps.111.001.01" />
+	</message-type-recognizer>
+
+	<!-- 识别器表 -->
+	<recognizer-table>
+
+		<recognizer id="r01" type="INDEX">
+			<parameter name="index">58</parameter>
+			<parameter name="length">15</parameter>
+		</recognizer>
+
+		<recognizer id="testReq" type="COMPOSITE">
+			<parameter name="coupling">|</parameter>
+			<!-- 报文发起人 -->
+			<recognizer type="INDEX">
+				<parameter name="index">5</parameter>
+				<parameter name="length">12</parameter>
+			</recognizer>
+			<!-- 报文发起日期 -->
+			<recognizer type="INDEX">
+				<parameter name="index">41</parameter>
+				<parameter name="length">8</parameter>
+			</recognizer>
+			<!-- 报文类型代码 -->
+			<recognizer type="INDEX">
+				<parameter name="index">58</parameter>
+				<parameter name="length">15</parameter>
+			</recognizer>
+			<!-- 通信级参考号 -->
+			<recognizer type="INDEX">
+				<parameter name="index">98</parameter>
+				<parameter name="length">20</parameter>
+			</recognizer>
+		</recognizer>
+		<recognizer id="testRec" type="COMPOSITE">
+			<parameter name="coupling">|</parameter>
+			<!-- 报文发起人 -->
+			<recognizer type="XPATH">
+				<parameter name="xpathExpression">Document/ComConf/ConfInf/OrigSndr</parameter>
+				<parameter name="xmlStartAt">132</parameter>
+				<parameter name="xmlMessageCharset">UTF-8</parameter>
+			</recognizer>
+			<!-- 报文发起日期 -->
+			<recognizer type="XPATH">
+				<parameter name="xpathExpression">Document/ComConf/ConfInf/OrigSndDt</parameter>
+				<parameter name="xmlStartAt">132</parameter>
+				<parameter name="xmlMessageCharset">UTF-8</parameter>
+			</recognizer>
+			<!-- 报文类型代码 -->
+			<recognizer type="XPATH">
+				<parameter name="xpathExpression">Document/ComConf/ConfInf/MT</parameter>
+				<parameter name="xmlStartAt">132</parameter>
+				<parameter name="xmlMessageCharset">UTF-8</parameter>
+			</recognizer>
+			<!-- 通信级参考号 -->
+			<recognizer type="XPATH">
+				<parameter name="xpathExpression">Document/ComConf/ConfInf/MsgRefId</parameter>
+				<parameter name="xmlStartAt">132</parameter>
+				<parameter name="xmlMessageCharset">UTF-8</parameter>
+			</recognizer>
+		</recognizer>
+	</recognizer-table>
+
+	<!-- 报文处理器表 -->
+	<processor-table>
+		<processor id="hvps.111.001.01" type="TRANSFORM" route-rule="001"
+			source-channel-message-object-type="MESSAGE-BEAN" dest-channel-message-object-type="MAP" sync="true" timeout="120000"
+			source-async="true" dest-async="true">
+			<request-message-transformer bean-mapping="HVPS_111MappingOut"
+				source-message-id="HVPS_111_bean" />
+			<error-mapping source-message-id="CCMS_990_bean" bean-mapping="CCMS_900MappingOut" />
+		</processor>
+	</processor-table>
+	<!-- 路由表 -->
+	<route-table>
+		<route-rule id="001" type="STATIC" dest-channel-symbol="dest1" />
+	</route-table>
+	<!-- 目的通道符号表 -->
+	<channel-symbol-table>
+		<channel-symbol symbol="dest1" name="目的通道1" channel-id="upp_cnaps2_send" />
+	</channel-symbol-table>
+</channel>

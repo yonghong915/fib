@@ -113,6 +113,7 @@ public class Event {
 	private byte[] responseMessage;
 
 	private long createTime;
+	private Exception excp;
 
 	public byte[] getRequestMessage() {
 		return requestMessage;
@@ -136,6 +137,37 @@ public class Event {
 		this.sourceChannel = sourceChannel;
 	}
 
+	public Event(int eventType, Channel sourceChannel, Object source, Exception excp) {
+		super();
+		this.eventType = eventType;
+		this.sourceChannel = sourceChannel;
+		this.source = source;
+		this.excp = excp;
+		createTime = System.currentTimeMillis();
+	}
+
+	public Event(int eventType, Channel sourceChannel, Object source, byte[] requestMessage, Exception excp) {
+		super();
+		this.eventType = eventType;
+		this.sourceChannel = sourceChannel;
+		this.source = source;
+		this.requestMessage = requestMessage;
+		this.excp = excp;
+		createTime = System.currentTimeMillis();
+	}
+
+	public Event(int eventType, Channel sourceChannel, Object source, byte[] requestMessage, byte[] responseMessage,
+			Exception excp) {
+		super();
+		this.eventType = eventType;
+		this.sourceChannel = sourceChannel;
+		this.source = source;
+		this.requestMessage = requestMessage;
+		this.responseMessage = responseMessage;
+		this.excp = excp;
+		createTime = System.currentTimeMillis();
+	}
+
 	public Event(int eventType, Channel sourceChannel, Object source, byte[] requestMessage, byte[] responseMessage) {
 		super();
 		this.eventType = eventType;
@@ -143,6 +175,6 @@ public class Event {
 		this.source = source;
 		this.requestMessage = requestMessage;
 		this.responseMessage = responseMessage;
-		this.createTime = System.currentTimeMillis();
+		createTime = System.currentTimeMillis();
 	}
 }

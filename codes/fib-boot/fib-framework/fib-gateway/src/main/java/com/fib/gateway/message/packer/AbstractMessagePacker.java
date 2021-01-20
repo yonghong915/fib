@@ -1,6 +1,5 @@
 package com.fib.gateway.message.packer;
 
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,6 +11,7 @@ import com.fib.commons.exception.CommonException;
 import com.fib.gateway.message.bean.MessageBean;
 import com.fib.gateway.message.metadata.Message;
 import com.fib.gateway.message.metadata.Variable;
+import com.fib.gateway.message.util.ByteBuffer;
 
 import cn.hutool.core.collection.CollUtil;
 import lombok.Data;

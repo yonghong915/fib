@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean-mapping id="0000Mapping" target-type="map" source-type="message-bean">
+  <!-- 报文头 begin -->
+  <mapping type="value" to="code">0000</mapping>
+  <mapping type="value" to="remakeInfo">二代大小额网关数据处理完成，并将数据发往前置</mapping>
+</message-bean-mapping>

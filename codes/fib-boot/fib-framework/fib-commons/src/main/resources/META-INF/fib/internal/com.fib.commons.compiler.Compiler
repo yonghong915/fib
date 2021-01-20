@@ -1,0 +1,2 @@
+adaptive=com.fib.commons.compiler.support.AdaptiveCompiler
+javassist=com.fib.commons.compiler.support.JavassistCompiler

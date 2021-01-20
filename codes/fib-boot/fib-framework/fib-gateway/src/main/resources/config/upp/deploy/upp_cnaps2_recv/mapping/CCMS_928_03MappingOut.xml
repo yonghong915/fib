@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<message-bean-mapping id="CCMS_928_03MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.CCMS_928_03bean">
+  <!-- 报文头 begin -->
+  <mapping type="value" to="MsgHeader.VersionID">02</mapping>
+  <!--版本 -->
+  <mapping type="value-mapping" from="origSender" to="MsgHeader.OrigSender"/>
+  <!--报文发起人 -->
+  <mapping type="value" to="MsgHeader.OrigSenderSID">CCMS</mapping>
+  <!--发送系统号 -->
+  <mapping type="value-mapping" from="origReceiver" to="MsgHeader.OrigReceiver"/>
+  <!--报文接收人 -->
+  <mapping type="value" to="MsgHeader.OrigReceiverSID">CCMS</mapping>  <!--接收系统号 -->  
+  <mapping type="value" to="MsgHeader.MesgPriority">2</mapping>  <!--报文优先级-->
+  <mapping type="script" to="MsgHeader.OrigSendDate"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyyMMdd").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起日期 -->
+  <mapping type="script" to="MsgHeader.OrigSendTime"><![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("HHmmss").format(new Date());
+		 return date;
+		]]> </mapping>
+  <!--报文发起时间-->
+  <mapping type="value" to="MsgHeader.StructType">XML</mapping>
+  <!-- 格式类型 -->
+  <mapping type="value-mapping" from="extendMap.gatewayTransactionId" to="MsgHeader.MesgType"/>
+  <!-- 报文类型代码 -->
+  <mapping type="value-mapping" from="mesgID" to="MsgHeader.MesgID"/>
+  <!-- 通信级标识号 -->
+  <mapping type="value-mapping" from="mesgRefID" to="MsgHeader.MesgRefID"/>
+  <mapping type="value" to="MsgHeader.MesgDirection">U</mapping>
+  <!-- 报文头 end-->
+
+  <!-- 报文体内容 -->
+  <!-- 业务头 -->
+  <mapping type="value-mapping" from="messageIdentification" to="CCMS_928_03Out.GrpHdr.MessageIdentification"/>
+  <!-- 报文标识号 -->
+  <mapping type="script" to="CCMS_928_03Out.GrpHdr.CreationDateTime"> <![CDATA[
+	 	 import java.util.Date;
+	   	 import java.text.SimpleDateFormat;
+	   	 String date =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+		 return date;
+	]]> </mapping>
+  <!-- 报文发送时间 -->
+  <mapping type="value-mapping" from="instructingDirectParty" to="CCMS_928_03Out.GrpHdr.InstructingDirectParty"/>
+  <!-- 发起直接参与机构-->
+<!--   <mapping type="value-mapping" from="instructingParty" to="CCMS_928_03Out.GrpHdr.InstructingParty"/> -->
+  <!--发起参与机构 -->
+<!--   <mapping type="value-mapping" from="instructedDirectParty" to="CCMS_928_03Out.GrpHdr.InstructedDirectParty"/> -->
+  <!-- 接收直接参与机构 -->
+<!--   <mapping type="value-mapping" from="instructedParty" to="CCMS_928_03Out.GrpHdr.InstructedParty"/> -->
+  <!-- 接收参与机构 -->
+  <mapping type="value-mapping" from="prodCatalogId" to="CCMS_928_03Out.GrpHdr.SystemCode"/>
+  <!-- 系统编号 -->
+  <mapping type="value-mapping" from="Remark" to="CCMS_928_03Out.GrpHdr.Remark"/>
+  <!-- 备注 -->
+  <!-- 其他 -->
+  <mapping type="value-mapping" from="manageType" to="CCMS_928_03Out.ManageType"/>
+  <!-- 管理类型 -->
+  <mapping type="value-mapping" from="manageNumber" to="CCMS_928_03Out.ManageNumber"/>
+  <!-- 管理数目 -->
+  <mapping type="value-mapping" from="table_01[].messageType" to="CCMS_928_03Out.ccti[].MessageType"/>
+  <!-- 报文类型 -->
+  <mapping type="value-mapping" from="table_01[].transactionTypeCode" to="CCMS_928_03Out.ccti[].TransactionTypeCode"/>
+  <!-- 业务类型编码 -->
+  <mapping type="value-mapping" from="table_01[].categoryPurposeCode" to="CCMS_928_03Out.ccti[].CategoryPurposeCode"/>
+  <!-- 业务种类编码 -->
+</message-bean-mapping>

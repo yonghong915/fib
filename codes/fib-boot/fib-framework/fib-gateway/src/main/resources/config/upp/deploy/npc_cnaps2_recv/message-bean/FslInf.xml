@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="FslInf" type="xml" xpath="." pack-mode="template" short-text="国库资金信息" class="com.giantstone.cnaps2.messagebean.recv.req.FslInf" message-charset="UTF-8">
+	<field name="FlowNumber" short-text="信息流水号" field-type="fixed-field" data-type="str" length="20" xpath="default:FlowNb/text()"/>
+	<field name="CurrencyType" short-text="币种" field-type="fixed-field" data-type="str" length="5" xpath="default:Amt/@Ccy"/>
+	<field name="Amount" short-text="明细汇总金额" field-type="fixed-field" data-type="str" length="19" xpath="default:Amt/text()"/>
+	<field name="ReportCode" short-text="上报国库代码" field-type="fixed-field" data-type="str" length="10" xpath="default:RptCd/text()"/>
+	<field name="ReceiveCode" short-text="接收国库代码" field-type="fixed-field" data-type="str" length="10" xpath="default:RcvCd/text()"/>
+	<field name="ReportForms" short-text="报表日期" field-type="fixed-field" data-type="datetime" length="10" pattern="yyyy-mm-dd" xpath="default:RptFrms/text()"/>
+	<field name="ReportNumber" short-text="报表序号" field-type="fixed-field" data-type="str" length="10" xpath="default:RptNb/text()"/>
+<template><![CDATA[
+		 　 <FlowNb>${FlowNumber}</FlowNb>
+		    <Amt Ccy="${CurrencyType}">${Amount}</Amt>
+		    <RptCd>${ReportCode}</RptCd>
+		    <RcvCd>${ReceiveCode}</RcvCd>
+		    <RptFrms>${ReportForms}</RptFrms>
+		    <RptNb>${ReportNumber}</RptNb>
+	]]>
+	</template>
+</message-bean>

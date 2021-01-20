@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.fib.com/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="gateway">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="modules" minOccurs="1" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="channels" minOccurs="0" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="event-handler" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="session" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="logger" xmlns="http://www.fib.com/schema" />
+				<xs:element ref="variable-file" xmlns="http://www.fib.com/schema" />
+
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="name" type="xs:string" use="required" />
+			<xs:attribute name="monitor-port" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="modules">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="module" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="module">
+		<xs:complexType>
+			<xs:attribute name="type" type="moduleType" xmlns="http://www.fib.com/schema" />
+			<xs:attribute name="class" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="channels">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="channel" minOccurs="0" maxOccurs="unbounded" xmlns="http://www.fib.com/schema" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="event-handler">
+		<xs:complexType>
+			<xs:attribute name="max-handler-number" type="xs:int" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="session">
+		<xs:complexType>
+			<xs:attribute name="timeout" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="logger">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="variable-file">
+		<xs:complexType>
+			<xs:attribute name="name" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="channel">
+		<xs:complexType>
+			<xs:attribute name="id" type="xs:string" use="required" />
+			<xs:attribute name="name" type="xs:string" use="required" />
+			<xs:attribute name="startup" type="xs:string" use="required" />
+			<xs:attribute name="deploy" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="moduleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CONN_MNGR" />
+			<xs:enumeration value="JOB_MNGR" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
