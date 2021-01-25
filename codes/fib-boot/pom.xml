@@ -69,6 +69,8 @@
 		<saxpath.version>1.0-FCS</saxpath.version>
 
 		<zxing.version>3.4.1</zxing.version>
+		<ibmmq.version>9.2.1.0</ibmmq.version>
+		<rocketmq.version>4.8.0</rocketmq.version>
 
 		<dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 		<docker.image.prefix>fib</docker.image.prefix>
@@ -325,6 +327,19 @@
 				<artifactId>saxpath</artifactId>
 				<version>${saxpath.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.ibm.mq</groupId>
+				<artifactId>com.ibm.mq.allclient</artifactId>
+				<version>${ibmmq.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-client</artifactId>
+				<version>${rocketmq.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

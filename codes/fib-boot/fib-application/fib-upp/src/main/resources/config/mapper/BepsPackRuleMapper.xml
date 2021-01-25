@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fib.upp.mapper.BepsMessagePackRuleMapper">
+	<sql id="BASE_COLUMN_LIST">
+		message_type,transaction_type,send_clearing_bank,receive_clearing_bank,return_limited,original_message_id,batch_id
+	</sql>
+
+	<!-- 查找用户信息 -->
+	<select id="selectUserList"
+		parameterType="com.fib.upp.pay.beps.pack.BepsMessagePackRule"
+		resultType="com.fib.upp.pay.beps.pack.BepsMessagePackRule">
+		SELECT * FROM beps_message_pack_rule
+		<where>
+			<if test="pkId != null">
+				and message_type = #{message_type}
+			</if>
+		</where>
+	</select>
+
+</mapper>

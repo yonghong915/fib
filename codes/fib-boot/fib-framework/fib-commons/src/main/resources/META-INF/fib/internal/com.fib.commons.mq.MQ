@@ -1,0 +1,2 @@
+ibmmq=com.fib.commons.mq.ibm.IbmMQ
+rocketmq=com.fib.commons.mq.rocketmq.RocketMQ

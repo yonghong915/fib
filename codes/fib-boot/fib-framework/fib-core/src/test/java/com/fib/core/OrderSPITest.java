@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.fib.commons.util.URL;
 import com.fib.commons.compiler.Compiler;
 import com.fib.commons.extension.ExtensionLoader;
+import com.fib.commons.mq.MQ;
 import com.fib.core.common.order.Order;
 
 public class OrderSPITest {
@@ -73,8 +74,8 @@ public class OrderSPITest {
 	}
 
 	@Test
-	public void testCompiler() {
-		Compiler c = ExtensionLoader.getExtensionLoader(Compiler.class).getAdaptiveExtension();
+	public void test06() {
+		MQ c = ExtensionLoader.getExtensionLoader(MQ.class).getDefaultExtension();
 		System.out.println(c);
 		
 	}

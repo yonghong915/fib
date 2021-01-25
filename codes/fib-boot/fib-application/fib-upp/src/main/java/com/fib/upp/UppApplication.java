@@ -1,5 +1,9 @@
 package com.fib.upp;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
 /**
  * 
  * @author fangyh
@@ -7,8 +11,11 @@ package com.fib.upp;
  * @since 1.0
  * @date 2020-12-28
  */
+
+@SpringBootApplication
+@ComponentScan({ "com.fib.core", "com.fib.upp" })
 public class UppApplication {
 	public static void main(String[] args) {
-
+		SpringApplication.run(UppApplication.class, args);
 	}
 }
