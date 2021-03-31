@@ -1,7 +1,5 @@
 package com.fib.upp.util;
 
-import com.fib.commons.web.RestStatus;
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Response status Enum Class 状态码
@@ -10,7 +8,7 @@ import com.google.common.collect.ImmutableMap;
  * @version 1.0.0
  * @date 2020-12-14
  */
-public enum StatusCode implements RestStatus {
+public enum StatusCode  {
 	/**
 	 * 操作成功
 	 */
@@ -89,31 +87,31 @@ public enum StatusCode implements RestStatus {
 		this.message = message;
 	}
 
-	@Override
-	public String code() {
-		return code;
-	}
+//	@Override
+//	public String code() {
+//		return code;
+//	}
+//
+//	@Override
+//	public String message() {
+//		return message;
+//	}
 
-	@Override
-	public String message() {
-		return message;
-	}
-
-	private static final ImmutableMap<String, StatusCode> CACHE;
-
-	static {
-		final ImmutableMap.Builder<String, StatusCode> builder = ImmutableMap.builder();
-		for (StatusCode statusCode : values()) {
-			builder.put(statusCode.code(), statusCode);
-		}
-		CACHE = builder.build();
-	}
-
-	public static StatusCode valueOfCode(String code) {
-		final StatusCode status = CACHE.get(code);
-		if (status == null) {
-			throw new IllegalArgumentException("No matching constant for [" + code + "]");
-		}
-		return status;
-	}
+//	private static final ImmutableMap<String, StatusCode> CACHE;
+//
+//	static {
+//		final ImmutableMap.Builder<String, StatusCode> builder = ImmutableMap.builder();
+//		for (StatusCode statusCode : values()) {
+//			builder.put(statusCode.code(), statusCode);
+//		}
+//		CACHE = builder.build();
+//	}
+//
+//	public static StatusCode valueOfCode(String code) {
+//		final StatusCode status = CACHE.get(code);
+//		if (status == null) {
+//			throw new IllegalArgumentException("No matching constant for [" + code + "]");
+//		}
+//		return status;
+//	}
 }

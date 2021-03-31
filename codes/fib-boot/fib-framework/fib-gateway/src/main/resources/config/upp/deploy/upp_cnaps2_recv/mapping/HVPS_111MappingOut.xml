@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<message-bean-mapping id="HVPS_111MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.giantstone.cnaps2.messagebean.send.req.HVPS_111_bean">
+<message-bean-mapping id="HVPS_111MappingOut" source-type="map" target-type="message-bean" target-bean-class="com.fib.upp.cnaps2.messagebean.send.req.HVPS_111_bean">
   <!-- 报文头 begin -->
   <mapping type="value" to="MsgHeader.VersionID">02</mapping>
   

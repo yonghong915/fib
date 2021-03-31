@@ -27,6 +27,20 @@ public class ClassUtil {
 		classLoader = classloader;
 	}
 
+	public static Class<?> getClass(String className) {
+		Class<?> clazz = null;
+		try {
+			if (Objects.isNull(classLoader)) {
+				clazz = Class.forName(className);
+			} else {
+				clazz = classLoader.loadClass(className);
+			}
+		} catch (Exception exception) {
+			exception.printStackTrace(System.err);
+		}
+		return clazz;
+	}
+
 	public static Object createClassInstance(String className) {
 		Class<?> clazz = null;
 		try {
@@ -221,7 +235,7 @@ public class ClassUtil {
 		try {
 			field = obj.getClass().getDeclaredField(s);
 		} catch (Exception exception) {
-			 throw new CommonException(exception);
+			throw new CommonException(exception);
 		}
 		return field.getType();
 	}

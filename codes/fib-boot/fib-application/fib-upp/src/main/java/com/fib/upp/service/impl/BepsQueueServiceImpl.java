@@ -12,15 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fib.commons.exception.CommonException;
 import com.fib.upp.mapper.BepsQueueMapper;
 import com.fib.upp.pay.beps.pack.BepsPackUtil;
+import com.fib.upp.pay.beps.pack.BepsQueue;
 import com.fib.upp.pay.beps.pack.BepsQueueHeader;
 import com.fib.upp.pay.beps.pack.BepsQueueItem;
 import com.fib.upp.service.IBepsQueueService;
 import com.fib.upp.util.BepsUtil;
 
-import cn.hutool.core.collection.CollUtil;
 
 @Service("bepsQueueService")
 public class BepsQueueServiceImpl implements IBepsQueueService {
@@ -34,20 +33,20 @@ public class BepsQueueServiceImpl implements IBepsQueueService {
 	}
 
 	private void sendMessageForWholeQueue(Long queueId) {
-		if (Objects.isNull(queueId)) {
-			throw new CommonException("queueId cannot be empty.");
-		}
+//		if (Objects.isNull(queueId)) {
+//			throw new CommonException("queueId cannot be empty.");
+//		}
 
 		List<BepsQueueItem> recordList = null;
 		recordList = getQueueItemsByQueueId(queueId);
 		recordList = recordList.stream().filter(queue -> !queue.getStatus().equalsIgnoreCase("END"))
 				.collect(Collectors.toList());
 
-		if (CollUtil.isEmpty(recordList)) {
-			int rowNum = updateQueueHeaderStatus(queueId, BepsUtil.QueueHeaderStatus.CLS.code());
-			logger.info("rowNum={}", rowNum);
-			return;
-		}
+//		if (CollUtil.isEmpty(recordList)) {
+//			int rowNum = updateQueueHeaderStatus(queueId, BepsUtil.QueueHeaderStatus.CLS.code());
+//			logger.info("rowNum={}", rowNum);
+//			return;
+//		}
 		// key = 人行报文类型；value = 报文下关联的待发报记录
 		Map<String, List<String>> messageTypeRecordIdListMap = new HashMap<>();
 
@@ -86,7 +85,7 @@ public class BepsQueueServiceImpl implements IBepsQueueService {
 	}
 
 	private void sendMessage(Long queueId, String messageType, List<String> pack) {
-		logger.info("queueId={},messageType={},pack={}", queueId, messageType,pack);
+		logger.info("queueId={},messageType={},pack={}", queueId, messageType, pack);
 	}
 
 	@Override
@@ -97,5 +96,31 @@ public class BepsQueueServiceImpl implements IBepsQueueService {
 	@Override
 	public int updateQueueItemStatus(BepsQueueItem queueItem) {
 		return bepsQueueMapper.updateQueueItemStatus(queueItem);
+	}
+
+	@Override
+	public BepsQueue getQueueByQueueType(String queueType) {
+		return bepsQueueMapper.getQueueByQueueType(queueType);
+	}
+
+	@Override
+	public BepsQueueHeader getOpenedQueueHeader(String queueType) {
+		BepsQueueHeader param = new BepsQueueHeader();
+		param.setQueueType(queueType);
+		param.setStatus(BepsUtil.QueueHeaderStatus.OPN.code());
+		List<BepsQueueHeader> queueHeaderList = bepsQueueMapper.getQueueHeader(param);
+//		if (CollUtil.isEmpty(queueHeaderList)) {
+//			throw new CommonException("未有打开的队列");
+//		}
+//
+//		if (queueHeaderList.size() > 1) {
+//			throw new CommonException("出现严重的错误：类型为[" + queueType + "]、状态为[打开]的支付项队列不止1个");
+//		}
+		return queueHeaderList.get(0);
+	}
+
+	@Override
+	public void createQueueHeader(BepsQueueHeader queueHeader) {
+		bepsQueueMapper.createQueueHeader(queueHeader);
 	}
 }

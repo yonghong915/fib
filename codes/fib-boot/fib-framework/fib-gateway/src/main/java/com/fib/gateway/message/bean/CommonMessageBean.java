@@ -1,5 +1,7 @@
 package com.fib.gateway.message.bean;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import com.fib.commons.exception.CommonException;
@@ -14,6 +16,15 @@ import com.fib.gateway.message.metadata.Message;
  * @date 2020-12-28
  */
 public class CommonMessageBean extends MessageBean {
+	private Map values = new LinkedHashMap(64);
+
+	public Map getValues() {
+		return this.values;
+	}
+
+	public void setValues(Map var1) {
+		this.values = var1;
+	}
 
 	@Override
 	public void validate() {

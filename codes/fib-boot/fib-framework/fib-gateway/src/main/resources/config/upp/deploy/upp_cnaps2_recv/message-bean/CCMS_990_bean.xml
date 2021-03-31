@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<message-bean message-charset="UTF-8" id="CCMS_990_bean" short-text="CCMS_990_bean" class="com.giantstone.cnaps2.messagebean.send.req.CCMS_990_bean">
+<message-bean message-charset="UTF-8" id="CCMS_990_bean" short-text="CCMS_990_bean" class="com.fib.upp.cnaps2.messagebean.send.req.CCMS_990_bean">
 		
 	<field name="MsgHeader" short-text="报文头" field-type="combine-field" reference="MsgHeader"/>
 	

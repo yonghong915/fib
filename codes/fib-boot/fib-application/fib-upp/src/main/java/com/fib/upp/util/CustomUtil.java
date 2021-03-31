@@ -2,11 +2,6 @@ package com.fib.upp.util;
 
 import java.time.LocalDateTime;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-
 public class CustomUtil {
 
 	/**
@@ -16,17 +11,18 @@ public class CustomUtil {
 	 * @return
 	 */
 	public static String getMessageId(String cnapsSystemDate) {
-		if (StrUtil.isBlank(cnapsSystemDate)) {
-			cnapsSystemDate = DateUtil.format(LocalDateTime.now(), "yyyyMMdd");
-		}
+//		if (StrUtil.isBlank(cnapsSystemDate)) {
+//			cnapsSystemDate = DateUtil.format(LocalDateTime.now(), "yyyyMMdd");
+//		}
 		// TODO 或取序号//可以取数据库自增序列-Seq_MessageId
 		long workerId = 1;
-		Snowflake snowflake = IdUtil.createSnowflake(workerId, 2);
-		String id = snowflake.nextIdStr();
-		if (id.length() > 8) {
-			id = StrUtil.sub(id, id.length() - 8, id.length());
-		}
-		return cnapsSystemDate + id;
+//		Snowflake snowflake = IdUtil.createSnowflake(workerId, 2);
+//		String id = snowflake.nextIdStr();
+//		if (id.length() > 8) {
+//			id = StrUtil.sub(id, id.length() - 8, id.length());
+//		}
+		//return cnapsSystemDate + id;
+		return cnapsSystemDate;
 	}
 
 	/**

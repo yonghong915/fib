@@ -40,6 +40,8 @@ public class BepsUtil {
 		/***/
 		OPN("OPN"),
 		/***/
+		FPC("FPC"),
+		/***/
 		CLS("CLS"),
 		/***/
 		FAILED("FAILED");
@@ -62,6 +64,27 @@ public class BepsUtil {
 	 * @since 1.0
 	 * @date 2021-01-25
 	 */
+	public enum QueueType {
+		/***/
+		ISA001("ISA001"),
+		/***/
+		MMA001("MMA001"),
+		/***/
+		RMD001("RMD001"),
+		/***/
+		TMA001("TMA001");
+
+		private String code;
+
+		QueueType(String code) {
+			this.code = code;
+		}
+
+		public String code() {
+			return code;
+		}
+	}
+
 	public enum QueueItemStatus {
 		/***/
 		START("START"),

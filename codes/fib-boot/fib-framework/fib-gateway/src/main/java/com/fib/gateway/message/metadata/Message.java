@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.fib.gateway.message.util.EnumConstants;
 
@@ -36,7 +36,7 @@ public class Message {
 
 	/** 报文对应的 MessageBean类名 */
 	private String className;
-	private Map<String, Field> fields = new TreeMap<>();
+	private Map<String, Field> fields = new LinkedHashMap<>();
 
 	/** XPath表达式 */
 	private String xpath;
@@ -191,4 +191,26 @@ public class Message {
 		}
 	}
 
+	public Message copy() {
+		Message var1 = new Message();
+		var1.setGroupId(this.getGroupId());
+		var1.setId(this.getId());
+		var1.setType(this.type);
+		var1.setClassName(this.getClassName());
+		var1.setFields(this.getFields());
+		var1.setPrePackEvent(this.getPrePackEvent());
+		var1.setPostPackEvent(this.getPostPackEvent());
+		var1.setPreParseEvent(this.getPreParseEvent());
+		var1.setPostParseEvent(this.getPostParseEvent());
+		var1.setXpath(this.getXpath());
+		var1.setTemplate(this.getTemplate());
+		var1.setPrefix(this.getPrefix());
+		var1.setSuffix(this.getSuffix());
+		var1.setVariable(this.getVariable());
+		var1.setMsgCharset(this.getMsgCharset());
+		var1.setSchemaValid(this.isSchemaValid());
+		var1.setSchemaValidType(this.getSchemaValidType());
+		var1.setSchemaValidPath(this.getSchemaValidPath());
+		return var1;
+	}
 }

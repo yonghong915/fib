@@ -24,6 +24,14 @@
 		pk_id=#{pkId}
 	</update>
 
+	<select id="getQueueHeader" parameterType="com.fib.upp.pay.beps.pack.BepsQueueHeader"
+		resultType="com.fib.upp.pay.beps.pack.BepsQueueHeader">
+		SELECT *
+		FROM beps_queue_header
+		WHERE status=#{status}
+		AND queue_type=#{queueType}
+	</select>
+
 	<update id="updateQueueItemStatus" parameterType="com.fib.upp.pay.beps.pack.BepsQueueItem">
 		UPDATE beps_queue_item
 		SET status=#{status}
@@ -34,4 +42,15 @@
 		</foreach>
 	</update>
 
+	<select id="getQueueByQueueType" parameterType="string" resultType="com.fib.upp.pay.beps.pack.BepsQueue">
+		SELECT queue_type,queue_status
+		FROM beps_queue
+		WHERE
+		queue_type=#{queueType}
+	</select>
+
+	<insert id="createQueueHeader" parameterType="com.fib.upp.pay.beps.pack.BepsQueueHeader">
+		INSERT INTO beps_queue_header(pk_id,queue_type,status)
+		VALUES(#{pkId},#{queueType},#{status})
+	</insert>
 </mapper>

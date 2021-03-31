@@ -135,7 +135,7 @@ public class CommGateway {
 		logger.info("CommGateway.start.startEventQueue");
 		eventQueue = new EventQueue();
 		// eventQueue.setLogger(logger);
-		eventQueue.startDispatch(config.getEventHandlerNumber());
+		//eventQueue.startDispatch(config.getEventHandlerNumber());
 
 		logger.info("CommGateway.start.startChannels");
 		startChannels();

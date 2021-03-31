@@ -42,6 +42,6 @@
 	</route-table>
 	<!-- 目的通道符号表 -->
 	<channel-symbol-table>
-		<channel-symbol symbol="dest1" name="往账目的通道" channel-id="npc_cnaps2_recv" />
+		<channel-symbol symbol="dest1" name="往账目的通道" channel-id="upp_cnaps2_recv" />
 	</channel-symbol-table>
 </channel>

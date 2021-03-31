@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean message-charset="UTF-8" id="BEPS_121_bean" short-text="BEPS_121_bean" class="com.fib.upp.cnaps2.messagebean.recv.req.BEPS_121_bean">
+
+	<field name="MsgHeader" short-text="报文头" field-type="combine-field" reference="MsgHeader"/>
+		
+	<!-- <field name="DigitalSignature" short-text="数字签名" field-type="fixed-field" data-type="num" length="2048" prefix="{S:" suffix="0x7D0D0A" padding-direction="none"/>
+ -->
+	<field name="BEPS_121_Out" short-text="报文体" field-type="combine-field" reference="BEPS_121_Out"/>
+
+	<!-- <field name="checkEscortFlag" short-text="核押验签结果" field-type="fixed-field" length="12" data-type="str"/> 
+ -->
+	 <event type="pre-parse"><![CDATA[
+		messageParser.ignore("checkEscortFlag");
+	]]></event>
+
+	<event type="post-parse">
+	<![CDATA[
+		//来帐验签
+		import com.giantstone.security.TccrbSignature;
+		import com.giantstone.cnaps2.messagebean.recv.req.*;
+		import com.uisftech.tcrcb.ext.StringBuffer;
+
+		StringBuffer buf = new StringBuffer();
+
+		// PKGGrpHdr
+		String MessageIdentification = messageBean.BEPS_121_Out.PKGGrpHdr.MessageIdentification;
+		String CreationDateTime = messageBean.BEPS_121_Out.PKGGrpHdr.CreationDateTime;
+		String InstructingDirectParty = messageBean.BEPS_121_Out.PKGGrpHdr.InstructingDirectParty;
+		String InstructedDirectParty = messageBean.BEPS_121_Out.PKGGrpHdr.InstructedDirectParty;
+		String NumberOfTransactions = messageBean.BEPS_121_Out.PKGGrpHdr.NumberOfTransactions;
+		String CurrencyType = messageBean.BEPS_121_Out.PKGGrpHdr.CurrencyType;
+		String ControlSum = messageBean.BEPS_121_Out.PKGGrpHdr.ControlSum;
+		String SystemCode = messageBean.BEPS_121_Out.PKGGrpHdr.SystemCode;
+
+		buf.append(MessageIdentification);
+		buf.append("|");
+		buf.append(CreationDateTime);
+		buf.append("|");
+		buf.append(InstructingDirectParty);
+		buf.append("|");
+		buf.append(InstructedDirectParty);
+		buf.append("|");
+		buf.append(NumberOfTransactions);
+		buf.append("|");
+		buf.append(CurrencyType);
+		buf.append(ControlSum);
+		buf.append("|");
+		buf.append(SystemCode);
+		buf.append("|");
+
+
+		List ccti = messageBean.BEPS_121_Out.ccti;
+		for (BEPS_121_OutCcti bean : ccti) {
+			String TransactionIdentification = bean.TransactionIdentification;
+			//String AgreementNumber = bean.AgreementNumber;
+			String Name = bean.Name;
+			String AddressLine = bean.AddressLine;
+			String Identification = bean.Identification;
+			String Issuer = bean.Issuer;
+			String Identification2 = bean.Identification2;
+			String Identification3 = bean.Identification3;
+			String Name2 = bean.Name2;
+			String AddressLine2 = bean.AddressLine2;
+			String Identification4 = bean.Identification4;
+			String Issuer2 = bean.Issuer2;
+			String CurrencyType = bean.CurrencyType;
+			String Amount = bean.Amount;
+			String Proprietary = bean.Proprietary;
+			String Proprietary2 = bean.Proprietary2;
+
+			buf.append(TransactionIdentification);
+			buf.append("|");
+			//buf.append(AgreementNumber);
+			//buf.append("|");
+			buf.append(Name);
+			buf.append("|");
+			buf.append(AddressLine);
+			buf.append("|");
+			buf.append(Identification);
+			buf.append("|");
+			buf.append(Issuer);
+			buf.append("|");
+			buf.append(Identification2);
+			buf.append("|");
+			buf.append(Identification3);
+			buf.append("|");
+			buf.append(Name2);
+			buf.append("|");
+			buf.append(AddressLine2);
+			buf.append("|");
+			buf.append(Identification4);
+			buf.append("|");
+			buf.append(Issuer2);
+			buf.append("|");
+			buf.append(CurrencyType);
+			buf.append(Amount);
+			buf.append("|");
+			buf.append(Proprietary);
+			buf.append("|");
+			buf.append(Proprietary2);
+			buf.append("|");
+
+			com.giantstone.message.bean.MessageBean messageBean1 = bean.CustomerCreditTransfer;
+			if (Proprietary.equals("A109")) {
+				BEPS_ServiceElement121_A109 a109 = (BEPS_ServiceElement121_A109) messageBean1;
+
+				String Type = a109.Type;
+				String Date = a109.Date;
+				String Number = a109.Number;
+
+				buf.append(Type);
+				buf.append("|");
+				buf.append(Date);
+				buf.append("|");
+				buf.append(Number);
+				buf.append("|");
+
+			} else if (Proprietary.equals("A110")) {
+				BEPS_ServiceElement121_A110 a110 = (BEPS_ServiceElement121_A110) messageBean1;
+
+				String Date = a110.Date;
+				String Number = a110.Number;
+				String CurrencyType = a110.CurrencyType;
+				String AmendsAmount = a110.AmendsAmount;//赔偿金额
+				String CurrencyType2 = a110.CurrencyType2;
+				String RejectAmount = a110.RejectAmount;//拒付金额
+				String CurrencyType3 = a110.CurrencyType3;
+				String OriginalAmount = a110.OriginalAmount;//原托金额
+				String CurrencyType4 = a110.CurrencyType4;
+				String PaymentAmount = a110.PaymentAmount;//支付金额
+				String CurrencyType5 = a110.CurrencyType5;
+				String OddAmount = a110.OddAmount;//多付金额
+
+				buf.append(Date);
+				buf.append("|");
+				buf.append(Number);
+				buf.append("|");
+				buf.append(CurrencyType);
+				buf.append(AmendsAmount);
+				buf.append("|");
+				buf.append(CurrencyType2);
+				buf.append(RejectAmount);
+				buf.append("|");
+				buf.append(CurrencyType3);
+				buf.append(OriginalAmount);
+				buf.append("|");
+				buf.append(CurrencyType4);
+				buf.append(PaymentAmount);
+				buf.append("|");
+				buf.append(CurrencyType5);
+				buf.append(OddAmount);
+				buf.append("|");
+
+				
+			} else if (Proprietary.equals("A111")) {
+
+				BEPS_ServiceElement121_A111 a111 = (BEPS_ServiceElement121_A111) messageBean1;
+
+				String IssueDate = a111.IssueDate;
+				String DraftAmount = a111.DraftAmount;
+				String ApplyAccount = a111.ApplyAccount;
+				String ApplyName = a111.ApplyName;
+				String SettlementAmount = a111.SettlementAmount;
+				String OddAmount = a111.OddAmount;
+
+				buf.append(IssueDate);
+				buf.append("|");
+				buf.append(DraftAmount);
+				buf.append("|");
+				buf.append(ApplyAccount);
+				buf.append("|");
+				buf.append(ApplyName);
+				buf.append("|");
+				buf.append(SettlementAmount);
+				buf.append("|");
+				buf.append(OddAmount);
+				buf.append("|");
+
+			} else if (Proprietary.equals("A105")) {
+				BEPS_ServiceElement121_A105 a105 = (BEPS_ServiceElement121_A105) messageBean1;
+
+				String OriginalMessageIdentification = a105.OrgnlGrpHdr.OriginalMessageIdentification;
+				String OriginalInstructingParty = a105.OrgnlGrpHdr.OriginalInstructingParty;
+				String OriginalMessageType = a105.OrgnlGrpHdr.OriginalMessageType;
+
+				String InstructingIndirectParty = a105.OrgnlTx.InstructingIndirectParty;
+				String InstructedIndirectParty = a105.OrgnlTx.InstructedIndirectParty;
+				String OriginalTransactionIdentification = a105.OrgnlTx.OriginalTransactionIdentification;
+				String OriginalTransactionTypeCode = a105.OrgnlTx.OriginalTransactionTypeCode;
+
+				String content = a105.content;
+				
+
+				buf.append(OriginalMessageIdentification);
+				buf.append("|");
+				buf.append(OriginalInstructingParty);
+				buf.append("|");
+				buf.append(OriginalMessageType);
+				buf.append("|");
+				buf.append(InstructingIndirectParty);
+				buf.append("|");
+				buf.append(InstructedIndirectParty);
+				buf.append("|");
+				buf.append(OriginalTransactionIdentification);
+				buf.append("|");
+				buf.append(OriginalTransactionTypeCode);
+				buf.append("|");
+				buf.append(content);
+				buf.append("|");
+
+			} else if (Proprietary.equals("A201")) {
+				BEPS_ServiceElement121_A201 a201 = (BEPS_ServiceElement121_A201) messageBean1;
+
+				String IssueDate = a201.IssueDate;
+				String DrawerName = a201.DrawerName;
+				String CurrencyType=a201.CurrencyType;
+				String CurrencyType2=a201.CurrencyType2;
+				String ChequeAmount = a201.ChequeAmount;
+
+				String Amount = a201.Amount;
+				String Number = a201.Number;
+
+
+				buf.append(IssueDate);
+				buf.append("|");
+				buf.append(DrawerName);
+				buf.append("|");
+				buf.append(CurrencyType);
+				buf.append(ChequeAmount);
+				buf.append("|");
+				buf.append(CurrencyType2);
+				buf.append(Amount);
+				buf.append("|");
+				buf.append(Number);
+				buf.append("|");
+
+			}else if (Proprietary.equals("A203")) {
+				BEPS_ServiceElement121_A203 a203 = (BEPS_ServiceElement121_A203) messageBean1;
+
+				String IssueDate = a203.IssueDate;
+				String DrftAmt = a203.DraftAmount;
+				String ApplyAcct = a203.ApplyAccount;
+				String ApplyNm = a203.ApplyName;
+				String SttlmAmt = a203.SettlementAmount;
+				String OddAmt = a203.OddAmount;
+				String DrftTp = a203.DraftType;
+
+				buf.append(IssueDate);
+				buf.append("|");
+				buf.append(DrftAmt);
+				buf.append("|");
+				buf.append(ApplyAcct);
+				buf.append("|");
+				buf.append(ApplyNm);
+				buf.append("|");
+				buf.append(SttlmAmt);
+				buf.append("|");
+				buf.append(OddAmt);
+				buf.append("|");
+				buf.append(DrftTp);
+				buf.append("|");
+			}else if (Proprietary.equals("A204")) {
+				BEPS_ServiceElement121_A204 a204 = (BEPS_ServiceElement121_A204) messageBean1;
+
+				String IssueDate = a204.IssueDate;
+				String DrftAmt = a204.DraftAmount;
+				String ApplyAcct = a204.ApplyAccount;
+				String ApplyNm = a204.ApplyName;
+				String SttlmAmt = a204.SettlementAmount;
+				String OddAmt = a204.OddAmount;
+				String DrftTp = a204.DraftType;
+
+				buf.append(IssueDate);
+				buf.append("|");
+				buf.append(DrftAmt);
+				buf.append("|");
+				buf.append(ApplyAcct);
+				buf.append("|");
+				buf.append(ApplyNm);
+				buf.append("|");
+				buf.append(SttlmAmt);
+				buf.append("|");
+				buf.append(OddAmt);
+				buf.append("|");
+				buf.append(DrftTp);
+				buf.append("|");
+			} 
+		}
+		String DigitalSignature =  messageBean.DigitalSignature;
+		String OrigSender = messageBean.MsgHeader.OrigSender;
+		TccrbSignature s = new TccrbSignature ();
+		boolean verify2= s.checkSign(buf.toString(),DigitalSignature,OrigSender);
+		if(!verify2){
+			messageBean.setCheckEscortFlag("ErrorCheckEscort");
+		}
+		]]>
+	</event>
+</message-bean>

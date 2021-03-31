@@ -2,10 +2,12 @@ package com.fib.upp.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fib.upp.pay.beps.pack.BepsQueue;
 import com.fib.upp.pay.beps.pack.BepsQueueHeader;
 import com.fib.upp.pay.beps.pack.BepsQueueItem;
 
@@ -25,4 +27,13 @@ public interface BepsQueueMapper extends BaseMapper<Object> {
 
 	@Update("updateQueueItemStatus")
 	int updateQueueItemStatus(BepsQueueItem queueItem);
+
+	@Select("getQueueByQueueType")
+	BepsQueue getQueueByQueueType(String queueType);
+
+	@Select("getQueueHeader")
+	List<BepsQueueHeader> getQueueHeader(BepsQueueHeader param);
+
+	@Insert("createQueueHeader")
+	int createQueueHeader(BepsQueueHeader queueHeader);
 }

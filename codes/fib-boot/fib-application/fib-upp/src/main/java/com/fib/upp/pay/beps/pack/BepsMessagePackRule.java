@@ -2,7 +2,6 @@ package com.fib.upp.pay.beps.pack;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 
-import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 
 /**
@@ -75,29 +74,29 @@ public class BepsMessagePackRule {
 	public String getPackString(BepsPackElement elem) {
 		StringBuilder builder = new StringBuilder();
 		// 业务类型
-		if (transactionType) {
-			builder.append(String.format("%1$-6s", StrUtil.trimToEmpty(elem.getTransactionType())));
-		}
-		// 发起清算行
-		if (sendClearingBank) {
-			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getSendClearingBank())));
-		}
-		// 接收清算行
-		if (receiveClearingBank) {
-			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getReceiveClearingBank())));
-		}
-		// 相同的回执期
-		if (returnLimited) {
-			builder.append(String.format("%1$-2s", StrUtil.trimToEmpty(elem.getReturnLimited())));
-		}
-		// 原报文标识号:当前工作日期（8位数字）+报文序号（8位数字，不足8位的，左补0）组成，共16位长度，例如2010020200000001
-		if (originalMessageId) {
-			builder.append(String.format("%1$-16s", StrUtil.trimToEmpty(elem.getOriginalMessageId())));
-		}
-		// 批次号
-		if (batchId) {
-			builder.append(String.format("%1$-20s", StrUtil.trimToEmpty(elem.getBatchId())));
-		}
+//		if (transactionType) {
+//			builder.append(String.format("%1$-6s", StrUtil.trimToEmpty(elem.getTransactionType())));
+//		}
+//		// 发起清算行
+//		if (sendClearingBank) {
+//			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getSendClearingBank())));
+//		}
+//		// 接收清算行
+//		if (receiveClearingBank) {
+//			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getReceiveClearingBank())));
+//		}
+//		// 相同的回执期
+//		if (returnLimited) {
+//			builder.append(String.format("%1$-2s", StrUtil.trimToEmpty(elem.getReturnLimited())));
+//		}
+//		// 原报文标识号:当前工作日期（8位数字）+报文序号（8位数字，不足8位的，左补0）组成，共16位长度，例如2010020200000001
+//		if (originalMessageId) {
+//			builder.append(String.format("%1$-16s", StrUtil.trimToEmpty(elem.getOriginalMessageId())));
+//		}
+//		// 批次号
+//		if (batchId) {
+//			builder.append(String.format("%1$-20s", StrUtil.trimToEmpty(elem.getBatchId())));
+//		}
 		// 包序号，默认为零
 		builder.append(String.format("%1$-6s", "pkg" + elem.getPackNO()));
 		return builder.toString();

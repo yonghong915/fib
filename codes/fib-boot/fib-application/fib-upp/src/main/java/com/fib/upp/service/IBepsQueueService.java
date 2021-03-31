@@ -2,6 +2,8 @@ package com.fib.upp.service;
 
 import java.util.List;
 
+import com.fib.upp.pay.beps.pack.BepsQueue;
+import com.fib.upp.pay.beps.pack.BepsQueueHeader;
 import com.fib.upp.pay.beps.pack.BepsQueueItem;
 
 /**
@@ -38,4 +40,10 @@ public interface IBepsQueueService {
 	 * @return
 	 */
 	int updateQueueItemStatus(BepsQueueItem queueItem);
+
+	public BepsQueue getQueueByQueueType(String queueType);
+
+	public BepsQueueHeader getOpenedQueueHeader(String queueType);
+
+	public void createQueueHeader(BepsQueueHeader queueHeader);
 }

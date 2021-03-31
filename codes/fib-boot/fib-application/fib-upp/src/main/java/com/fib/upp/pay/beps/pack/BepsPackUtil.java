@@ -13,10 +13,8 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fib.commons.exception.CommonException;
 import com.fib.upp.service.IBepsPackService;
 
-import cn.hutool.core.collection.CollUtil;
 
 /**
  * 
@@ -54,9 +52,9 @@ public class BepsPackUtil {
 	}
 
 	private static List<List<String>> packPaymentOrder(BepsMessagePackRule packRule, List<String> orderIdList) {
-		if (CollUtil.isEmpty(orderIdList)) {
-			throw new CommonException("orderIdList is empty.");
-		}
+//		if (CollUtil.isEmpty(orderIdList)) {
+//			throw new CommonException("orderIdList is empty.");
+//		}
 		// key = packString（分包的标识号）; value = List<OrderId>（每个分包里的订单号）
 		Map<String, List<String>> packMap = new HashMap<>();
 		orderIdList.stream().forEach((String orderId) -> {
@@ -128,9 +126,9 @@ public class BepsPackUtil {
 			}
 
 			packRule = messageTypePackRuleMap.get(messageType);
-			if (null == packRule) {
-				throw new CommonException("根据报文类型[" + messageType + "]找不到对应的打包规则，请先维护报文类型的打包规则");
-			}
+//			if (null == packRule) {
+//				throw new CommonException("根据报文类型[" + messageType + "]找不到对应的打包规则，请先维护报文类型的打包规则");
+//			}
 			return packRule;
 		}
 	}
@@ -138,9 +136,9 @@ public class BepsPackUtil {
 	private static void rebuildMessagePackRuleMap() {
 		// 查询小额报文组报规则表BEPS_MESSAGE_PACK_RULE
 		List<BepsMessagePackRule> ruleLst = bepsPackServiceTmp.queryBepsPackRuleList();
-		if (CollUtil.isEmpty(ruleLst)) {
-			throw new CommonException("小额系统没有维护报文类型与队列类型的映射");
-		}
+//		if (CollUtil.isEmpty(ruleLst)) {
+//			throw new CommonException("小额系统没有维护报文类型与队列类型的映射");
+//		}
 		messageTypePackRuleMap = ruleLst.stream().collect(
 				Collectors.toMap(BepsMessagePackRule::getMessageType, Function.identity(), (key1, key2) -> key2));
 

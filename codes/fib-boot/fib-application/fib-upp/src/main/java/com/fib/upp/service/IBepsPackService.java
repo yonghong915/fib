@@ -13,4 +13,9 @@ import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
  */
 public interface IBepsPackService {
 	public List<BepsMessagePackRule> queryBepsPackRuleList();
+
+	/**
+	 * 小额组包
+	 */
+	public void packBepsMessage();
 }

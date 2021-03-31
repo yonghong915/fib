@@ -20,7 +20,6 @@ import com.fib.upp.pay.beps.pack.BepsPackUtil;
 import com.fib.upp.pay.beps.pack.BepsQueueItem;
 import com.fib.upp.service.IBepsPackService;
 import com.fib.upp.service.IBepsQueueService;
-import com.google.common.collect.Lists;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UppApplication.class)
@@ -66,12 +65,21 @@ public class BepsServiceTest {
 	}
 
 	@Test
+	@Ignore("stop tmp")
 	public void updateQueueItemStatusTest() throws Exception {
 		Long queueId = 100000l;
 		BepsQueueItem queueItem = new BepsQueueItem();
 		queueItem.setStatus("END");
 		queueItem.setQueueId(queueId);
-		queueItem.setRecordIds(Lists.newArrayList("111","222","333"));
+		//queueItem.setRecordIds(Lists.newArrayList("111","222","333"));
 		bepsQueueService.updateQueueItemStatus(queueItem);
+	}
+	
+	@Test
+	public void packBepsMessageTest() throws Exception {
+		logger.info("packBepsMessageTest start");
+		bepsPackService.packBepsMessage();
+		Thread.sleep(1000);
+		logger.info("packBepsMessageTest end");
 	}
 }

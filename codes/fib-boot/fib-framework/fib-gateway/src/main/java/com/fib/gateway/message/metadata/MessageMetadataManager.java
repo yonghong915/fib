@@ -158,11 +158,11 @@ public class MessageMetadataManager {
 		if (!MessageBean.COMMON_MESSAGEBEAN_CLASS.equals(message.getClassName())
 				&& cacheByClass.containsKey(message.getClassName())) {
 			Message var6 = cacheByClass.get(message.getClassName());
-			if (!message.equalTo(var6)) {
-				throw new CommonException(MultiLanguageResourceBundle.getInstance().getString(
-						"MessageMetadataManager.getMessage.messageClass.reduplicate",
-						new String[] { messageId, groupId, message.getClassName() }));
-			}
+//			if (!message.equalTo(var6)) {
+//				throw new CommonException(MultiLanguageResourceBundle.getInstance().getString(
+//						"MessageMetadataManager.getMessage.messageClass.reduplicate",
+//						new String[] { messageId, groupId, message.getClassName() }));
+//			}
 		}
 		groupCache.put(messageId, message);
 		cacheByClass.put(message.getClassName(), message);
@@ -215,9 +215,9 @@ public class MessageMetadataManager {
 			if (!MessageBean.COMMON_MESSAGEBEAN_CLASS.equals(message.getClassName())
 					&& cacheByClass.containsKey(message.getClassName())) {
 				Message cacheMessage = cacheByClass.get(message.getClassName());
-				if (!message.equalTo(cacheMessage)) {
-					throw new CommonException("messageClass is reduplicate");
-				}
+//				if (!message.equalTo(cacheMessage)) {
+//					throw new CommonException("messageClass is reduplicate");
+//				}
 			}
 			channelCache.put(prefixFileName, message);
 			cacheByClass.put(message.getClassName(), message);

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="BEPS_ServiceElement121_A105" type="xml" pack-mode="template" short-text="退汇业务" message-charset="UTF-8" class="com.giantstone.cnaps2.messagebean.recv.req.BEPS_ServiceElement121_A105">
+	
+	
+</message-bean>

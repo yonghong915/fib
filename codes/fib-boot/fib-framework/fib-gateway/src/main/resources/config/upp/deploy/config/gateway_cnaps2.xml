@@ -18,8 +18,8 @@
 	<!--**** 通道 **** -->
 	<channels>
 		<channel id="upp_cnaps2_recv" name="人行二代接收bosent业务平台通道" startup="true" deploy="upp_cnaps2_recv" />
-		<channel id="upp_cnaps2_send" name="人行二代发送bosent业务平台通道" startup="true" deploy="upp_cnaps2_send" />
-		<channel id="npc_cnaps2_recv" name="人行二代接收人行前置通道" startup="true" deploy="npc_cnaps2_recv" />
+		<!-- <channel id="upp_cnaps2_send" name="人行二代发送bosent业务平台通道" startup="true" deploy="upp_cnaps2_send" />
+		<channel id="npc_cnaps2_recv" name="人行二代接收人行前置通道" startup="true" deploy="npc_cnaps2_recv" /> -->
 	</channels>
 
 

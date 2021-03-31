@@ -1,5 +1,6 @@
 package com.fib.gateway.message.parser;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,12 +20,21 @@ import lombok.Data;
 @Data
 public abstract class AbstractMessageParser {
 	protected Message message = null;
+	protected Map variableCache = new HashMap(5);
 	protected byte[] messageData = null;
 	protected MessageBean messageBean = null;
+	protected MessageBean parentBean = null;
 	private String defaultCharset = System.getProperty("file.encoding");
 	protected Map<String, Object> fieldIndexCache = new TreeMap<>();
 	protected int indexOffSet = 0;
 	protected boolean needIndex = false;
 
 	public abstract MessageBean parse();
+	protected int parse(int var1) {
+		return 0;
+	}
+	
+	protected void loadVariable() {
+		
+	}
 }

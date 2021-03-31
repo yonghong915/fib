@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<message-bean id="CCMS_990_Out" type="xml" xpath="." pack-mode="template" short-text="通信级确认报文" class="com.giantstone.cnaps2.messagebean.send.req.CCMS_990_Out" message-charset="UTF-8" name-space="default=urn:cnaps:std:ccms:2010:tech:xsd:ccms.990.001.02|xsi=http://www.w3.org/2001/XMLSchema-instance"
+<message-bean id="CCMS_990_Out" type="xml" xpath="." pack-mode="template" short-text="通信级确认报文" class="com.fib.upp.cnaps2.messagebean.send.req.CCMS_990_Out" message-charset="UTF-8" name-space="default=urn:cnaps:std:ccms:2010:tech:xsd:ccms.990.001.02|xsi=http://www.w3.org/2001/XMLSchema-instance"
 schema-valid="true" schema-valid-type="W3C" schema-valid-path="xsd/ccms.990.001.02.xsd">
 		
 	<field name="OrigSender" short-text="报文发起人" field-type="fixed-field" data-type="str" length="14" required="true" shield="false" xpath="default:Document/default:ComConf/default:ConfInf/default:OrigSndr/text()"/>
