@@ -41,7 +41,7 @@
 		<hutool.version>5.5.2</hutool.version>
 		<guava.version>30.0-jre</guava.version>
 		<protostuff.version>1.7.2</protostuff.version>
-		<xstream.version>1.4.15</xstream.version>
+		<xstream.version>1.4.17</xstream.version>
 		<disruptor.version>3.4.2</disruptor.version>
 
 
