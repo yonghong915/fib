@@ -17,21 +17,19 @@
             fib-uias
             fib-upp
         
-docker 打包:  
+docker打包:  
 
 1.开启docker 2375端口
 
-/usr/lib/systemd/system/docker.service文件中添加 
+/usr/lib/systemd/system/docker.service文件中添加: 
 
-ExecStart= -H tcp://0.0.0.0:2375 
-
-systemctl daemon-reload 
-
+ExecStart= -H tcp://0.0.0.0:2375  
+systemctl daemon-reload  
 systemctl restart docker
 
 2.设置环境变量DOCKER_HOST 
 
-DOCKER_HOST=tcp://192.168.56.11:2375
+DOCKER_HOST=tcp://192.168.56.11:2375  
 
 3.项目根目录构建docker file(Dockerfile)
 
