@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.stereotype.Service;
 
 /**
  * 调度任务实现类
@@ -64,7 +62,7 @@ public class QuartzServiceImpl implements IQuartzService {
 	@Override
 	public void updateJob(String jobName, String jobGroupName, String jobTime) throws Exception {
 		logger.info(" 修改一个任务 jobName=" + jobName + ",jobGroupName" + jobGroupName + ",jobTime=" + jobTime);
-		Date date = JobUtils.updateJob(scheduler, jobName, jobGroupName, jobTime);
+		JobUtils.updateJob(scheduler, jobName, jobGroupName, jobTime);
 		logger.info(" job任务 jobName=" + jobName + ",jobGroupName" + jobGroupName + " 执行完成 . ");
 	}
 

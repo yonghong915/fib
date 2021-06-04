@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fib.upp.service.beps.BepsBatchService;
-import com.fib.upp.util.Constant;
-
 
 /**
  * 
@@ -21,6 +19,7 @@ public class BepsBatchFactory {
 	}
 
 	public static BepsBatchService getBepsBatchService(String batchType) {
+		logger.info("");
 		return null;
 //		if (StrUtil.isEmpty(batchType)) {
 //			logger.error("batchType can not be empty.");

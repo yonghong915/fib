@@ -27,7 +27,7 @@ public class DataSourceConfig {
 	private Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
 
 	@Autowired
-	private com.fib.core.base.datasource.DataSourceProperties dataSourceProperties;
+	private DataSourceProperties dataSourceProperties;
 
 	@Bean(name = "masterDataSource")
 	@Qualifier("masterDataSource")
@@ -60,7 +60,7 @@ public class DataSourceConfig {
 	private Class<? extends DataSource> getDataSourceType(String name, ClassLoader classLoader)
 			throws ClassNotFoundException, LinkageError {
 		Class<? extends DataSource> type;
-		if (StrUtil.isNotEmpty(name)) {
+		if (StrUtil.isEmpty(name)) {
 			type = HikariDataSource.class;
 		} else {
 			type = (Class<? extends DataSource>) ClassUtils.forName(name, classLoader);

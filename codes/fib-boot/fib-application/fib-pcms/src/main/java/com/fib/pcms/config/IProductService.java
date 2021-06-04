@@ -5,7 +5,7 @@ import java.util.List;
 public interface IProductService {
 	void getProduct();
 
-	List listProducts();
+	List<?> listProducts();
 
 	int countProducts();
 

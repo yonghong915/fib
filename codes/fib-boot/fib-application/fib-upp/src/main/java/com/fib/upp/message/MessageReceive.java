@@ -1,7 +1,6 @@
 package com.fib.upp.message;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 public class MessageReceive {
 	public static void execute() {
@@ -52,20 +51,17 @@ public class MessageReceive {
 		System.arraycopy(messageData, 3, des, 0, des.length);
 		String VersionID = new String(des);
 		System.out.println("VersionID=" + VersionID);
-		
-		
+
 		des = new byte[14];
 		System.arraycopy(messageData, 5, des, 0, des.length);
 		String OrigSender = new String(des);
 		System.out.println("OrigSender=" + OrigSender);
-		
-		
+
 		des = new byte[4];
 		System.arraycopy(messageData, 19, des, 0, des.length);
 		String OrigSenderSID = new String(des);
 		System.out.println("OrigSenderSID=" + OrigSenderSID);
-		
-		
+
 	}
 
 	public static void main(String[] args) {

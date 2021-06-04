@@ -53,7 +53,7 @@ public class ErrorCodeServiceImpl extends ServiceImpl<ErrorCodeMapper, ErrorCode
 		try {
 			return errorCodeMapper.selectList(entity);
 		} catch (Exception e) {
-			throw new BusinessException(StatusCode.DB_EXCEPTION);
+			throw new BusinessException(StatusCode.DB_EXCEPTION,e);
 		}
 	}
 

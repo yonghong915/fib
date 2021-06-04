@@ -4,16 +4,14 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-
-import org.checkerframework.checker.units.qual.K;
 
 public class ClassUtils {
 	public static final String CLASS_EXTENSION = ".class";
@@ -39,10 +37,18 @@ public class ClassUtils {
 
 	public static Object newInstance(String name) {
 		try {
-			return forName(name).newInstance();
+			return forName(name).getDeclaredConstructor().newInstance();
 		} catch (InstantiationException e) {
 			throw new IllegalStateException(e.getMessage(), e);
 		} catch (IllegalAccessException e) {
+			throw new IllegalStateException(e.getMessage(), e);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalStateException(e.getMessage(), e);
+		} catch (InvocationTargetException e) {
+			throw new IllegalStateException(e.getMessage(), e);
+		} catch (NoSuchMethodException e) {
+			throw new IllegalStateException(e.getMessage(), e);
+		} catch (SecurityException e) {
 			throw new IllegalStateException(e.getMessage(), e);
 		}
 	}
@@ -435,15 +441,4 @@ public class ClassUtils {
 			return "null";
 		}
 	}
-
-	public static <K, V> Map<K, V> toMap(Map.Entry<K, V>[] entries) {
-		Map<K, V> map = new HashMap<K, V>();
-		if (entries != null && entries.length > 0) {
-			for (Map.Entry<K, V> enrty : entries) {
-				map.put(enrty.getKey(), enrty.getValue());
-			}
-		}
-		return map;
-	}
-
 }

@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-framework</artifactId>
-		<version>1.0.0.RELEASE</version>
+		<version>1.0.0</version>
 	</parent>
 	<dependencies>
 
@@ -46,20 +46,4 @@
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<finalName>fib-config</finalName>
-		<filters>
-			<filter>${basedir}/src/main/resources/filters/application-${profile.active}.properties</filter>
-		</filters>
-		<resources>
-			<resource>
-				<directory>${basedir}/src/main/resources</directory>
-				<excludes>
-					<exclude>filters/**</exclude>
-				</excludes>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
 </project>

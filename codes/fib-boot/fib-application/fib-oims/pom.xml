@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-application</artifactId>
-		<version>1.0.0.RELEASE</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>fib-oims</artifactId>
 	<name>fib-oims</name>

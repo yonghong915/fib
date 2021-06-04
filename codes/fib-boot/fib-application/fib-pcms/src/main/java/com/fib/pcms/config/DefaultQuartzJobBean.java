@@ -6,7 +6,6 @@ import org.quartz.SchedulerException;
 import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 public class DefaultQuartzJobBean extends QuartzJobBean {
@@ -16,8 +15,7 @@ public class DefaultQuartzJobBean extends QuartzJobBean {
 	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		// 拿到Spring的上下文，可以自由的做业务处理
 		try {
-			ApplicationContext applicationContext = (ApplicationContext) jobExecutionContext.getScheduler().getContext()
-					.get("applicationContext");
+			jobExecutionContext.getScheduler().getContext().get("applicationContext");
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

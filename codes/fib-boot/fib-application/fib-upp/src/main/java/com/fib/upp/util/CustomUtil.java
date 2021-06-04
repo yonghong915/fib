@@ -1,6 +1,5 @@
 package com.fib.upp.util;
 
-import java.time.LocalDateTime;
 
 public class CustomUtil {
 
@@ -15,7 +14,7 @@ public class CustomUtil {
 //			cnapsSystemDate = DateUtil.format(LocalDateTime.now(), "yyyyMMdd");
 //		}
 		// TODO 或取序号//可以取数据库自增序列-Seq_MessageId
-		long workerId = 1;
+		
 //		Snowflake snowflake = IdUtil.createSnowflake(workerId, 2);
 //		String id = snowflake.nextIdStr();
 //		if (id.length() > 8) {
@@ -34,14 +33,14 @@ public class CustomUtil {
 	public boolean checkDuplicateMessage() {
 		boolean repeatFlag = false;
 		// 系统号（通道）
-		String systemCode = Constant.SystemCode.HVPS.code();
-		// 报文发起参与机构
-		String partyIdFrom = "";
-		// 报文标识号
-		String messageId = "";
-
-		//
-		String messageType = "";
+//		String systemCode = Constant.SystemCode.HVPS.code();
+//		// 报文发起参与机构
+//		String partyIdFrom = "";
+//		// 报文标识号
+//		String messageId = "";
+//
+//		//
+//		String messageType = "";
 
 		// 查询COMMUNICATION_EVENT查询是否存在
 

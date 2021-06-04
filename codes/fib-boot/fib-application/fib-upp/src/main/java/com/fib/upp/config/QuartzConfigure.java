@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
@@ -22,7 +21,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import com.fib.upp.job.ButtonTimerJob;
 
-@Configuration
+//@Configuration
 public class QuartzConfigure {
 	// 配置文件路径
 	private static final String QUARTZ_CONFIG = "/quartz.properties";
