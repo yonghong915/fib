@@ -1,0 +1,3 @@
+com.fib.upp.service.gateway.common.extension.DubboInternalLoadingStrategy
+com.fib.upp.service.gateway.common.extension.DubboLoadingStrategy
+com.fib.upp.service.gateway.common.extension.ServicesLoadingStrategy

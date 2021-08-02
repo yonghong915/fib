@@ -1,0 +1,3 @@
+aliPay=com.fib.commons.spi.pay.AliPay
+wechatPay=com.fib.commons.spi.pay.WechatPay
+cardPay=com.fib.commons.spi.pay.CardPay
