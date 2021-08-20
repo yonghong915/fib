@@ -1,0 +1,3 @@
+cpdetector=com.fib.commons.detect.support.CPdetectorEncodingDetector
+any23=com.fib.commons.detect.support.Any23EncodingDetector
+juniversalchardet=com.fib.commons.detect.support.JuniversalchardetEncodingDetector

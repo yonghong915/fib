@@ -1,4 +1,4 @@
-package com.fib.commons.serializer;
+package com.fib.commons;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,13 +8,14 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fib.commons.serializer.SerializationUtils;
 import com.fib.commons.serializer.jdk.JdkSerializer;
 import com.fib.commons.serializer.json.JsonSerializer;
 import com.fib.commons.serializer.protostuff.ProtoStuffSerializer;
 import com.fib.commons.serializer.xml.XmlSerializer;
 
 public class SerializerTest {
-	private Logger logger = LoggerFactory.getLogger(SerializerTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(SerializerTest.class);
 
 	@Test
 	public void testProtoStuff() {

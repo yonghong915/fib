@@ -1,0 +1,4 @@
+protoStuff=com.fib.commons.serializer.protostuff.ProtoStuffSerializer
+xml=com.fib.commons.serializer.xml.XmlSerializer
+json=com.fib.commons.serializer.json.JsonSerializer
+jdk=com.fib.commons.serializer.jdk.JdkSerializer
