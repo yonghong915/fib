@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateway id="cnaps2" name="人行二代支付" monitor-port="${cnaps2_monitor-port}">
+ <!--**** 组件 ****-->
+	<modules>
+		<!-- 数据库连接管理器-->
+
+		<!--
+		<module type="CONN_MNGR" >
+			<parameter name="config-file">../../config-file/connection-manager.xml</parameter>
+		</module>
+		-->
+
+		<!--module type="RECORD_DIGEST"/-->
+		<!-- 工作密钥管理器 -->
+
+		<!-- 任务管理器 -->
+	</modules>
+
+	<!--**** 通道 ****-->
+	<channels>
+		<channel id="bosent_cnaps2_recv" name="人行二代接收bosent业务平台通道" startup="true" deploy="bosent_cnaps2_recv"/>
+		<channel id="bosent_cnaps2_send" name="人行二代发送bosent业务平台通道" startup="true" deploy="bosent_cnaps2_send"/>
+		<channel id="npc_cnaps2_recv" name="人行二代接收人行前置通道" startup="true" deploy="npc_cnaps2_recv"/> 
+	</channels>
+
+
+	<!-- 事件处理器 -->
+	<event-handler max-handler-number="5" />
+
+	<session timeout="5min" />
+
+	<!-- 调试器 -->
+	<logger name="gateway_cnaps2" />
+
+   <!-- 变量文件 -->
+	<variable-file name="./config-file/variable.properties" />
+</gateway>

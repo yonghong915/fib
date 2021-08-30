@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<http-client-channel>
-	<url>http://102.3/www.com</url>
-	<content-charset>utf-8</content-charset>
-	<handler max-handler-number="200" />
-</http-client-channel>

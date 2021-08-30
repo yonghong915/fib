@@ -21,5 +21,6 @@
 		<module>fib-uias</module>
 		<module>fib-upp</module>
     <module>fib-oms</module>
+    <module>fib-msg-converter</module>
   </modules>
 </project>

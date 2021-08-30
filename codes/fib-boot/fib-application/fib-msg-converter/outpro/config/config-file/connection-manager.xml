@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectionManager>
+
+	<!-- Type: Jdbc / ConnectionPool / DataSource -->
+	<type>connection-pool</type>
+
+	<!-- 纯JDBC -->
+	<jdbc>
+		<jdbc>
+		<driver>com.ibm.db2.jcc.DB2Driver</driver>
+		<jdbc-url>jdbc:db2://197.2.255.2:60000/DB2GW:currentSchema=GATEWAY;</jdbc-url>
+		<user has-encrypt="true">GI4PuzM8fpBUoKsrL3CE+Q==</user>
+		<password has-encrypt="true">CdwZiInkQQ3VRmD1GJyunw==</password>
+	</jdbc>
+	</jdbc>
+
+	<!-- 数据库连接池 -->
+	<ConnectionPool>
+		<property name="driver">com.ibm.db2.jcc.DB2Driver</property>
+		<property name="jdbcUrl">jdbc:db2://197.2.255.2:60000/DB2GW:currentSchema=GATEWAY;</property>
+		<property name="user" has-encrypt="true">GI4PuzM8fpBUoKsrL3CE+Q==</property>
+		<property name="password" has-encrypt="true">CdwZiInkQQ3VRmD1GJyunw==</property>
+		<property name="automaticTestTable">test</property>
+		<property name="checkoutTimeout">60000</property>
+		<property name="idleConnectionTestPeriod">30</property>
+		<property name="initialPoolSize">20</property>
+		<property name="maxIdleTime">30</property>
+		<property name="maxPoolSize">50</property>
+		<property name="minPoolSize">20</property>
+		<property name="maxStatements">200</property>
+	</ConnectionPool>
+
+</ConnectionManager>

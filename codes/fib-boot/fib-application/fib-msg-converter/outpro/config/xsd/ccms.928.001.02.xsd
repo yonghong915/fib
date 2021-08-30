@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:cnaps:std:ccms:2019:tech:xsd:ccms.928.001.02" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:cnaps:std:ccms:2019:tech:xsd:ccms.928.001.02" elementFormDefault="qualified">
+	<xs:element name="Document" type="Document"/>
+	<xs:complexType name="Document">
+		<xs:sequence>
+			<xs:element name="AuthNtfctn" type="AuthNtfctnV01"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuthNtfctnV01">
+		<xs:sequence>
+			<xs:element name="GrpHdr" type="GroupHeader1"/>
+			<xs:element name="BusFctnInf" type="BusFctnInf1" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GroupHeader1">
+		<xs:sequence>
+			<xs:element name="MsgId" type="Max35Text"/>
+			<xs:element name="CreDtTm" type="ISODateTime"/>
+			<xs:element name="InstgPty" type="InstgPty1"/>
+			<xs:element name="SysCd" type="Max4Text"/>
+			<xs:element name="RmkInf" type="Max256Text" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BusFctnInf1">
+		<xs:sequence>
+			<xs:element name="MT" type="Max35Text"/>
+			<xs:element name="MagTp" type="ManageCode"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InstgPty1">
+		<xs:sequence>
+			<xs:element name="InstgDrctPty" type="Max14Text"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ManageCode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MC00"/>
+			<xs:enumeration value="MC01"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SendReceiveCode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SR00"/>
+			<xs:enumeration value="SR01"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max14Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="14"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max35Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="35"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max256Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+</xs:schema>
