@@ -1,7 +1,3 @@
-/**
- * 北京长信通信息技术有限公司
- * 2008-8-21 下午06:18:18
- */
 package com.fib.msgconverter.commgateway;
 
 import java.io.File;
@@ -67,6 +63,7 @@ import com.fib.msgconverter.commgateway.session.Session;
 import com.fib.msgconverter.commgateway.session.SessionConstants;
 import com.fib.msgconverter.commgateway.session.SessionManager;
 import com.fib.msgconverter.commgateway.session.config.SessionConfig;
+import com.fib.msgconverter.commgateway.util.EnumConstants;
 import com.fib.msgconverter.commgateway.util.multilang.MultiLanguageResourceBundle;
 import com.fib.msgconverter.message.bean.generator.MessageBeanCodeGenerator;
 import com.fib.msgconverter.message.metadata.MessageMetadataManager;
@@ -122,7 +119,7 @@ public class CommGateway {
 	/**
 	 * 通讯渠道列表
 	 */
-	private static Map channels = new HashMap();
+	private static Map<String,Channel> channels = new HashMap<>();
 
 	/**
 	 * 通道部署根路径
@@ -263,9 +260,9 @@ public class CommGateway {
 		// 1. 分别加载通道配置
 		ChannelMainConfig channelMainConfig = null;
 		Map channelSymbolMap = new HashMap();
-		Iterator it = config.getChannels().values().iterator();
+		Iterator<ChannelMainConfig> it = config.getChannels().values().iterator();
 		while (it.hasNext()) {
-			channelMainConfig = (ChannelMainConfig) it.next();
+			channelMainConfig = it.next();
 			if (channelMainConfig.isStartup()) {
 				loadChannel(channelMainConfig);
 
@@ -779,18 +776,17 @@ public class CommGateway {
 			String targetDir = classRootPath;
 			String sourceDir = "E:/git_source/develop/fib/codes/fib-boot/fib-application/fib-msg-converter/outpro/deploy/bosent_cnaps2_recv/src";
 
-			System.out.println("srcPath="+srcPath);
-			System.out.println("jars="+jars);
-			System.out.println("targetDir="+targetDir);
-			System.out.println("sourceDir="+sourceDir);
+			System.out.println("srcPath=" + srcPath);
+			System.out.println("jars=" + jars);
+			System.out.println("targetDir=" + targetDir);
+			System.out.println("sourceDir=" + sourceDir);
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 			StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 			List<File> sourceFileList = new ArrayList<>();
 			sourceFileList.add(new File(srcPath));
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager
 					.getJavaFileObjectsFromFiles(sourceFileList);
-			Iterable<String> options = Arrays.asList("-encoding", encoding, "-d", targetDir,
-					"-sourcepath", sourceDir);
+			Iterable<String> options = Arrays.asList("-encoding", encoding, "-d", targetDir, "-sourcepath", sourceDir);
 
 			DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 
@@ -805,8 +801,6 @@ public class CommGateway {
 				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 						"CommGateway.compileModifiedFiles.compile.error", new String[] { "" + result, modifiedFile }));
 			}
-			
-			
 
 		}
 	}
@@ -826,8 +820,8 @@ public class CommGateway {
 		while (iterator.hasNext()) {
 			processor = (Processor) iterator.next();
 			String processorId = processor.getId();
-			if ((!jobSupport) && (Processor.TYP_SAVE_AND_TRANSFORM == processor.getType()
-					|| Processor.TYP_SAVE_AND_TRANSMIT == processor.getType())) {
+			if ((!jobSupport) && (EnumConstants.ProcessorType.SAVE_AND_TRANSFORM.getCode() == processor.getType()
+					|| EnumConstants.ProcessorType.SAVE_AND_TRANSMIT.getCode() == processor.getType())) {
 				// throw new RuntimeException(
 				// "Gateway(Without Job) can not support processor type :"
 				// + Processor.getTextByType(processor.getType())
@@ -836,7 +830,7 @@ public class CommGateway {
 				// + "], Processor Id[" + processor.getId() + "]");
 				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 						"CommGateway.checkChannelProcessors.processorType.unsupport",
-						new String[] { Processor.getTextByType(processor.getType()),
+						new String[] { EnumConstants.ProcessorType.getNameByCode(processor.getType()),
 								channelConfig.getMainConfig().getId(), processor.getId() }));
 			}
 
@@ -882,7 +876,8 @@ public class CommGateway {
 				// error-mapping
 				ErrorMappingConfig errorMappingConfig = processor.getErrorMappingConfig();
 				if (null != errorMappingConfig) {
-					if (Processor.MSG_OBJ_TYP_MB == processor.getSourceChannelMessageObjectType()) {
+					if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
+							.getSourceChannelMessageObjectType()) {
 						if (!MessageMetadataManager.isMessageExist(messageGroupId,
 								errorMappingConfig.getSoureMessageId())) {
 							// throw new RuntimeException(
@@ -970,13 +965,13 @@ public class CommGateway {
 
 	private void checkMessageTransformerConfig(MessageTransformerConfig config, String groupId, Processor processor,
 			String prefix) {
-		if (Processor.TYP_TRANSMIT == processor.getType()) {
+		if (EnumConstants.ProcessorType.TRANSMIT.getCode() == processor.getType()) {
 			return;
 		}
 
 		String id = null;
 		// source-message-id
-		if (Processor.MSG_OBJ_TYP_MB == processor.getSourceChannelMessageObjectType()) {
+		if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor.getSourceChannelMessageObjectType()) {
 			id = config.getSourceMessageId();
 			if (null != id && 0 < id.trim().length()) {
 				if (!MessageMetadataManager.isMessageExist(groupId, id)) {
@@ -991,8 +986,8 @@ public class CommGateway {
 		}
 
 		// dest-message-id
-		if (Processor.MSG_OBJ_TYP_MB == processor.getDestChannelMessageObjectType()
-				&& Processor.TYP_LOCAL != processor.getType()) {
+		if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor.getDestChannelMessageObjectType()
+				&& EnumConstants.ProcessorType.LOCAL.getCode() != processor.getType()) {
 			id = config.getDestinationMessageId();
 			if (null != id && 0 < id.trim().length()) {
 				if (!MessageMetadataManager.isMessageExist(groupId, id)) {
@@ -1005,7 +1000,7 @@ public class CommGateway {
 			}
 		}
 		// bean-mapping
-		if (Processor.TYP_LOCAL != processor.getType()) {
+		if (EnumConstants.ProcessorType.LOCAL.getCode() != processor.getType()) {
 			id = config.getMappingId();
 			if (null != id && 0 < id.trim().length()) {
 				if (null == MappingRuleManager.getMappingRule(groupId, id)) {

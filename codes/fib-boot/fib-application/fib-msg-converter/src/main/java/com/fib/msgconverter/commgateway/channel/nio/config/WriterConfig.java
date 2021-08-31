@@ -13,20 +13,21 @@ import com.giantstone.common.util.ClassUtil;
 
 /**
  * 消息发送器配置
+ * 
  * @author 刘恭亮
  *
  */
 public class WriterConfig extends DynamicObjectConfig {
-	private List filterConfigList = new ArrayList();
+	private List<FilterConfig> filterConfigList = new ArrayList<>();
 
-	public List getFilterConfigList() {
+	public List<FilterConfig> getFilterConfigList() {
 		return filterConfigList;
 	}
-	public List createFilterList() {
-		List list = new ArrayList();
+
+	public List<AbstractMessageFilter> createFilterList() {
+		List<AbstractMessageFilter> list = new ArrayList<>();
 		for (int i = 0; i < filterConfigList.size(); i++) {
-			String filterClassName = ((FilterConfig) filterConfigList.get(i))
-					.getClassName();
+			String filterClassName = ((FilterConfig) filterConfigList.get(i)).getClassName();
 			filterClassName = filterClassName.trim();
 			AbstractMessageFilter filter = (AbstractMessageFilter) ClassUtil.createClassInstance(filterClassName);
 			list.add(filter);
@@ -34,4 +35,4 @@ public class WriterConfig extends DynamicObjectConfig {
 		return list;
 	}
 
- }
+}

@@ -57,7 +57,7 @@ public class GatewayConfig {
 	/**
 	 * 安装的渠道
 	 */
-	private Map channels = new HashMap();
+	private Map<String, ChannelMainConfig> channels = new HashMap<>();
 
 	/**
 	 * 变量文件名
@@ -86,8 +86,7 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -101,8 +100,7 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -116,8 +114,7 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * @param loggerName
-	 *            the loggerName to set
+	 * @param loggerName the loggerName to set
 	 */
 	public void setLoggerName(String loggerName) {
 		this.loggerName = loggerName;
@@ -131,8 +128,7 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * @param eventHandlerNumber
-	 *            the eventHandlerNumber to set
+	 * @param eventHandlerNumber the eventHandlerNumber to set
 	 */
 	public void setEventHandlerNumber(int eventHandlerNumber) {
 		this.eventHandlerNumber = eventHandlerNumber;
@@ -141,7 +137,7 @@ public class GatewayConfig {
 	/**
 	 * @return the channels
 	 */
-	public Map getChannels() {
+	public Map<String, ChannelMainConfig> getChannels() {
 		return channels;
 	}
 
@@ -154,10 +150,9 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * @param channels
-	 *            the channels to set
+	 * @param channels the channels to set
 	 */
-	public void setChannels(Map channels) {
+	public void setChannels(Map<String, ChannelMainConfig> channels) {
 		this.channels = channels;
 	}
 
@@ -169,8 +164,7 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * @param monitorPort
-	 *            the monitorPort to set
+	 * @param monitorPort the monitorPort to set
 	 */
 	public void setMonitorPort(int monitorPort) {
 		this.monitorPort = monitorPort;
@@ -184,8 +178,7 @@ public class GatewayConfig {
 	}
 
 	/**
-	 * @param modules
-	 *            the modules to set
+	 * @param modules the modules to set
 	 */
 	public void setModules(List modules) {
 		this.modules = modules;

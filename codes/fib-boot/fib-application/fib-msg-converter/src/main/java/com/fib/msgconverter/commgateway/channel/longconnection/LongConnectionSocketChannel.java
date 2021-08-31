@@ -354,9 +354,9 @@ public class LongConnectionSocketChannel extends Channel {
 
 		writer = (AbstractWriter) ClassUtil.createClassInstance(config.getWriterConfig().getClassName());
 		// 2. 设置接收通道心跳包
-		List heartbeatConfigs = config.getHeartbeatConfigs();
+		List<HeartbeatConfig> heartbeatConfigs = config.getHeartbeatConfigs();
 		for (int i = 0; i < heartbeatConfigs.size(); i++) {
-			HeartbeatConfig heartbeatConfig = (HeartbeatConfig) heartbeatConfigs.get(i);
+			HeartbeatConfig heartbeatConfig = heartbeatConfigs.get(i);
 			if (ConnectionConfig.COMM_DIRECTION_RECEIVE == heartbeatConfig.getDirection()) {
 				reader.setHeartbeatConfig(heartbeatConfig);
 				writer.setResponseHeartbeatConfig(heartbeatConfig);
@@ -395,9 +395,9 @@ public class LongConnectionSocketChannel extends Channel {
 		Connection conn = null;
 		ConnectionConfig conf = null;
 		List heartbeatConfigs = config.getHeartbeatConfigs();
-		Iterator it = config.getConnectionConfigs().values().iterator();
+		Iterator<ConnectionConfig> it = config.getConnectionConfigs().values().iterator();
 		while (it.hasNext()) {
-			conf = (ConnectionConfig) it.next();
+			conf = it.next();
 			if (ConnectionConfig.CONN_TYP_CLIENT == conf.getType()) {
 				conn = new ClientConnection();
 				((ClientConnection) conn).setConnId(getId() + "_" + conf.getId());
@@ -497,14 +497,14 @@ public class LongConnectionSocketChannel extends Channel {
 	private Connections connections = null;
 
 	private class Connections {
-		private Map cache = new HashMap();
+		private Map<String, Connection> cache = new HashMap<>();
 
 		public String toString() {
 			String NEW_LINE = System.getProperty("line.separator");
 			StringBuffer buf = new StringBuffer(1024);
 			buf.append("******** Connections ******** ");
 			buf.append(NEW_LINE);
-			Iterator it = iterator();
+			Iterator<Connection> it = iterator();
 			while (it.hasNext()) {
 				buf.append(((Connection) it.next()).toString());
 				buf.append(NEW_LINE);
@@ -520,20 +520,20 @@ public class LongConnectionSocketChannel extends Channel {
 			cache.put(id, conn);
 		}
 
-		public Iterator iterator() {
+		public Iterator<Connection> iterator() {
 			return cache.values().iterator();
 		}
 
-		public void clear() {
-			cache.clear();
-		}
-
-		public void close() {
-			Iterator it = iterator();
-			while (it.hasNext()) {
-				((Connection) it.next()).close();
-			}
-		}
+//		public void clear() {
+//			cache.clear();
+//		}
+//
+//		public void close() {
+//			Iterator it = iterator();
+//			while (it.hasNext()) {
+//				((Connection) it.next()).close();
+//			}
+//		}
 	}
 
 	private class ClientConnection extends Connection {

@@ -1,7 +1,3 @@
-/**
- * 北京长信通信息技术有限公司
- * 2015年4月8日20:40:54
- */
 package com.fib.msgconverter.commgateway.channel.nio.reader.impl;
 
 import java.io.ByteArrayOutputStream;

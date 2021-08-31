@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.fib.msgconverter.commgateway.channel.nio.filter.AbstractMessageFilter;
 import com.fib.msgconverter.commgateway.util.multilang.MultiLanguageResourceBundle;
 import com.giantstone.common.util.ExceptionUtil;
 
@@ -41,8 +42,7 @@ public abstract class AbstractReader implements Reader {
 	}
 
 	/**
-	 * @param parameters
-	 *            the parameters to set
+	 * @param parameters the parameters to set
 	 */
 	public void setParameters(Map parameters) {
 		this.parameters = parameters;
@@ -51,13 +51,13 @@ public abstract class AbstractReader implements Reader {
 	/**
 	 * 过滤器链
 	 */
-	protected List filterList = new ArrayList();
+	protected List<AbstractMessageFilter> filterList = new ArrayList<>();
 
-	public List getFilterList() {
+	public List<AbstractMessageFilter> getFilterList() {
 		return filterList;
 	}
 
-	public void setFilterList(List filterList) {
+	public void setFilterList(List<AbstractMessageFilter> filterList) {
 		this.filterList = filterList;
 	}
 
@@ -75,14 +75,12 @@ public abstract class AbstractReader implements Reader {
 			if (-1 == onceRead) {
 				// throw new RuntimeException(
 				// "onceRead = -1, remote socket maybe be closed!");
-				throw new RuntimeException(MultiLanguageResourceBundle
-						.getInstance().getString("onceRead.-1"));
+				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("onceRead.-1"));
 			}
 			if (0 == onceRead) {
 				// throw new RuntimeException(
 				// "onceRead = 0, remote socket maybe be closed!");
-				throw new RuntimeException(MultiLanguageResourceBundle
-						.getInstance().getString("onceRead.0"));
+				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("onceRead.0"));
 			}
 			messageBuf = appendByteBuf(readBuf, onceRead, messageBuf);
 			if (checkMessageComplete(messageBuf)) {
@@ -142,14 +140,12 @@ public abstract class AbstractReader implements Reader {
 			if (-1 == onceRead) {
 				// throw new RuntimeException(
 				// "onceRead = -1, remote socket maybe be closed!");
-				throw new RuntimeException(MultiLanguageResourceBundle
-						.getInstance().getString("onceRead.-1"));
+				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("onceRead.-1"));
 			}
 			if (0 == onceRead) {
 				// throw new RuntimeException(
 				// "onceRead = 0, remote socket maybe be closed!");
-				throw new RuntimeException(MultiLanguageResourceBundle
-						.getInstance().getString("onceRead.0"));
+				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("onceRead.0"));
 			}
 			hasRead += onceRead;
 		}
@@ -175,5 +171,4 @@ public abstract class AbstractReader implements Reader {
 	public void setLogger(Logger logger) {
 		this.logger = logger;
 	}
-
 }

@@ -40,6 +40,7 @@ import com.fib.msgconverter.commgateway.messagehandler.ResultAfterHandler;
 import com.fib.msgconverter.commgateway.session.Session;
 import com.fib.msgconverter.commgateway.session.SessionConstants;
 import com.fib.msgconverter.commgateway.session.SessionManager;
+import com.fib.msgconverter.commgateway.util.EnumConstants;
 import com.fib.msgconverter.commgateway.util.multilang.MultiLanguageResourceBundle;
 import com.fib.msgconverter.commgateway.util.serialnumber.SerialNumberGenerator;
 import com.giantstone.common.database.ConnectionManager;
@@ -94,24 +95,21 @@ public class DefaultEventHandler extends EventHandler {
 				errorBean.setErrorInfo(session.getErrorMessage());
 			}
 			session.setErrorBean(errorBean);
-			ErrorMappingConfig errorMappingConfig = processor
-					.getErrorMappingConfig();
+			ErrorMappingConfig errorMappingConfig = processor.getErrorMappingConfig();
 			if (null == errorMappingConfig) {
 				// 关闭通讯源
 				sourceChannel.closeSource(session.getSource());
 				return;
 			}
 			// 映射为源通道异常MB
-			Object mappedObject = objectMapping(sourceChannelId, null,
-					errorMappingConfig.getMappingRuleId(), session, errorBean);
+			Object mappedObject = objectMapping(sourceChannelId, null, errorMappingConfig.getMappingRuleId(), session,
+					errorBean);
 
 			// MessageBean sourceErrorBean = (MessageBean) mappedObject;
 			// 组包
-			String messageBeanGroupId = sourceChannel.getChannelConfig()
-					.getMessageBeanGroupId();
-			byte[] sourceErrorMessage = packMessage(messageBeanGroupId,
-					errorMappingConfig.getSoureMessageId(), mappedObject,
-					processor.getSourceMapCharset());
+			String messageBeanGroupId = sourceChannel.getChannelConfig().getMessageBeanGroupId();
+			byte[] sourceErrorMessage = packMessage(messageBeanGroupId, errorMappingConfig.getSoureMessageId(),
+					mappedObject, processor.getSourceMapCharset());
 
 			session.setSourceResponseMessage(sourceErrorMessage);
 			// 关联异常信息和会话
@@ -131,15 +129,12 @@ public class DefaultEventHandler extends EventHandler {
 			// 设置会话状态为失败
 			session.setState(Session.STATE_FAILURE);
 			SessionManager.terminalSession(session);
-			if (Session.TYP_INTERNAL.equals(session.getType())
-					&& null != session.getJob()
-					&& JobConstants.JOB_STAT_ALIVE.equals(session.getJob()
-							.getCurrentJobInfo().getState())) {
+			if (Session.TYP_INTERNAL.equals(session.getType()) && null != session.getJob()
+					&& JobConstants.JOB_STAT_ALIVE.equals(session.getJob().getCurrentJobInfo().getState())) {
 				// 内部会话并且有任务存在并且任务为活动状态，需重新注册
 				AbstractJob currentJob = session.getJob();
 				updateJobLog(session, JobConstants.JOB_LOG_STAT_FAILED);
-				if (currentJob.getCurrentJobInfo().getCurrentTimes() == currentJob
-						.getCurrentJobInfo().getMaxTimes()) {
+				if (currentJob.getCurrentJobInfo().getCurrentTimes() == currentJob.getCurrentJobInfo().getMaxTimes()) {
 					// 达到最大次数，关闭任务，设置状态为失败
 					currentJob.terminate(false);
 					return;
@@ -147,8 +142,7 @@ public class DefaultEventHandler extends EventHandler {
 				JobManager.addJobSchedule(session.getJob());
 				return;
 			}
-			List eventList = (List) processor.getEventConfig().get(
-					session.getErrorType());
+			List eventList = (List) processor.getEventConfig().get(session.getErrorType());
 			if (null != eventList) {
 				for (int i = 0; i < eventList.size(); i++) {
 					triggerEvent((ActionConfig) eventList.get(i), session);
@@ -167,11 +161,9 @@ public class DefaultEventHandler extends EventHandler {
 		// updateSessionAfterException(session,
 		// EventTypeConstants.STATE_SRC_RSP_MSG_SEND,
 		// "Send Response Message Failed", event.getExcp(), event);
-		updateSessionAfterException(session,
-				SessionConstants.STATE_SRC_RSP_MSG_SEND,
-				MultiLanguageResourceBundle.getInstance().getString(
-						"DefaultEventHandler.sendResponse.failed"), event
-						.getExcp(), event);
+		updateSessionAfterException(session, SessionConstants.STATE_SRC_RSP_MSG_SEND,
+				MultiLanguageResourceBundle.getInstance().getString("DefaultEventHandler.sendResponse.failed"),
+				event.getExcp(), event);
 		// handleException(event);
 		SessionManager.terminalSession(session);
 
@@ -197,7 +189,7 @@ public class DefaultEventHandler extends EventHandler {
 		if (!processor.isDestAsync()) {
 			// 目标系统通讯为同步
 			return;
-		}else {
+		} else {
 			if (Session.TYP_INTERNAL.equals(session.getType())) {
 				if (null != session.getJob()) {
 					session.getJob().terminate(true);
@@ -217,14 +209,12 @@ public class DefaultEventHandler extends EventHandler {
 			// 源系统同步
 			Channel sourceChannel = session.getSourceChannel();
 			String sourceChannelId = sourceChannel.getId();
-			String messageBeanGroupId = sourceChannel.getChannelConfig()
-					.getMessageBeanGroupId();
+			String messageBeanGroupId = sourceChannel.getChannelConfig().getMessageBeanGroupId();
 
 			String messageId = null;
-			if (Processor.MSG_OBJ_TYP_MB == processor
+			if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
 					.getSourceChannelMessageObjectType()) {
-				messageId = processor.getRequestMessageConfig()
-						.getSourceMessageId();
+				messageId = processor.getRequestMessageConfig().getSourceMessageId();
 			}
 			// 源请求报文解包
 			Object sourceRequestObject = session.getSourceRequestObject();
@@ -265,16 +255,15 @@ public class DefaultEventHandler extends EventHandler {
 			Object sourceResponseObject = null;
 			try {
 				long time = System.nanoTime();
-				sourceResponseObject = objectMapping(sourceChannelId, session
-						.getDestRequestMessage(), processor
-						.getResponseMessageConfig().getMappingId(), session,
-						sourceRequestObject);
+				sourceResponseObject = objectMapping(sourceChannelId, session.getDestRequestMessage(),
+						processor.getResponseMessageConfig().getMappingId(), session, sourceRequestObject);
 				session.resMappingSpendTime = (System.nanoTime() - time) / 1000000;
 			} catch (Exception e) {
 				// updateSessionAfterException(
 				// session,
 				// EventTypeConstants.STATE_RSP_MSG_MAPPING,
-				// "Mapping Error!From Source Request MessageObject To Source Response MessageObject."
+				// "Mapping Error!From Source Request MessageObject To Source Response
+				// MessageObject."
 				// + "SourceChannelId["
 				// + sourceChannelId
 				// + "], ProcessorId["
@@ -282,37 +271,26 @@ public class DefaultEventHandler extends EventHandler {
 				// + "], MappingRuleId["
 				// + processor.getResponseMessageConfig()
 				// .getMappingId() + "]", e, event);
-				updateSessionAfterException(
-						session,
-						SessionConstants.STATE_RSP_MSG_MAPPING,
-						MultiLanguageResourceBundle
-								.getInstance()
-								.getString(
-										"DefaultEventHandler.requestMappingError",
-										new String[] {
-												sourceChannelId,
-												processor.getId(),
-												processor
-														.getResponseMessageConfig()
-														.getMappingId(),
-												e.getMessage() }), e, event);
+				updateSessionAfterException(session, SessionConstants.STATE_RSP_MSG_MAPPING,
+						MultiLanguageResourceBundle.getInstance().getString("DefaultEventHandler.requestMappingError",
+								new String[] { sourceChannelId, processor.getId(),
+										processor.getResponseMessageConfig().getMappingId(), e.getMessage() }),
+						e, event);
 				handleException(event);
 				return;
 			}
 
 			messageId = null;
-			if (Processor.MSG_OBJ_TYP_MB == processor
+			if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
 					.getSourceChannelMessageObjectType()) {
-				messageId = processor.getResponseMessageConfig()
-						.getSourceMessageId();
+				messageId = processor.getResponseMessageConfig().getSourceMessageId();
 			}
 			// 源回应对象组包
 			byte[] sourceResponseMessage = null;
 			try {
 				long time = System.nanoTime();
-				sourceResponseMessage = packMessage(messageBeanGroupId,
-						messageId, sourceResponseObject, processor
-								.getSourceMapCharset());
+				sourceResponseMessage = packMessage(messageBeanGroupId, messageId, sourceResponseObject,
+						processor.getSourceMapCharset());
 				session.resPackSpendTime = (System.nanoTime() - time) / 1000000;
 			} catch (Exception e) {
 				// updateSessionAfterException(session,
@@ -320,12 +298,10 @@ public class DefaultEventHandler extends EventHandler {
 				// "Pack Source Response Message Error!Channel["
 				// + sourceChannelId + "], Processor["
 				// + processor.getId() + "]", e, event);
-				updateSessionAfterException(session,
-						SessionConstants.STATE_SRC_RSP_MSG_PACK,
+				updateSessionAfterException(session, SessionConstants.STATE_SRC_RSP_MSG_PACK,
 						MultiLanguageResourceBundle.getInstance().getString(
 								"DefaultEventHandler.packSourceResponse.error",
-								new String[] { sourceChannelId,
-										processor.getId(), e.getMessage() }),
+								new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
 						e, event);
 				handleException(event);
 				return;
@@ -363,16 +339,12 @@ public class DefaultEventHandler extends EventHandler {
 
 		if (Session.TYP_INTERNAL.equals(session.getType())) {
 			scheduleRule = new ScheduleRule();
-			scheduleRule.setLoop(session.getJob().getCurrentJobInfo()
-					.getMaxTimes());
-			scheduleRule.setInterval(session.getJob().getCurrentJobInfo()
-					.getJobInterval());
-			scheduleRule.setEndFlag(session.getJob().getCurrentJobInfo()
-					.getScheduleEndFlag());
+			scheduleRule.setLoop(session.getJob().getCurrentJobInfo().getMaxTimes());
+			scheduleRule.setInterval(session.getJob().getCurrentJobInfo().getJobInterval());
+			scheduleRule.setEndFlag(session.getJob().getCurrentJobInfo().getScheduleEndFlag());
 
 			// 内部会话且以通讯成功为结束标志，目前由于内部会话是由通讯任务产生，因此不做任务不存在的校验
-			if (SessionConstants.STATE_COMMUNICATE_SUCCESS.equals(scheduleRule
-					.getEndFlag())) {
+			if (SessionConstants.STATE_COMMUNICATE_SUCCESS.equals(scheduleRule.getEndFlag())) {
 				session.getJob().terminate(true);
 				// 成功结束
 				// 设置会话状态为成功
@@ -384,12 +356,10 @@ public class DefaultEventHandler extends EventHandler {
 				updateJobLog(session, JobConstants.JOB_LOG_STAT_SUCCESS);
 
 				if (null != processor.getEventConfig()) {
-					List list = (List) processor.getEventConfig().get(
-							SessionConstants.STATE_COMMUNICATE_SUCCESS);
+					List list = (List) processor.getEventConfig().get(SessionConstants.STATE_COMMUNICATE_SUCCESS);
 					if (null != list) {
 						for (int i = 0; i < list.size(); i++) {
-							ActionConfig actionConfig = (ActionConfig) list
-									.get(i);
+							ActionConfig actionConfig = (ActionConfig) list.get(i);
 							triggerEvent(actionConfig, session);
 						}
 					}
@@ -410,14 +380,13 @@ public class DefaultEventHandler extends EventHandler {
 
 		boolean businessIsTrue = true;
 		byte[] sourceResponseMessage = null;
-		if (Processor.TYP_TRANSMIT == processor.getType()
+		if (EnumConstants.ProcessorType.TRANSMIT.getCode() == processor.getType()
 				&& !Session.TYP_INTERNAL.equals(session.getType())) {
 			sourceResponseMessage = destResponseMessage;
 		} else {
 
 			// 5. 判断是否需识别返回码
-			AbstractMessageRecognizer recognizer = session.getDestChannel()
-					.getReturnCodeRecognizer();
+			AbstractMessageRecognizer recognizer = session.getDestChannel().getReturnCodeRecognizer();
 
 			MessageTransformerConfig messageConfig = null;
 			// MessageHandlerConfig messageHandlerConfig = null;
@@ -425,20 +394,12 @@ public class DefaultEventHandler extends EventHandler {
 				// 不需识别返回码
 				messageConfig = processor.getResponseMessageConfig();
 				if (Session.TYP_INTERNAL.equals(session.getType())
-						&& SessionConstants.STATE_BUSINESS_SUCCESS
-								.equals(scheduleRule.getEndFlag())) {
-					String errorMessage = MultiLanguageResourceBundle
-							.getInstance()
-							.getString(
-									"DefaultEventHandler.endFlag.false",
-									new String[] {
-											session.getJob()
-													.getCurrentJobInfo()
-													.getId(), processor.getId() });
-					updateSessionAfterException(session,
-							SessionConstants.STATE_RET_CODE_RECOGNIZE,
-							errorMessage, new RuntimeException(errorMessage),
-							event);
+						&& SessionConstants.STATE_BUSINESS_SUCCESS.equals(scheduleRule.getEndFlag())) {
+					String errorMessage = MultiLanguageResourceBundle.getInstance().getString(
+							"DefaultEventHandler.endFlag.false",
+							new String[] { session.getJob().getCurrentJobInfo().getId(), processor.getId() });
+					updateSessionAfterException(session, SessionConstants.STATE_RET_CODE_RECOGNIZE, errorMessage,
+							new RuntimeException(errorMessage), event);
 					handleException(event);
 					return;
 				}
@@ -457,54 +418,40 @@ public class DefaultEventHandler extends EventHandler {
 					// "Recognizer Return Code Error!SourceChannelId["
 					// + sourceChannelId + "], ProcessorId["
 					// + processor.getId() + "]", e, event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_RET_CODE_RECOGNIZE,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.returnCodeRecognize.error",
-											new String[] { sourceChannelId,
-													processor.getId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_RET_CODE_RECOGNIZE,
+							MultiLanguageResourceBundle.getInstance().getString(
+									"DefaultEventHandler.returnCodeRecognize.error",
+									new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+							e, event);
 					// 处理异常
 					handleException(event);
 					return;
 				}
 				session.resMsgRecognizeSpendTime = (System.nanoTime() - time) / 1000000;
 
-				ChannelConfig channelConfig = session.getDestChannel()
-						.getChannelConfig();
-				if (!channelConfig.getReturnCodeRecognizerConfig()
-						.getSuccessCodeSet().contains(returnCode)) {
+				ChannelConfig channelConfig = session.getDestChannel().getChannelConfig();
+				if (!channelConfig.getReturnCodeRecognizerConfig().getSuccessCodeSet().contains(returnCode)) {
 					// 返回码属于错误返回码集合，说明交易业务出错
 					messageConfig = processor.getErrorMessageConfig();
 
 					if (Session.TYP_INTERNAL.equals(session.getType())) {
-						if (SessionConstants.STATE_BUSINESS_SUCCESS
-								.equals(scheduleRule.getEndFlag())) {
+						if (SessionConstants.STATE_BUSINESS_SUCCESS.equals(scheduleRule.getEndFlag())) {
 							// 内部会话，任务失败
 							session.setState(Session.STATE_FAILURE);
 
 							SessionManager.terminalSession(session);
 
-							updateJobLog(session,
-									JobConstants.JOB_LOG_STAT_FAILED);
+							updateJobLog(session, JobConstants.JOB_LOG_STAT_FAILED);
 							// 重新注册任务
 							JobManager.addJobSchedule(session.getJob());
 							return;
 						}
 					} else {
 						if (null == messageConfig && !processor.isSourceAsync()) {
-							String errorMessage = MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.returnCodeRecognize.returnCodeRecognizeNotExist");
-							updateSessionAfterException(
-									session,
-									SessionConstants.STATE_NO_ERROR_MSG_TRANSFORMER,
-									errorMessage, new RuntimeException(
-											errorMessage), event);
+							String errorMessage = MultiLanguageResourceBundle.getInstance()
+									.getString("DefaultEventHandler.returnCodeRecognize.returnCodeRecognizeNotExist");
+							updateSessionAfterException(session, SessionConstants.STATE_NO_ERROR_MSG_TRANSFORMER,
+									errorMessage, new RuntimeException(errorMessage), event);
 							handleException(event);
 							return;
 						}
@@ -513,12 +460,10 @@ public class DefaultEventHandler extends EventHandler {
 
 					// 处理业务失败事件
 					if (null != processor.getEventConfig()) {
-						List eventList = (List) processor.getEventConfig().get(
-								SessionConstants.STATE_BUSINESS_FAILED);
+						List eventList = (List) processor.getEventConfig().get(SessionConstants.STATE_BUSINESS_FAILED);
 						if (null != eventList) {
 							for (int i = 0; i < eventList.size(); i++) {
-								triggerEvent((ActionConfig) eventList.get(i),
-										session);
+								triggerEvent((ActionConfig) eventList.get(i), session);
 							}
 						}
 					}
@@ -531,8 +476,7 @@ public class DefaultEventHandler extends EventHandler {
 					// 返回码属于正确返回码集合，说明交易业务成功
 					messageConfig = processor.getResponseMessageConfig();
 					if (Session.TYP_INTERNAL.equals(session.getType())
-							&& SessionConstants.STATE_BUSINESS_SUCCESS
-									.equals(scheduleRule.getEndFlag())) {
+							&& SessionConstants.STATE_BUSINESS_SUCCESS.equals(scheduleRule.getEndFlag())) {
 						// 内部会话且以业务成功为结束标志
 						session.getJob().terminate(true);
 						// 成功结束
@@ -545,12 +489,11 @@ public class DefaultEventHandler extends EventHandler {
 						updateJobLog(session, JobConstants.JOB_LOG_STAT_SUCCESS);
 
 						if (null != processor.getEventConfig()) {
-							List list = (List) processor.getEventConfig().get(
-									SessionConstants.STATE_COMMUNICATE_SUCCESS);
+							List list = (List) processor.getEventConfig()
+									.get(SessionConstants.STATE_COMMUNICATE_SUCCESS);
 							if (null != list) {
 								for (int i = 0; i < list.size(); i++) {
-									ActionConfig actionConfig = (ActionConfig) list
-											.get(i);
+									ActionConfig actionConfig = (ActionConfig) list.get(i);
 									triggerEvent(actionConfig, session);
 								}
 							}
@@ -592,11 +535,11 @@ public class DefaultEventHandler extends EventHandler {
 			String messageBeanGroupId = null;
 			Object destResponseData = null;
 			// if (null == messageConfig) {
-			if (Processor.TYP_TRANSMIT == processor.getType()) {
+			if (EnumConstants.ProcessorType.TRANSMIT.getCode() == processor.getType()) {
 				sourceResponseMessage = destResponseMessage;
 			} else {
 				String messageId = null;
-				if (Processor.MSG_OBJ_TYP_MB == processor
+				if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
 						.getDestChannelMessageObjectType()) {
 					messageId = messageConfig.getDestinationMessageId();
 				}
@@ -606,8 +549,7 @@ public class DefaultEventHandler extends EventHandler {
 					// .getChannelConfig().getMessageBeanGroupId();
 					// messageBeanGroupId = messageBeanGroupId == null ? session
 					// .getDestChannel().getId() : messageBeanGroupId;
-					messageBeanGroupId = sourceChannel.getChannelConfig()
-							.getMessageBeanGroupId();
+					messageBeanGroupId = sourceChannel.getChannelConfig().getMessageBeanGroupId();
 					// if (Processor.MSG_OBJ_TYP_MB == processor
 					// .getDestChannelMessageObjectType()) {
 					// destResponseData = parseMessage(messageBeanGroupId,
@@ -618,10 +560,8 @@ public class DefaultEventHandler extends EventHandler {
 					// processor.getDestMapCharset()));
 					// }
 					long time = System.nanoTime();
-					destResponseData = parseMessage(processor
-							.getDestChannelMessageObjectType(),
-							messageBeanGroupId, messageId, processor
-									.getDestMapCharset(), destResponseMessage);
+					destResponseData = parseMessage(processor.getDestChannelMessageObjectType(), messageBeanGroupId,
+							messageId, processor.getDestMapCharset(), destResponseMessage);
 					session.resParseSpendTime = (System.nanoTime() - time) / 1000000;
 				} catch (Exception e) {
 					// 更新会话
@@ -632,18 +572,11 @@ public class DefaultEventHandler extends EventHandler {
 					// + session.getDestChannel().getId()
 					// + "], Processor[" + processor.getId() + "]",
 					// e, event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_DST_RSP_MSG_PARSE,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.parseDestResponse.error",
-											new String[] {
-													session.getDestChannel()
-															.getId(),
-													processor.getId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_DST_RSP_MSG_PARSE,
+							MultiLanguageResourceBundle.getInstance()
+									.getString("DefaultEventHandler.parseDestResponse.error", new String[] {
+											session.getDestChannel().getId(), processor.getId(), e.getMessage() }),
+							e, event);
 					handleException(event);
 					return;
 				}
@@ -651,18 +584,15 @@ public class DefaultEventHandler extends EventHandler {
 
 				MessageHandlerConfig messageHandlerConfig = null;
 				if (businessIsTrue) {
-					messageHandlerConfig = processor
-							.getResponseMessageHandlerConfig();
+					messageHandlerConfig = processor.getResponseMessageHandlerConfig();
 				} else {
-					messageHandlerConfig = processor
-							.getErrorMessageHandlerConfig();
+					messageHandlerConfig = processor.getErrorMessageHandlerConfig();
 				}
 
 				if (null != messageHandlerConfig) {
 					// 回应报文处理handler不为空时
 					try {
-						destResponseData = doMessageHandlerProcess(
-								messageHandlerConfig.getClassName(),
+						destResponseData = doMessageHandlerProcess(messageHandlerConfig.getClassName(),
 								destResponseData, destResponseMessage, null);
 					} catch (Exception e) {
 						// updateSessionAfterException(session,
@@ -670,17 +600,11 @@ public class DefaultEventHandler extends EventHandler {
 						// "Destination Response Message handle Error!SourceChannelId["
 						// + sourceChannelId + "], ProcessorId["
 						// + processor.getId() + "]", e, event);
-						updateSessionAfterException(
-								session,
-								SessionConstants.STATE_RSP_MSG_HANDLE,
-								MultiLanguageResourceBundle
-										.getInstance()
-										.getString(
-												"DefaultEventHandler.response.handler.error",
-												new String[] { sourceChannelId,
-														processor.getId(),
-														e.getMessage() }), e,
-								event);
+						updateSessionAfterException(session, SessionConstants.STATE_RSP_MSG_HANDLE,
+								MultiLanguageResourceBundle.getInstance().getString(
+										"DefaultEventHandler.response.handler.error",
+										new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+								e, event);
 						handleException(event);
 						return;
 					}
@@ -690,16 +614,15 @@ public class DefaultEventHandler extends EventHandler {
 				Object sourceResponseData = null;
 				try {
 					long time = System.nanoTime();
-					sourceResponseData = objectMapping(sourceChannelId, event
-							.getResponseMessage(),
-							messageConfig.getMappingId(), session,
-							destResponseData);
+					sourceResponseData = objectMapping(sourceChannelId, event.getResponseMessage(),
+							messageConfig.getMappingId(), session, destResponseData);
 					session.resMappingSpendTime = (System.nanoTime() - time) / 1000000;
 				} catch (Exception e) {
 					// updateSessionAfterException(
 					// session,
 					// EventTypeConstants.STATE_RSP_MSG_MAPPING,
-					// "Mapping Error!From Destination Response MessageObject To Source Response MessageObject."
+					// "Mapping Error!From Destination Response MessageObject To Source Response
+					// MessageObject."
 					// + "SourceChannelId["
 					// + sourceChannelId
 					// + "], ProcessorId["
@@ -707,25 +630,17 @@ public class DefaultEventHandler extends EventHandler {
 					// + "], MappingRuleId["
 					// + messageConfig.getMappingId() + "]", e,
 					// event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_RSP_MSG_MAPPING,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.responseMappingError",
-											new String[] {
-													sourceChannelId,
-													processor.getId(),
-													messageConfig
-															.getMappingId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_RSP_MSG_MAPPING,
+							MultiLanguageResourceBundle.getInstance().getString(
+									"DefaultEventHandler.responseMappingError", new String[] { sourceChannelId,
+											processor.getId(), messageConfig.getMappingId(), e.getMessage() }),
+							e, event);
 					handleException(event);
 					return;
 				}
 				session.setSourceResponseObject(sourceResponseData);
 				messageId = null;
-				if (Processor.MSG_OBJ_TYP_MB == processor
+				if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
 						.getSourceChannelMessageObjectType()) {
 					messageId = messageConfig.getSourceMessageId();
 				}
@@ -733,9 +648,8 @@ public class DefaultEventHandler extends EventHandler {
 				// 8. 源回应MB组包
 				try {
 					long time = System.nanoTime();
-					sourceResponseMessage = packMessage(messageBeanGroupId,
-							messageId, sourceResponseData, processor
-									.getSourceMapCharset());
+					sourceResponseMessage = packMessage(messageBeanGroupId, messageId, sourceResponseData,
+							processor.getSourceMapCharset());
 					session.resPackSpendTime = (System.nanoTime() - time) / 1000000;
 				} catch (Exception e) {
 					// updateSessionAfterException(session,
@@ -743,16 +657,11 @@ public class DefaultEventHandler extends EventHandler {
 					// "Pack Source Response Message Error!Channel["
 					// + sourceChannelId + "], Processor["
 					// + processor.getId() + "]", e, event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_SRC_RSP_MSG_PACK,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.packSourceResponse.error",
-											new String[] { sourceChannelId,
-													processor.getId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_SRC_RSP_MSG_PACK,
+							MultiLanguageResourceBundle.getInstance().getString(
+									"DefaultEventHandler.packSourceResponse.error",
+									new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+							e, event);
 					handleException(event);
 					return;
 				}
@@ -812,8 +721,7 @@ public class DefaultEventHandler extends EventHandler {
 		SessionManager.attachSession(requestMessage, session);
 
 		// 3. 取出message-type
-		AbstractMessageRecognizer recognizer = sourceChannel
-				.getMessageTypeRecognizer();
+		AbstractMessageRecognizer recognizer = sourceChannel.getMessageTypeRecognizer();
 
 		long time = System.nanoTime();
 		String messageType = null;
@@ -824,8 +732,7 @@ public class DefaultEventHandler extends EventHandler {
 			// EventTypeConstants.STATE_MSG_TYP_RECOGNIZE,
 			// "Recognize Message Type Error!SourceChannelId["
 			// + sourceChannelId + "]", e, event);
-			updateSessionAfterException(session,
-					SessionConstants.STATE_MSG_TYP_RECOGNIZE,
+			updateSessionAfterException(session, SessionConstants.STATE_MSG_TYP_RECOGNIZE,
 					MultiLanguageResourceBundle.getInstance().getString(
 							"DefaultEventHandler.messageTypeRecognize.error",
 							new String[] { sourceChannelId, e.getMessage() }),
@@ -838,8 +745,7 @@ public class DefaultEventHandler extends EventHandler {
 		session.reqMsgRecognizeSpendTime = (System.nanoTime() - time) / 1000000;
 		ChannelConfig channelConfig = sourceChannel.getChannelConfig();
 		Processor processor = null;
-		if (!channelConfig.getMessageTypeRecognizerConfig()
-				.getMessageTypeProcessorMap().containsKey(messageType)) {
+		if (!channelConfig.getMessageTypeRecognizerConfig().getMessageTypeProcessorMap().containsKey(messageType)) {
 			// updateSessionAfterException(session,
 			// EventTypeConstants.STATE_MSG_TYP_RECOGNIZE,
 			// "Unkown Message Type[" + messageType + "]!SourceChannelId["
@@ -847,13 +753,10 @@ public class DefaultEventHandler extends EventHandler {
 			// "Unkown Message Type[" + messageType + "]!"), event);
 			processor = channelConfig.getDefaultProcessor();
 			if (null == processor) {
-				String errorMsg = MultiLanguageResourceBundle
-						.getInstance()
-						.getString(
-								"DefaultEventHandler.messageTypeRecognize.unkownMessageType",
-								new String[] { messageType, sourceChannelId });
-				updateSessionAfterException(session,
-						SessionConstants.STATE_MSG_TYP_RECOGNIZE, errorMsg,
+				String errorMsg = MultiLanguageResourceBundle.getInstance().getString(
+						"DefaultEventHandler.messageTypeRecognize.unkownMessageType",
+						new String[] { messageType, sourceChannelId });
+				updateSessionAfterException(session, SessionConstants.STATE_MSG_TYP_RECOGNIZE, errorMsg,
 						new RuntimeException(errorMsg), event);
 				event.getSourceChannel().closeSource(event.getSource());
 				// 因为此时还没有得到处理器，因此直接终止会话
@@ -863,13 +766,11 @@ public class DefaultEventHandler extends EventHandler {
 		} else {
 			// 4. 确定processor
 			// 4.1 确定processorId
-			String processorId = (String) channelConfig
-					.getMessageTypeRecognizerConfig()
-					.getMessageTypeProcessorMap().get(messageType);
+			String processorId = (String) channelConfig.getMessageTypeRecognizerConfig().getMessageTypeProcessorMap()
+					.get(messageType);
 
 			// 4.2 取出相应processor
-			processor = (Processor) channelConfig.getProcessorTable().get(
-					processorId);
+			processor = (Processor) channelConfig.getProcessorTable().get(processorId);
 		}
 
 		if (processor.isSourceAsync()) {
@@ -882,30 +783,25 @@ public class DefaultEventHandler extends EventHandler {
 
 		// 5. 处理报文
 		// 5.1 确定路由规则
-		RouteRule rule = (RouteRule) channelConfig.getRouteTable().get(
-				processor.getRouteRuleId());
+		RouteRule rule = (RouteRule) channelConfig.getRouteTable().get(processor.getRouteRuleId());
 		// 5.2 确定报文处理类型
 		int processorType = processor.getType();
 		// 5.3 处理报文，决定是直接转发还是转换后转发还是本地处理
-		MessageHandlerConfig requestHandler = processor
-				.getRequestMessageHandlerConfig();
-		MessageTransformerConfig requestConfig = processor
-				.getRequestMessageConfig();
+		MessageHandlerConfig requestHandler = processor.getRequestMessageHandlerConfig();
+		MessageTransformerConfig requestConfig = processor.getRequestMessageConfig();
 
 		Channel destChannel = null;
-		String messageBeanGroupId = sourceChannel.getChannelConfig()
-				.getMessageBeanGroupId();
+		String messageBeanGroupId = sourceChannel.getChannelConfig().getMessageBeanGroupId();
 
 		// 解析报文
 		Object sourceRequestData = null;
 		try {
 			time = System.nanoTime();
-			if (!(Processor.TYP_TRANSMIT == processorType && Processor.MSG_OBJ_TYP_MB == processor
-					.getSourceChannelMessageObjectType())) {
-				sourceRequestData = parseMessage(processor
-						.getSourceChannelMessageObjectType(),
-						messageBeanGroupId, requestConfig.getSourceMessageId(),
-						processor.getSourceMapCharset(), requestMessage);
+			if (!(EnumConstants.ProcessorType.TRANSMIT.getCode() == processorType
+					&& EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
+							.getSourceChannelMessageObjectType())) {
+				sourceRequestData = parseMessage(processor.getSourceChannelMessageObjectType(), messageBeanGroupId,
+						requestConfig.getSourceMessageId(), processor.getSourceMapCharset(), requestMessage);
 			}
 			session.reqParseSpendTime = (System.nanoTime() - time) / 1000000;
 		} catch (Exception e) {
@@ -915,23 +811,19 @@ public class DefaultEventHandler extends EventHandler {
 			// + "SourceChannelId[" + sourceChannelId + "], "
 			// + "ProcessorId[" + processor.getId() + "]", e,
 			// event);
-			updateSessionAfterException(session,
-					SessionConstants.STATE_SRC_REQ_MSG_PARSE,
-					MultiLanguageResourceBundle.getInstance().getString(
-							"DefaultEventHandler.parseSourceRequest.error",
-							new String[] { sourceChannelId, processor.getId(),
-									e.getMessage() }), e, event);
+			updateSessionAfterException(session, SessionConstants.STATE_SRC_REQ_MSG_PARSE,
+					MultiLanguageResourceBundle.getInstance().getString("DefaultEventHandler.parseSourceRequest.error",
+							new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+					e, event);
 			handleException(event);
 			return;
 		}
 		session.setSourceRequestObject(sourceRequestData);
 		// 放置外部流水号
-		if (Processor.MSG_OBJ_TYP_MAP == processor
-				.getSourceChannelMessageObjectType()) {
-			session.setExternalSerialNum((String) ((Map) sourceRequestData)
-					.get(SessionConstants.EXTERNAL_SERIAL_NUM));
+		if (EnumConstants.MessageObjectType.MAP.getCode() == processor.getSourceChannelMessageObjectType()) {
+			session.setExternalSerialNum((String) ((Map) sourceRequestData).get(SessionConstants.EXTERNAL_SERIAL_NUM));
 		}
-		if (Processor.TYP_TRANSMIT == processorType) {
+		if (EnumConstants.ProcessorType.TRANSMIT.getCode() == processorType) {
 			// // 处理类型为：转发
 			// MessageBean requestBean = null;
 			// if(null != requestHandler){
@@ -967,24 +859,18 @@ public class DefaultEventHandler extends EventHandler {
 			String destChannelId = null;
 			if (rule.getType() == RouteRule.TYP_STATIC) {
 				// 取目标通道ID
-				destChannelId = ((ChannelSymbol) channelConfig
-						.getChannelSymbolTable().get(
-								rule.getDestinationChannelSymbol()))
-						.getChannlId();
+				destChannelId = ((ChannelSymbol) channelConfig.getChannelSymbolTable()
+						.get(rule.getDestinationChannelSymbol())).getChannlId();
 			} else {
 				// 得到动态路由的结果
 				Determination determination = null;
 				try {
-					determination = rule.determine(messageType, requestMessage,
-							null);
+					determination = rule.determine(messageType, requestMessage, null);
 					if (null == determination) {
 						// throw new RuntimeException(
 						// "Dynamic Route's Determination is NULL!");
-						throw new RuntimeException(
-								MultiLanguageResourceBundle
-										.getInstance()
-										.getString(
-												"DefaultEventHandler.dynamicRouteRule.determination.null"));
+						throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
+								.getString("DefaultEventHandler.dynamicRouteRule.determination.null"));
 					}
 				} catch (Exception e) {
 					// updateSessionAfterException(session,
@@ -992,16 +878,11 @@ public class DefaultEventHandler extends EventHandler {
 					// "Determine From Dynamic Route Error!SourceChannelId["
 					// + sourceChannelId + "]ProcessorId["
 					// + processor.getId() + "]", e, event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_DYNAMIC_ROUTE_DETERMINE,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.dynamicRouteRule.determine.error",
-											new String[] { sourceChannelId,
-													processor.getId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_DYNAMIC_ROUTE_DETERMINE,
+							MultiLanguageResourceBundle.getInstance().getString(
+									"DefaultEventHandler.dynamicRouteRule.determine.error",
+									new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+							e, event);
 					handleException(event);
 					return;
 				}
@@ -1010,14 +891,11 @@ public class DefaultEventHandler extends EventHandler {
 					// processor需覆盖
 					processor = determination.getProcessorOverride();
 				}
-				destChannelId = ((ChannelSymbol) channelConfig
-						.getChannelSymbolTable().get(
-								determination.getDestinationChannelSymbol()))
-						.getChannlId();
+				destChannelId = ((ChannelSymbol) channelConfig.getChannelSymbolTable()
+						.get(determination.getDestinationChannelSymbol())).getChannlId();
 			}
 
-			destChannel = (Channel) CommGateway.getChannels()
-					.get(destChannelId);
+			destChannel = (Channel) CommGateway.getChannels().get(destChannelId);
 			// 7. 更新会话
 			session.setDestChannel(destChannel);
 			session.setDestRequestMessage(requestMessage);
@@ -1027,17 +905,16 @@ public class DefaultEventHandler extends EventHandler {
 			SessionManager.attachSession(requestMessage, session);
 
 			// 9. 发送目标请求报文
-			destChannel.sendRequestMessage(requestMessage, processor
-					.isDestAsync(), processor.getTimeout());
+			destChannel.sendRequestMessage(requestMessage, processor.isDestAsync(), processor.getTimeout());
 
-		} else if (Processor.TYP_LOCAL == processor.getType()) {
+		} else if (EnumConstants.ProcessorType.LOCAL.getCode() == processor.getType()) {
 			// 处理类型为：本地处理
 
 			// 处理
 			ResultAfterHandler result = null;
 			try {
-				result = doMessageHandlerProcess(requestHandler.getClassName(),
-						sourceRequestData, requestMessage, messageType);
+				result = doMessageHandlerProcess(requestHandler.getClassName(), sourceRequestData, requestMessage,
+						messageType);
 			} catch (Exception e) {
 				// updateSessionAfterException(session,
 				// EventTypeConstants.STATE_REQ_MSG_HANDLE,
@@ -1045,16 +922,11 @@ public class DefaultEventHandler extends EventHandler {
 				// + "SourceChannelId[" + sourceChannelId + "], "
 				// + "ProcessorId[" + processor.getId() + "]", e,
 				// event);
-				updateSessionAfterException(
-						session,
-						SessionConstants.STATE_REQ_MSG_HANDLE,
-						MultiLanguageResourceBundle
-								.getInstance()
-								.getString(
-										"DefaultEventHandler.sourceRequestHandle.error",
-										new String[] { sourceChannelId,
-												processor.getId(),
-												e.getMessage() }), e, event);
+				updateSessionAfterException(session, SessionConstants.STATE_REQ_MSG_HANDLE,
+						MultiLanguageResourceBundle.getInstance().getString(
+								"DefaultEventHandler.sourceRequestHandle.error",
+								new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+						e, event);
 				handleException(event);
 				return;
 			}
@@ -1072,19 +944,14 @@ public class DefaultEventHandler extends EventHandler {
 				// 组包
 				byte[] responseMessage = null;
 				try {
-					if (AbstractMessageHandler.SUCCESS.equals(result
-							.getResultCode())) {
+					if (AbstractMessageHandler.SUCCESS.equals(result.getResultCode())) {
 						responseMessage = packMessage(messageBeanGroupId,
-								processor.getResponseMessageConfig()
-										.getSourceMessageId(), result
-										.getResultObject(), processor
-										.getSourceMapCharset());
+								processor.getResponseMessageConfig().getSourceMessageId(), result.getResultObject(),
+								processor.getSourceMapCharset());
 					} else {
 						responseMessage = packMessage(messageBeanGroupId,
-								processor.getErrorMessageConfig()
-										.getSourceMessageId(), result
-										.getResultObject(), processor
-										.getSourceMapCharset());
+								processor.getErrorMessageConfig().getSourceMessageId(), result.getResultObject(),
+								processor.getSourceMapCharset());
 					}
 				} catch (Exception e) {
 					// updateSessionAfterException(session,
@@ -1093,16 +960,11 @@ public class DefaultEventHandler extends EventHandler {
 					// + "SourceChannelId[" + sourceChannelId + "], "
 					// + "ProcessorId[" + processor.getId() + "]", e,
 					// event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_SRC_RSP_MSG_PACK,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.packSourceResponse.error",
-											new String[] { sourceChannelId,
-													processor.getId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_SRC_RSP_MSG_PACK,
+							MultiLanguageResourceBundle.getInstance().getString(
+									"DefaultEventHandler.packSourceResponse.error",
+									new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+							e, event);
 					handleException(event);
 					return;
 				}
@@ -1162,8 +1024,7 @@ public class DefaultEventHandler extends EventHandler {
 			// session.setSourceRequestObject(sourceRequestData);
 			if (null != requestHandler) {
 				try {
-					sourceRequestData = doMessageHandlerProcess(
-							requestHandler.getClassName(), sourceRequestData,
+					sourceRequestData = doMessageHandlerProcess(requestHandler.getClassName(), sourceRequestData,
 							requestMessage, messageType).getResultObject();
 				} catch (Exception e) {
 					// updateSessionAfterException(session,
@@ -1172,16 +1033,11 @@ public class DefaultEventHandler extends EventHandler {
 					// + "SourceChannelId[" + sourceChannelId
 					// + "], " + "ProcessorId["
 					// + processor.getId() + "]", e, event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_REQ_MSG_HANDLE,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.request.handler.error",
-											new String[] { sourceChannelId,
-													processor.getId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_REQ_MSG_HANDLE,
+							MultiLanguageResourceBundle.getInstance().getString(
+									"DefaultEventHandler.request.handler.error",
+									new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+							e, event);
 					handleException(event);
 					return;
 				}
@@ -1189,24 +1045,18 @@ public class DefaultEventHandler extends EventHandler {
 			String destChannelId = null;
 			if (rule.getType() == RouteRule.TYP_STATIC) {
 				// 取目标通道ID
-				destChannelId = ((ChannelSymbol) channelConfig
-						.getChannelSymbolTable().get(
-								rule.getDestinationChannelSymbol()))
-						.getChannlId();
+				destChannelId = ((ChannelSymbol) channelConfig.getChannelSymbolTable()
+						.get(rule.getDestinationChannelSymbol())).getChannlId();
 			} else {
 				// 得到动态路由的结果
 				Determination determination = null;
 				try {
-					determination = rule.determine(messageType, requestMessage,
-							sourceRequestData);
+					determination = rule.determine(messageType, requestMessage, sourceRequestData);
 					if (null == determination) {
 						// throw new RuntimeException(
 						// "Dynamic Route's Determination is NULL!");
-						throw new RuntimeException(
-								MultiLanguageResourceBundle
-										.getInstance()
-										.getString(
-												"DefaultEventHandler.dynamicRouteRule.determination.null"));
+						throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
+								.getString("DefaultEventHandler.dynamicRouteRule.determination.null"));
 					}
 				} catch (Exception e) {
 					// updateSessionAfterException(session,
@@ -1215,16 +1065,11 @@ public class DefaultEventHandler extends EventHandler {
 					// + "SourceChannelId[" + sourceChannelId
 					// + "]" + "ProcessorId[" + processor.getId()
 					// + "]", e, event);
-					updateSessionAfterException(
-							session,
-							SessionConstants.STATE_DYNAMIC_ROUTE_DETERMINE,
-							MultiLanguageResourceBundle
-									.getInstance()
-									.getString(
-											"DefaultEventHandler.dynamicRouteRule.determine.error",
-											new String[] { sourceChannelId,
-													processor.getId(),
-													e.getMessage() }), e, event);
+					updateSessionAfterException(session, SessionConstants.STATE_DYNAMIC_ROUTE_DETERMINE,
+							MultiLanguageResourceBundle.getInstance().getString(
+									"DefaultEventHandler.dynamicRouteRule.determine.error",
+									new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
+							e, event);
 					handleException(event);
 					return;
 				}
@@ -1232,13 +1077,10 @@ public class DefaultEventHandler extends EventHandler {
 					// processor需覆盖
 					processor = determination.getProcessorOverride();
 				}
-				destChannelId = ((ChannelSymbol) channelConfig
-						.getChannelSymbolTable().get(
-								determination.getDestinationChannelSymbol()))
-						.getChannlId();
+				destChannelId = ((ChannelSymbol) channelConfig.getChannelSymbolTable()
+						.get(determination.getDestinationChannelSymbol())).getChannlId();
 			}
-			destChannel = (Channel) CommGateway.getChannels()
-					.get(destChannelId);
+			destChannel = (Channel) CommGateway.getChannels().get(destChannelId);
 			// 映射为目标请求数据对象
 			Object destRequestData = null;
 			try {
@@ -1246,29 +1088,26 @@ public class DefaultEventHandler extends EventHandler {
 				// .getId(), event.getRequestMessage(), requestConfig
 				// .getMappingId(), sourceRequestData);
 				time = System.nanoTime();
-				destRequestData = objectMapping(sourceChannelId, event
-						.getRequestMessage(), requestConfig.getMappingId(),
-						session, sourceRequestData);
+				destRequestData = objectMapping(sourceChannelId, event.getRequestMessage(),
+						requestConfig.getMappingId(), session, sourceRequestData);
 				session.reqMappingSpendTime = (System.nanoTime() - time) / 1000000;
 			} catch (Exception e) {
 				// updateSessionAfterException(
 				// session,
 				// EventTypeConstants.STATE_REQ_MSG_MAPPING,
-				// "Mapping Error!From Source Request MessageObject To Destination Request MessageObject."
+				// "Mapping Error!From Source Request MessageObject To Destination Request
+				// MessageObject."
 				// + "SourceChannelId["
 				// + sourceChannelId
 				// + "], ProcessorId["
 				// + processor.getId()
 				// + "], MappingRuleId["
 				// + requestConfig.getMappingId() + "]", e, event);
-				updateSessionAfterException(session,
-						SessionConstants.STATE_RSP_MSG_MAPPING,
-						MultiLanguageResourceBundle.getInstance().getString(
-								"DefaultEventHandler.requestMappingError",
-								new String[] { sourceChannelId,
-										processor.getId(),
-										requestConfig.getMappingId(),
-										e.getMessage() }), e, event);
+				updateSessionAfterException(session, SessionConstants.STATE_RSP_MSG_MAPPING,
+						MultiLanguageResourceBundle.getInstance().getString("DefaultEventHandler.requestMappingError",
+								new String[] { sourceChannelId, processor.getId(), requestConfig.getMappingId(),
+										e.getMessage() }),
+						e, event);
 				handleException(event);
 				return;
 			}
@@ -1276,8 +1115,7 @@ public class DefaultEventHandler extends EventHandler {
 			// 目标请求对象组包
 			byte[] destRequestMessage = null;
 			String messageId = null;
-			if (Processor.MSG_OBJ_TYP_MB == processor
-					.getDestChannelMessageObjectType()) {
+			if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor.getDestChannelMessageObjectType()) {
 				messageId = requestConfig.getDestinationMessageId();
 			}
 			// else {
@@ -1296,8 +1134,8 @@ public class DefaultEventHandler extends EventHandler {
 				// destChannelId
 				// : messageBeanGroupId;
 				time = System.nanoTime();
-				destRequestMessage = packMessage(messageBeanGroupId, messageId,
-						destRequestData, processor.getDestMapCharset());
+				destRequestMessage = packMessage(messageBeanGroupId, messageId, destRequestData,
+						processor.getDestMapCharset());
 				session.reqPackSpendTime = (System.nanoTime() - time) / 1000000;
 			} catch (Exception e) {
 				// updateSessionAfterException(session,
@@ -1306,20 +1144,16 @@ public class DefaultEventHandler extends EventHandler {
 				// + "SourceChannelId[" + sourceChannelId
 				// + "], ProcessorId[" + processor.getId() + "]",
 				// e, event);
-				updateSessionAfterException(session,
-						SessionConstants.STATE_DST_REQ_MSG_PACK,
-						MultiLanguageResourceBundle.getInstance().getString(
-								"DefaultEventHandler.packDestRequest.error",
-								new String[] { sourceChannelId,
-										processor.getId(), e.getMessage() }),
+				updateSessionAfterException(session, SessionConstants.STATE_DST_REQ_MSG_PACK,
+						MultiLanguageResourceBundle.getInstance().getString("DefaultEventHandler.packDestRequest.error",
+								new String[] { sourceChannelId, processor.getId(), e.getMessage() }),
 						e, event);
 				handleException(event);
 				return;
 			}
 
 			// 确定目标通道
-			destChannel = (Channel) CommGateway.getChannels()
-					.get(destChannelId);
+			destChannel = (Channel) CommGateway.getChannels().get(destChannelId);
 
 			// 更新会话
 			session.setDestChannel(destChannel);
@@ -1330,8 +1164,7 @@ public class DefaultEventHandler extends EventHandler {
 			SessionManager.attachSession(destRequestMessage, session);
 
 			// 发送目标请求报文
-			destChannel.sendRequestMessage(destRequestMessage, processor
-					.isDestAsync(), processor.getTimeout());
+			destChannel.sendRequestMessage(destRequestMessage, processor.isDestAsync(), processor.getTimeout());
 		}
 
 	}
@@ -1379,13 +1212,11 @@ public class DefaultEventHandler extends EventHandler {
 	 * @param message
 	 * @return
 	 */
-	protected Object parseMessage(int type, String messageBeanGroupId,
-			String messageId, String mapCharset, byte[] message)
-			throws UnsupportedEncodingException {
-		if (Processor.MSG_OBJ_TYP_MB == type) {
+	protected Object parseMessage(int type, String messageBeanGroupId, String messageId, String mapCharset,
+			byte[] message) throws UnsupportedEncodingException {
+		if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == type) {
 			MessageParser parser = new MessageParser();
-			parser.setMessage(MessageMetadataManager.getMessage(
-					messageBeanGroupId, messageId));
+			parser.setMessage(MessageMetadataManager.getMessage(messageBeanGroupId, messageId));
 			parser.setMessageData(message);
 
 			return parser.parse();
@@ -1402,13 +1233,11 @@ public class DefaultEventHandler extends EventHandler {
 	 * @param data
 	 * @return
 	 */
-	protected byte[] packMessage(String messageBeanGroupId, String messageId,
-			Object data, String encoding) {
+	protected byte[] packMessage(String messageBeanGroupId, String messageId, Object data, String encoding) {
 		if (data instanceof MessageBean) {
 			((MessageBean) data).validate();
 			MessagePacker packer = new MessagePacker();
-			packer.setMessage(MessageMetadataManager.getMessage(
-					messageBeanGroupId, messageId));
+			packer.setMessage(MessageMetadataManager.getMessage(messageBeanGroupId, messageId));
 			packer.setMessageBean((MessageBean) data);
 			return packer.pack();
 		} else if (data instanceof Map) {
@@ -1423,9 +1252,8 @@ public class DefaultEventHandler extends EventHandler {
 		} else {
 			// throw new RuntimeException(
 			// "Unkown Data Type!Must be \"MessageBean\"" + " or \"Map\"");
-			throw new RuntimeException(MultiLanguageResourceBundle
-					.getInstance().getString(
-							"DefaultEventHandler.dataType.unkown"));
+			throw new RuntimeException(
+					MultiLanguageResourceBundle.getInstance().getString("DefaultEventHandler.dataType.unkown"));
 		}
 	}
 
@@ -1438,11 +1266,9 @@ public class DefaultEventHandler extends EventHandler {
 	 * @param messageType
 	 * @return
 	 */
-	protected ResultAfterHandler doMessageHandlerProcess(
-			String handlerClassName, Object data, byte[] message,
+	protected ResultAfterHandler doMessageHandlerProcess(String handlerClassName, Object data, byte[] message,
 			String messageType) {
-		AbstractMessageHandler handler = (AbstractMessageHandler) ClassUtil
-				.createClassInstance(handlerClassName);
+		AbstractMessageHandler handler = (AbstractMessageHandler) ClassUtil.createClassInstance(handlerClassName);
 		handler.setSource(data);
 		handler.setMessageData(message);
 		handler.setMessageType(messageType);
@@ -1459,8 +1285,7 @@ public class DefaultEventHandler extends EventHandler {
 	 * @param source
 	 * @return
 	 */
-	protected Object objectMapping(String channelId, byte[] message,
-			String ruleId, Session session, Object source) {
+	protected Object objectMapping(String channelId, byte[] message, String ruleId, Session session, Object source) {
 		MappingEngine mapper = new MappingEngine();
 		mapper.setParameter("CHANNEL_ID", channelId);
 		mapper.setParameter("MESSAGE", message);
@@ -1486,8 +1311,7 @@ public class DefaultEventHandler extends EventHandler {
 			mapper.setParameter("DEST_RESPONSE", o);
 		}
 
-		return mapper.map(source, MappingRuleManager.getMappingRule(channelId,
-				ruleId));
+		return mapper.map(source, MappingRuleManager.getMappingRule(channelId, ruleId));
 	}
 
 	/**
@@ -1499,8 +1323,8 @@ public class DefaultEventHandler extends EventHandler {
 	 * @param excp
 	 * @param event
 	 */
-	protected void updateSessionAfterException(Session session,
-			String errorType, String errorMessage, Exception excp, Event event) {
+	protected void updateSessionAfterException(Session session, String errorType, String errorMessage, Exception excp,
+			Event event) {
 		event.setExcp(excp);
 		session.setErrorType(errorType);
 		if (null != excp && excp instanceof CustomerException) {
@@ -1543,8 +1367,7 @@ public class DefaultEventHandler extends EventHandler {
 		jobInfo.setLogId(session.getId());
 		jobInfo.setScheduleEndFlag(actionConfig.getScheduleRule().getEndFlag());
 		jobInfo.setProcessId(actionConfig.getProcessorRule().getProcessorId());
-		jobInfo.setRequestMessageFrom(actionConfig.getProcessorRule()
-				.getRequestMessageFrom());
+		jobInfo.setRequestMessageFrom(actionConfig.getProcessorRule().getRequestMessageFrom());
 
 		// jobInfo.setScheduleRule(actionConfig.getScheduleRule());
 		// jobInfo.setProcessorRule(actionConfig.getProcessorRule());
@@ -1578,8 +1401,7 @@ public class DefaultEventHandler extends EventHandler {
 	}
 
 	protected void processByClass(ActionConfig actionConfig, String sessionId) {
-		AbstractEventAction action = (AbstractEventAction) ClassUtil
-				.createClassInstance(actionConfig.getClazz());
+		AbstractEventAction action = (AbstractEventAction) ClassUtil.createClassInstance(actionConfig.getClazz());
 		action.setLogger(CommGateway.getMainLogger());
 		action.execute(sessionId);
 	}

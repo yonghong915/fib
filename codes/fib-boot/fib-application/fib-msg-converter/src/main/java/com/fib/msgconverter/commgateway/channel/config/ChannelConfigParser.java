@@ -36,6 +36,7 @@ import com.fib.msgconverter.commgateway.channel.config.recognizer.RecognizerConf
 import com.fib.msgconverter.commgateway.channel.config.route.Determination;
 import com.fib.msgconverter.commgateway.channel.config.route.RouteRule;
 import com.fib.msgconverter.commgateway.session.SessionConstants;
+import com.fib.msgconverter.commgateway.util.EnumConstants;
 import com.fib.msgconverter.commgateway.util.multilang.MultiLanguageResourceBundle;
 import com.giantstone.common.util.ExceptionUtil;
 
@@ -207,7 +208,7 @@ public class ChannelConfigParser {
 
 	private void checkProcessor(Processor processor) {
 		// @route-rule
-		if (Processor.TYP_LOCAL != processor.getType() && !processor.isLocalSource()
+		if (EnumConstants.ProcessorType.LOCAL.getCode() != processor.getType() && !processor.isLocalSource()
 				&& !config.getRouteTable().containsKey(processor.getRouteRuleId())) {
 			// throw new RuntimeException("processor[" + processor.getId()
 			// + "]'s route-rule[" + processor.getRouteRuleId()
@@ -226,11 +227,12 @@ public class ChannelConfigParser {
 		}
 
 		// 根据处理类型分别检查
-		if (Processor.TYP_TRANSFORM == processor.getType()) {
+
+		if (EnumConstants.ProcessorType.TRANSFORM.getCode() == processor.getType()) {
 			// 处理类型：转换。必须指定请求、应答报文的message-bean-id、mapping-id。
 			// Request Message
 			if (!processor.isLocalSource()) {
-				if (!(Processor.MSG_OBJ_TYP_MAP == processor.getSourceChannelMessageObjectType())) {
+				if (!(EnumConstants.MessageObjectType.MAP.getCode() == processor.getSourceChannelMessageObjectType())) {
 					if (null == processor.getRequestMessageConfig().getSourceMessageId()) {
 						// throw new RuntimeException(
 						// "processor["
@@ -241,11 +243,13 @@ public class ChannelConfigParser {
 						// + ")'s request-message/@source-message-id is null!");
 						throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 								"ChannelConfigParser.checkProcessor.requestMessage.sourceMessageId.null",
-								new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+								new String[] { processor.getId(),
+										EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 					}
 				}
 
-				if (Processor.MSG_OBJ_TYP_MB == processor.getDestChannelMessageObjectType()) {
+				if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
+						.getDestChannelMessageObjectType()) {
 					if (null == processor.getRequestMessageConfig().getDestinationMessageId()) {
 						// throw new RuntimeException(
 						// "processor["
@@ -256,7 +260,8 @@ public class ChannelConfigParser {
 						// + ")'s request-message/@dest-message-id is null!");
 						throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 								"ChannelConfigParser.checkProcessor.requestMessage.destMessageId.null",
-								new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+								new String[] { processor.getId(),
+										EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 					}
 				}
 
@@ -268,7 +273,8 @@ public class ChannelConfigParser {
 					// + ")'s request-message/@bean-mapping is null!");
 					throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 							"ChannelConfigParser.checkProcessor.requestMessage.beanMapping.null",
-							new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+							new String[] { processor.getId(),
+									EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 				}
 
 				if (!processor.isSourceAsync()) {
@@ -281,7 +287,8 @@ public class ChannelConfigParser {
 						// + ")'s response-message is null!");
 						throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 								"ChannelConfigParser.checkProcessor.responseMessage.null",
-								new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+								new String[] { processor.getId(),
+										EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 					}
 
 					// 返回码识别器的错误码集合不为空，则processor必须有对业务错误报文的处理
@@ -302,7 +309,8 @@ public class ChannelConfigParser {
 					// .getType()) }));
 					// }
 
-					if (Processor.MSG_OBJ_TYP_MB == processor.getSourceChannelMessageObjectType()) {
+					if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor
+							.getSourceChannelMessageObjectType()) {
 						if (null == processor.getResponseMessageConfig().getSourceMessageId()) {
 							// throw new RuntimeException(
 							// "processor["
@@ -314,7 +322,8 @@ public class ChannelConfigParser {
 							// ")'s response-message/@source-message-id is null!");
 							throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 									"ChannelConfigParser.checkProcessor.responseMessage.sourceMessageId.null",
-									new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+									new String[] { processor.getId(),
+											EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 						}
 
 					}
@@ -326,7 +335,8 @@ public class ChannelConfigParser {
 						// + ")'s response-message/@bean-mapping is null!");
 						throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 								"ChannelConfigParser.checkProcessor.responseMessage.beanMapping.null",
-								new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+								new String[] { processor.getId(),
+										EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 					}
 
 					// 转换处理，如果配置了错误码，则错误应答报文配置必须有映射规则ID
@@ -335,12 +345,13 @@ public class ChannelConfigParser {
 							&& null == processor.getErrorMappingConfig().getMappingRuleId()) {
 						throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 								"ChannelConfigParser.checkProcessor.errorMessage.beanMapping.null",
-								new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+								new String[] { processor.getId(),
+										EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 					}
 
 				}
 				if (!processor.isDestAsync()) {
-					if (Processor.MSG_OBJ_TYP_MB == processor.getDestChannelMessageObjectType()) {
+					if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor.getDestChannelMessageObjectType()) {
 						if (null == processor.getResponseMessageConfig().getDestinationMessageId()) {
 							// throw new RuntimeException(
 							// "processor["
@@ -353,23 +364,24 @@ public class ChannelConfigParser {
 							// ")'s response-message/@dest-message-id is null!");
 							throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 									"ChannelConfigParser.checkProcessor.responseMessage.destMessageId.null",
-									new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+									new String[] { processor.getId(),
+											EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 						}
 					}
 				}
 			}
-		} else if (Processor.TYP_LOCAL == processor.getType()) {
+		} else if (EnumConstants.ProcessorType.LOCAL.getCode() == processor.getType()) {
 			// 处理类型：本地处理。必须指定源通道请求、应答报文的message-bean-id，及请求处理器。
 			if (null == processor.getRequestMessageHandlerConfig()) {
 				// throw new RuntimeException("processor[" + processor.getId()
 				// + "](" + Processor.getTextByType(processor.getType())
 				// + ")'s request-handler is null!");
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
-						"ChannelConfigParser.checkProcessor.requestHandler.null",
-						new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+				throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
+						.getString("ChannelConfigParser.checkProcessor.requestHandler.null", new String[] {
+								processor.getId(), EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 			}
 
-			if (Processor.MSG_OBJ_TYP_MB == processor.getSourceChannelMessageObjectType()) {
+			if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor.getSourceChannelMessageObjectType()) {
 				if (null == processor.getRequestMessageConfig().getSourceMessageId()) {
 					// throw new RuntimeException("processor[" +
 					// processor.getId()
@@ -378,11 +390,12 @@ public class ChannelConfigParser {
 					// + ")'s request-message/@source-message-id is null!");
 					throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 							"ChannelConfigParser.checkProcessor.requestMessage.sourceMessageId.null",
-							new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+							new String[] { processor.getId(),
+									EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 				}
 
 				if (!processor.isSourceAsync()) {
-					if (!(Processor.MSG_OBJ_TYP_MAP == processor.getDestChannelMessageObjectType())) {
+					if (!(EnumConstants.MessageObjectType.MAP.getCode() == processor.getDestChannelMessageObjectType())) {
 						if (null == processor.getResponseMessageConfig().getSourceMessageId()) {
 							// throw new RuntimeException(
 							// "processor["
@@ -394,7 +407,8 @@ public class ChannelConfigParser {
 							// ")'s response-message/@source-message-id is null!");
 							throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 									"ChannelConfigParser.checkProcessor.responseMessage.sourceMessageId.null",
-									new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+									new String[] { processor.getId(),
+											EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 						}
 					}
 				}
@@ -413,7 +427,8 @@ public class ChannelConfigParser {
 				// .getTextByType(Processor.TYP_TRANSMIT));
 				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 						"ChannelConfigParser.checkProcessor.sourceAsyncAndDestAsync.same",
-						new String[] { processor.getId(), Processor.getTextByType(Processor.TYP_TRANSMIT) }));
+						new String[] { processor.getId(), EnumConstants.ProcessorType
+								.getNameByCode(EnumConstants.ProcessorType.TRANSMIT.getCode()) }));
 			}
 			// 当存在请求或应答处理器时，必须指定源通道请求、应答报文的message-bean-id
 			if (processor.getRequestMessageHandlerConfig() != null) {
@@ -425,7 +440,8 @@ public class ChannelConfigParser {
 					// + ")'s request-message/@source-message-id is null!");
 					throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 							"ChannelConfigParser.checkProcessor.requestMessage.sourceMessageId.null",
-							new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+							new String[] { processor.getId(),
+									EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 				}
 			}
 
@@ -440,7 +456,8 @@ public class ChannelConfigParser {
 					// + ")'s response-message/@source-message-id is null!");
 					throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 							"ChannelConfigParser.checkProcessor.responseMessage.sourceMessageId.null",
-							new String[] { processor.getId(), Processor.getTextByType(processor.getType()) }));
+							new String[] { processor.getId(),
+									EnumConstants.ProcessorType.getNameByCode(processor.getType()) }));
 				}
 			}
 
@@ -450,8 +467,10 @@ public class ChannelConfigParser {
 					|| null != processor.getErrorMessageHandlerConfig()) {
 				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
 						"ChannelConfigParser.checkProcessor.transmit.messageHandler.notNull",
-						new String[] { processor.getId(), Processor.getTextByType(processor.getType()),
-								Processor.getTextByType(Processor.TYP_TRANSMIT) }));
+						new String[] { processor.getId(),
+								EnumConstants.ProcessorType.getNameByCode(processor.getType()),
+								EnumConstants.ProcessorType
+										.getNameByCode(EnumConstants.ProcessorType.TRANSMIT.getCode()) }));
 			}
 			// 当路由规则为动态路由时，必须指定源通道请求报文的message-bean-id
 			// if (!processor.isLocalSource()
@@ -1059,7 +1078,7 @@ public class ChannelConfigParser {
 		if (null != value) {
 			value = value.trim();
 			if (0 < value.length()) {
-				processor.setType(Processor.getTypeByText(getRealValue(value)));
+				processor.setType(EnumConstants.ProcessorType.getCodeByName(getRealValue(value)));
 			}
 		}
 
@@ -1118,12 +1137,13 @@ public class ChannelConfigParser {
 		if (null != value) {
 			value = value.trim();
 			if (0 < value.length()) {
-				processor.setSourceChannelMessageObjectType(Processor.getMessageObjectTypeByText(getRealValue(value)));
+				processor.setSourceChannelMessageObjectType(
+						EnumConstants.MessageObjectType.getCodeByName(getRealValue(value)));
 			}
 		}
 
 		// @source-map-charset
-		if (Processor.MSG_OBJ_TYP_MAP == processor.getSourceChannelMessageObjectType()) {
+		if (EnumConstants.MessageObjectType.MAP.getCode() == processor.getSourceChannelMessageObjectType()) {
 			expression = "@source-map-charset";
 			value = xpath.evaluate(expression, node);
 			if (null != value) {
@@ -1140,7 +1160,8 @@ public class ChannelConfigParser {
 		if (null != value) {
 			value = value.trim();
 			if (0 < value.length()) {
-				processor.setDestChannelMessageObjectType(Processor.getMessageObjectTypeByText(getRealValue(value)));
+				processor.setDestChannelMessageObjectType(
+						EnumConstants.MessageObjectType.getCodeByName(getRealValue(value)));
 			}
 		}
 
@@ -1533,7 +1554,7 @@ public class ChannelConfigParser {
 		ErrorMappingConfig errorMappingConfig = new ErrorMappingConfig();
 
 		// @source-message-id
-		if (Processor.MSG_OBJ_TYP_MB == processor.getSourceChannelMessageObjectType()) {
+		if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == processor.getSourceChannelMessageObjectType()) {
 			expression = "@source-message-id";
 			value = xpath.evaluate(expression, node);
 			if (null == value) {

@@ -22,6 +22,7 @@ import com.fib.msgconverter.commgateway.mapping.config.MappingRuleManager;
 import com.fib.msgconverter.commgateway.session.Session;
 import com.fib.msgconverter.commgateway.session.SessionConstants;
 import com.fib.msgconverter.commgateway.session.SessionManager;
+import com.fib.msgconverter.commgateway.util.EnumConstants;
 import com.fib.msgconverter.commgateway.util.multilang.MultiLanguageResourceBundle;
 import com.giantstone.common.database.ConnectionManager;
 import com.giantstone.common.map.serializer.MapSerializer;
@@ -255,7 +256,7 @@ public class CommunicateJob extends AbstractJob {
 				.getRequestMessageConfig();
 		if (null != requestTransformerConfig) {
 			Object sourceObject = null;
-			if (Processor.MSG_OBJ_TYP_MB == newProcessor
+			if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == newProcessor
 					.getSourceChannelMessageObjectType()) {
 				MessageParser parser = new MessageParser();
 				parser.setMessage(MessageMetadataManager.getMessage(
@@ -276,7 +277,7 @@ public class CommunicateJob extends AbstractJob {
 					.getMappingRule(sourceChannelId, requestTransformerConfig
 							.getMappingId()));
 
-			if (Processor.MSG_OBJ_TYP_MB == newProcessor
+			if (EnumConstants.MessageObjectType.MESSAGE_BEAN.getCode() == newProcessor
 					.getDestChannelMessageObjectType()) {
 				MessagePacker packer = new MessagePacker();
 				packer.setMessage(MessageMetadataManager.getMessage(

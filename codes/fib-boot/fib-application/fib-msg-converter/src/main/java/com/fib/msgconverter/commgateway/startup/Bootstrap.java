@@ -359,7 +359,7 @@ public class Bootstrap {
 		File rootLibDir = new File(libPath);
 		checkLibDir(rootLibDir);
 
-		List jarUrlList = new ArrayList(64);
+		List<URL> jarUrlList = new ArrayList<>(64);
 
 		// 2. core lib
 		File coreLibDir = new File(libPath + LIB_PATH_CORE);
@@ -400,7 +400,7 @@ public class Bootstrap {
 		Thread.currentThread().setContextClassLoader(ucl);
 	}
 
-	private void getAllJarUrl(List jarUrlList, File libDir) {
+	private void getAllJarUrl(List<URL> jarUrlList, File libDir) {
 		checkLibDir(libDir);
 		String[] jarFiles = listAllJarFile(libDir);
 		File jarFile = null;
@@ -409,7 +409,7 @@ public class Bootstrap {
 			for (i = 0; i < jarFiles.length; i++) {
 				jarFile = new File(libDir, jarFiles[i]);
 				jarFile = jarFile.getCanonicalFile();
-				jarUrlList.add(jarFile.toURL());
+				jarUrlList.add(jarFile.toURI().toURL());
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();

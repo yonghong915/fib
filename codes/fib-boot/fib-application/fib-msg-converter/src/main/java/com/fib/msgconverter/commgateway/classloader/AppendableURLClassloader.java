@@ -62,7 +62,7 @@ public class AppendableURLClassloader extends URLClassLoader {
 					new String[] { libPath }));
 		}
 
-		List jarUrlList = new ArrayList(64);
+		List<URL> jarUrlList = new ArrayList<>(64);
 
 		getAllJarUrl(jarUrlList, libDir);
 
@@ -72,7 +72,7 @@ public class AppendableURLClassloader extends URLClassLoader {
 		append(urls);
 	}
 
-	private static void getAllJarUrl(List jarUrlList, File libDir) {
+	private static void getAllJarUrl(List<URL> jarUrlList, File libDir) {
 		String[] jarFiles = libDir.list(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				if (name.endsWith(".jar")) {
@@ -87,7 +87,7 @@ public class AppendableURLClassloader extends URLClassLoader {
 			for (i = 0; i < jarFiles.length; i++) {
 				jarFile = new File(libDir, jarFiles[i]);
 				jarFile = jarFile.getCanonicalFile();
-				jarUrlList.add(jarFile.toURL());
+				jarUrlList.add(jarFile.toURI().toURL());
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -97,5 +97,4 @@ public class AppendableURLClassloader extends URLClassLoader {
 					new String[] { jarFiles[i], e.getMessage() }));
 		}
 	}
-
 }

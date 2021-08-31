@@ -1,7 +1,3 @@
-/**
- * 北京长信通信息技术有限公司
- * 2008-8-25 下午08:55:41
- */
 package com.fib.msgconverter.commgateway.channel.nio.reader.impl;
 
 import java.util.Map;

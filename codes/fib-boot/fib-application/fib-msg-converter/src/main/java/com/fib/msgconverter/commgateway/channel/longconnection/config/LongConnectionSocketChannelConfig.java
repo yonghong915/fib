@@ -20,7 +20,7 @@ public class LongConnectionSocketChannelConfig {
 	/**
 	 * 连接配置
 	 */
-	private Map connectionConfigs = new HashMap<>();
+	private Map<String, ConnectionConfig> connectionConfigs = new HashMap<>();
 
 	/**
 	 * 登陆配置
@@ -80,7 +80,7 @@ public class LongConnectionSocketChannelConfig {
 	/**
 	 * @return the connectionConfigs
 	 */
-	public Map getConnectionConfigs() {
+	public Map<String, ConnectionConfig> getConnectionConfigs() {
 		return connectionConfigs;
 	}
 
@@ -95,7 +95,7 @@ public class LongConnectionSocketChannelConfig {
 		connectionConfigs.put(connectionId, connectionConfig);
 	}
 
-	public void setConnectionConfigs(Map connectionConfigs) {
+	public void setConnectionConfigs(Map<String, ConnectionConfig> connectionConfigs) {
 		this.connectionConfigs = connectionConfigs;
 	}
 
