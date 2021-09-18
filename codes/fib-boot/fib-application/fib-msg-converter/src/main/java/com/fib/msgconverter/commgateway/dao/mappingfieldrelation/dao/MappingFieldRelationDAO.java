@@ -266,7 +266,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		return 0;
 	}
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,String> updateFields) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -289,7 +289,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE mapping_field_relation SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()) {
 				sql.append(it.next());
@@ -325,7 +325,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 				sbDebug.append("MappingFieldRelationDAO.dynamicUpdate() spend "
 						+ (endTime - startTime) + "ms. retFlag = " + retFlag
 						+ " SQL:" + sql.toString() + "; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while (priIt.hasNext()) {
 					tmpKey = (String) priIt.next();
 					tmpStr = (String) updateFields.get(tmpKey);
@@ -524,7 +524,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		return returnDTO;
 	}
 
-	public List findAll() {
+	public List<MappingFieldRelation> findAll() {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -533,7 +533,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		MappingFieldRelation returnDTO = null;
-		List list = new ArrayList();
+		List<MappingFieldRelation> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from mapping_field_relation order by mapping_id,field_mapping_rule_id";
@@ -578,7 +578,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findAll(int pageNum, int pageLength) {
+	public List<MappingFieldRelation> findAll(int pageNum, int pageLength) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -587,7 +587,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		MappingFieldRelation returnDTO = null;
-		List list = new ArrayList();
+		List<MappingFieldRelation> list = new ArrayList<>();
 		int startNum = (pageNum - 1) * pageLength;
 
 		try {
@@ -668,7 +668,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findByWhere(String where) {
+	public List<MappingFieldRelation> findByWhere(String where) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -680,7 +680,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		MappingFieldRelation returnDTO = null;
-		List list = new ArrayList();
+		List<MappingFieldRelation> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from mapping_field_relation where " + where
@@ -728,7 +728,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findByWhere(String where, int pageNum, int pageLength) {
+	public List<MappingFieldRelation> findByWhere(String where, int pageNum, int pageLength) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -740,7 +740,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		MappingFieldRelation returnDTO = null;
-		List list = new ArrayList();
+		List<MappingFieldRelation> list = new ArrayList<>();
 		int startNum = (pageNum - 1) * pageLength;
 
 		try {
@@ -932,7 +932,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		return totalRecords;
 	}
 
-	public List getAllFieldRuleByMappingId(String mappingId) {
+	public List<MappingFieldRelation> getAllFieldRuleByMappingId(String mappingId) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -948,7 +948,7 @@ public class MappingFieldRelationDAO extends AbstractDAO {
 		}
 		ResultSet resultSet = null;
 		MappingFieldRelation returnDTO = null;
-		List list = new ArrayList();
+		List<MappingFieldRelation> list = new ArrayList<>();
 		try {
 			String sql = "select * from mapping_field_relation where mapping_id=?";
 			statment = conn.prepareStatement(sql);

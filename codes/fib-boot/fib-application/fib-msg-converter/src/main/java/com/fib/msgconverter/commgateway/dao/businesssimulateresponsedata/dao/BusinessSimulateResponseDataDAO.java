@@ -203,7 +203,7 @@ public class BusinessSimulateResponseDataDAO extends AbstractDAO {
 		return 0;
 	}
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,Object> updateFields) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -223,7 +223,7 @@ public class BusinessSimulateResponseDataDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE business_simulate_response_data SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()) {
 				sql.append(it.next());
@@ -256,7 +256,7 @@ public class BusinessSimulateResponseDataDAO extends AbstractDAO {
 				StringBuffer sbDebug = new StringBuffer(64);
 				sbDebug.append("BusinessSimulateResponseDataDAO.dynamicUpdate() spend " + (endTime - startTime)
 						+ "ms. retFlag = " + retFlag + " SQL:" + sql.toString() + "; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while (priIt.hasNext()) {
 					tmpKey = (String) priIt.next();
 					tmpStr = (String) updateFields.get(tmpKey);
@@ -604,7 +604,7 @@ public class BusinessSimulateResponseDataDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findByWhere(String where, int pageNum, int pageLength) {
+	public List<BusinessSimulateResponseData> findByWhere(String where, int pageNum, int pageLength) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -616,7 +616,7 @@ public class BusinessSimulateResponseDataDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		BusinessSimulateResponseData returnDTO = null;
-		List list = new ArrayList();
+		List<BusinessSimulateResponseData> list = new ArrayList<>();
 		int startNum = (pageNum - 1) * pageLength;
 
 		try {

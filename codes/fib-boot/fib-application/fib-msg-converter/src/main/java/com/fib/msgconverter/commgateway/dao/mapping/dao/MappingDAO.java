@@ -44,44 +44,29 @@ public class MappingDAO extends AbstractDAO {
 		if (mapping.getMappingId() == null || "".equals(mapping.getMappingId())) {
 			throw new IllegalArgumentException("mappingId is null");
 		}
-		if (mapping.getMappingId() != null
-				&& mapping.getMappingId().length() > 255) {
-			throw new IllegalArgumentException("mappingId too long"
-					+ mapping.getMappingId());
+		if (mapping.getMappingId() != null && mapping.getMappingId().length() > 255) {
+			throw new IllegalArgumentException("mappingId too long" + mapping.getMappingId());
 		}
-		if (mapping.getMappingGroupId() == null
-				|| "".equals(mapping.getMappingGroupId())) {
+		if (mapping.getMappingGroupId() == null || "".equals(mapping.getMappingGroupId())) {
 			throw new IllegalArgumentException("mappingGroupId is null");
 		}
-		if (mapping.getMappingGroupId() != null
-				&& mapping.getMappingGroupId().length() > 255) {
-			throw new IllegalArgumentException("mappingGroupId too long"
-					+ mapping.getMappingGroupId());
+		if (mapping.getMappingGroupId() != null && mapping.getMappingGroupId().length() > 255) {
+			throw new IllegalArgumentException("mappingGroupId too long" + mapping.getMappingGroupId());
 		}
-		if (mapping.getTargetType() != null
-				&& mapping.getTargetType().length() < 4) {
-			throw new IllegalArgumentException("targetType too short"
-					+ mapping.getTargetType());
+		if (mapping.getTargetType() != null && mapping.getTargetType().length() < 4) {
+			throw new IllegalArgumentException("targetType too short" + mapping.getTargetType());
 		}
-		if (mapping.getTargetType() != null
-				&& mapping.getTargetType().length() > 4) {
-			throw new IllegalArgumentException("targetType too long"
-					+ mapping.getTargetType());
+		if (mapping.getTargetType() != null && mapping.getTargetType().length() > 4) {
+			throw new IllegalArgumentException("targetType too long" + mapping.getTargetType());
 		}
-		if (mapping.getTargetBeanClass() != null
-				&& mapping.getTargetBeanClass().length() > 255) {
-			throw new IllegalArgumentException("targetBeanClass too long"
-					+ mapping.getTargetBeanClass());
+		if (mapping.getTargetBeanClass() != null && mapping.getTargetBeanClass().length() > 255) {
+			throw new IllegalArgumentException("targetBeanClass too long" + mapping.getTargetBeanClass());
 		}
-		if (mapping.getHasScript() != null
-				&& mapping.getHasScript().length() < 1) {
-			throw new IllegalArgumentException("hasScript too short"
-					+ mapping.getHasScript());
+		if (mapping.getHasScript() != null && mapping.getHasScript().length() < 1) {
+			throw new IllegalArgumentException("hasScript too short" + mapping.getHasScript());
 		}
-		if (mapping.getHasScript() != null
-				&& mapping.getHasScript().length() > 1) {
-			throw new IllegalArgumentException("hasScript too long"
-					+ mapping.getHasScript());
+		if (mapping.getHasScript() != null && mapping.getHasScript().length() > 1) {
+			throw new IllegalArgumentException("hasScript too long" + mapping.getHasScript());
 		}
 
 		PreparedStatement statment = null;
@@ -103,15 +88,11 @@ public class MappingDAO extends AbstractDAO {
 			int retFlag = statment.executeUpdate();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.insert() spend " + (endTime - startTime)
-						+ "ms. retFlag = " + retFlag + " SQL:" + sql
-						+ "; parameters : id = \"" + mapping.getId()
-						+ "\",mapping_id = \"" + mapping.getMappingId()
-						+ "\",mapping_group_id = \""
-						+ mapping.getMappingGroupId() + "\",target_type = \""
-						+ mapping.getTargetType() + "\",target_bean_class = \""
-						+ mapping.getTargetBeanClass() + "\",has_script = \""
-						+ mapping.getHasScript() + "\" ");
+				debug("MappingDAO.insert() spend " + (endTime - startTime) + "ms. retFlag = " + retFlag + " SQL:" + sql
+						+ "; parameters : id = \"" + mapping.getId() + "\",mapping_id = \"" + mapping.getMappingId()
+						+ "\",mapping_group_id = \"" + mapping.getMappingGroupId() + "\",target_type = \""
+						+ mapping.getTargetType() + "\",target_bean_class = \"" + mapping.getTargetBeanClass()
+						+ "\",has_script = \"" + mapping.getHasScript() + "\" ");
 			}
 
 			if (!isInTransaction()) {
@@ -153,55 +134,37 @@ public class MappingDAO extends AbstractDAO {
 		}
 		for (Mapping mapping : mappingList) {
 			if (mapping.getId() != null && mapping.getId().length() < 10) {
-				throw new IllegalArgumentException("id too short"
-						+ mapping.getId());
+				throw new IllegalArgumentException("id too short" + mapping.getId());
 			}
 			if (mapping.getId() != null && mapping.getId().length() > 10) {
-				throw new IllegalArgumentException("id too long"
-						+ mapping.getId());
+				throw new IllegalArgumentException("id too long" + mapping.getId());
 			}
-			if (mapping.getMappingId() == null
-					|| "".equals(mapping.getMappingId())) {
+			if (mapping.getMappingId() == null || "".equals(mapping.getMappingId())) {
 				throw new IllegalArgumentException("mappingId is null");
 			}
-			if (mapping.getMappingId() != null
-					&& mapping.getMappingId().length() > 255) {
-				throw new IllegalArgumentException("mappingId too long"
-						+ mapping.getMappingId());
+			if (mapping.getMappingId() != null && mapping.getMappingId().length() > 255) {
+				throw new IllegalArgumentException("mappingId too long" + mapping.getMappingId());
 			}
-			if (mapping.getMappingGroupId() == null
-					|| "".equals(mapping.getMappingGroupId())) {
+			if (mapping.getMappingGroupId() == null || "".equals(mapping.getMappingGroupId())) {
 				throw new IllegalArgumentException("mappingGroupId is null");
 			}
-			if (mapping.getMappingGroupId() != null
-					&& mapping.getMappingGroupId().length() > 255) {
-				throw new IllegalArgumentException("mappingGroupId too long"
-						+ mapping.getMappingGroupId());
+			if (mapping.getMappingGroupId() != null && mapping.getMappingGroupId().length() > 255) {
+				throw new IllegalArgumentException("mappingGroupId too long" + mapping.getMappingGroupId());
 			}
-			if (mapping.getTargetType() != null
-					&& mapping.getTargetType().length() < 4) {
-				throw new IllegalArgumentException("targetType too short"
-						+ mapping.getTargetType());
+			if (mapping.getTargetType() != null && mapping.getTargetType().length() < 4) {
+				throw new IllegalArgumentException("targetType too short" + mapping.getTargetType());
 			}
-			if (mapping.getTargetType() != null
-					&& mapping.getTargetType().length() > 4) {
-				throw new IllegalArgumentException("targetType too long"
-						+ mapping.getTargetType());
+			if (mapping.getTargetType() != null && mapping.getTargetType().length() > 4) {
+				throw new IllegalArgumentException("targetType too long" + mapping.getTargetType());
 			}
-			if (mapping.getTargetBeanClass() != null
-					&& mapping.getTargetBeanClass().length() > 255) {
-				throw new IllegalArgumentException("targetBeanClass too long"
-						+ mapping.getTargetBeanClass());
+			if (mapping.getTargetBeanClass() != null && mapping.getTargetBeanClass().length() > 255) {
+				throw new IllegalArgumentException("targetBeanClass too long" + mapping.getTargetBeanClass());
 			}
-			if (mapping.getHasScript() != null
-					&& mapping.getHasScript().length() < 1) {
-				throw new IllegalArgumentException("hasScript too short"
-						+ mapping.getHasScript());
+			if (mapping.getHasScript() != null && mapping.getHasScript().length() < 1) {
+				throw new IllegalArgumentException("hasScript too short" + mapping.getHasScript());
 			}
-			if (mapping.getHasScript() != null
-					&& mapping.getHasScript().length() > 1) {
-				throw new IllegalArgumentException("hasScript too long"
-						+ mapping.getHasScript());
+			if (mapping.getHasScript() != null && mapping.getHasScript().length() > 1) {
+				throw new IllegalArgumentException("hasScript too long" + mapping.getHasScript());
 			}
 		}
 		PreparedStatement statment = null;
@@ -225,8 +188,8 @@ public class MappingDAO extends AbstractDAO {
 			int[] retFlag = statment.executeBatch();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.insertBatch() spend " + (endTime - startTime)
-						+ "ms. retFlag = " + retFlag + " SQL:" + sql + ";");
+				debug("MappingDAO.insertBatch() spend " + (endTime - startTime) + "ms. retFlag = " + retFlag + " SQL:"
+						+ sql + ";");
 			}
 			return retFlag;
 		} catch (SQLException e) {
@@ -270,44 +233,29 @@ public class MappingDAO extends AbstractDAO {
 		if (mapping.getMappingId() == null || "".equals(mapping.getMappingId())) {
 			throw new IllegalArgumentException("mappingId is null");
 		}
-		if (mapping.getMappingId() != null
-				&& mapping.getMappingId().length() > 255) {
-			throw new IllegalArgumentException("mappingId too long"
-					+ mapping.getMappingId());
+		if (mapping.getMappingId() != null && mapping.getMappingId().length() > 255) {
+			throw new IllegalArgumentException("mappingId too long" + mapping.getMappingId());
 		}
-		if (mapping.getMappingGroupId() == null
-				|| "".equals(mapping.getMappingGroupId())) {
+		if (mapping.getMappingGroupId() == null || "".equals(mapping.getMappingGroupId())) {
 			throw new IllegalArgumentException("mappingGroupId is null");
 		}
-		if (mapping.getMappingGroupId() != null
-				&& mapping.getMappingGroupId().length() > 255) {
-			throw new IllegalArgumentException("mappingGroupId too long"
-					+ mapping.getMappingGroupId());
+		if (mapping.getMappingGroupId() != null && mapping.getMappingGroupId().length() > 255) {
+			throw new IllegalArgumentException("mappingGroupId too long" + mapping.getMappingGroupId());
 		}
-		if (mapping.getTargetType() != null
-				&& mapping.getTargetType().length() < 4) {
-			throw new IllegalArgumentException("targetType too short"
-					+ mapping.getTargetType());
+		if (mapping.getTargetType() != null && mapping.getTargetType().length() < 4) {
+			throw new IllegalArgumentException("targetType too short" + mapping.getTargetType());
 		}
-		if (mapping.getTargetType() != null
-				&& mapping.getTargetType().length() > 4) {
-			throw new IllegalArgumentException("targetType too long"
-					+ mapping.getTargetType());
+		if (mapping.getTargetType() != null && mapping.getTargetType().length() > 4) {
+			throw new IllegalArgumentException("targetType too long" + mapping.getTargetType());
 		}
-		if (mapping.getTargetBeanClass() != null
-				&& mapping.getTargetBeanClass().length() > 255) {
-			throw new IllegalArgumentException("targetBeanClass too long"
-					+ mapping.getTargetBeanClass());
+		if (mapping.getTargetBeanClass() != null && mapping.getTargetBeanClass().length() > 255) {
+			throw new IllegalArgumentException("targetBeanClass too long" + mapping.getTargetBeanClass());
 		}
-		if (mapping.getHasScript() != null
-				&& mapping.getHasScript().length() < 1) {
-			throw new IllegalArgumentException("hasScript too short"
-					+ mapping.getHasScript());
+		if (mapping.getHasScript() != null && mapping.getHasScript().length() < 1) {
+			throw new IllegalArgumentException("hasScript too short" + mapping.getHasScript());
 		}
-		if (mapping.getHasScript() != null
-				&& mapping.getHasScript().length() > 1) {
-			throw new IllegalArgumentException("hasScript too long"
-					+ mapping.getHasScript());
+		if (mapping.getHasScript() != null && mapping.getHasScript().length() > 1) {
+			throw new IllegalArgumentException("hasScript too long" + mapping.getHasScript());
 		}
 		try {
 			String sql = "UPDATE mapping SET id=?,mapping_id=?,mapping_group_id=?,target_type=?,target_bean_class=?,has_script=? where id=? ";
@@ -327,15 +275,11 @@ public class MappingDAO extends AbstractDAO {
 			int retFlag = statment.executeUpdate();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.update() spend " + (endTime - startTime)
-						+ "ms. retFlag = " + retFlag + " SQL:" + sql
-						+ "; parameters : id = \"" + mapping.getId()
-						+ "\",mapping_id = \"" + mapping.getMappingId()
-						+ "\",mapping_group_id = \""
-						+ mapping.getMappingGroupId() + "\",target_type = \""
-						+ mapping.getTargetType() + "\",target_bean_class = \""
-						+ mapping.getTargetBeanClass() + "\",has_script = \""
-						+ mapping.getHasScript() + "\" ");
+				debug("MappingDAO.update() spend " + (endTime - startTime) + "ms. retFlag = " + retFlag + " SQL:" + sql
+						+ "; parameters : id = \"" + mapping.getId() + "\",mapping_id = \"" + mapping.getMappingId()
+						+ "\",mapping_group_id = \"" + mapping.getMappingGroupId() + "\",target_type = \""
+						+ mapping.getTargetType() + "\",target_bean_class = \"" + mapping.getTargetBeanClass()
+						+ "\",has_script = \"" + mapping.getHasScript() + "\" ");
 			}
 
 			if (!isInTransaction()) {
@@ -365,7 +309,7 @@ public class MappingDAO extends AbstractDAO {
 		return 0;
 	}
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,Object> updateFields) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -385,7 +329,7 @@ public class MappingDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE mapping SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()) {
 				sql.append(it.next());
@@ -428,10 +372,9 @@ public class MappingDAO extends AbstractDAO {
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
 				StringBuffer sbDebug = new StringBuffer(64);
-				sbDebug.append("MappingDAO.dynamicUpdate() spend "
-						+ (endTime - startTime) + "ms. retFlag = " + retFlag
+				sbDebug.append("MappingDAO.dynamicUpdate() spend " + (endTime - startTime) + "ms. retFlag = " + retFlag
 						+ " SQL:" + sql.toString() + "; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while (priIt.hasNext()) {
 					tmpKey = (String) priIt.next();
 					tmpStr = (String) updateFields.get(tmpKey);
@@ -510,9 +453,8 @@ public class MappingDAO extends AbstractDAO {
 
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.deleteByPK() spend " + (endTime - startTime)
-						+ "ms. retFlag = " + retFlag + " SQL:" + sql
-						+ "; parameters : id = \"" + id + "\" ");
+				debug("MappingDAO.deleteByPK() spend " + (endTime - startTime) + "ms. retFlag = " + retFlag + " SQL:"
+						+ sql + "; parameters : id = \"" + id + "\" ");
 			}
 
 			if (!isInTransaction()) {
@@ -569,19 +511,16 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.selectByPK() spend " + (endTime - startTime)
-						+ "ms. SQL:" + sql + "; parameters : id = \"" + id
-						+ "\" ");
+				debug("MappingDAO.selectByPK() spend " + (endTime - startTime) + "ms. SQL:" + sql
+						+ "; parameters : id = \"" + id + "\" ");
 			}
 			if (resultSet.next()) {
 				returnDTO = new Mapping();
 				returnDTO.setId(resultSet.getString("id"));
 				returnDTO.setMappingId(resultSet.getString("mapping_id"));
-				returnDTO.setMappingGroupId(resultSet
-						.getString("mapping_group_id"));
+				returnDTO.setMappingGroupId(resultSet.getString("mapping_group_id"));
 				returnDTO.setTargetType(resultSet.getString("target_type"));
-				returnDTO.setTargetBeanClass(resultSet
-						.getString("target_bean_class"));
+				returnDTO.setTargetBeanClass(resultSet.getString("target_bean_class"));
 				returnDTO.setHasScript(resultSet.getString("has_script"));
 			}
 		} catch (SQLException e) {
@@ -607,7 +546,7 @@ public class MappingDAO extends AbstractDAO {
 		return returnDTO;
 	}
 
-	public List findAll() {
+	public List<Mapping> findAll() {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -616,7 +555,7 @@ public class MappingDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		Mapping returnDTO = null;
-		List list = new ArrayList();
+		List<Mapping> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from mapping order by id";
@@ -628,18 +567,15 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.findAll() spend " + (endTime - startTime)
-						+ "ms. SQL:" + sql + "; ");
+				debug("MappingDAO.findAll() spend " + (endTime - startTime) + "ms. SQL:" + sql + "; ");
 			}
 			while (resultSet.next()) {
 				returnDTO = new Mapping();
 				returnDTO.setId(resultSet.getString("id"));
 				returnDTO.setMappingId(resultSet.getString("mapping_id"));
-				returnDTO.setMappingGroupId(resultSet
-						.getString("mapping_group_id"));
+				returnDTO.setMappingGroupId(resultSet.getString("mapping_group_id"));
 				returnDTO.setTargetType(resultSet.getString("target_type"));
-				returnDTO.setTargetBeanClass(resultSet
-						.getString("target_bean_class"));
+				returnDTO.setTargetBeanClass(resultSet.getString("target_bean_class"));
 				returnDTO.setHasScript(resultSet.getString("has_script"));
 				list.add(returnDTO);
 			}
@@ -666,7 +602,7 @@ public class MappingDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findAll(int pageNum, int pageLength) {
+	public List<Mapping> findAll(int pageNum, int pageLength) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -675,32 +611,25 @@ public class MappingDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		Mapping returnDTO = null;
-		List list = new ArrayList();
+		List<Mapping> list = new ArrayList<>();
 		int startNum = (pageNum - 1) * pageLength;
 
 		try {
 			String sql = null;
 			int endNum = startNum + pageLength - 1;
 			if ("oracle".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
-				sql = "select * from(select A.*,ROWNUM RN from ( select * from mapping ) A where rownum <= "
-						+ endNum + " ) where RN >=" + startNum + " order by id";
-			} else if ("mssql".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
-				sql = "select * from ( select Top " + startNum
-						+ " * from (select Top " + endNum
+				sql = "select * from(select A.*,ROWNUM RN from ( select * from mapping ) A where rownum <= " + endNum
+						+ " ) where RN >=" + startNum + " order by id";
+			} else if ("mssql".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
+				sql = "select * from ( select Top " + startNum + " * from (select Top " + endNum
 						+ " * from mapping					 ) t1)t2 order by id";
-			} else if ("db2".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
+			} else if ("db2".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
 				sql = "select * from ( select id,mapping_id,mapping_group_id,target_type,target_bean_class,has_script, rownumber() over(order by id) as rn from mapping ) as a1 where a1.rn between "
 						+ startNum + " and " + endNum;
-			} else if ("mysql".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
-				sql = "select * from mapping order by id limit " + startNum
-						+ "," + pageLength;
-			} else if ("sqlserver2005".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
-				sql = "select top "
-						+ pageLength
+			} else if ("mysql".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
+				sql = "select * from mapping order by id limit " + startNum + "," + pageLength;
+			} else if ("sqlserver2005".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
+				sql = "select top " + pageLength
 						+ " * from(select row_number() over (order by id) as rownumber, id,mapping_id,mapping_group_id,target_type,target_bean_class,has_script from mapping ) A where rownumber > "
 						+ startNum;
 			} else {
@@ -717,19 +646,16 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.findAll()(pageNum:" + pageNum + ",row count "
-						+ pageLength + ") spend " + (endTime - startTime)
-						+ "ms. SQL:" + sql + "; ");
+				debug("MappingDAO.findAll()(pageNum:" + pageNum + ",row count " + pageLength + ") spend "
+						+ (endTime - startTime) + "ms. SQL:" + sql + "; ");
 			}
 			while (resultSet.next()) {
 				returnDTO = new Mapping();
 				returnDTO.setId(resultSet.getString("id"));
 				returnDTO.setMappingId(resultSet.getString("mapping_id"));
-				returnDTO.setMappingGroupId(resultSet
-						.getString("mapping_group_id"));
+				returnDTO.setMappingGroupId(resultSet.getString("mapping_group_id"));
 				returnDTO.setTargetType(resultSet.getString("target_type"));
-				returnDTO.setTargetBeanClass(resultSet
-						.getString("target_bean_class"));
+				returnDTO.setTargetBeanClass(resultSet.getString("target_bean_class"));
 				returnDTO.setHasScript(resultSet.getString("has_script"));
 				list.add(returnDTO);
 			}
@@ -756,7 +682,7 @@ public class MappingDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findByWhere(String where) {
+	public List<Mapping> findByWhere(String where) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -768,11 +694,10 @@ public class MappingDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		Mapping returnDTO = null;
-		List list = new ArrayList();
+		List<Mapping> list = new ArrayList<>();
 
 		try {
-			String sql = "select * from mapping where " + where
-					+ " order by id";
+			String sql = "select * from mapping where " + where + " order by id";
 			statment = conn.prepareStatement(sql);
 
 			long startTime = 0, endTime = 0;
@@ -782,19 +707,16 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.findByWhere()() spend "
-						+ (endTime - startTime) + "ms. SQL:" + sql
-						+ "; parameter : " + where);
+				debug("MappingDAO.findByWhere()() spend " + (endTime - startTime) + "ms. SQL:" + sql + "; parameter : "
+						+ where);
 			}
 			while (resultSet.next()) {
 				returnDTO = new Mapping();
 				returnDTO.setId(resultSet.getString("id"));
 				returnDTO.setMappingId(resultSet.getString("mapping_id"));
-				returnDTO.setMappingGroupId(resultSet
-						.getString("mapping_group_id"));
+				returnDTO.setMappingGroupId(resultSet.getString("mapping_group_id"));
 				returnDTO.setTargetType(resultSet.getString("target_type"));
-				returnDTO.setTargetBeanClass(resultSet
-						.getString("target_bean_class"));
+				returnDTO.setTargetBeanClass(resultSet.getString("target_bean_class"));
 				returnDTO.setHasScript(resultSet.getString("has_script"));
 				list.add(returnDTO);
 			}
@@ -821,7 +743,7 @@ public class MappingDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findByWhere(String where, int pageNum, int pageLength) {
+	public List<Mapping> findByWhere(String where, int pageNum, int pageLength) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -833,39 +755,25 @@ public class MappingDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		Mapping returnDTO = null;
-		List list = new ArrayList();
+		List<Mapping> list = new ArrayList<>();
 		int startNum = (pageNum - 1) * pageLength;
 
 		try {
 			String sql = null;
 			int endNum = startNum + pageLength - 1;
 			if ("mysql".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
-				sql = "select * from mapping where " + where
-						+ " order by id limit " + startNum + "," + pageLength;
-			} else if ("oracle".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
-				sql = "select * from(select A.*,ROWNUM RN from ( select * from mapping where  "
-						+ where
-						+ " ) A where rownum <= "
-						+ endNum
-						+ " ) where RN >=" + startNum + " order by id";
-			} else if ("mssql".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
-				sql = "select * from ( select Top " + startNum
-						+ " * from (select Top " + endNum
-						+ " * from mapping					 where " + where
-						+ " ) t1)t2 order by id";
-			} else if ("db2".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
+				sql = "select * from mapping where " + where + " order by id limit " + startNum + "," + pageLength;
+			} else if ("oracle".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
+				sql = "select * from(select A.*,ROWNUM RN from ( select * from mapping where  " + where
+						+ " ) A where rownum <= " + endNum + " ) where RN >=" + startNum + " order by id";
+			} else if ("mssql".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
+				sql = "select * from ( select Top " + startNum + " * from (select Top " + endNum
+						+ " * from mapping					 where " + where + " ) t1)t2 order by id";
+			} else if ("db2".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
 				sql = "select * from ( select id,mapping_id,mapping_group_id,target_type,target_bean_class,has_script, rownumber() over(order by id) as rn from mapping where "
-						+ where
-						+ " ) as a1 where a1.rn between "
-						+ startNum
-						+ " and " + endNum;
-			} else if ("sqlserver2005".equalsIgnoreCase(DAOConfiguration
-					.getDATABASE_TYPE())) {
-				sql = "select top "
-						+ pageLength
+						+ where + " ) as a1 where a1.rn between " + startNum + " and " + endNum;
+			} else if ("sqlserver2005".equalsIgnoreCase(DAOConfiguration.getDATABASE_TYPE())) {
+				sql = "select top " + pageLength
 						+ " * from(select row_number() over (order by id) as rownumber, id,mapping_id,mapping_group_id,target_type,target_bean_class,has_script from mapping  where "
 						+ where + " ) A where rownumber > " + startNum;
 			} else {
@@ -883,20 +791,16 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.findByWhere()(pageNum:" + pageNum
-						+ ",row count " + pageLength + ") spend "
-						+ (endTime - startTime) + "ms. SQL:" + sql
-						+ "; parameter : " + where);
+				debug("MappingDAO.findByWhere()(pageNum:" + pageNum + ",row count " + pageLength + ") spend "
+						+ (endTime - startTime) + "ms. SQL:" + sql + "; parameter : " + where);
 			}
 			while (resultSet.next()) {
 				returnDTO = new Mapping();
 				returnDTO.setId(resultSet.getString("id"));
 				returnDTO.setMappingId(resultSet.getString("mapping_id"));
-				returnDTO.setMappingGroupId(resultSet
-						.getString("mapping_group_id"));
+				returnDTO.setMappingGroupId(resultSet.getString("mapping_group_id"));
 				returnDTO.setTargetType(resultSet.getString("target_type"));
-				returnDTO.setTargetBeanClass(resultSet
-						.getString("target_bean_class"));
+				returnDTO.setTargetBeanClass(resultSet.getString("target_bean_class"));
 				returnDTO.setHasScript(resultSet.getString("has_script"));
 				list.add(returnDTO);
 			}
@@ -943,8 +847,7 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.getTotalRecords() spend "
-						+ (endTime - startTime) + "ms. SQL:" + sql + "; ");
+				debug("MappingDAO.getTotalRecords() spend " + (endTime - startTime) + "ms. SQL:" + sql + "; ");
 			}
 
 			if (resultSet.next()) {
@@ -996,8 +899,7 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				endTime = System.currentTimeMillis();
-				debug("MappingDAO.getTotalRecords() spend "
-						+ (endTime - startTime) + "ms. SQL:" + sql + "; ");
+				debug("MappingDAO.getTotalRecords() spend " + (endTime - startTime) + "ms. SQL:" + sql + "; ");
 			}
 
 			if (resultSet.next()) {
@@ -1026,7 +928,7 @@ public class MappingDAO extends AbstractDAO {
 		return totalRecords;
 	}
 
-	public List getAllMappingInGroup(String mappingGroupId) {
+	public List<Mapping> getAllMappingInGroup(String mappingGroupId) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -1037,12 +939,11 @@ public class MappingDAO extends AbstractDAO {
 			throw new IllegalArgumentException("mappingGroupId is null");
 		}
 		if (mappingGroupId != null && mappingGroupId.length() > 255) {
-			throw new IllegalArgumentException("mappingGroupId too long"
-					+ mappingGroupId);
+			throw new IllegalArgumentException("mappingGroupId too long" + mappingGroupId);
 		}
 		ResultSet resultSet = null;
 		Mapping returnDTO = null;
-		List list = new ArrayList();
+		List<Mapping> list = new ArrayList<>();
 		try {
 			String sql = "select * from mapping where mapping_group_id=?";
 			statment = conn.prepareStatement(sql);
@@ -1055,8 +956,7 @@ public class MappingDAO extends AbstractDAO {
 			resultSet = statment.executeQuery();
 			if (DAOConfiguration.DEBUG) {
 				_endTime = System.currentTimeMillis();
-				debug("MappingDAO.getAllMappingInGroup() spend "
-						+ (_endTime - _startTime) + "ms. SQL:" + sql
+				debug("MappingDAO.getAllMappingInGroup() spend " + (_endTime - _startTime) + "ms. SQL:" + sql
 						+ "; parameter : mappingGroupId = " + mappingGroupId);
 			}
 
@@ -1064,11 +964,9 @@ public class MappingDAO extends AbstractDAO {
 				returnDTO = new Mapping();
 				returnDTO.setId(resultSet.getString("id"));
 				returnDTO.setMappingId(resultSet.getString("mapping_id"));
-				returnDTO.setMappingGroupId(resultSet
-						.getString("mapping_group_id"));
+				returnDTO.setMappingGroupId(resultSet.getString("mapping_group_id"));
 				returnDTO.setTargetType(resultSet.getString("target_type"));
-				returnDTO.setTargetBeanClass(resultSet
-						.getString("target_bean_class"));
+				returnDTO.setTargetBeanClass(resultSet.getString("target_bean_class"));
 				returnDTO.setHasScript(resultSet.getString("has_script"));
 				list.add(returnDTO);
 

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
-import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -238,7 +236,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 	}
 
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,Object> updateFields) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -261,7 +259,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE recognizer_relation SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()){
 				sql.append(it.next());
@@ -299,7 +297,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 				endTime =System.currentTimeMillis();
 				StringBuffer sbDebug = new StringBuffer(64);
 				sbDebug.append("RecognizerRelationDAO.dynamicUpdate() spend "+(endTime - startTime)+"ms. retFlag = " + retFlag + " SQL:"+sql.toString()+"; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while ( priIt.hasNext() ){
 					tmpKey = (String)priIt.next();
 					tmpStr = (String)updateFields.get(tmpKey);
@@ -489,7 +487,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findAll ( )  {
+	public List<RecognizerRelation> findAll ( )  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -498,7 +496,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		RecognizerRelation returnDTO = null;
-		List list = new ArrayList();
+		List<RecognizerRelation> list = new ArrayList<>();
 
 
 		try {
@@ -544,7 +542,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findAll (int pageNum, int pageLength)  {
+	public List<RecognizerRelation> findAll (int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -553,7 +551,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		RecognizerRelation returnDTO = null;
-		List list = new ArrayList();
+		List<RecognizerRelation> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {
@@ -614,7 +612,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where) {
+	public List<RecognizerRelation> findByWhere (String where) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -626,7 +624,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		RecognizerRelation returnDTO = null;
-		List list = new ArrayList();
+		List<RecognizerRelation> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from recognizer_relation where " + where +" order by composite_recognizer_id,sub_recognizer_id";
@@ -672,7 +670,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where, int pageNum, int pageLength)  {
+	public List<RecognizerRelation> findByWhere (String where, int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -684,7 +682,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		RecognizerRelation returnDTO = null;
-		List list = new ArrayList();
+		List<RecognizerRelation> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {
@@ -850,7 +848,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 	}
 
 
-	public List getAllSubRecognizer4Recognizer(String compositeRecognizerId ) {
+	public List<RecognizerRelation> getAllSubRecognizer4Recognizer(String compositeRecognizerId ) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -865,7 +863,7 @@ public class RecognizerRelationDAO extends AbstractDAO {
 		}
 		ResultSet resultSet = null;
 		RecognizerRelation returnDTO = null;
-		List list = new ArrayList();
+		List<RecognizerRelation> list = new ArrayList<>();
 		try {
 			String sql = "select * from recognizer_relation where composite_recognizer_id=? order by sub_index";
 			statment =

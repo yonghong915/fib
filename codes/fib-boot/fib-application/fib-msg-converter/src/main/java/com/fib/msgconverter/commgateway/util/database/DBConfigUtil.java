@@ -87,7 +87,7 @@ public class DBConfigUtil {
 				List<RecognizerRelation> rrList = recognizerRelationDao
 						.getAllSubRecognizer4Recognizer(recognizerDto.getId());
 				if (null != rrList && 0 < rrList.size()) {
-					List componentList = new ArrayList();
+					List<RecognizerConfig> componentList = new ArrayList<>();
 					for (int i = 0; i < rrList.size(); i++) {
 						componentList.add(transformRecognizerConfig(rrList.get(
 								i).getSubRecognizerId(), conn));

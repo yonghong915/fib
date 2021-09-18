@@ -839,7 +839,7 @@ public class LongConnectorConnectionRelationDAO extends AbstractDAO {
 	}
 
 
-	public List getAllConnection4LongConnector(String longConnectorId ) {
+	public List<LongConnectorConnectionRelation> getAllConnection4LongConnector(String longConnectorId ) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -854,7 +854,7 @@ public class LongConnectorConnectionRelationDAO extends AbstractDAO {
 		}
 		ResultSet resultSet = null;
 		LongConnectorConnectionRelation returnDTO = null;
-		List list = new ArrayList();
+		List<LongConnectorConnectionRelation> list = new ArrayList<>();
 		try {
 			String sql = "select * from long_connector_connection_relation where long_connector_id=?";
 			statment =

@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
-
 package com.fib.msgconverter.message.packer;
 
 import java.io.UnsupportedEncodingException;
@@ -20,9 +16,6 @@ import com.giantstone.common.util.ClassUtil;
 import com.giantstone.common.util.CodeUtil;
 import com.giantstone.common.util.ExceptionUtil;
 import com.giantstone.common.util.StringUtil;
-
-// Referenced classes of package com.fib.upp.service.gateway.message.packer:
-//			AbstractMessagePacker, D
 
 public class XmlMessagePacker extends AbstractMessagePacker {
 
@@ -44,12 +37,12 @@ public class XmlMessagePacker extends AbstractMessagePacker {
 		if (null != getParentBean())
 			messageBean.setParent(getParentBean());
 		messageBean.setMetadata(message);
-		Iterator iterator = message.getFields().values().iterator();
+		Iterator<Field> iterator = message.getFields().values().iterator();
 		Object obj = null;
 		do {
 			if (!iterator.hasNext())
 				break;
-			Field field = (Field) iterator.next();
+			Field field = iterator.next();
 			if (2005 == field.getFieldType())
 				A(field, new Object());
 		} while (true);

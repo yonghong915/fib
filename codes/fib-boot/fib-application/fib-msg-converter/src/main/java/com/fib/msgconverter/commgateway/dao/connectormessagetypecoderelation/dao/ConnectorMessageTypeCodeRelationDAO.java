@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
-import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -235,7 +233,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 	}
 
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,Object> updateFields) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -258,7 +256,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE connector_message_type_code_relation SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()){
 				sql.append(it.next());
@@ -293,7 +291,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 				endTime =System.currentTimeMillis();
 				StringBuffer sbDebug = new StringBuffer(64);
 				sbDebug.append("ConnectorMessageTypeCodeRelationDAO.dynamicUpdate() spend "+(endTime - startTime)+"ms. retFlag = " + retFlag + " SQL:"+sql.toString()+"; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while ( priIt.hasNext() ){
 					tmpKey = (String)priIt.next();
 					tmpStr = (String)updateFields.get(tmpKey);
@@ -482,7 +480,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findAll ( )  {
+	public List<ConnectorMessageTypeCodeRelation> findAll ( )  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -491,7 +489,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ConnectorMessageTypeCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ConnectorMessageTypeCodeRelation> list = new ArrayList<>();
 
 
 		try {
@@ -536,7 +534,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findAll (int pageNum, int pageLength)  {
+	public List<ConnectorMessageTypeCodeRelation> findAll (int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -545,7 +543,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ConnectorMessageTypeCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ConnectorMessageTypeCodeRelation> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {
@@ -605,7 +603,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where) {
+	public List<ConnectorMessageTypeCodeRelation> findByWhere (String where) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -617,7 +615,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ConnectorMessageTypeCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ConnectorMessageTypeCodeRelation> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from connector_message_type_code_relation where " + where +" order by connector_id,message_type_code_id";
@@ -662,7 +660,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where, int pageNum, int pageLength)  {
+	public List<ConnectorMessageTypeCodeRelation> findByWhere (String where, int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -674,7 +672,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ConnectorMessageTypeCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ConnectorMessageTypeCodeRelation> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {
@@ -839,7 +837,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 	}
 
 
-	public List getAllMsgTypCode4Connector(String connectorId ) {
+	public List<ConnectorMessageTypeCodeRelation> getAllMsgTypCode4Connector(String connectorId ) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -854,7 +852,7 @@ public class ConnectorMessageTypeCodeRelationDAO extends AbstractDAO {
 		}
 		ResultSet resultSet = null;
 		ConnectorMessageTypeCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ConnectorMessageTypeCodeRelation> list = new ArrayList<>();
 		try {
 			String sql = "select * from connector_message_type_code_relation where connector_id=?";
 			statment =

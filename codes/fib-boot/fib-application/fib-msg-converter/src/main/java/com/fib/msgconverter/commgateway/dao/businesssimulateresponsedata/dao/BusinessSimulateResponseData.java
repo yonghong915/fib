@@ -1,6 +1,5 @@
 package com.fib.msgconverter.commgateway.dao.businesssimulateresponsedata.dao;
 
-import java.math.BigDecimal;
 
 public class BusinessSimulateResponseData{
 	public BusinessSimulateResponseData() {

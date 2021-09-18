@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
-import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -250,7 +248,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		return 0;
 	}
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,Object> updateFields) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -273,7 +271,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE channel_return_code_relation SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()) {
 				sql.append(it.next());
@@ -307,7 +305,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 				StringBuffer sbDebug = new StringBuffer(64);
 				sbDebug.append("ChannelReturnCodeRelationDAO.dynamicUpdate() spend " + (endTime - startTime)
 						+ "ms. retFlag = " + retFlag + " SQL:" + sql.toString() + "; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while (priIt.hasNext()) {
 					tmpKey = (String) priIt.next();
 					tmpStr = (String) updateFields.get(tmpKey);
@@ -494,7 +492,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		return returnDTO;
 	}
 
-	public List findAll() {
+	public List<ChannelReturnCodeRelation> findAll() {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -503,7 +501,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ChannelReturnCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ChannelReturnCodeRelation> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from channel_return_code_relation order by channel_id,return_code_id";
@@ -547,7 +545,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findAll(int pageNum, int pageLength) {
+	public List<ChannelReturnCodeRelation> findAll(int pageNum, int pageLength) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -556,7 +554,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ChannelReturnCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ChannelReturnCodeRelation> list = new ArrayList<>();
 		int startNum = (pageNum - 1) * pageLength;
 
 		try {
@@ -624,7 +622,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findByWhere(String where) {
+	public List<ChannelReturnCodeRelation> findByWhere(String where) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -636,7 +634,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ChannelReturnCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ChannelReturnCodeRelation> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from channel_return_code_relation where " + where
@@ -682,7 +680,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		return list;
 	}
 
-	public List findByWhere(String where, int pageNum, int pageLength) {
+	public List<ChannelReturnCodeRelation> findByWhere(String where, int pageNum, int pageLength) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -694,7 +692,7 @@ public class ChannelReturnCodeRelationDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		ChannelReturnCodeRelation returnDTO = null;
-		List list = new ArrayList();
+		List<ChannelReturnCodeRelation> list = new ArrayList<>();
 		int startNum = (pageNum - 1) * pageLength;
 
 		try {

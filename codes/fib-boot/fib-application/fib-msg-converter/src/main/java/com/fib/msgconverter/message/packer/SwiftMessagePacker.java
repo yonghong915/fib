@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
-
 package com.fib.msgconverter.message.packer;
 
 import java.util.Iterator;
@@ -15,9 +11,6 @@ import com.giantstone.common.util.ByteBuffer;
 import com.giantstone.common.util.ClassUtil;
 import com.giantstone.common.util.CodeUtil;
 import com.giantstone.common.util.SortHashMap;
-
-// Referenced classes of package com.fib.upp.service.gateway.message.packer:
-//			A
 
 public class SwiftMessagePacker extends TagMessagePacker {
 

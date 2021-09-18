@@ -1,6 +1,5 @@
 package com.fib.msgconverter.commgateway.dao.messagetypecode.dao;
 
-import java.math.BigDecimal;
 
 public class MessageTypeCode{
 	public MessageTypeCode() {

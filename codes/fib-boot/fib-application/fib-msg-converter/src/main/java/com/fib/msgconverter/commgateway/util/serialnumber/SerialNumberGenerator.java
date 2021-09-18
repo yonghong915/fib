@@ -36,7 +36,7 @@ public class SerialNumberGenerator {
 		return instance;
 	}
 
-	private Map snCache = new HashMap();
+	private Map<String,SN> snCache = new HashMap<>();
 
 	/**
 	 * 生成下一个序号
@@ -47,7 +47,7 @@ public class SerialNumberGenerator {
 	 */
 	public synchronized String next(String snId) {
 		String serialNumber = null;
-		String currentSN = null;
+		//String currentSN = null;
 
 		if (null == snId) {
 			// throw new IllegalArgumentException("snId is null");
@@ -130,7 +130,7 @@ public class SerialNumberGenerator {
 		SerialNumber sn = null;
 		try {
 			// 以更新方式查询一条记录，实际上加数据库级的锁
-			List result = dao.getSerialNumberForUpdate(snId);
+			List<SerialNumber> result = dao.getSerialNumberForUpdate(snId);
 			if (0 == result.size()) {
 				// throw new
 				// IllegalArgumentException("no this Serial Number ID["

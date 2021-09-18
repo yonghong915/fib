@@ -171,7 +171,7 @@ public abstract class HTTPClientChannel extends Channel {
 		private byte[] requestMessage = null;
 		private boolean async;
 		private int timeout = 30000;
-		private Map parameters = null;
+		private Map<String, String> parameters = null;
 
 		private void initExceptionUtil(String url) {
 			if (CommGateway.isExceptionMonitorSupport()) {
@@ -211,11 +211,11 @@ public abstract class HTTPClientChannel extends Channel {
 					Protocol.registerProtocol("https", myhttps);
 				}
 				method = new PostMethod(config.getUrl());
-				Iterator it = parameters.entrySet().iterator();
-				Map.Entry entry = null;
+				Iterator<Entry<String, String>> it = parameters.entrySet().iterator();
+				Map.Entry<String, String> entry = null;
 				while (it.hasNext()) {
-					entry = (Entry) it.next();
-					method.addParameter((String) entry.getKey(), (String) entry.getValue());
+					entry = it.next();
+					method.addParameter(entry.getKey(), entry.getValue());
 				}
 			} catch (Exception e) {
 				// e.printStackTrace();
@@ -334,10 +334,10 @@ public abstract class HTTPClientChannel extends Channel {
 			buf.append("HTTP Request: ");
 			buf.append(config.getUrl());
 			buf.append("?");
-			Iterator it = parameters.entrySet().iterator();
-			Map.Entry entry = null;
+			Iterator<Entry<String, String>> it = parameters.entrySet().iterator();
+			Map.Entry<String, String> entry = null;
 			while (it.hasNext()) {
-				entry = (Entry) it.next();
+				entry = it.next();
 				buf.append(entry.getKey());
 				buf.append("=");
 				buf.append(entry.getValue());
@@ -380,14 +380,14 @@ public abstract class HTTPClientChannel extends Channel {
 		/**
 		 * @return the parameters
 		 */
-		public Map getParameters() {
+		public Map<String,String> getParameters() {
 			return parameters;
 		}
 
 		/**
 		 * @param parameters the parameters to set
 		 */
-		public void setParameters(Map parameters) {
+		public void setParameters(Map<String,String> parameters) {
 			this.parameters = parameters;
 		}
 

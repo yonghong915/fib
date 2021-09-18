@@ -827,7 +827,7 @@ public class SerialNumberDAO extends AbstractDAO {
 		return totalRecords;
 	}
 
-	public List getSerialNumberForUpdate(String snId) {
+	public List<SerialNumber> getSerialNumberForUpdate(String snId) {
 		Connection conn = getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");

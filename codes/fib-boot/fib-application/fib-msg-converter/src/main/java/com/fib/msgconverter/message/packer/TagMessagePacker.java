@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
-
 package com.fib.msgconverter.message.packer;
 
 import java.io.UnsupportedEncodingException;
@@ -12,9 +8,6 @@ import com.fib.msgconverter.message.metadata.Field;
 import com.giantstone.common.util.ByteBuffer;
 import com.giantstone.common.util.ClassUtil;
 import com.giantstone.common.util.CodeUtil;
-
-// Referenced classes of package com.giantstone.message.packer:
-//			E
 
 public class TagMessagePacker extends DefaultMessagePacker {
 

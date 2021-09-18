@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
-
 package com.fib.msgconverter.message.packer;
 
 import java.io.UnsupportedEncodingException;
@@ -29,9 +25,6 @@ import com.giantstone.common.util.CodeUtil;
 import com.giantstone.common.util.ExceptionUtil;
 import com.giantstone.common.util.FileUtil;
 import com.giantstone.common.util.SortHashMap;
-
-// Referenced classes of package com.fib.upp.service.gateway.message.packer:
-//			AbstractMessagePacker, D
 
 public class DefaultMessagePacker extends AbstractMessagePacker {
 

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
-import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -268,7 +266,7 @@ public class CronRuleDAO extends AbstractDAO {
 	}
 
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,Object> updateFields) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -288,7 +286,7 @@ public class CronRuleDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE cron_rule SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()){
 				sql.append(it.next());
@@ -328,7 +326,7 @@ public class CronRuleDAO extends AbstractDAO {
 				endTime =System.currentTimeMillis();
 				StringBuffer sbDebug = new StringBuffer(64);
 				sbDebug.append("CronRuleDAO.dynamicUpdate() spend "+(endTime - startTime)+"ms. retFlag = " + retFlag + " SQL:"+sql.toString()+"; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while ( priIt.hasNext() ){
 					tmpKey = (String)priIt.next();
 					tmpStr = (String)updateFields.get(tmpKey);
@@ -502,7 +500,7 @@ public class CronRuleDAO extends AbstractDAO {
 	}
 
 
-	public List findAll ( )  {
+	public List<CronRule> findAll ( )  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -511,7 +509,7 @@ public class CronRuleDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		CronRule returnDTO = null;
-		List list = new ArrayList();
+		List<CronRule> list = new ArrayList<>();
 
 
 		try {
@@ -558,7 +556,7 @@ public class CronRuleDAO extends AbstractDAO {
 	}
 
 
-	public List findAll (int pageNum, int pageLength)  {
+	public List<CronRule> findAll (int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -567,7 +565,7 @@ public class CronRuleDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		CronRule returnDTO = null;
-		List list = new ArrayList();
+		List<CronRule> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {
@@ -629,7 +627,7 @@ public class CronRuleDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where) {
+	public List<CronRule> findByWhere (String where) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -641,7 +639,7 @@ public class CronRuleDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		CronRule returnDTO = null;
-		List list = new ArrayList();
+		List<CronRule> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from cron_rule where " + where +" order by id";
@@ -688,7 +686,7 @@ public class CronRuleDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where, int pageNum, int pageLength)  {
+	public List<CronRule> findByWhere (String where, int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -700,7 +698,7 @@ public class CronRuleDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		CronRule returnDTO = null;
-		List list = new ArrayList();
+		List<CronRule> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {
@@ -867,7 +865,7 @@ public class CronRuleDAO extends AbstractDAO {
 	}
 
 
-	public List getCronRuleByJobId(String jobId ,String state ) {
+	public List<CronRule> getCronRuleByJobId(String jobId ,String state ) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -888,7 +886,7 @@ public class CronRuleDAO extends AbstractDAO {
 		}
 		ResultSet resultSet = null;
 		CronRule returnDTO = null;
-		List list = new ArrayList();
+		List<CronRule> list = new ArrayList<>();
 		try {
 			String sql = "select * from cron_rule where job_id=? and state=?";
 			statment =

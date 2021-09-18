@@ -35,7 +35,7 @@ public class LongConnectionSocketChannelConfig {
 	/**
 	 * 报文符号表配置
 	 */
-	private Map messageSymbolTable = new HashMap<>(5);
+	private Map<String,MessageSymbol> messageSymbolTable = new HashMap<>(5);
 
 	/**
 	 * 消息接收器配置
@@ -203,11 +203,11 @@ public class LongConnectionSocketChannelConfig {
 		this.codeRecognizerConfig = codeRecognizerConfig;
 	}
 
-	public Map getMessageSymbolTable() {
+	public Map<String,MessageSymbol> getMessageSymbolTable() {
 		return messageSymbolTable;
 	}
 
-	public void setMessageSymbolTable(Map messageSymbolTable) {
+	public void setMessageSymbolTable(Map<String,MessageSymbol> messageSymbolTable) {
 		this.messageSymbolTable = messageSymbolTable;
 	}
 

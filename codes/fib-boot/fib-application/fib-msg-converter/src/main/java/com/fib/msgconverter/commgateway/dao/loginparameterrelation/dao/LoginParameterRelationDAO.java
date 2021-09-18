@@ -839,7 +839,7 @@ public class LoginParameterRelationDAO extends AbstractDAO {
 	}
 
 
-	public List getAllParameter4Login(String loginId ) {
+	public List<LoginParameterRelation> getAllParameter4Login(String loginId ) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -854,7 +854,7 @@ public class LoginParameterRelationDAO extends AbstractDAO {
 		}
 		ResultSet resultSet = null;
 		LoginParameterRelation returnDTO = null;
-		List list = new ArrayList();
+		List<LoginParameterRelation> list = new ArrayList<>();
 		try {
 			String sql = "select * from login_parameter_relation where login_id=?";
 			statment =

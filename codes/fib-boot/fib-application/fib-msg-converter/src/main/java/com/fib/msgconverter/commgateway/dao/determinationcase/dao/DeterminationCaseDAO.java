@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
-import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,8 +13,6 @@ import java.sql.SQLException;
 import com.giantstone.base.dao.AbstractDAO;
 import com.giantstone.common.util.ExceptionUtil;
 import com.giantstone.base.config.DAOConfiguration;
-
-
 
 public class DeterminationCaseDAO extends AbstractDAO {
 
@@ -277,7 +273,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 	}
 
 
-	public int dynamicUpdate(Map primaryKey, Map updateFields) {
+	public int dynamicUpdate(Map<String,String> primaryKey, Map<String,Object> updateFields) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -297,7 +293,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 		try {
 			StringBuffer sql = new StringBuffer(64);
 			sql.append("UPDATE determination_case SET ");
-			Iterator it = updateFields.keySet().iterator();
+			Iterator<String> it = updateFields.keySet().iterator();
 			String tmpKey = null;
 			while (it.hasNext()){
 				sql.append(it.next());
@@ -337,7 +333,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 				endTime =System.currentTimeMillis();
 				StringBuffer sbDebug = new StringBuffer(64);
 				sbDebug.append("DeterminationCaseDAO.dynamicUpdate() spend "+(endTime - startTime)+"ms. retFlag = " + retFlag + " SQL:"+sql.toString()+"; parameters : ");
-				Iterator priIt = updateFields.keySet().iterator();
+				Iterator<String> priIt = updateFields.keySet().iterator();
 				while ( priIt.hasNext() ){
 					tmpKey = (String)priIt.next();
 					tmpStr = (String)updateFields.get(tmpKey);
@@ -511,7 +507,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 	}
 
 
-	public List findAll ( )  {
+	public List<DeterminationCase> findAll ( )  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -520,7 +516,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		DeterminationCase returnDTO = null;
-		List list = new ArrayList();
+		List<DeterminationCase> list = new ArrayList<>();
 
 
 		try {
@@ -567,7 +563,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 	}
 
 
-	public List findAll (int pageNum, int pageLength)  {
+	public List<DeterminationCase> findAll (int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -576,7 +572,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		DeterminationCase returnDTO = null;
-		List list = new ArrayList();
+		List<DeterminationCase> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {
@@ -638,7 +634,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where) {
+	public List<DeterminationCase> findByWhere (String where) {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -650,7 +646,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		DeterminationCase returnDTO = null;
-		List list = new ArrayList();
+		List<DeterminationCase> list = new ArrayList<>();
 
 		try {
 			String sql = "select * from determination_case where " + where +" order by id";
@@ -697,7 +693,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 	}
 
 
-	public List findByWhere (String where, int pageNum, int pageLength)  {
+	public List<DeterminationCase> findByWhere (String where, int pageNum, int pageLength)  {
 		Connection conn = this.getConnection();
 		if (null == conn) {
 			throw new RuntimeException("Connection is NULL!");
@@ -709,7 +705,7 @@ public class DeterminationCaseDAO extends AbstractDAO {
 		PreparedStatement statment = null;
 		ResultSet resultSet = null;
 		DeterminationCase returnDTO = null;
-		List list = new ArrayList();
+		List<DeterminationCase> list = new ArrayList<>();
 		int startNum = (pageNum-1)*pageLength;
 
 		try {

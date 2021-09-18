@@ -1,6 +1,7 @@
 package com.fib.msgconverter.commgateway.channel.longconnection.config.database;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class LongConnectionSocketChannelConfigLoader {
 	public static final String TRUE = "0";
 	public static final String FALSE = "1";
 
-	private Map msgSymbolCache = new HashMap();
+	private Map<String,MessageSymbol> msgSymbolCache = new HashMap<>();
 
 	public LongConnectionSocketChannelConfig loadConfig(String connectorId) {
 		Connection conn = null;
@@ -326,21 +327,33 @@ public class LongConnectionSocketChannelConfigLoader {
 			RecognizerConfig recognizerConfig) {
 		AbstractMessageRecognizer recognizer = null;
 		try {
-			Class clazz = Class.forName(recognizerConfig.getClassName());
-			recognizer = (AbstractMessageRecognizer) clazz.newInstance();
+			Class<?> clazz = Class.forName(recognizerConfig.getClassName());
+			recognizer = (AbstractMessageRecognizer) clazz.getDeclaredConstructor().newInstance();
 		} catch (ClassNotFoundException e) {
 			ExceptionUtil.throwActualException(e);
 		} catch (InstantiationException e) {
 			ExceptionUtil.throwActualException(e);
 		} catch (IllegalAccessException e) {
 			ExceptionUtil.throwActualException(e);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		recognizer.setParameters(recognizerConfig.getParameters());
 
 		if (recognizer instanceof AbstractCompositeMessageRecognizer) {
 			AbstractCompositeMessageRecognizer compositeRecognizer = (AbstractCompositeMessageRecognizer) recognizer;
 			RecognizerConfig componentConfig = null;
-			Iterator it = recognizerConfig.getComponentList().iterator();
+			Iterator<RecognizerConfig> it = recognizerConfig.getComponentList().iterator();
 			while (it.hasNext()) {
 				componentConfig = (RecognizerConfig) it.next();
 				compositeRecognizer.add(createRecognizer(componentConfig));
