@@ -76,6 +76,11 @@ public enum StatusCode implements RestStatus {
 	LOAD_FILE_EXCEPTION("E000004", "加载文件异常"),
 
 	/**
+	 * 参数校验异常
+	 */
+	PARAMS_CHECK_EXCEPTION("E000005", "参数校验异常"),
+
+	/**
 	 * 其他异常
 	 */
 	OTHER_EXCEPTION("E000009", "其他异常");

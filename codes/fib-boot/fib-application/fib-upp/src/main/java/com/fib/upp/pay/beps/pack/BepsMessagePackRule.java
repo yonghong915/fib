@@ -1,8 +1,10 @@
 package com.fib.upp.pay.beps.pack;
 
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fib.core.base.entity.BaseEntity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 二代小额支付系统业务组包规则
@@ -31,9 +33,14 @@ import lombok.Data;
  * @date 2021-01-22
  */
 @Data
-public class BepsMessagePackRule {
+@EqualsAndHashCode(callSuper = false)
+@TableName(value = "beps_message_pack_rule")
+public class BepsMessagePackRule extends BaseEntity {
 
-	@TableId
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6086892518801230052L;
 	private String messageType;
 	/*
 	 * 包的'业务类型'都需一致

@@ -4,6 +4,8 @@ public class ConstantUtil {
 	private ConstantUtil() {
 	}
 
+	public static String TRACE_ID = "traceId";
+
 	public static class DSType {
 		private DSType() {
 		}

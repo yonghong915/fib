@@ -1,16 +1,18 @@
 package com.fib.core;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.fib.commons.exception.BusinessException;
 import com.fib.commons.web.ResultRsp;
 import com.fib.commons.web.ResultUtil;
-import com.fib.core.exception.BusinessException;
 import com.fib.core.util.StatusCode;
 
 /**
@@ -25,14 +27,23 @@ import com.fib.core.util.StatusCode;
 public class GlobalExceptionHandler<T> {
 	private Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler
-	public ResultRsp<T> handler(HttpServletRequest req, HttpServletResponse res, Exception e) {
+	@ExceptionHandler(BindException.class)
+	public ResultRsp<T> bindExceptionHandler(BindException e) {
 		logger.error("Restful Http请求发生异常.", e);
-		if (e instanceof BusinessException) {
-			BusinessException bizExp = (BusinessException) e;
-			return ResultUtil.error(bizExp.getCode(), bizExp.getMsg());
-		} else {
-			return ResultUtil.message(StatusCode.OTHER_EXCEPTION);
-		}
+		List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+		List<String> collect = fieldErrors.stream().map(o -> o.getDefaultMessage()).collect(Collectors.toList());
+		return ResultUtil.message(StatusCode.PARAMS_CHECK_EXCEPTION, collect.toString());
+	}
+
+	@ExceptionHandler(BusinessException.class)
+	public ResultRsp<T> handler(BusinessException e) {
+		logger.error("Restful Http请求发生异常.", e);
+		return ResultUtil.error(e.getCode(), e.getMsg());
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResultRsp<T> handler(Exception e) {
+		logger.error("Restful Http请求发生异常.", e);
+		return ResultUtil.message(StatusCode.OTHER_EXCEPTION);
 	}
 }

@@ -27,7 +27,7 @@ public class ASyncExecutorConfig {
 	@Bean
 	public Executor customAsyncExcecutor() {
 		logger.info("start asyncServiceExecutor");
-		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		ThreadPoolTaskExecutor executor = new ThreadPoolExecutorMdcWrapper();
 		executor.setCorePoolSize(customThreadPoolConfigProperties.getCorePoolSize());
 		executor.setMaxPoolSize(customThreadPoolConfigProperties.getMaxPoolSize());
 		executor.setQueueCapacity(customThreadPoolConfigProperties.getQueueCapacity());
