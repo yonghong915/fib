@@ -19,6 +19,8 @@ import com.fib.commons.web.ResultRsp;
 import com.fib.commons.web.ResultUtil;
 import com.fib.core.util.SpringContextUtils;
 import com.fib.core.util.StatusCode;
+import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
+import com.fib.upp.pay.beps.pack.BepsPackUtil;
 import com.fib.upp.service.IBepsPackService;
 import com.fib.upp.service.rulecheck.vo.RuleCheckVO;
 
@@ -37,6 +39,9 @@ public class MessageInCtrler {
 
 	@Autowired
 	private IBepsPackService bepsPackService;
+	
+	@Autowired
+	private BepsPackUtil bepsPackUtil;
 
 	@PostMapping(value = "/test")
 	public ResultRsp<Object> testValidation(@Validated @RequestBody RuleCheckVO vo) {
@@ -65,6 +70,8 @@ public class MessageInCtrler {
 			}
 		});
 
+		
+		BepsMessagePackRule bepsPackRule = bepsPackUtil.getPackRuleByMessageType("beps.121.001.01");
 		return ResultUtil.message(StatusCode.SUCCESS);
 	}
 
@@ -111,5 +118,9 @@ public class MessageInCtrler {
 			duplexFlag = true;
 		}
 		return duplexFlag;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(Runtime.getRuntime().availableProcessors());
 	}
 }

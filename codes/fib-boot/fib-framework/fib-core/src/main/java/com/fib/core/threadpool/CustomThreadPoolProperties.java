@@ -27,6 +27,10 @@ public class CustomThreadPoolProperties {
 	/** 队列大小 */
 	private int queueCapacity;
 
+	/** 允许线程空闲时间（单位：默认为秒） */
+	private int keepAliveTime;
+
 	/** 线程池中的线程的名称前缀 */
 	private String namePrefix;
+
 }

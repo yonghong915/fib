@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import com.fib.upp.service.IBepsPackService;
 
-
 /**
  * 
  * @author fangyh
@@ -45,13 +44,13 @@ public class BepsPackUtil {
 	 */
 	static Map<String, BepsMessagePackRule> messageTypePackRuleMap = new TreeMap<>();
 
-	public static List<List<String>> packPaymentOrder(String messageType, List<String> orderIdList) {
+	public List<List<String>> packPaymentOrder(String messageType, List<String> orderIdList) {
 		// 根据小额报文类型获取组包规则
 		BepsMessagePackRule packRule = getPackRuleByMessageType(messageType);
-		return BepsPackUtil.packPaymentOrder(packRule, orderIdList);
+		return packPaymentOrder(packRule, orderIdList);
 	}
 
-	private static List<List<String>> packPaymentOrder(BepsMessagePackRule packRule, List<String> orderIdList) {
+	private List<List<String>> packPaymentOrder(BepsMessagePackRule packRule, List<String> orderIdList) {
 //		if (CollUtil.isEmpty(orderIdList)) {
 //			throw new CommonException("orderIdList is empty.");
 //		}
@@ -86,7 +85,7 @@ public class BepsPackUtil {
 		return packMap.values().stream().collect(Collectors.toList());
 	}
 
-	private static BepsPackElement extractPackElement(String orderId) {
+	private BepsPackElement extractPackElement(String orderId) {
 		BepsPackElement packEle = new BepsPackElement();
 		if ("111".equals(orderId)) {
 			packEle.setTransactionType("beps.121.001.01");
@@ -114,7 +113,7 @@ public class BepsPackUtil {
 		return packEle;
 	}
 
-	public static BepsMessagePackRule getPackRuleByMessageType(String messageType) {
+	public BepsMessagePackRule getPackRuleByMessageType(String messageType) {
 		synchronized (messageTypePackRuleMap) {
 			if (messageTypePackRuleMap.isEmpty()) {
 				rebuildMessagePackRuleMap();
@@ -133,14 +132,14 @@ public class BepsPackUtil {
 		}
 	}
 
-	private static void rebuildMessagePackRuleMap() {
+	private void rebuildMessagePackRuleMap() {
 		// 查询小额报文组报规则表BEPS_MESSAGE_PACK_RULE
 		List<BepsMessagePackRule> ruleLst = bepsPackServiceTmp.queryBepsPackRuleList();
 //		if (CollUtil.isEmpty(ruleLst)) {
 //			throw new CommonException("小额系统没有维护报文类型与队列类型的映射");
 //		}
 		messageTypePackRuleMap = ruleLst.stream().collect(
-				Collectors.toMap(BepsMessagePackRule::getMessageType, Function.identity(), (key1, key2) -> key2));
+				Collectors.toMap(BepsMessagePackRule::getMessageTypeCode, Function.identity(), (key1, key2) -> key2));
 
 	}
 }

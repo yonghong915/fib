@@ -34,7 +34,7 @@ public class BepsPackServiceImpl implements IBepsPackService {
 		return bepsMessagePackRuleMapper.selectList(wrapper);
 	}
 
-	@Async("taskExecutor")
+	@Async("customAsyncExcecutor")
 	@Transactional
 	@Override
 	public void packBepsMessage() {

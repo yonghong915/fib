@@ -19,12 +19,14 @@ import com.fib.upp.pay.beps.pack.BepsQueueItem;
 import com.fib.upp.service.IBepsQueueService;
 import com.fib.upp.util.BepsUtil;
 
-
 @Service("bepsQueueService")
 public class BepsQueueServiceImpl implements IBepsQueueService {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private BepsQueueMapper bepsQueueMapper;
+
+	@Autowired
+	private BepsPackUtil bepsPackUtil;
 
 	@Override
 	public void sendMessage(Long queueId) {
@@ -67,7 +69,7 @@ public class BepsQueueServiceImpl implements IBepsQueueService {
 			String messageType = entry.getKey();
 			List<String> recordIdList = entry.getValue();
 			// 根据组包规则，进行组包
-			List<List<String>> packList = BepsPackUtil.packPaymentOrder(messageType, recordIdList);
+			List<List<String>> packList = bepsPackUtil.packPaymentOrder(messageType, recordIdList);
 			// 发报
 			for (List<String> pack : packList) {
 				sendMessage(queueId, messageType, pack);

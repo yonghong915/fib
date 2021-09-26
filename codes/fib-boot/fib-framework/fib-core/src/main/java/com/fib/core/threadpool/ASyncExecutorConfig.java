@@ -24,14 +24,15 @@ public class ASyncExecutorConfig {
 	@Autowired
 	private CustomThreadPoolProperties customThreadPoolConfigProperties;
 
-	@Bean
+	@Bean("customAsyncExcecutor")
 	public Executor customAsyncExcecutor() {
-		logger.info("start asyncServiceExecutor");
+		logger.info("start customAsyncExcecutor");
 		ThreadPoolTaskExecutor executor = new ThreadPoolExecutorMdcWrapper();
 		executor.setCorePoolSize(customThreadPoolConfigProperties.getCorePoolSize());
 		executor.setMaxPoolSize(customThreadPoolConfigProperties.getMaxPoolSize());
 		executor.setQueueCapacity(customThreadPoolConfigProperties.getQueueCapacity());
 		executor.setThreadNamePrefix(customThreadPoolConfigProperties.getNamePrefix());
+		executor.setKeepAliveSeconds(customThreadPoolConfigProperties.getKeepAliveTime());
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 		executor.initialize();
 		return executor;

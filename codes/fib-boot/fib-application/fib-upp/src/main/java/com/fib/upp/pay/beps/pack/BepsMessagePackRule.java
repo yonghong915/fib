@@ -41,7 +41,7 @@ public class BepsMessagePackRule extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -6086892518801230052L;
-	private String messageType;
+	private String messageTypeCode;
 	/*
 	 * 包的'业务类型'都需一致
 	 */
