@@ -3,6 +3,7 @@ package com.fib.upp.pay.beps.pack;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fib.core.base.entity.BaseEntity;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -45,27 +46,27 @@ public class BepsMessagePackRule extends BaseEntity {
 	/*
 	 * 包的'业务类型'都需一致
 	 */
-	private boolean transactionType;
+	private String transactionType;
 	/*
 	 * 包的'发起清算行'都需一致
 	 */
-	private boolean sendClearingBank;
+	private String sendClearingBank;
 	/*
 	 * 包的'接收清算行'都需一致
 	 */
-	private boolean receiveClearingBank;
+	private String receiveClearingBank;
 	/*
 	 * 包的'相同的回执期'都需一致
 	 */
-	private boolean returnLimited;
+	private String returnLimited;
 	/*
 	 * 包的'原报文标识号'都需一致
 	 */
-	private boolean originalMessageId;
+	private String originalMessageId;
 	/*
 	 * 包的'批次号'都需一致
 	 */
-	private boolean batchId;
+	private String batchId;
 
 	/*
 	 * 允许参与者数量目前最大为2000个
@@ -81,29 +82,29 @@ public class BepsMessagePackRule extends BaseEntity {
 	public String getPackString(BepsPackElement elem) {
 		StringBuilder builder = new StringBuilder();
 		// 业务类型
-//		if (transactionType) {
-//			builder.append(String.format("%1$-6s", StrUtil.trimToEmpty(elem.getTransactionType())));
-//		}
-//		// 发起清算行
-//		if (sendClearingBank) {
-//			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getSendClearingBank())));
-//		}
-//		// 接收清算行
-//		if (receiveClearingBank) {
-//			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getReceiveClearingBank())));
-//		}
-//		// 相同的回执期
-//		if (returnLimited) {
-//			builder.append(String.format("%1$-2s", StrUtil.trimToEmpty(elem.getReturnLimited())));
-//		}
-//		// 原报文标识号:当前工作日期（8位数字）+报文序号（8位数字，不足8位的，左补0）组成，共16位长度，例如2010020200000001
-//		if (originalMessageId) {
-//			builder.append(String.format("%1$-16s", StrUtil.trimToEmpty(elem.getOriginalMessageId())));
-//		}
-//		// 批次号
-//		if (batchId) {
-//			builder.append(String.format("%1$-20s", StrUtil.trimToEmpty(elem.getBatchId())));
-//		}
+		if ("Y".equalsIgnoreCase(transactionType)) {
+			builder.append(String.format("%1$-6s", StrUtil.trimToEmpty(elem.getTransactionType())));
+		}
+		// 发起清算行
+		if ("Y".equalsIgnoreCase(sendClearingBank)) {
+			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getSendClearingBank())));
+		}
+		// 接收清算行
+		if ("Y".equalsIgnoreCase(receiveClearingBank)) {
+			builder.append(String.format("%1$-14s", StrUtil.trimToEmpty(elem.getReceiveClearingBank())));
+		}
+		// 相同的回执期
+		if ("Y".equalsIgnoreCase(returnLimited)) {
+			builder.append(String.format("%1$-2s", StrUtil.trimToEmpty(elem.getReturnLimited())));
+		}
+		// 原报文标识号:当前工作日期（8位数字）+报文序号（8位数字，不足8位的，左补0）组成，共16位长度，例如2010020200000001
+		if ("Y".equalsIgnoreCase(originalMessageId)) {
+			builder.append(String.format("%1$-16s", StrUtil.trimToEmpty(elem.getOriginalMessageId())));
+		}
+		// 批次号
+		if ("Y".equalsIgnoreCase(batchId)) {
+			builder.append(String.format("%1$-20s", StrUtil.trimToEmpty(elem.getBatchId())));
+		}
 		// 包序号，默认为零
 		builder.append(String.format("%1$-6s", "pkg" + elem.getPackNO()));
 		return builder.toString();
@@ -123,7 +124,6 @@ public class BepsMessagePackRule extends BaseEntity {
 		builder.append(" originalMessageId=" + originalMessageId);
 		// 批次号
 		builder.append(" originalMessageId=" + originalMessageId);
-
 		return builder.toString();
 	}
 }

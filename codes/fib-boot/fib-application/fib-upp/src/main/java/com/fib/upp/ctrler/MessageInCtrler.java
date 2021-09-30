@@ -1,5 +1,6 @@
 package com.fib.upp.ctrler;
 
+import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import com.fib.commons.web.ResultUtil;
 import com.fib.core.util.SpringContextUtils;
 import com.fib.core.util.StatusCode;
 import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
+import com.fib.upp.pay.beps.pack.BepsPackElement;
 import com.fib.upp.pay.beps.pack.BepsPackUtil;
 import com.fib.upp.service.IBepsPackService;
 import com.fib.upp.service.rulecheck.vo.RuleCheckVO;
@@ -39,7 +41,7 @@ public class MessageInCtrler {
 
 	@Autowired
 	private IBepsPackService bepsPackService;
-	
+
 	@Autowired
 	private BepsPackUtil bepsPackUtil;
 
@@ -48,6 +50,12 @@ public class MessageInCtrler {
 		logger.info("MessageInCtrler-->");
 		bepsPackService.queryBepsPackRuleList();
 
+		BepsPackElement elem = new BepsPackElement();
+		String messageTypeCode = "beps.121.001.01";
+		Optional<BepsMessagePackRule> a = bepsPackService.getMessagePackRule(messageTypeCode);
+		a.ifPresent(name -> {
+			String packString = name.getPackString(elem);
+		});
 		Executor executor = SpringContextUtils.getBean("customAsyncExcecutor");
 		executor.execute(new Runnable() {
 			@Override
@@ -70,7 +78,6 @@ public class MessageInCtrler {
 			}
 		});
 
-		
 		BepsMessagePackRule bepsPackRule = bepsPackUtil.getPackRuleByMessageType("beps.121.001.01");
 		return ResultUtil.message(StatusCode.SUCCESS);
 	}
@@ -119,7 +126,7 @@ public class MessageInCtrler {
 		}
 		return duplexFlag;
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(Runtime.getRuntime().availableProcessors());
 	}

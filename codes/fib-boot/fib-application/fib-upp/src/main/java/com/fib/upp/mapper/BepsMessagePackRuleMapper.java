@@ -15,4 +15,6 @@ import com.fib.upp.util.EnumConstants;
 @DS(EnumConstants.DATASOURCE_UPP)
 public interface BepsMessagePackRuleMapper extends BaseMapper<BepsMessagePackRule> {
 
+	BepsMessagePackRule getMessagePackRule(String messageTypeCode);
+
 }

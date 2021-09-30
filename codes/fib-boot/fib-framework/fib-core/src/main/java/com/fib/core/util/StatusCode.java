@@ -80,10 +80,22 @@ public enum StatusCode implements RestStatus {
 	 */
 	PARAMS_CHECK_EXCEPTION("E000005", "参数校验异常"),
 
+	/***/
+	INVALID_TOKEN("2001", "访问令牌不合法"),
+
+	/***/
+	ACCESS_DENIED("2003", "没有权限访问该资源"),
+
+	/***/
+	USERNAME_OR_PASSWORD_ERROR("1002", "用户名或密码错误"),
+
+	/***/
+	UNSUPPORTED_GRANT_TYPE("1003", "不支持的认证模式"),
+
 	/**
 	 * 其他异常
 	 */
-	OTHER_EXCEPTION("E000009", "其他异常");
+	OTHER_EXCEPTION("E000009","其他异常");
 
 	private final String code;
 

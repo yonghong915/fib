@@ -1,6 +1,7 @@
 package com.fib.upp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
 
@@ -17,5 +18,7 @@ public interface IBepsPackService {
 	/**
 	 * 小额组包
 	 */
-	public void packBepsMessage();
+	void packBepsMessage();
+
+	Optional<BepsMessagePackRule> getMessagePackRule(String messageTypeCode);
 }

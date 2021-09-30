@@ -1,6 +1,7 @@
 package com.fib.upp.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,9 @@ import com.fib.upp.pay.beps.pack.BepsQueueHeader;
 import com.fib.upp.service.IBepsPackService;
 import com.fib.upp.service.IBepsQueueService;
 import com.fib.upp.util.BepsUtil;
+import com.google.common.collect.Lists;
 
+import cn.hutool.core.collection.CollUtil;
 
 @Service("bepsPackService")
 public class BepsPackServiceImpl implements IBepsPackService {
@@ -31,11 +34,18 @@ public class BepsPackServiceImpl implements IBepsPackService {
 	@Override
 	public List<BepsMessagePackRule> queryBepsPackRuleList() {
 		QueryWrapper<BepsMessagePackRule> wrapper = new QueryWrapper<>();
-		return bepsMessagePackRuleMapper.selectList(wrapper);
+		List<BepsMessagePackRule> list = bepsMessagePackRuleMapper.selectList(wrapper);
+		return CollUtil.isEmpty(list) ? Lists.newArrayList() : list;
+	}
+
+	@Override
+	public Optional<BepsMessagePackRule> getMessagePackRule(String messageTypeCode) {
+		BepsMessagePackRule packRule = bepsMessagePackRuleMapper.getMessagePackRule(messageTypeCode);
+		return Optional.ofNullable(packRule);
 	}
 
 	@Async("customAsyncExcecutor")
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void packBepsMessage() {
 		String queueType = BepsUtil.QueueType.TMA001.code();
@@ -59,7 +69,7 @@ public class BepsPackServiceImpl implements IBepsPackService {
 		if (BepsUtil.QueueStatus.VLD.code().equals(queueStatus)) {
 			// 新建状态为'打开'的队列
 			BepsQueueHeader newQueueHeader = new BepsQueueHeader();
-			//newQueueHeader.setPkId(IdUtil.createSnowflake(1, 1).nextId());
+			// newQueueHeader.setPkId(IdUtil.createSnowflake(1, 1).nextId());
 			newQueueHeader.setQueueType(queueType);
 			newQueueHeader.setStatus(BepsUtil.QueueHeaderStatus.OPN.code());
 			bepsQueueService.createQueueHeader(newQueueHeader);
