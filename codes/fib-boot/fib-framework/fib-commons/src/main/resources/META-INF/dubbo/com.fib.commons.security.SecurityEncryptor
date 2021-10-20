@@ -1,0 +1,2 @@
+SM2=com.fib.commons.security.support.sm.SM2Encryptor
+SM4=com.fib.commons.security.support.sm.SM4Encryptor
