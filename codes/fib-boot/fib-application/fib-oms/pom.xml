@@ -15,9 +15,8 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.dubbo</groupId>
-			<artifactId>dubbo</artifactId>
-			<version>3.0.1</version>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-commons</artifactId>
 		</dependency>
 	</dependencies>
 </project>

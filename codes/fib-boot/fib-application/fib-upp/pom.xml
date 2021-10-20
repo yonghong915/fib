@@ -12,6 +12,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<drools.version>7.59.0.Final</drools.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -49,8 +50,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>com.dtflys.forest</groupId>
 			<artifactId>spring-boot-starter-forest</artifactId>
@@ -115,7 +116,35 @@
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-spring</artifactId>
+			<version>${drools.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
 
 		<!-- <dependency> <groupId>com.lmax</groupId> <artifactId>disruptor</artifactId> </dependency> <dependency> <groupId>io.netty</groupId> <artifactId>netty-all</artifactId> 
 			</dependency> -->

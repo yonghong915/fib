@@ -6,9 +6,12 @@ import java.util.concurrent.Executor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kie.api.KieBase;
+import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionManager;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fib.commons.web.ResultRsp;
 import com.fib.commons.web.ResultUtil;
+import com.fib.core.annotation.ApiIdempotent;
+import com.fib.core.annotation.security.Decrypt;
+import com.fib.core.annotation.security.Encrypt;
 import com.fib.core.util.SpringContextUtils;
 import com.fib.core.util.StatusCode;
 import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
@@ -45,7 +51,23 @@ public class MessageInCtrler {
 	@Autowired
 	private BepsPackUtil bepsPackUtil;
 
+	@Autowired
+	private KieBase kieBase;
+
+	@RequestMapping("/rule")
+	public String rule() {
+		KieSession kieSession = kieBase.newKieSession();
+
+		kieSession.insert(kieSession);
+		int fireCount = kieSession.fireAllRules();
+		logger.info("触发了[{}]条规则", fireCount);
+		return String.format("触发了[{}]条规则", fireCount);
+	}
+
 	@PostMapping(value = "/test")
+	@ApiIdempotent
+	@Encrypt
+	@Decrypt
 	public ResultRsp<Object> testValidation(@Validated @RequestBody RuleCheckVO vo) {
 		logger.info("MessageInCtrler-->");
 		bepsPackService.queryBepsPackRuleList();

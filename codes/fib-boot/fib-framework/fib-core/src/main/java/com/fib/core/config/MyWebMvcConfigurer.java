@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.fib.core.interceptor.ApiIdempotentInterceptor;
 import com.fib.core.interceptor.LogInterceptor;
 import com.fib.core.interceptor.SignInterceptor;
 import com.fib.core.interceptor.WhiteListInterceptor;
@@ -20,6 +21,9 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 	@Autowired
 	private WhiteListInterceptor whiteListInterceptor;
 
+	@Autowired
+	private ApiIdempotentInterceptor apiIdempotentInterceptor;
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		// 访问速率限制 apiLimitRateInterceptor RateLimit guava
@@ -33,5 +37,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		registry.addInterceptor(signInterceptor);
 
 		registry.addInterceptor(whiteListInterceptor);
+
+		registry.addInterceptor(apiIdempotentInterceptor);
 	}
 }

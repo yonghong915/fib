@@ -39,8 +39,8 @@ public class SM2Encryptor extends AbstractSecurityEncryptor {
 	}
 
 	@Override
-	public boolean verify(byte[] dataHex, byte[] signHex, byte[] publicKey) {
+	public boolean verify(byte[] data, byte[] sign, byte[] publicKey) {
 		SM2 sm2 = SmUtil.sm2(null, publicKey);
-		return sm2.verify(dataHex, signHex);
+		return sm2.verify(data, sign);
 	}
 }

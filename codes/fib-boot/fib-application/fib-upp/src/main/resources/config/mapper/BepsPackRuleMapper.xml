@@ -7,13 +7,13 @@
 	</sql>
 
 	<!-- 查找用户信息 -->
-	<select id="selectUserList"
+	<select id="getMessagePackRule"
 		parameterType="com.fib.upp.pay.beps.pack.BepsMessagePackRule"
 		resultType="com.fib.upp.pay.beps.pack.BepsMessagePackRule">
 		SELECT * FROM beps_message_pack_rule
 		<where>
-			<if test="pkId != null">
-				and message_type = #{message_type}
+			<if test="messageTypeCode != null">
+				and message_type_code = #{messageTypeCode}
 			</if>
 		</where>
 	</select>

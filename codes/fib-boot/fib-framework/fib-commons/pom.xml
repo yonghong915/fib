@@ -16,6 +16,7 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+		<dubbo.version>3.0.3</dubbo.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -117,7 +118,7 @@
 		<dependency>
 			<groupId>org.apache.dubbo</groupId>
 			<artifactId>dubbo</artifactId>
-			<version>3.0.0</version>
+			<version>${dubbo.version}</version>
 		</dependency>
 
 		<dependency>
@@ -162,8 +163,8 @@
 					<artifactId>xml-apis</artifactId>
 				</exclusion>
 				<exclusion>
-				   <groupId>org.quartz-scheduler</groupId>
-				   <artifactId>quartz</artifactId>
+					<groupId>org.quartz-scheduler</groupId>
+					<artifactId>quartz</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
