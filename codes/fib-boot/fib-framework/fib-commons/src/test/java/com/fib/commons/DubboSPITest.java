@@ -1,6 +1,6 @@
 package com.fib.commons;
 
-import org.apache.dubbo.common.extension.ExtensionLoader;
+import org.apache.dubbo.rpc.model.ScopeModelUtil;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +13,10 @@ public class DubboSPITest {
 
 	@Test
 	public void testProtoStuff() {
-		Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class).getDefaultExtension();
+		Serializer serializer = ScopeModelUtil.getExtensionLoader(Serializer.class, null).getDefaultExtension();
 		System.out.println(serializer);
 
-		serializer = ExtensionLoader.getExtensionLoader(Serializer.class)
+		serializer = ScopeModelUtil.getExtensionLoader(Serializer.class, null)
 				.getExtension(EnumConstants.SerializeType.JDK.getName());
 		logger.info(serializer.toString());
 	}

@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
-import org.apache.dubbo.common.extension.ExtensionLoader;
+import org.apache.dubbo.rpc.model.ScopeModelUtil;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,18 +29,19 @@ public class EncodingDetectorTest {
 			e.printStackTrace();
 		}
 
-		EncodingDetector encodingDetector = ExtensionLoader.getExtensionLoader(EncodingDetector.class)
+		EncodingDetector encodingDetector = ScopeModelUtil.getExtensionLoader(EncodingDetector.class, null)
 				.getDefaultExtension();
+
 		Charset charset = null;
 		try (InputStream is = new File(filePath).toURI().toURL().openStream();) {
 			charset = encodingDetector.detect(is);
 			logger.info("charset={}", charset.name());
 
-			encodingDetector = ExtensionLoader.getExtensionLoader(EncodingDetector.class).getExtension("any23");
+			encodingDetector = ScopeModelUtil.getExtensionLoader(EncodingDetector.class, null).getExtension("any23");
 			charset = encodingDetector.detect(is);
 			logger.info("charset={}", charset.name());
 
-			encodingDetector = ExtensionLoader.getExtensionLoader(EncodingDetector.class)
+			encodingDetector = ScopeModelUtil.getExtensionLoader(EncodingDetector.class, null)
 					.getExtension("juniversalchardet");
 			charset = encodingDetector.detect(is);
 			logger.info("charset={}", charset.name());

@@ -1,2 +1,4 @@
 SM2=com.fib.commons.security.support.sm.SM2Encryptor
 SM4=com.fib.commons.security.support.sm.SM4Encryptor
+AES=com.fib.commons.security.support.aes.AESEncryptor
+RSA=com.fib.commons.security.support.rsa.RSAEncryptor
