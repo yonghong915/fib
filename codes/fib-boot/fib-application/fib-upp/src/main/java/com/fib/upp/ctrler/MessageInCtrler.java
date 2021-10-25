@@ -11,7 +11,6 @@ import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.TransactionManager;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,6 +76,7 @@ public class MessageInCtrler {
 		Optional<BepsMessagePackRule> a = bepsPackService.getMessagePackRule(messageTypeCode);
 		a.ifPresent(name -> {
 			String packString = name.getPackString(elem);
+			logger.info("packString={}",packString);
 		});
 		Executor executor = SpringContextUtils.getBean("customAsyncExcecutor");
 		executor.execute(new Runnable() {
@@ -101,6 +101,7 @@ public class MessageInCtrler {
 		});
 
 		BepsMessagePackRule bepsPackRule = bepsPackUtil.getPackRuleByMessageType("beps.121.001.01");
+		bepsPackRule.getBatchId();
 		return ResultUtil.message(StatusCode.SUCCESS);
 	}
 

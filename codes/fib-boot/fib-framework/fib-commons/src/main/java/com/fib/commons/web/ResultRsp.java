@@ -36,7 +36,7 @@ public class ResultRsp<T> implements Serializable {
 	 * 返回对象
 	 */
 	@JsonProperty("data")
-	private transient T rspObj;
+	private T rspObj;
 
 	/**
 	 * 时间戳

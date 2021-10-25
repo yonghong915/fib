@@ -6,6 +6,7 @@ public class ConstantUtil {
 
 	public static final String TRACE_ID = "traceId";
 	public static final String UPP_SYSTEM_CODE = "000001";
+	public static final String OTHER_SYSTEM_CODE = "100001";
 
 	public static class DSType {
 		private DSType() {

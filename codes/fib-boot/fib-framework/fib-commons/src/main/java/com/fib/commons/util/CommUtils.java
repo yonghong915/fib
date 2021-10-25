@@ -3,6 +3,7 @@ package com.fib.commons.util;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.fib.commons.exception.CommonException;
 
@@ -44,6 +45,17 @@ public class CommUtils {
 		} catch (UnsupportedEncodingException e) {
 			throw new CommonException("message.encoding.unsupport gbk");
 		}
+	}
+
+	public static String getRandom(int len) {
+		String source = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder rs = new StringBuilder();
+		int sourceLen = source.length();
+		for (int i = 0; i < len; i++) {
+			int a = ThreadLocalRandom.current().nextInt(sourceLen);
+			rs.append(source.charAt(a));
+		}
+		return rs.toString();
 	}
 
 	/**
