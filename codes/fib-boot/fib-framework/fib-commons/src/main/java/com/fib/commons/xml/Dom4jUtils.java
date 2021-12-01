@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -16,6 +21,8 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXValidator;
+import org.dom4j.util.XMLErrorHandler;
 import org.xml.sax.SAXException;
 
 import com.fib.commons.exception.CommonException;
@@ -34,8 +41,38 @@ public class Dom4jUtils {
 	private static final String DEFAULT_NAMESPACE = "http://www.fib.com/schema";
 	private static final String DEFAULT_SAX_FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
 	private static final String DEFAULT_NAMESPACE_NAME = "default";
+	private static final String EXPRESSION_WITH_NS = "/" + DEFAULT_NAMESPACE_NAME + ":";
 
 	private Dom4jUtils() {
+	}
+
+	public static Document createDocument(InputStream is) {
+		Document doc = null;
+		SAXReader xmlReader = new SAXReader();
+		try {
+			xmlReader.setFeature(DEFAULT_SAX_FEATURE, true);
+			doc = xmlReader.read(is);
+		} catch (SAXException | DocumentException e1) {
+			throw new CommonException("Failed to create xml document.");
+		}
+		Element rootElement = doc.getRootElement();
+		String namespace = rootElement.getNamespaceURI();
+
+		if (namespace != null) {
+			Map<String, String> namespaces = new TreeMap<>();
+			namespaces.put(DEFAULT_NAMESPACE_NAME, namespace);
+			DocumentFactory.getInstance().setXPathNamespaceURIs(namespaces);
+		}
+		return doc;
+	}
+
+	public static List<Node> selectNodes(Document doc, String xpathExpression) {
+		Element rootElement = doc.getRootElement();
+		String namespace = rootElement.getNamespaceURI();
+		if (namespace != null) {
+			xpathExpression = xpathExpression.replace("/", EXPRESSION_WITH_NS);
+		}
+		return doc.selectNodes(xpathExpression);
 	}
 
 	public static Document getDocument(String filePath) {
@@ -96,6 +133,28 @@ public class Dom4jUtils {
 		return xItemName;
 	}
 
+	public static XPath getXPath(String xpathExpression, String... namespaces) {
+		Map<String, String> nameSpaceMap = new HashMap<>();
+
+		String namespaceKey = "";
+		String namespace = "";
+		if (ArrayUtil.isEmpty(namespaces)) {
+			namespaceKey = DEFAULT_NAMESPACE_NAME;
+			namespace = DEFAULT_NAMESPACE;
+		} else if (namespaces.length == 1) {
+			namespaceKey = DEFAULT_NAMESPACE_NAME;
+			namespace = namespaces[0];
+		} else {
+			namespace = namespaces[0];
+			namespaceKey = namespaces[1];
+		}
+		nameSpaceMap.put(namespaceKey, namespace);
+		DocumentFactory.getInstance().setXPathNamespaceURIs(nameSpaceMap);
+
+		xpathExpression = xpathExpression.replaceAll("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
+		return DocumentFactory.getInstance().createXPath(xpathExpression);
+	}
+
 	public static String getXPathValue(Document doc, String xpath) {
 		Node node = doc.selectSingleNode(xpath);
 		if (Objects.isNull(node)) {
@@ -152,6 +211,61 @@ public class Dom4jUtils {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+
+	public void check() {
+//		// 创建默认的XML错误处理器
+//		XMLErrorHandler errorHandler = new XMLErrorHandler();
+//		// 获取基于 SAX 的解析器的实例
+//		SAXParserFactory factory = SAXParserFactory.newInstance();
+//		// 解析器在解析时验证 XML 内容。
+//		factory.setValidating(true);
+//		// 指定由此代码生成的解析器将提供对 XML 名称空间的支持。
+//		factory.setNamespaceAware(true);
+//		// 使用当前配置的工厂参数创建 SAXParser 的一个新实例。
+//		try {
+//			SAXParser parser = factory.newSAXParser();
+//			// 创建一个读取工具
+//			SAXReader xmlReader = new SAXReader();
+//			// 获取要校验xml文档实例
+//			Document xmlDocument = (Document) xmlReader.read(new File(xmlFileName));
+//			// 设置 XMLReader 的基础实现中的特定属性。核心功能和属性列表可以在
+//			// [url]http://sax.sourceforge.net/?selected=get-set[/url] 中找到。
+//			parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+//					"http://www.w3.org/2001/XMLSchema");
+//			parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "file:" + xsdFileName);
+//			// 创建一个SAXValidator校验工具，并设置校验工具的属性
+//			SAXValidator validator = new SAXValidator(parser.getXMLReader());
+//			// 设置校验工具的错误处理器，当发生错误时，可以从处理器对象中得到错误信息。
+//			validator.setErrorHandler(errorHandler);
+//			// 校验
+//			validator.validate(xmlDocument);
+//
+////            XMLWriter writer = new XMLWriter(OutputFormat.createPrettyPrint()); 
+//			// 如果错误信息不为空，说明校验失败，打印错误信息
+//
+//			if (errorHandler.getErrors().hasContent()) {
+//				Element e = errorHandler.getErrors();
+//				List<Node> list = e.content();
+//				int count = 0;
+//				String result = "";
+//				for (Node node : list) {
+//					String error = node.getText().split(":")[1];
+//					if (error.contains("元素") && error.contains("无效")) {
+//						count++;
+//						result += error + " ";
+//					}
+//				}
+//				System.err.println("共有" + count + "处错误");
+//				System.err.println(result);
+//			} else {
+//				System.err.println("Good! XML文件通过XSD文件校验成功！");
+//			}
+//		} catch (ParserConfigurationException | SAXException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
 	}
 
 	public static void main(String[] args) {
