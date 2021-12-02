@@ -9,10 +9,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
@@ -21,12 +17,12 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.SAXValidator;
-import org.dom4j.util.XMLErrorHandler;
 import org.xml.sax.SAXException;
 
 import com.fib.commons.exception.CommonException;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -44,6 +40,14 @@ public class Dom4jUtils {
 	private static final String EXPRESSION_WITH_NS = "/" + DEFAULT_NAMESPACE_NAME + ":";
 
 	private Dom4jUtils() {
+	}
+
+	public static Document createDocument(String fileName) {
+		if (CharSequenceUtil.isEmpty(fileName)) {
+			throw new CommonException("fileName must be not empty.");
+		}
+		InputStream is = FileUtil.getInputStream(fileName);
+		return createDocument(is);
 	}
 
 	public static Document createDocument(InputStream is) {

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.fib.commons.config.Configuration;
+import com.fib.commons.config.parser.ConfigurationManager;
 import com.fib.commons.exception.CommonException;
 
 /**
@@ -58,6 +60,29 @@ public class CommUtils {
 		return rs.toString();
 	}
 
+	public static String getRealValue(String configName, String value) {
+		if (null == value) {
+			return value;
+		}
+
+		int startIndex = value.indexOf("${");
+		if (-1 == startIndex) {
+			return value;
+		}
+
+		startIndex += 2;
+		int endIndex = value.indexOf("}", startIndex);
+		if (-1 == endIndex) {
+			return value;
+		}
+
+		value = value.substring(startIndex, endIndex);
+
+		Configuration configuration = ConfigurationManager.getInstance().getConfiguration(configName);
+
+		return configuration.getProperty(value);
+	}
+
 	/**
 	 * 是否不为空
 	 * 
@@ -66,6 +91,18 @@ public class CommUtils {
 	 */
 	public static boolean isNotEmpty(Object obj) {
 		return !isEmpty(obj);
+	}
+
+	public static void notEmpty(Object obj, String message, Object... args) {
+		if (null == obj) {
+			throw new CommonException(I18nUtils.getMessage(message, args));
+		}
+		if (obj instanceof String) {
+			String str = (String) obj;
+			if (str.trim().isEmpty()) {
+				throw new CommonException(I18nUtils.getMessage(message, args));
+			}
+		}
 	}
 
 	public static final class NullObject {
