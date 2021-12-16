@@ -18,4 +18,27 @@ public class BepsQueue {
 	/***/
 	private String queueStatus;
 
+	public BepsQueue() {
+	}
+
+	public BepsQueue(String queueType, String queueStatus) {
+		this.queueType = queueType;
+		this.queueStatus = queueStatus;
+	}
+
+	public String getQueueType() {
+		return queueType;
+	}
+
+	public void setQueueType(String queueType) {
+		this.queueType = queueType;
+	}
+
+	public String getQueueStatus() {
+		return queueStatus;
+	}
+
+	public void setQueueStatus(String queueStatus) {
+		this.queueStatus = queueStatus;
+	}
 }

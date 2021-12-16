@@ -56,7 +56,7 @@ public class RuleCheckServiceTest {
 		}
 
 		// getCheckServicesByProductId(productId,checkAttrName);
-		bepsPackService.queryBepsPackRuleList();
+		bepsPackService.packBepsMessage();
 		assertTrue(true);
 	}
 

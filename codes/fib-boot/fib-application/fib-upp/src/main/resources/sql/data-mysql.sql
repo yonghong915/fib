@@ -47,6 +47,9 @@ INSERT INTO beps_message_pack_rule VALUES (46, 'beps.724.001.01', 'N', 'N', 'N',
 INSERT INTO beps_message_pack_rule VALUES (47, 'beps.725.001.01', 'N', 'N', 'N', 'N', 'N', 'N', 0, 0, '2021-09-26 01:50:19', 0, '2021-09-26 01:50:18');
 INSERT INTO beps_message_pack_rule VALUES (48, 'beps.726.001.01', 'N', 'N', 'N', 'N', 'N', 'N', 0, 0, '2021-09-26 01:50:19', 0, '2021-09-26 01:50:18');
 
+INSERT INTO message_pack_rule VALUES (1, 'beps.121.001.01',6, 'SEND_CLEARING_BANK-2 RECEIVE_CLEARING_BANK-4', 0, 0, '2021-09-26 01:50:18', 0, '2021-09-26 01:50:18');
+INSERT INTO message_pack_rule VALUES (2, 'beps.122.001.01', 6,'SEND_CLEARING_BANK-2 RECEIVE_CLEARING_BANK-4', 0, 0, '2021-09-26 01:50:18', 0, '2021-09-26 01:50:18');
+INSERT INTO message_pack_rule VALUES (3, 'beps.123.001.01', 7, 'TRANSACTION_TYPE-1 SEND_CLEARING_BANK-2 RECEIVE_CLEARING_BANK-4', 0, 0, '2021-09-26 01:50:18', 0, '2021-09-26 01:50:18');
 
 INSERT INTO message_service_mapping VALUES (1, 'BEPS', 'beps.121.001.01', 'PEBepsSendMessage_beps121', '2', 'N', 'N', 0, 0, '2021-09-26 08:18:23', 0, NULL);
 INSERT INTO message_service_mapping VALUES (2, 'BEPS', 'beps.122.001.01', 'PEBepsSendMessage_beps121', '2', 'N', 'N', 0, 0, '2021-09-26 08:19:46', 0, NULL);

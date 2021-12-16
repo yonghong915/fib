@@ -18,4 +18,20 @@ public class BankOrgDTO extends BaseDTO {
 	private String systemCode;
 
 	private String transactionId;
+
+	public String getSystemCode() {
+		return systemCode;
+	}
+
+	public void setSystemCode(String systemCode) {
+		this.systemCode = systemCode;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
 }

@@ -1,7 +1,5 @@
 package com.fib.upp.service.impl;
 
-import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,39 +8,20 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fib.upp.mapper.BepsMessagePackRuleMapper;
-import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
 import com.fib.upp.pay.beps.pack.BepsQueue;
 import com.fib.upp.pay.beps.pack.BepsQueueHeader;
 import com.fib.upp.service.IBepsPackService;
 import com.fib.upp.service.IBepsQueueService;
 import com.fib.upp.util.BepsUtil;
-import com.google.common.collect.Lists;
 
-import cn.hutool.core.collection.CollUtil;
 
 @Service("bepsPackService")
 public class BepsPackServiceImpl implements IBepsPackService {
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired
-	private BepsMessagePackRuleMapper bepsMessagePackRuleMapper;
 
 	@Autowired
 	private IBepsQueueService bepsQueueService;
-
-	@Override
-	public List<BepsMessagePackRule> queryBepsPackRuleList() {
-		QueryWrapper<BepsMessagePackRule> wrapper = new QueryWrapper<>();
-		List<BepsMessagePackRule> list = bepsMessagePackRuleMapper.selectList(wrapper);
-		return CollUtil.isEmpty(list) ? Lists.newArrayList() : list;
-	}
-
-	@Override
-	public Optional<BepsMessagePackRule> getMessagePackRule(String messageTypeCode) {
-		BepsMessagePackRule packRule = bepsMessagePackRuleMapper.getMessagePackRule(messageTypeCode);
-		return Optional.ofNullable(packRule);
-	}
+	
 
 	@Async("customAsyncExcecutor")
 	@Transactional(rollbackFor = Exception.class)

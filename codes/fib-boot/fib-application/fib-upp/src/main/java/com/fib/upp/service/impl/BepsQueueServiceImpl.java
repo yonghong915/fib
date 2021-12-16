@@ -28,6 +28,10 @@ public class BepsQueueServiceImpl implements IBepsQueueService {
 	@Autowired
 	private BepsPackUtil bepsPackUtil;
 
+	public BepsQueueServiceImpl(BepsQueueMapper bepsQueueMapper) {
+		this.bepsQueueMapper = bepsQueueMapper;
+	}
+
 	@Override
 	public void sendMessage(Long queueId) {
 		sendMessageForWholeQueue(queueId);

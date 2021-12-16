@@ -37,4 +37,61 @@ public class BepsQueueItem {
 		this.messageType = messageType;
 		this.recordId = recordId;
 	}
+
+	public Long getQueueId() {
+		return queueId;
+	}
+
+	public void setQueueId(Long queueId) {
+		this.queueId = queueId;
+	}
+
+	public String getSeqNo() {
+		return seqNo;
+	}
+
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
+	}
+
+	public String getRecordType() {
+		return recordType;
+	}
+
+	public void setRecordType(String recordType) {
+		this.recordType = recordType;
+	}
+
+	public String getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(String recordId) {
+		this.recordId = recordId;
+	}
+
+	public String getMessageType() {
+		return messageType;
+	}
+
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public List<String> getRecordIds() {
+		return recordIds;
+	}
+
+	public void setRecordIds(List<String> recordIds) {
+		this.recordIds = recordIds;
+	}
+
 }

@@ -21,4 +21,37 @@ public class BatchProcess {
 	private String endDateTime;
 
 	private BigDecimal transactionSum;
+
+	public String getBatchType() {
+		return batchType;
+	}
+
+	public void setBatchType(String batchType) {
+		this.batchType = batchType;
+	}
+
+	public String getProcessStatus() {
+		return processStatus;
+	}
+
+	public void setProcessStatus(String processStatus) {
+		this.processStatus = processStatus;
+	}
+
+	public String getEndDateTime() {
+		return endDateTime;
+	}
+
+	public void setEndDateTime(String endDateTime) {
+		this.endDateTime = endDateTime;
+	}
+
+	public BigDecimal getTransactionSum() {
+		return transactionSum;
+	}
+
+	public void setTransactionSum(BigDecimal transactionSum) {
+		this.transactionSum = transactionSum;
+	}
+
 }

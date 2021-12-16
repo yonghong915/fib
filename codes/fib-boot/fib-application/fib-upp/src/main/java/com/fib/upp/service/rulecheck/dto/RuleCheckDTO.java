@@ -1,6 +1,5 @@
 package com.fib.upp.service.rulecheck.dto;
 
-
 import com.fib.core.base.dto.BaseDTO;
 
 import lombok.Data;
@@ -19,4 +18,21 @@ public class RuleCheckDTO extends BaseDTO {
 
 	private String sysCode;
 	private String transactionId;
+
+	public String getSysCode() {
+		return sysCode;
+	}
+
+	public void setSysCode(String sysCode) {
+		this.sysCode = sysCode;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
 }

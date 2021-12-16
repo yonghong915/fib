@@ -18,4 +18,28 @@ public class BepsQueueHeader {
 	/***/
 	private String status;
 
+	public Long getPkId() {
+		return pkId;
+	}
+
+	public void setPkId(Long pkId) {
+		this.pkId = pkId;
+	}
+
+	public String getQueueType() {
+		return queueType;
+	}
+
+	public void setQueueType(String queueType) {
+		this.queueType = queueType;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 }

@@ -26,23 +26,19 @@ CREATE TABLE communication_event  (
   PRIMARY KEY (pk_id) 
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '交流事件';
 
-DROP TABLE IF EXISTS beps_message_pack_rule;
-CREATE TABLE beps_message_pack_rule  (
+DROP TABLE IF EXISTS message_pack_rule;
+CREATE TABLE message_pack_rule  (
   pk_id BIGINT(20) NOT NULL COMMENT '主键编码',
   message_type_code VARCHAR(20)  NOT NULL COMMENT '报文类型',
-  transaction_type CHAR(1) NOT NULL DEFAULT 'N'  COMMENT '业务类型',
-  send_clearing_bank CHAR(1) NOT NULL DEFAULT 'N'  COMMENT '发起清算行',
-  receive_clearing_bank CHAR(1) NOT NULL DEFAULT 'N'   COMMENT '接收清算行',
-  return_limited CHAR(1) NOT NULL DEFAULT 'N'  COMMENT '回执期',
-  original_message_id CHAR(1) NOT NULL DEFAULT 'N'  COMMENT '原报文标识号',
-  batch_id CHAR(1) NOT NULL DEFAULT 'N' COMMENT '批次号',
+  rule_value int(11) NOT NULL COMMENT '规则值',
+  remark VARCHAR(255)  COMMENT '备注',
   del_flag SMALLINT DEFAULT 0 COMMENT '删除标志',
   create_by BIGINT(20)  DEFAULT 0 COMMENT '创建人',
   create_dt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   update_by BIGINT(0)  DEFAULT 0 COMMENT '更新人',
   update_dt TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (pk_id) 
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '小额组包规则';
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '报文组包规则';
 
 
 DROP TABLE IF EXISTS message_service_mapping;
@@ -63,5 +59,19 @@ CREATE TABLE message_service_mapping  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '报文服务映射' ;
 
 
+DROP TABLE IF EXISTS table_cols_dic;
+CREATE TABLE table_cols_dic  (
+   pk_id bigint(0) NOT NULL COMMENT '主键编码',
+   col_en_name VARCHAR(50) NOT NULL  COMMENT '列英名',
+   col_cn_name varchar(20) NOT NULL COMMENT '列中文名',
+   data_type varchar(50) NOT NULL COMMENT '数据类型',
+   remark varchar(100)  COMMENT '备注',
+   del_flag smallint(0)  DEFAULT 0 COMMENT '删除标志',
+   create_by bigint(0)  DEFAULT 0 COMMENT '创建人',
+   create_dt timestamp(0)  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+   update_by bigint(0)  DEFAULT 0 COMMENT '更新人',
+   update_dt timestamp(0) COMMENT '更新时间',
+  PRIMARY KEY (pk_id)
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '表字段字典' ;
 
 

@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fib.upp.service.IBepsPackService;
+import com.fib.upp.service.IMessagePackRuleService;
 
 /**
  * 
@@ -26,14 +26,14 @@ import com.fib.upp.service.IBepsPackService;
 @Component
 public class BepsPackUtil {
 	@Autowired
-	private IBepsPackService bepsPackService;
+	private IMessagePackRuleService messagePackRuleService;
 
-	private static IBepsPackService bepsPackServiceTmp;
-
-	@PostConstruct
-	public void init() {
-		bepsPackServiceTmp = bepsPackService;
-	}
+//	private static IMessagePackRuleService messagePackRuleServiceTmp;
+//
+//	@PostConstruct
+//	public void init() {
+//		messagePackRuleServiceTmp = messagePackRuleService;
+//	}
 
 	private BepsPackUtil() {
 		// do nothing
@@ -42,15 +42,15 @@ public class BepsPackUtil {
 	/**
 	 * 人行报文类型与组包规则的映射
 	 */
-	static Map<String, BepsMessagePackRule> messageTypePackRuleMap = new TreeMap<>();
+	static Map<String, MessagePackRule> messageTypePackRuleMap = new TreeMap<>();
 
 	public List<List<String>> packPaymentOrder(String messageType, List<String> orderIdList) {
 		// 根据小额报文类型获取组包规则
-		BepsMessagePackRule packRule = getPackRuleByMessageType(messageType);
+		MessagePackRule packRule = getPackRuleByMessageType(messageType);
 		return packPaymentOrder(packRule, orderIdList);
 	}
 
-	private List<List<String>> packPaymentOrder(BepsMessagePackRule packRule, List<String> orderIdList) {
+	private List<List<String>> packPaymentOrder(MessagePackRule packRule, List<String> orderIdList) {
 //		if (CollUtil.isEmpty(orderIdList)) {
 //			throw new CommonException("orderIdList is empty.");
 //		}
@@ -113,13 +113,13 @@ public class BepsPackUtil {
 		return packEle;
 	}
 
-	public BepsMessagePackRule getPackRuleByMessageType(String messageType) {
+	public MessagePackRule getPackRuleByMessageType(String messageType) {
 		synchronized (messageTypePackRuleMap) {
 			if (messageTypePackRuleMap.isEmpty()) {
 				rebuildMessagePackRuleMap();
 			}
 
-			BepsMessagePackRule packRule = messageTypePackRuleMap.get(messageType);
+			MessagePackRule packRule = messageTypePackRuleMap.get(messageType);
 			if (null == packRule) {
 				rebuildMessagePackRuleMap();
 			}
@@ -134,12 +134,12 @@ public class BepsPackUtil {
 
 	private void rebuildMessagePackRuleMap() {
 		// 查询小额报文组报规则表BEPS_MESSAGE_PACK_RULE
-		List<BepsMessagePackRule> ruleLst = bepsPackServiceTmp.queryBepsPackRuleList();
+		List<MessagePackRule> ruleLst = messagePackRuleService.queryMessagePackRuleList();
 //		if (CollUtil.isEmpty(ruleLst)) {
 //			throw new CommonException("小额系统没有维护报文类型与队列类型的映射");
 //		}
 		messageTypePackRuleMap = ruleLst.stream().collect(
-				Collectors.toMap(BepsMessagePackRule::getMessageTypeCode, Function.identity(), (key1, key2) -> key2));
+				Collectors.toMap(MessagePackRule::getMessageTypeCode, Function.identity(), (key1, key2) -> key2));
 
 	}
 }

@@ -1,10 +1,8 @@
 package com.fib.upp.ctrler;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Executor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.kie.api.KieBase;
 import org.kie.api.runtime.KieSession;
@@ -14,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fib.commons.web.ResultRsp;
@@ -25,10 +23,11 @@ import com.fib.core.annotation.security.Decrypt;
 import com.fib.core.annotation.security.Encrypt;
 import com.fib.core.util.SpringContextUtils;
 import com.fib.core.util.StatusCode;
-import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
+import com.fib.upp.cnaps.entity.CCMS_990_Out;
 import com.fib.upp.pay.beps.pack.BepsPackElement;
 import com.fib.upp.pay.beps.pack.BepsPackUtil;
-import com.fib.upp.service.IBepsPackService;
+import com.fib.upp.pay.beps.pack.MessagePackRule;
+import com.fib.upp.service.IMessagePackRuleService;
 import com.fib.upp.service.rulecheck.vo.RuleCheckVO;
 
 /**
@@ -45,7 +44,7 @@ public class MessageInCtrler {
 	private Logger logger = LoggerFactory.getLogger(MessageInCtrler.class);
 
 	@Autowired
-	private IBepsPackService bepsPackService;
+	private IMessagePackRuleService messagePackRuleService;
 
 	@Autowired
 	private BepsPackUtil bepsPackUtil;
@@ -69,14 +68,14 @@ public class MessageInCtrler {
 	@Decrypt
 	public ResultRsp<Object> testValidation(@Validated @RequestBody RuleCheckVO vo) {
 		logger.info("MessageInCtrler-->");
-		bepsPackService.queryBepsPackRuleList();
+		// bepsPackService.queryBepsPackRuleList();
 
 		BepsPackElement elem = new BepsPackElement();
 		String messageTypeCode = "beps.121.001.01";
-		Optional<BepsMessagePackRule> a = bepsPackService.getMessagePackRule(messageTypeCode);
+		Optional<MessagePackRule> a = messagePackRuleService.getMessagePackRule(messageTypeCode);
 		a.ifPresent(name -> {
 			String packString = name.getPackString(elem);
-			logger.info("packString={}",packString);
+			logger.info("packString={}", packString);
 		});
 		Executor executor = SpringContextUtils.getBean("customAsyncExcecutor");
 		executor.execute(new Runnable() {
@@ -100,27 +99,37 @@ public class MessageInCtrler {
 			}
 		});
 
-		BepsMessagePackRule bepsPackRule = bepsPackUtil.getPackRuleByMessageType("beps.121.001.01");
-		bepsPackRule.getBatchId();
+		MessagePackRule bepsPackRule = bepsPackUtil.getPackRuleByMessageType("beps.121.001.01");
+		// bepsPackRule.getBatchId();
 		return ResultUtil.message(StatusCode.SUCCESS);
 	}
 
-	@RequestMapping(value = "/handle", method = RequestMethod.POST)
-	public String handle(HttpServletRequest request, HttpServletResponse response) {
+	@PostMapping(path = "/handle")
+	public String handle(@RequestBody CCMS_990_Out mbVo, @RequestHeader Map<String, String> headers) {
 		logger.info("Enter MessageInCtrler...");
-		String requestMessage = request.getParameter("requestMessage");
+		logger.info("mbVo={}", mbVo);
+		headers.forEach((key, value) -> {
+			// 日志中输出所有请求头
+			logger.info("Header {} = {}", key, value);
+		});
+		if (mbVo instanceof CCMS_990_Out) {
+			CCMS_990_Out ccm = (CCMS_990_Out) mbVo;
+			ccm.getMessageIdentification();
+		}
+		// String requestMessage = request.getParameter("requestMessage");
 
-		boolean duplexFlag = checkMessageDuplex(requestMessage);
-		if (duplexFlag) {
-			logger.info("业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】.");
+		// boolean duplexFlag = checkMessageDuplex(requestMessage);
+		// if (duplexFlag) {
+		logger.info("业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】.");
 //			out.write("业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】。");
 //			out.flush();
 //			out.close();
 //			return;
-			return "业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】。";
-		}
-		return requestMessage;
+		// return "业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】。";
+		// }
+		// return requestMessage;
 
+		return "sucess";
 		// 获取机构
 
 		// 查找原业务，并更新原交流事件状态PE99 CommunicationEvent
