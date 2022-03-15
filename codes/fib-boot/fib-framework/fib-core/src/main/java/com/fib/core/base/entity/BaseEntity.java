@@ -48,4 +48,53 @@ public class BaseEntity implements Serializable {
 	 * 删除标识:1删除,0没删除
 	 */
 	private Integer delFlag = 0;
+
+	public Long getPkId() {
+		return pkId;
+	}
+
+	public void setPkId(Long pkId) {
+		this.pkId = pkId;
+	}
+
+	public Integer getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(Integer createBy) {
+		this.createBy = createBy;
+	}
+
+	public Timestamp getCreateDt() {
+		return createDt;
+	}
+
+	public void setCreateDt(Timestamp createDt) {
+		this.createDt = createDt;
+	}
+
+	public Integer getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(Integer updateBy) {
+		this.updateBy = updateBy;
+	}
+
+	public Timestamp getUpdateDt() {
+		return updateDt;
+	}
+
+	public void setUpdateDt(Timestamp updateDt) {
+		this.updateDt = updateDt;
+	}
+
+	public Integer getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(Integer delFlag) {
+		this.delFlag = delFlag;
+	}
+
 }

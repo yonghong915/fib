@@ -66,7 +66,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 				.decrypt(HexUtil.decodeHex(securityKey), SecureUtil.decode(ownPrivateKey));
 		log.info("securityKey={}", StrUtil.str(encryptedKey, CharsetUtil.CHARSET_UTF_8));
 
-		/* 2.用对称加密算法对报文内容解密-SM4-SM2 */
+		/* 2.用对称加密算法对报文内容解密-SM4 */
 		if (!JSONUtil.isJson(content)) {
 			// TODO
 		}
@@ -89,11 +89,11 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 
 		Object data = messageBody.getObj("rspObj");
 
-		/* 对原始数据取摘要-摘要加密算法SM3 */
+		/* 3.对原始数据取摘要-摘要加密算法SM3 */
 		String bodyHash = SmUtil.sm3(bodySource);
 		log.info("bodyHash={}", bodyHash);
 
-		/* 2.用对方公钥对摘要验签-SM2 */
+		/* 4.用对方公钥对摘要验签-SM2 */
 		boolean verifyFlag = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2")
 				.verify(StrUtil.bytes(bodyHash, CharsetUtil.CHARSET_UTF_8), HexUtil.decodeHex(authentication),
 						SecureUtil.decode(otherpublicKey));

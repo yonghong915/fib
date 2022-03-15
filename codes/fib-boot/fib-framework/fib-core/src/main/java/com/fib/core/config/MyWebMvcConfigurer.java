@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fib.core.interceptor.ApiIdempotentInterceptor;
+import com.fib.core.interceptor.BizCheckInterceptor;
 import com.fib.core.interceptor.LogInterceptor;
 import com.fib.core.interceptor.SignInterceptor;
 import com.fib.core.interceptor.WhiteListInterceptor;
@@ -23,6 +24,9 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
 	@Autowired
 	private ApiIdempotentInterceptor apiIdempotentInterceptor;
+	
+	@Autowired
+	private BizCheckInterceptor bizCheckInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -39,5 +43,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		registry.addInterceptor(whiteListInterceptor);
 
 		registry.addInterceptor(apiIdempotentInterceptor);
+		
+		registry.addInterceptor(bizCheckInterceptor);
 	}
 }
