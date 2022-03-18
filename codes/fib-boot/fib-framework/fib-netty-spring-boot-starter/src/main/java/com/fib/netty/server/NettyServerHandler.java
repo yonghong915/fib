@@ -2,8 +2,8 @@ package com.fib.netty.server;
 
 import org.springframework.stereotype.Component;
 
-import com.fib.commons.app.Executor;
-import com.fib.commons.app.Session;
+import com.fib.commons.disruptor.base.Executor;
+import com.fib.commons.disruptor.base.Session;
 import com.fib.netty.vo.Request;
 import com.fib.netty.vo.Response;
 

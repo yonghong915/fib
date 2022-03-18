@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fib.commons.app.DefaultSession;
-import com.fib.commons.app.Executor;
-import com.fib.commons.app.Session;
 import com.fib.commons.disruptor.RingWorkerPoolFactory;
+import com.fib.commons.disruptor.base.DefaultSession;
+import com.fib.commons.disruptor.base.Executor;
+import com.fib.commons.disruptor.base.Session;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
