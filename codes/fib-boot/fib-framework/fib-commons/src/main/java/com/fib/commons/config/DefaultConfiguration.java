@@ -48,16 +48,11 @@ public class DefaultConfiguration implements Serializable, Configuration {
 
 	@Override
 	public String getProperty(String key) {
-		return getProperty(key, null, null);
+		return getProperty(key, null);
 	}
 
 	@Override
-	public String getProperty(String key, String defaultValue) {
-		return getProperty(key, defaultValue, null);
-	}
-
-	@Override
-	public String getProperty(String key, String defaultValue, String categoryName) {
+	public String getProperty(String key, String categoryName) {
 		if (null == categoryName || "".equals(categoryName)) {
 			categoryName = "general";
 		}

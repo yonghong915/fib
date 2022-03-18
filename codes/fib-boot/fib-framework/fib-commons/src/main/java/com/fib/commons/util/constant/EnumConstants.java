@@ -22,6 +22,10 @@ public interface EnumConstants {
 		@Getter
 		private String name;
 
+		public String getName() {
+			return name;
+		}
+
 		SerializeType(String name) {
 			this.name = name;
 		}
@@ -32,6 +36,10 @@ public interface EnumConstants {
 
 		@Getter
 		private boolean logicFlag;
+
+		public boolean isLogicFlag() {
+			return logicFlag;
+		}
 
 		LogicType(boolean logicFlag) {
 			this.logicFlag = logicFlag;

@@ -79,6 +79,40 @@ public class Dom4jUtils {
 		return doc.selectNodes(xpathExpression);
 	}
 
+	public static Node selectSingleNode(Document doc, String xpathExpression) {
+		Element rootElement = doc.getRootElement();
+		String namespace = rootElement.getNamespaceURI();
+		if (namespace != null) {
+			xpathExpression = xpathExpression.replace("/", EXPRESSION_WITH_NS);
+		}
+		return doc.selectSingleNode(xpathExpression);
+	}
+
+	private static void setXPathNamespaceURIs(String namespace) {
+		Map<String, String> namespaces = new TreeMap<>();
+		namespaces.put(DEFAULT_NAMESPACE_NAME, namespace);
+		DocumentFactory.getInstance().setXPathNamespaceURIs(namespaces);
+	}
+
+	public static Node getSingleNode(String xpathExpression, Element rootEle) {
+		String namespace = rootEle.getNamespaceURI();
+		if (namespace != null) {
+			setXPathNamespaceURIs(namespace);
+			xpathExpression = xpathExpression.replace("/", EXPRESSION_WITH_NS);
+		}
+		XPath xpath = rootEle.createXPath(xpathExpression);
+		return xpath.selectSingleNode(rootEle);
+	}
+
+	public static String getSingleNodeText(String xpathExpression, Element rootEle) {
+		Element element = (Element) getSingleNode(xpathExpression, rootEle);
+		String returnstr = "";
+		if (element != null) {
+			returnstr = element.getText();
+		}
+		return returnstr;
+	}
+
 	public static Document getDocument(String filePath) {
 		SAXReader reader = new SAXReader();
 		Document doc = null;

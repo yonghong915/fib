@@ -14,8 +14,6 @@ public interface Configuration {
 
 	public String getProperty(String key);
 
-	public String getProperty(String key, String defaultValue);
-
-	public String getProperty(String key, String defaultValue, String categoryName);
+	public String getProperty(String key, String categoryName);
 
 }

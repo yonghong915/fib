@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 
 /**
  * 
@@ -115,11 +114,11 @@ public final class ClasspathUtil {
 			logger.warn("modifiedFiles can not be empty.");
 			return;
 		}
-		if (StrUtil.isEmpty(srcRootPath) || StrUtil.isEmpty(classRootPath)) {
+		if (CommUtils.isEmpty(srcRootPath) || CommUtils.isEmpty(classRootPath)) {
 			logger.warn("either srcRootPath or classRootPath can not be empty.");
 			return;
 		}
-		encoding = StrUtil.isEmpty(encoding) ? StandardCharsets.UTF_8.name() : encoding;
+		encoding = CommUtils.isEmpty(encoding) ? StandardCharsets.UTF_8.name() : encoding;
 		File classRoot = new File(classRootPath);
 		if (!classRoot.exists()) {
 			classRoot.mkdir();

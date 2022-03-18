@@ -42,4 +42,13 @@ public class BusinessException extends BaseException {
 	public String toString() {
 		return "{rspCode:" + code + ",rspMsg:" + msg + "}";
 	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
 }

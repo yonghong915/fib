@@ -1,5 +1,7 @@
 package com.fib.commons.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Map;
@@ -19,26 +21,7 @@ import com.fib.commons.exception.CommonException;
  */
 public class CommUtils {
 	private CommUtils() {
-	}
-
-	/**
-	 * 是否为空
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	public static boolean isEmpty(Object obj) {
-		if (obj == null) {
-			return true;
-		}
-		if (obj instanceof String) {
-			return ((String) obj).isEmpty();
-		} else if (obj instanceof Collection) {
-			return ((Collection<?>) obj).isEmpty();
-		} else if (obj instanceof Map) {
-			return ((Map<?, ?>) obj).isEmpty();
-		}
-		return false;
+		// nothing to do
 	}
 
 	public static boolean validateLen(String msg, String encoding, int len) {
@@ -60,7 +43,21 @@ public class CommUtils {
 		return rs.toString();
 	}
 
+	public static String getRandom(String source, int len) {
+		StringBuilder rs = new StringBuilder();
+		int sourceLen = source.length();
+		for (int i = 0; i < len; i++) {
+			int a = ThreadLocalRandom.current().nextInt(sourceLen);
+			rs.append(source.charAt(a));
+		}
+		return rs.toString();
+	}
+
 	public static String getRealValue(String configName, String value) {
+		return getRealValue(configName, value.trim(), null);
+	}
+
+	public static String getRealValue(String configName, String value, String categoryName) {
 		if (null == value) {
 			return value;
 		}
@@ -77,10 +74,28 @@ public class CommUtils {
 		}
 
 		value = value.substring(startIndex, endIndex);
-
 		Configuration configuration = ConfigurationManager.getInstance().getConfiguration(configName);
+		return configuration.getProperty(value, categoryName);
+	}
 
-		return configuration.getProperty(value);
+	/**
+	 * 是否为空
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static boolean isEmpty(Object obj) {
+		if (obj == null) {
+			return true;
+		}
+		if (obj instanceof String str) {
+			return str.trim().isEmpty();
+		} else if (obj instanceof Collection<?> col) {
+			return col.isEmpty();
+		} else if (obj instanceof Map<?, ?> map) {
+			return map.isEmpty();
+		}
+		return false;
 	}
 
 	/**
@@ -94,14 +109,17 @@ public class CommUtils {
 	}
 
 	public static void notEmpty(Object obj, String message, Object... args) {
-		if (null == obj) {
+		if (isEmpty(obj)) {
 			throw new CommonException(I18nUtils.getMessage(message, args));
 		}
-		if (obj instanceof String) {
-			String str = (String) obj;
-			if (str.trim().isEmpty()) {
-				throw new CommonException(I18nUtils.getMessage(message, args));
-			}
+	}
+
+	public static String getCanonicalPath(String path) {
+		try {
+			path = new File(path).getCanonicalPath() + File.separatorChar;
+			return path;
+		} catch (IOException e) {
+			throw new CommonException(I18nUtils.getMessage("CommGateway.loadChannel.getCanonicalPath.failed"), e);
 		}
 	}
 

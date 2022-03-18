@@ -7,7 +7,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
 public class InternationalConfig {
-	@Value(value = "${spring.messages.basename}")
+	@Value(value = "${spring.messages.basename:message}")
 	private String basename;
 
 	@Bean(name = "messageSource")

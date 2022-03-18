@@ -67,6 +67,38 @@ public class ResultRsp<T> implements Serializable {
 		return this;
 	}
 
+	public String getRspCode() {
+		return rspCode;
+	}
+
+	public void setRspCode(String rspCode) {
+		this.rspCode = rspCode;
+	}
+
+	public String getRspMsg() {
+		return rspMsg;
+	}
+
+	public void setRspMsg(String rspMsg) {
+		this.rspMsg = rspMsg;
+	}
+
+	public T getRspObj() {
+		return rspObj;
+	}
+
+	public void setRspObj(T rspObj) {
+		this.rspObj = rspObj;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	@Override
 	public String toString() {
 		return "ResultRsp [rspCode=" + rspCode + ", rspMsg=" + rspMsg + ", rspObj=" + rspObj + "]";

@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.fib</groupId>
@@ -11,13 +13,13 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
 		<dubbo.version>3.0.3</dubbo.version>
-		<hutool.version>5.6.6</hutool.version>
+		<hutool.version>5.7.19</hutool.version>
 		<logback.version>1.2.5</logback.version>
 		<any23.version>2.4</any23.version>
 		<javassist.version>3.27.0-GA</javassist.version>
@@ -38,6 +40,7 @@
 		<saxpath.version>1.0-FCS</saxpath.version>
 		<jackson.version>2.12.3</jackson.version>
 		<slf4j.version>1.7.30</slf4j.version>
+		<minio.version>8.3.4</minio.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -141,6 +144,12 @@
 			<artifactId>dubbo</artifactId>
 			<version>${dubbo.version}</version>
 		</dependency>
+		
+		<!-- <dependency>
+		   <groupId>org.jboss.netty</groupId>
+		   <artifactId>netty</artifactId>
+		   <version>3.2.10.Final</version>
+		</dependency> -->
 
 		<dependency>
 			<groupId>info.monitorenter</groupId>
@@ -174,6 +183,19 @@
 			<version>${logback.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>${minio.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>3.4.4</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.any23</groupId>
 			<artifactId>apache-any23-encoding</artifactId>
