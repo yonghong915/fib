@@ -1,9 +1,10 @@
 package com.fib.upp.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.fib.upp.pay.beps.pack.MessagePackRule;
+import com.fib.upp.entity.MessagePackRule;
+
+import cn.hutool.core.lang.Opt;
 
 /**
  * 报文组包规则服务
@@ -27,5 +28,5 @@ public interface IMessagePackRuleService {
 	 * @param messageTypeCode
 	 * @return
 	 */
-	Optional<MessagePackRule> getMessagePackRule(String messageTypeCode);
+	Opt<MessagePackRule> getMessagePackRule(String messageTypeCode);
 }

@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Update;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fib.upp.pay.beps.pack.BepsQueue;
-import com.fib.upp.pay.beps.pack.BepsQueueHeader;
-import com.fib.upp.pay.beps.pack.BepsQueueItem;
+import com.fib.upp.entity.BepsQueue;
+import com.fib.upp.entity.BepsQueueHeader;
+import com.fib.upp.entity.BepsQueueItem;
 import com.fib.upp.util.EnumConstants;
 
 /**

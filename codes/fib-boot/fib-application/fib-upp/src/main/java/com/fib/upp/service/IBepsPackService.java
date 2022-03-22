@@ -12,6 +12,6 @@ public interface IBepsPackService {
 	/**
 	 * 小额组包
 	 */
-	void packBepsMessage();
+	int packBepsMessage();
 
 }

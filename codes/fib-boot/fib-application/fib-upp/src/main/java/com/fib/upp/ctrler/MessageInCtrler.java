@@ -1,34 +1,10 @@
 package com.fib.upp.ctrler;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.Executor;
-
-import org.kie.api.KieBase;
-import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fib.commons.web.ResultRsp;
-import com.fib.commons.web.ResultUtil;
-import com.fib.core.annotation.ApiIdempotent;
-import com.fib.core.annotation.security.Decrypt;
-import com.fib.core.annotation.security.Encrypt;
-import com.fib.core.util.SpringContextUtils;
-import com.fib.core.util.StatusCode;
-import com.fib.upp.cnaps.entity.CCMS_990_Out;
-import com.fib.upp.pay.beps.pack.BepsPackElement;
-import com.fib.upp.pay.beps.pack.BepsPackUtil;
-import com.fib.upp.pay.beps.pack.MessagePackRule;
-import com.fib.upp.service.IMessagePackRuleService;
-import com.fib.upp.service.rulecheck.vo.RuleCheckVO;
 
 /**
  * 来账公共处理
@@ -41,125 +17,10 @@ import com.fib.upp.service.rulecheck.vo.RuleCheckVO;
 @RestController
 @RequestMapping("/messageIn")
 public class MessageInCtrler {
-	private Logger logger = LoggerFactory.getLogger(MessageInCtrler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageInCtrler.class);
 
-	@Autowired
-	private IMessagePackRuleService messagePackRuleService;
-
-	@Autowired
-	private BepsPackUtil bepsPackUtil;
-
-	@Autowired
-	private KieBase kieBase;
-
-	@RequestMapping("/rule")
-	public String rule() {
-		KieSession kieSession = kieBase.newKieSession();
-
-		kieSession.insert(kieSession);
-		int fireCount = kieSession.fireAllRules();
-		logger.info("触发了[{}]条规则", fireCount);
-		return String.format("触发了[{}]条规则", fireCount);
+	public void handle() {
+		LOGGER.info("");
 	}
 
-	@PostMapping(value = "/test")
-	@ApiIdempotent
-	@Encrypt
-	@Decrypt
-	public ResultRsp<Object> testValidation(@Validated @RequestBody RuleCheckVO vo) {
-		logger.info("MessageInCtrler-->");
-		// bepsPackService.queryBepsPackRuleList();
-
-		BepsPackElement elem = new BepsPackElement();
-		String messageTypeCode = "beps.121.001.01";
-		Optional<MessagePackRule> a = messagePackRuleService.getMessagePackRule(messageTypeCode);
-		a.ifPresent(name -> {
-			String packString = name.getPackString(elem);
-			logger.info("packString={}", packString);
-		});
-		Executor executor = SpringContextUtils.getBean("customAsyncExcecutor");
-		executor.execute(new Runnable() {
-			@Override
-			public void run() {
-				logger.info("thread log.......");
-			}
-		});
-
-		executor.execute(new Runnable() {
-			@Override
-			public void run() {
-				logger.info("thread log1111111111.......");
-			}
-		});
-
-		executor.execute(new Runnable() {
-			@Override
-			public void run() {
-				logger.info("thread log222222222.......");
-			}
-		});
-
-		MessagePackRule bepsPackRule = bepsPackUtil.getPackRuleByMessageType("beps.121.001.01");
-		// bepsPackRule.getBatchId();
-		return ResultUtil.message(StatusCode.SUCCESS);
-	}
-
-	@PostMapping(path = "/handle")
-	public String handle(@RequestBody CCMS_990_Out mbVo, @RequestHeader Map<String, String> headers) {
-		logger.info("Enter MessageInCtrler...");
-		logger.info("mbVo={}", mbVo);
-		headers.forEach((key, value) -> {
-			// 日志中输出所有请求头
-			logger.info("Header {} = {}", key, value);
-		});
-		if (mbVo instanceof CCMS_990_Out) {
-			CCMS_990_Out ccm = (CCMS_990_Out) mbVo;
-			ccm.getMessageIdentification();
-		}
-		// String requestMessage = request.getParameter("requestMessage");
-
-		// boolean duplexFlag = checkMessageDuplex(requestMessage);
-		// if (duplexFlag) {
-		logger.info("业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】.");
-//			out.write("业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】。");
-//			out.flush();
-//			out.close();
-//			return;
-		// return "业务判重：此报文在系统中已存在【依据通道、发起机构、报文标识号】。";
-		// }
-		// return requestMessage;
-
-		return "sucess";
-		// 获取机构
-
-		// 查找原业务，并更新原交流事件状态PE99 CommunicationEvent
-
-		// 大额来账退汇业务，如果找不到原业务当中一笔来贷处理
-
-		// 收到来账报文,调用平台服务之前向人行发送技术回执报文990
-
-		// 核押出错流程直接返回错误信息
-
-		// 执行服务serviceId
-
-	}
-
-	/**
-	 * 来账报文判重 // 报文判重处理，使用本次报文中的通道、发起机构、报文标识号判断本次收到的报文在系统中是否已经存在，若存在不做处理，不存在执行后续的逻辑
-	 * 
-	 * @param requestMessage
-	 * @return
-	 */
-	private boolean checkMessageDuplex(String requestMessage) {
-		boolean duplexFlag = false;
-		//
-		if ("111".equals(requestMessage)) {
-			duplexFlag = true;
-		}
-		return duplexFlag;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(Runtime.getRuntime().availableProcessors());
-	}
 }

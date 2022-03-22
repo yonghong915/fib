@@ -2,7 +2,7 @@ package com.fib.upp.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
+import com.fib.upp.entity.MessagePackRule;
 import com.fib.upp.util.EnumConstants;
 
 /**
@@ -13,8 +13,7 @@ import com.fib.upp.util.EnumConstants;
  */
 
 @DS(EnumConstants.DATASOURCE_UPP)
-public interface BepsMessagePackRuleMapper extends BaseMapper<BepsMessagePackRule> {
+public interface BepsMessagePackRuleMapper extends BaseMapper<MessagePackRule> {
 
-	BepsMessagePackRule getMessagePackRule(String messageTypeCode);
-
+	MessagePackRule getMessagePackRule(String messageTypeCode);
 }

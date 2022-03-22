@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
 /**
+ * 缓存配置
  * 
  * @author fangyh
  * @version 1.0.0

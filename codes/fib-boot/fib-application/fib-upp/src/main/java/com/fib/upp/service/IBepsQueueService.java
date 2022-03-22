@@ -2,9 +2,9 @@ package com.fib.upp.service;
 
 import java.util.List;
 
-import com.fib.upp.pay.beps.pack.BepsQueue;
-import com.fib.upp.pay.beps.pack.BepsQueueHeader;
-import com.fib.upp.pay.beps.pack.BepsQueueItem;
+import com.fib.upp.entity.BepsQueue;
+import com.fib.upp.entity.BepsQueueHeader;
+import com.fib.upp.entity.BepsQueueItem;
 
 /**
  * 
