@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.fib.upp.entity.BatchProcess;
 import com.fib.upp.entity.BatchProcessDetail;
-import com.fib.upp.service.IOrderService;
 import com.fib.upp.service.beps.BepsBatchService;
 import com.fib.upp.service.beps.IBatchProcessDetailService;
 import com.fib.upp.service.beps.IBatchProcessService;
@@ -22,8 +21,8 @@ public class Batch4SueBapOutService implements BepsBatchService {
 	@Autowired
 	private IBatchProcessDetailService batchProcessDetailService;
 
-	@Autowired
-	private IOrderService orderService;
+//	@Autowired
+//	private IOrderService orderService;
 
 	@Override
 	public void execute(String batchId) {
@@ -45,7 +44,7 @@ public class Batch4SueBapOutService implements BepsBatchService {
 		list.stream().forEach(batchProcessDetail -> {
 			
 		});
-		orderService.processPaymentOrder();
+		//orderService.processPaymentOrder();
 	}
 
 }

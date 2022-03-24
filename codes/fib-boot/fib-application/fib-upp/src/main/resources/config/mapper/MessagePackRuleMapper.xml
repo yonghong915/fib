@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fib.upp.mapper.MessagePackRuleMapper">
+
+	<!-- 查找用户信息 -->
+	<select id="getMessagePackRule"
+		parameterType="com.fib.upp.entity.MessagePackRule"
+		resultType="com.fib.upp.entity.MessagePackRule">
+		SELECT message_type_code,rule_value FROM message_pack_rule
+		<where>
+			<if test="messageTypeCode != null">
+				and message_type_code = #{messageTypeCode}
+			</if>
+		</where>
+	</select>
+</mapper>

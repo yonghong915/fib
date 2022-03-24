@@ -7,8 +7,8 @@
 	</sql>
 
 	<!-- -->
-	<select id="getQueueItemsByQueueId" parameterType="com.fib.upp.pay.beps.pack.BepsQueueItem"
-		resultType="com.fib.upp.pay.beps.pack.BepsQueueItem">
+	<select id="getQueueItemsByQueueId" parameterType="com.fib.upp.entity.BepsQueueItem"
+		resultType="com.fib.upp.entity.BepsQueueItem">
 		SELECT * FROM beps_queue_item
 		<where>
 			<if test="queueId != null">
@@ -17,22 +17,22 @@
 		</where>
 	</select>
 
-	<update id="updateQueueHeaderStatus" parameterType="com.fib.upp.pay.beps.pack.BepsQueueHeader">
+	<update id="updateQueueHeaderStatus" parameterType="com.fib.upp.entity.BepsQueueHeader">
 		UPDATE beps_queue_header
 		SET status=#{status}
 		WHERE
 		pk_id=#{pkId}
 	</update>
 
-	<select id="getQueueHeader" parameterType="com.fib.upp.pay.beps.pack.BepsQueueHeader"
-		resultType="com.fib.upp.pay.beps.pack.BepsQueueHeader">
+	<select id="getQueueHeader" parameterType="com.fib.upp.entity.BepsQueueHeader"
+		resultType="com.fib.upp.entity.BepsQueueHeader">
 		SELECT *
 		FROM beps_queue_header
 		WHERE status=#{status}
 		AND queue_type=#{queueType}
 	</select>
 
-	<update id="updateQueueItemStatus" parameterType="com.fib.upp.pay.beps.pack.BepsQueueItem">
+	<update id="updateQueueItemStatus" parameterType="com.fib.upp.entity.BepsQueueItem">
 		UPDATE beps_queue_item
 		SET status=#{status}
 		WHERE queue_id=#{queueId}
@@ -42,14 +42,14 @@
 		</foreach>
 	</update>
 
-	<select id="getQueueByQueueType" parameterType="string" resultType="com.fib.upp.pay.beps.pack.BepsQueue">
+	<select id="getQueueByQueueType" parameterType="string" resultType="com.fib.upp.entity.BepsQueue">
 		SELECT queue_type,queue_status
 		FROM beps_queue
 		WHERE
 		queue_type=#{queueType}
 	</select>
 
-	<insert id="createQueueHeader" parameterType="com.fib.upp.pay.beps.pack.BepsQueueHeader">
+	<insert id="createQueueHeader" parameterType="com.fib.upp.entity.BepsQueueHeader">
 		INSERT INTO beps_queue_header(pk_id,queue_type,status)
 		VALUES(#{pkId},#{queueType},#{status})
 	</insert>

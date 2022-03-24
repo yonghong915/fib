@@ -13,7 +13,7 @@ import com.fib.upp.util.EnumConstants;
  */
 
 @DS(EnumConstants.DATASOURCE_UPP)
-public interface BepsMessagePackRuleMapper extends BaseMapper<MessagePackRule> {
+public interface MessagePackRuleMapper extends BaseMapper<MessagePackRule> {
 
 	MessagePackRule getMessagePackRule(String messageTypeCode);
 }
