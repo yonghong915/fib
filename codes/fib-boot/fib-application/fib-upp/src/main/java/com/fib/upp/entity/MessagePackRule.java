@@ -5,7 +5,7 @@ import java.util.Objects;
 import com.fib.upp.util.BitStateUtil;
 
 /**
- * 小额报文组包规则
+ * 报文组包规则
  * 
  * @author fangyh
  * @version 1.0

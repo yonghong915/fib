@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fib.commons.exception.BusinessException;
+import com.fib.core.util.StatusCode;
 import com.fib.upp.entity.MessagePackRule;
 import com.fib.upp.mapper.MessagePackRuleMapper;
 import com.fib.upp.service.IMessagePackRuleService;
@@ -19,11 +21,19 @@ public class MessagePackRuleServiceImpl implements IMessagePackRuleService {
 
 	@Override
 	public List<MessagePackRule> queryMessagePackRuleList() {
-		return messagePackRuleMapper.selectList(null);
+		try {
+			return messagePackRuleMapper.selectList(null);
+		} catch (Exception e) {
+			throw new BusinessException(StatusCode.DB_EXCEPTION);
+		}
 	}
 
 	@Override
 	public Opt<MessagePackRule> getMessagePackRule(String messageTypeCode) {
-		return Opt.ofNullable(messagePackRuleMapper.getMessagePackRule(messageTypeCode));
+		try {
+			return Opt.ofNullable(messagePackRuleMapper.getMessagePackRule(messageTypeCode));
+		} catch (Exception e) {
+			throw new BusinessException(StatusCode.DB_EXCEPTION);
+		}
 	}
 }

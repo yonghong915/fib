@@ -1,40 +1,41 @@
 package com.fib.upp;
-//
-//import static org.junit.Assert.assertNotNull;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import org.junit.Before;
-//import org.junit.Ignore;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.junit4.SpringRunner;
-//
-//import com.fib.upp.pay.beps.pack.BepsMessagePackRule;
-//import com.fib.upp.pay.beps.pack.BepsPackUtil;
-//import com.fib.upp.pay.beps.pack.BepsQueueItem;
-//import com.fib.upp.service.IBepsPackService;
-//import com.fib.upp.service.IBepsQueueService;
-//
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(classes = UppApplication.class)
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import com.fib.upp.entity.BepsQueue;
+import com.fib.upp.mapper.BepsQueueMapper;
+import com.fib.upp.service.IBepsQueueService;
+import com.fib.upp.service.beps.impl.BepsQueueServiceImpl;
+
 public class BepsServiceTest {
-//	private Logger logger = LoggerFactory.getLogger(getClass());
+
 //	@Autowired
 //	private IBepsPackService bepsPackService;
 //
-//	@Autowired
-//	private IBepsQueueService bepsQueueService;
-//
-//	@Before
-//	public void setUp() throws Exception {
-//
-//	}
+
+	private IBepsQueueService bepsQueueService;
+
+	@Mock
+	private BepsQueueMapper bepsQueueMapper;
+
+	@Before
+	public void setUp() throws Exception {
+		MockitoAnnotations.openMocks(this);
+		when(bepsQueueMapper.getQueueByQueueType("I")).thenReturn(new BepsQueue());
+		bepsQueueService = new BepsQueueServiceImpl(bepsQueueMapper);
+	}
+
+	@Test
+	public void testGetQueueByQueueType() {
+		BepsQueue bq = bepsQueueService.getQueueByQueueType("I");
+		assertEquals(null, bq.getId());
+	}
 //
 //	@Test
 //	@Ignore("stop tmp")

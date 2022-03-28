@@ -25,11 +25,16 @@ public class WebCtrlerTest {
 
 	private MockMvc mockMvc;
 
-	//@MockBean
-	//private IBepsPackService bepsPackService;
+//	@InjectMocks
+//	MessageInCtrler messageInCtrler;
+
+	// @MockBean
+	// private IBepsPackService bepsPackService;
 
 	@Before
 	public void setUp() {
+//		MockitoAnnotations.openMocks(this);
+//		this.mockMvc = MockMvcBuilders.standaloneSetup(messageInCtrler).build();
 		mockMvc = MockMvcBuilders.standaloneSetup(new MessageInCtrler()).build();
 	}
 
@@ -38,7 +43,7 @@ public class WebCtrlerTest {
 		String content = "";
 		String url = "/message/handleOut";
 
-		//when(bepsPackService.packBepsMessage()).thenReturn(1);
+		// when(bepsPackService.packBepsMessage()).thenReturn(1);
 
 		MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.request(HttpMethod.POST, url).contentType("application/json")
