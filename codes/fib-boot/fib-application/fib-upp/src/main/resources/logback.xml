@@ -36,7 +36,7 @@
 		</layout>
 	</appender>
 
-	<logger name="com.fib" level="info" />
+	<logger name="com.fib" level="debug" />
 
 	<logger name="org.springframework" level="debug" additivity="false"></logger>
 

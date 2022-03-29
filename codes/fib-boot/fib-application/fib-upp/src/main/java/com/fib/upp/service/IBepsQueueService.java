@@ -2,6 +2,7 @@ package com.fib.upp.service;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.fib.upp.entity.BepsQueue;
 import com.fib.upp.entity.BepsQueueHeader;
 import com.fib.upp.entity.BepsQueueItem;
@@ -13,7 +14,7 @@ import com.fib.upp.entity.BepsQueueItem;
  * @since 1.0
  * @date 2021-01-25
  */
-public interface IBepsQueueService {
+public interface IBepsQueueService extends IService<BepsQueue> {
 	/**
 	 * 
 	 * @param queueId

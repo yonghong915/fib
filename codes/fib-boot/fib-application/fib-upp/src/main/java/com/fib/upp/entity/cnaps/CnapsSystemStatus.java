@@ -40,8 +40,22 @@ public class CnapsSystemStatus extends BaseDTO {
 	private String loginOperationType;
 
 	@Override
-	public boolean equals(Object o) {
-		return EqualsBuilder.reflectionEquals(o, o);
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		CnapsSystemStatus rhs = (CnapsSystemStatus) obj;
+		return new EqualsBuilder().append(this.systemCode, rhs.systemCode).append(this.clearBankNo, rhs.clearBankNo)
+				.append(this.currentSystemDate, rhs.currentSystemDate)
+				.append(this.currentSystemStatus, rhs.getCurrentSystemStatus())
+				.append(this.holidayFlag, rhs.holidayFlag).append(this.loginOperationType, rhs.loginOperationType)
+				.isEquals();
 	}
 
 	@Override

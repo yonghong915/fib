@@ -1,5 +1,6 @@
 package com.fib.upp.service.beps.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,8 +13,6 @@ public class BatchProcessDetailServiceImpl implements IBatchProcessDetailService
 
 	@Override
 	public List<BatchProcessDetail> getBatchProcessDetail(String batchId) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
-
 }

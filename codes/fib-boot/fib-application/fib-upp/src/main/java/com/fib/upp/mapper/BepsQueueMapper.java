@@ -21,7 +21,7 @@ import com.fib.upp.util.EnumConstants;
  * @date 2021-01-25
  */
 @DS(EnumConstants.DATASOURCE_UPP)
-public interface BepsQueueMapper extends BaseMapper<Object> {
+public interface BepsQueueMapper extends BaseMapper<BepsQueue> {
 
 	@Select("getQueueItemsByQueueId")
 	List<BepsQueueItem> getQueueItemsByQueueId(Long queueId);

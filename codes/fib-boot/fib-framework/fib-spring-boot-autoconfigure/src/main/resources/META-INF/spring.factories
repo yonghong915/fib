@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.fib.autoconfigure.ruleengine.RuleEngineAutoConfiguration,\
+  com.fib.autoconfigure.ruleengine.drools.DroolsAutoConfiguration,\
+  com.fib.autoconfigure.ruleengine.easyrules.EasyRulesAutoConfiguration,\
+  com.fib.autoconfigure.ruleengine.rulebook.RuleBookAutoConfiguration
