@@ -6,5 +6,5 @@ import com.fib.upp.entity.cnaps.CnapsSystemStatus;
 import cn.hutool.core.lang.Opt;
 
 public interface ICnapsSystemStatusService extends IService<CnapsSystemStatus> {
-	Opt<CnapsSystemStatus> getCnapsSystemStatus(String systemCode, String clearBankNo);
+	Opt<CnapsSystemStatus> getCnapsSystemStatus(CnapsSystemStatus css);
 }

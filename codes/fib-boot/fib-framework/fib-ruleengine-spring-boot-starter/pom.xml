@@ -25,6 +25,7 @@
 			<groupId>com.fib</groupId>
 			<artifactId>fib-spring-boot-autoconfigure</artifactId>
 			<version>1.0.0</version>
+			<exclusions></exclusions>
 		</dependency>
 	</dependencies>
 </project>

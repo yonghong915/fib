@@ -2,6 +2,7 @@ package com.fib.upp.entity;
 
 import java.util.Objects;
 
+import com.fib.core.base.dto.BaseDTO;
 import com.fib.upp.util.BitStateUtil;
 
 /**
@@ -11,7 +12,12 @@ import com.fib.upp.util.BitStateUtil;
  * @version 1.0
  * @date 2022-03-22 11:10:51
  */
-public class MessagePackRule {
+public class MessagePackRule extends BaseDTO {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5455320887301852653L;
 
 	/** 报文类型 */
 	private String messageTypeCode;

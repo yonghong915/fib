@@ -108,10 +108,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.deliveredtechnologies</groupId>
-			<artifactId>rulebook-core</artifactId>
-			<version>0.12</version>
-			<optional>true</optional>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+			<version>1.3.2</version>
 		</dependency>
 	</dependencies>
 </project>

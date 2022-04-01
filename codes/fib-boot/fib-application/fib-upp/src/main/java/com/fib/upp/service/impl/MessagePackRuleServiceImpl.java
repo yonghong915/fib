@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fib.commons.exception.BusinessException;
+import com.fib.core.base.dto.BaseDTO;
 import com.fib.core.util.StatusCode;
 import com.fib.upp.entity.MessagePackRule;
 import com.fib.upp.mapper.MessagePackRuleMapper;
@@ -14,7 +16,8 @@ import com.fib.upp.service.IMessagePackRuleService;
 import cn.hutool.core.lang.Opt;
 
 @Service("messagePackRuleService")
-public class MessagePackRuleServiceImpl implements IMessagePackRuleService {
+public class MessagePackRuleServiceImpl extends ServiceImpl<MessagePackRuleMapper, MessagePackRule>
+		implements IMessagePackRuleService {
 
 	@Autowired
 	private MessagePackRuleMapper messagePackRuleMapper;
@@ -29,7 +32,9 @@ public class MessagePackRuleServiceImpl implements IMessagePackRuleService {
 	}
 
 	@Override
-	public Opt<MessagePackRule> getMessagePackRule(String messageTypeCode) {
+	public Opt<MessagePackRule> getMessagePackRule(BaseDTO dto) {
+		MessagePackRule mpr = (MessagePackRule) dto;
+		String messageTypeCode = mpr.getMessageTypeCode();
 		try {
 			return Opt.ofNullable(messagePackRuleMapper.getMessagePackRule(messageTypeCode));
 		} catch (Exception e) {

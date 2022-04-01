@@ -25,6 +25,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-commons</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
@@ -100,6 +105,16 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.jeasy</groupId>
 			<artifactId>easy-rules-core</artifactId>
 			<version>4.1.0</version>
@@ -111,6 +126,11 @@
 			<artifactId>rulebook-core</artifactId>
 			<version>0.12</version>
 			<optional>true</optional>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>

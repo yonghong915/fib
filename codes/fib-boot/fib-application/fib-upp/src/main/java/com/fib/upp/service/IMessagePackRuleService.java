@@ -2,6 +2,8 @@ package com.fib.upp.service;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.fib.core.base.dto.BaseDTO;
 import com.fib.upp.entity.MessagePackRule;
 
 import cn.hutool.core.lang.Opt;
@@ -14,7 +16,7 @@ import cn.hutool.core.lang.Opt;
  * @since 1.0
  * @date 2021-01-22
  */
-public interface IMessagePackRuleService {
+public interface IMessagePackRuleService extends IService<MessagePackRule> {
 	/**
 	 * 获取报文组包规则
 	 * 
@@ -28,5 +30,5 @@ public interface IMessagePackRuleService {
 	 * @param messageTypeCode
 	 * @return
 	 */
-	Opt<MessagePackRule> getMessagePackRule(String messageTypeCode);
+	Opt<MessagePackRule> getMessagePackRule(BaseDTO dto);
 }

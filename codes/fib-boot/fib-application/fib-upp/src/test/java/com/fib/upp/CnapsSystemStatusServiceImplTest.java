@@ -24,7 +24,10 @@ public class CnapsSystemStatusServiceImplTest {
 	public void testGetMessagePackRule() {
 		String systemCode = "HVPS";
 		String clearBankNo = "313651071504";
-		Opt<CnapsSystemStatus> cssOpt = cnapsSystemStatusService.getCnapsSystemStatus(systemCode, clearBankNo);
+		CnapsSystemStatus inCss = new CnapsSystemStatus();
+		inCss.setSystemCode(systemCode);
+		inCss.setClearBankNo(clearBankNo);
+		Opt<CnapsSystemStatus> cssOpt = cnapsSystemStatusService.getCnapsSystemStatus(inCss);
 		CnapsSystemStatus css = cssOpt.orElseThrow(() -> new RuntimeException("aaaaa"));
 		assertNotNull(css);
 	}

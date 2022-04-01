@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.fib.autoconfigure.ruleengine.IRuleService;
 import com.fib.upp.ctrler.MessageInCtrler;
 
 @RunWith(SpringRunner.class)
@@ -33,15 +31,11 @@ public class WebCtrlerTest {
 	// @MockBean
 	// private IBepsPackService bepsPackService;
 
-	@Autowired
-	private IRuleService ruleService;
-
 	@Before
 	public void setUp() {
 //		MockitoAnnotations.openMocks(this);
 //		this.mockMvc = MockMvcBuilders.standaloneSetup(messageInCtrler).build();
 		mockMvc = MockMvcBuilders.standaloneSetup(new MessageInCtrler()).build();
-		ruleService.execute();
 	}
 
 	@Test

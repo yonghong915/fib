@@ -25,7 +25,9 @@ public class MessagePackRuleServiceImplTest {
 	@Test
 	public void testGetMessagePackRule() {
 		String messageTypeCode = "beps.121.001.01";
-		Opt<MessagePackRule> mprOpt = messagePackRuleService.getMessagePackRule(messageTypeCode);
+		MessagePackRule rul = new MessagePackRule();
+		rul.setMessageTypeCode(messageTypeCode);
+		Opt<MessagePackRule> mprOpt = messagePackRuleService.getMessagePackRule(rul);
 		MessagePackRule mpr = mprOpt.orElseThrow(() -> new RuntimeException("aaaaa"));
 		assertTrue(mpr.sendClearingBank());
 	}

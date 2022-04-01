@@ -20,6 +20,7 @@
 		<module>fib-framework</module>
 		<module>fib-spring-boot-starter</module>
     <module>fib-spring-boot-autoconfigure</module>
+    <module>fib-boot-starter</module>
   </modules>
 
 	<properties>
@@ -123,7 +124,7 @@
 				<scope>import</scope>
 			</dependency>
 
-			<!-- 加入spring-boot 关于web的依赖 -->
+			<!-- ????spring-boot ????web?????? -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
@@ -359,7 +360,7 @@
 	</dependencies>
 
 	<profiles>
-		<!-- development environment，default active -->
+		<!-- development environment??default active -->
 		<profile>
 			<id>dev</id>
 			<properties>
