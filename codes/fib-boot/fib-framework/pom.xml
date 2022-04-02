@@ -20,7 +20,5 @@
 		<module>fib-commons</module>
 		<module>fib-core</module>
 		<module>fib-mq</module>
-		<module>fib-spring-boot-autoconfigure</module>
-		<module>fib-ruleengine-spring-boot-starter</module>
 	</modules>
 </project>

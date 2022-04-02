@@ -3,7 +3,7 @@ package com.fib.upp.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fib.autoconfigure.aop.EcaAnnotation;
+import com.fib.autoconfigure.aop.aspect.annotation.EcaAnnotation;
 import com.fib.commons.exception.BusinessException;
 import com.fib.commons.exception.CommonException;
 import com.fib.core.util.StatusCode;
