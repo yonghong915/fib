@@ -3,7 +3,6 @@ package com.fib.upp.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fib.autoconfigure.aop.aspect.annotation.EcaAnnotation;
 import com.fib.commons.exception.BusinessException;
 import com.fib.commons.exception.CommonException;
 import com.fib.core.util.StatusCode;
@@ -24,7 +23,8 @@ public class CnapsSystemStatusServiceImpl extends ServiceImpl<CnapsSystemStatusM
 	}
 
 	@Override
-	@EcaAnnotation(service = "inValidate:messagePackRuleService:getMessagePackRule")
+	// @EcaAnnotation(service =
+	// "inValidate:messagePackRuleService:getMessagePackRule")
 	public Opt<CnapsSystemStatus> getCnapsSystemStatus(CnapsSystemStatus css) {
 		Assert.notNull(css, () -> new CommonException("css"));
 		Assert.notBlank(css.getSystemCode(), () -> new CommonException("systemCode"));

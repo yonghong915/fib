@@ -12,7 +12,6 @@
 	<artifactId>fib-spring-boot-autoconfigure</artifactId>
 	<name>fib-spring-boot-autoconfigure</name>
 	<description>A simple fib-spring-boot-autoconfigure.</description>
-	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
 
 	<properties>

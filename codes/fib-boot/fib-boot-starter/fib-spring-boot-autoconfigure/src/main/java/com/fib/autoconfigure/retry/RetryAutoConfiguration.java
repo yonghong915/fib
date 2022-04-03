@@ -1,12 +1,13 @@
 package com.fib.autoconfigure.retry;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.retry.RecoveryCallback;
-import org.springframework.retry.RetryCallback;
-import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.CompositeRetryPolicy;
@@ -14,13 +15,19 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import com.fib.commons.exception.BusinessException;
-
-//RetryTemplateService
 @Configuration
+@EnableConfigurationProperties(RetryProperties.class)
+@ComponentScan("com.fib.autoconfigure.retry")
 public class RetryAutoConfiguration {
+	private static final Logger LOGGER = LoggerFactory.getLogger(RetryAutoConfiguration.class);
 
-	public RetryTemplate retryTemplate(int maxAttempts, int timeout) {
+	@Autowired
+	private RetryProperties retryProperties;
+
+	@Bean("retryTemplate")
+	@ConditionalOnExpression("${fib.retry.retryCount} > 0 && ${fib.retry.timeout} > 0")
+	public RetryTemplate retryTemplate() {
+		LOGGER.info("重试机制：重试次数且重试时间");
 		RetryTemplate retryTemplate = new RetryTemplate();
 
 		// 每隔1s后再重试
@@ -30,11 +37,11 @@ public class RetryAutoConfiguration {
 
 		// 最大重试次数策略
 		SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-		retryPolicy.setMaxAttempts(maxAttempts);
+		retryPolicy.setMaxAttempts(retryProperties.getRetryCount());
 
 		// 在指定的一段时间内重试
 		TimeoutRetryPolicy timeOutretryPolicy = new TimeoutRetryPolicy();
-		timeOutretryPolicy.setTimeout(timeout);
+		timeOutretryPolicy.setTimeout(retryProperties.getTimeout());
 
 		CompositeRetryPolicy compositeRetryPolicy = new CompositeRetryPolicy();
 		compositeRetryPolicy.setPolicies(new RetryPolicy[] { retryPolicy, timeOutretryPolicy });
@@ -44,52 +51,20 @@ public class RetryAutoConfiguration {
 		return retryTemplate;
 	}
 
-	public Object retryServicetest(Function<String, String> func, Function<String, String> failFunc, String value)
-			throws BusinessException {
-		RetryTemplate retryTemplate = retryTemplate(5, 10000);
-		return retryTemplate.execute(new RetryCallback<Object, BusinessException>() {
-			@Override
-			public Object doWithRetry(final RetryContext context) throws BusinessException {
-				System.out.println("doWithRetry---");
-				try {
-					TimeUnit.MILLISECONDS.sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				return func.apply(value);
-			}
-		}, new RecoveryCallback<Object>() {
-			@Override
-			public Object recover(final RetryContext context) throws BusinessException {
-				System.out.println("recover---");
-				return failFunc.apply(value);
-			}
-		});
+	@Bean("retryTemplate")
+	@ConditionalOnExpression("${fib.retry.retryCount} > 0")
+	public RetryTemplate retryTemplate4RetryCount() {
+		LOGGER.info("重试机制：重试次数");
+		return RetryTemplate.builder().maxAttempts(retryProperties.getRetryCount()).build();
 	}
 
-	public static void main(String[] args) {
-		RetryAutoConfiguration t = new RetryAutoConfiguration();
-		try {
-			// t.retryServicetest(getFunctById(), " tom");
-			Object ss = t.queryByIdWithRetry("tom");
-			System.out.println(ss);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Object queryByIdWithRetry(String id) {
-		return retryServicetest(this::queryById, this::queryFailed, id);
-	}
-
-	private String queryFailed(String id) {
-		return "failed:" + id;
-	}
-
-	public String queryById(String id) {
-		if ("tom".equals(id)) {
-			throw new RuntimeException("aaaa");
-		}
-		return id;
+	@Bean("retryTemplate")
+	@ConditionalOnExpression("${fib.retry.timeout} > 0")
+	public RetryTemplate retryTemplate4Timeout() {
+		LOGGER.info("重试机制：重试时间");
+		// 在指定的一段时间内重试
+		TimeoutRetryPolicy timeOutretryPolicy = new TimeoutRetryPolicy();
+		timeOutretryPolicy.setTimeout(retryProperties.getTimeout());
+		return RetryTemplate.builder().customPolicy(timeOutretryPolicy).build();
 	}
 }
