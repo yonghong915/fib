@@ -90,6 +90,31 @@ public class Constant {
 		}
 	}
 
+	public enum ServiceName {
+		/** 普通借记-来账 */
+		PROCESS_PAYMENT_ORDER("processPaymentOrder", "普通借记-来账")
+		/** 普通贷记-来账 */
+		;
+
+		private String code;
+
+		private String name;
+
+
+		ServiceName(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
 	public enum BatchStatus {
 		REGISTER("00", "已登记"), INPROCESS("03", "处理中"), DUE("01", "已到期"), COMPLETE("02", "已完成"), CANCEL("04", "取消"),
 		ERROR("05", "异常待处理");
@@ -260,8 +285,6 @@ public class Constant {
 		}
 
 	}
-	
-	
 
 	public static final class MessageSourceKey {
 		private MessageSourceKey() {
@@ -270,4 +293,5 @@ public class Constant {
 
 		public static final String CONFIG_EMPTY_KEY = "config.null";
 	}
+
 }
