@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.fib.commons.exception.BusinessException;
@@ -24,10 +26,12 @@ import cn.hutool.core.text.CharSequenceUtil;
  * @date 2022-04-08 15:11:36
  */
 @Service("pETOCOCAndPFfill")
-public class ServiceImpl implements ICommonService {
+public class PETOCOCAndPFfillServiceImpl implements ICommonService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(PETOCOCAndPFfillServiceImpl.class);
 
 	@Override
 	public Map<String, Object> execute(Map<String, ? extends Object> context) {
+		LOGGER.info("PETOCOCAndPFfillServiceImpl--->{}", context);
 		Map<String, Object> requestMap = null;
 		requestMap = buildingParam(context);
 		Map<String, Object> rspMap = runSync(Constant.ServiceName.PROCESS_PAYMENT_ORDER.code(), requestMap);
