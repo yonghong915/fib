@@ -1,9 +1,7 @@
 package com.fib.upp.modules.common.service.impl;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,22 +22,83 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	@Override
 	public Map<String, Object> execute(Map<String, ? extends Object> context) {
 		LOGGER.info("ProcessPaymentOrderServiceImpl...>{}", context);
-		Map<String, Object> newContext = null;
-
-		newContext = validateContextByDefault(context);
+		final Map<String, Object> newContext = validateContextByDefault(context);
 
 		// PaymentOrderStepSetting paymentOrderStepSettingId
-		ThreadLocalMessageContext.INSTANCE.getMessageContext().setProperty("paymentOrderStepSetting", newContext);
 		Assert.isNull(newContext, () -> new CommonException("systemCode"));
-//		isNull(newContext, () -> ThreadLocalMessageContext.INSTANCE.getMessageContext()
-//				.setProperty("paymentOrderStepSetting", newContext));
-		return null;
+		ThreadLocalMessageContext.INSTANCE.set("paymentOrderStepSetting", newContext);
+		Map<String, Object> rtnMap = MapUtil.newHashMap();
+
+		//
+		// buildOrderContext setOppExtMsg
+
+		// createOrder
+
+		// 扩展的增强校验 checkOrderExternalMsg
+
+		// processOrder
+		// ----------
+		// 通过销售流程配置，决定是否进行订单处理
+		boolean processOrder = triggerProcessOrder(newContext);
+
+		rtnMap.put("aaa", "sss");
+		return rtnMap;
 	}
 
-	public static void isNull(Object object, Consumer errorSupplier) {
-		if (null != object) {
-			errorSupplier.accept(object);
-		}
+	/**
+	 * 校验是否需要执行订单处理
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public boolean triggerProcessOrder(Map context) {
+		return checkSalesStep(context, "processOrder");
+	}
+
+	/**
+	 * 校验是否需要执行支付处理
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public boolean triggerProcessPayment(Map context) {
+		return checkSalesStep(context, "processPayment");
+	}
+
+	/**
+	 * 校验是否需要执行核准处理
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public boolean triggerApproveOrder(Map context) {
+		return checkSalesStep(context, "approveOrder");
+	}
+
+	/**
+	 * 校验是否需要执行开发票处理
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public boolean triggerProcessInvoice(Map context) {
+		return checkSalesStep(context, "processInvoice");
+	}
+
+	/**
+	 * 校验是否需要执行交付处理
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public boolean triggerFulfill(Map context) {
+		return checkSalesStep(context, "fulfill");
+	}
+
+	private boolean checkSalesStep(Map context, String step) {
+		boolean result = true;
+
+		return result;
 	}
 
 	/**
@@ -79,7 +138,15 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	}
 
 	public static void main(String[] args) {
-		Assert.isFalse(true, () -> new CommonException("systemCode"));
+		AtomicInteger cnt = new AtomicInteger(0);
+		for (int i = 0; i < 10; i++) {
+			new Thread(() -> {
+				Map<String, Object> pam = MapUtil.newHashMap();
+				pam.put("111", "aaaa" + cnt.getAndIncrement());
+				ThreadLocalMessageContext.INSTANCE.set("parmaMap", pam);
+				System.out.println(
+						Thread.currentThread().getName() + " " + ThreadLocalMessageContext.INSTANCE.get("parmaMap"));
+			}).start();
+		}
 	}
-
 }

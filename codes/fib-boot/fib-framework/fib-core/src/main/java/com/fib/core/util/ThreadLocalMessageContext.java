@@ -1,5 +1,7 @@
 package com.fib.core.util;
 
+import java.util.function.Consumer;
+
 public enum ThreadLocalMessageContext {
 	INSTANCE;
 
@@ -15,7 +17,7 @@ public enum ThreadLocalMessageContext {
 	/**
 	 * 得到本线程上下文环境
 	 */
-	public MessageContext getMessageContext() {
+	MessageContext getMessageContext() {
 		MessageContext ctx = THREAD_CONTEXT.get();
 		if (ctx == null) {
 			ctx = new MessageContext();
@@ -27,7 +29,21 @@ public enum ThreadLocalMessageContext {
 	/**
 	 * 移除程上下文环境
 	 */
-	public void removeContext() {
+	void removeContext() {
 		THREAD_CONTEXT.remove();
+	}
+
+	public void set(String key, Object value) {
+		isNull(value, k -> ThreadLocalMessageContext.INSTANCE.getMessageContext().setProperty(key, value));
+	}
+
+	public Object get(String key) {
+		return ThreadLocalMessageContext.INSTANCE.getMessageContext().getProperty(key);
+	}
+
+	public void isNull(Object value, Consumer<Object> errorSupplier) {
+		if (null != value) {
+			errorSupplier.accept(value);
+		}
 	}
 }
