@@ -3,7 +3,6 @@ package com.fib.upp.modules.common.service.impl;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +11,11 @@ import org.springframework.stereotype.Service;
 import com.fib.commons.exception.BusinessException;
 import com.fib.core.util.SpringContextUtils;
 import com.fib.upp.modules.common.service.ICommonService;
+import com.fib.upp.modules.common.service.ServiceDispatcher;
 import com.fib.upp.util.Constant;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 
@@ -34,7 +35,8 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 		LOGGER.info("PETOCOCAndPFfillServiceImpl--->{}", context);
 		Map<String, Object> requestMap = null;
 		requestMap = buildingParam(context);
-		Map<String, Object> rspMap = runSync(Constant.ServiceName.PROCESS_PAYMENT_ORDER.code(), requestMap);
+		Map<String, Object> rspMap = ServiceDispatcher.runSync(Constant.ServiceName.PROCESS_PAYMENT_ORDER.code(),
+				requestMap);
 		String returnType = MapUtil.getStr(rspMap, "returnType");
 		if (!"S".equals(returnType)) {
 			throw new BusinessException("aa", "返回错误");
@@ -44,12 +46,14 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 
 	private Map<String, Object> buildingParam(Map<String, ? extends Object> context) {
 		Map<String, Object> requestMap = MapUtil.<String, Object>builder().build();
-		String systemCode = MapUtil.getStr(context, "systemCode");
+		String systemCode = MapUtil.getStr(context, Constant.FieldKey.SYS_CODE.code());
 		//
-		String transAmt = MapUtil.getStr(context, "transAmt");
+		String transAmt = MapUtil.getStr(context, Constant.FieldKey.TRANS_AMT.code());
 		systemCode = obtainSystemCode(systemCode, transAmt);
 
-		requestMap.put("systemCode", systemCode);
+		requestMap.put(Constant.FieldKey.SYS_CODE.code(), systemCode);
+		requestMap.put(Constant.FieldKey.TRANS_ID.code(), MapUtil.getStr(context, Constant.FieldKey.TRANS_ID.code()));
+		requestMap.put(Constant.FieldKey.TRANS_AMT.code(), transAmt);
 		return requestMap;
 	}
 
@@ -60,9 +64,9 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 		String isPosthaste = "";
 		// ProductCategoryMember productId
 		List<String> list = CollUtil.newArrayList();
-		if (CollUtil.isEmpty(list)) {
-			throw new BusinessException("aa", "系统中不存在当前业务");
-		}
+
+		Assert.isFalse(CollUtil.isEmpty(list), () -> new BusinessException("aa", "系统中不存在当前业务"));
+
 		int len = list.size();
 		if (len == 1) {
 			String productCategoryId = list.get(0);
@@ -109,16 +113,4 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 		return new BigDecimal(lmtAmt);
 	}
 
-	Map<String, Object> runSync(String serviceName, Map<String, ? extends Object> context) {
-		ICommonService commSrv = SpringContextUtils.getBean(serviceName);
-		return commSrv.execute(context);
-	}
-
-	public void runAsync(String serviceName, Map<String, ? extends Object> context) {
-		Executor executor = SpringContextUtils.getBean("customAsyncExcecutor");
-		executor.execute(() -> {
-			ICommonService commSrv = SpringContextUtils.getBean(serviceName);
-			commSrv.execute(context);
-		});
-	}
 }

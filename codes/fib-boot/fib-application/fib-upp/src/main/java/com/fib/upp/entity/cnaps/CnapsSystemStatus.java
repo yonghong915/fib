@@ -1,7 +1,10 @@
 package com.fib.upp.entity.cnaps;
 
+import java.math.BigInteger;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fib.core.base.dto.BaseDTO;
 
 import cn.hutool.core.builder.EqualsBuilder;
@@ -20,6 +23,10 @@ public class CnapsSystemStatus extends BaseDTO {
 	 * 
 	 */
 	private static final long serialVersionUID = 7517082706903486677L;
+
+	/** 主键 */
+	@TableId("pk_id")
+	private BigInteger pkId;
 
 	/** 系统编码 */
 	private String systemCode;

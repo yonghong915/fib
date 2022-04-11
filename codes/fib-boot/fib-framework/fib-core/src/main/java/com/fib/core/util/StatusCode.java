@@ -80,6 +80,17 @@ public enum StatusCode implements RestStatus {
 	 */
 	PARAMS_CHECK_EXCEPTION("E000005", "参数校验异常"),
 
+	/**
+	 * 参数校验异常
+	 */
+	PARAMS_CHECK_NULL("E000006", "参数为空"),
+	
+	
+	/**
+	 * 参数{}重复
+	 */
+	PARAMS_DUPLICATE("E000007", "参数{}重复"),
+
 	/***/
 	INVALID_TOKEN("2001", "访问令牌不合法"),
 
@@ -95,7 +106,7 @@ public enum StatusCode implements RestStatus {
 	/**
 	 * 其他异常
 	 */
-	OTHER_EXCEPTION("E000009","其他异常");
+	OTHER_EXCEPTION("E000009", "其他异常");
 
 	private final String code;
 

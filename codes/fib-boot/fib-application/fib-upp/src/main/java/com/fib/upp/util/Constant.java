@@ -10,14 +10,14 @@ import com.fib.commons.exception.CommonException;
  * @date 2021-02-24
  */
 public class Constant {
-	public enum SystemCode {
+	public enum SysCode {
 		HVPS("HVPS", "大额"), BEPS("BEPS", "小额");
 
 		private String code;
 
 		private String name;
 
-		SystemCode(String code, String name) {
+		SysCode(String code, String name) {
 			this.code = code;
 			this.name = name;
 		}
@@ -93,6 +93,7 @@ public class Constant {
 	public enum ServiceName {
 		/** 普通借记-来账 */
 		PROCESS_PAYMENT_ORDER("processPaymentOrder", "普通借记-来账")
+
 		/** 普通贷记-来账 */
 		;
 
@@ -100,8 +101,122 @@ public class Constant {
 
 		private String name;
 
-
 		ServiceName(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
+	/**
+	 * 字段key值
+	 * 
+	 * @author fangyh
+	 * @version 1.0
+	 * @date 2022-04-11 11:44:18
+	 */
+	public enum FieldKey {
+		/** 收款行号 */
+		PAYEE_BANK_CODE("payeeBankCode", "收款行号"),
+		/** 收款行名 */
+		PAYEE_BANK_NAME("payeeBankName", "收款行名"),
+		/** 收款账号 */
+		PAYEE_ACCT_NO("payeeAcctNo", "收款账号"),
+		/** 收款户名 */
+		PAYEE_ACCT_NAME("payeeAcctName", "收款户名"),
+		/** 付款行号 */
+		DRAWEE_BANK_CODE("draweeBankCode", "付款行号"),
+		/** 付款行名 */
+		DRAWEE_BANK_NAME("draweeBankName", "付款行名"),
+		/** 付款账号 */
+		DRAWEE_ACCT_NO("draweeAcctNo", "付款账号"),
+		/** 付款户名 */
+		DRAWEE_ACCT_NAME("draweeAcctName", "付款户名"),
+
+		/** 发起清算行号 */
+		RCV_CLEAR_BANK_CODE("rcvClearBankCode", "接收清算行号"),
+		/** 发送清算行号 */
+		SND_CLEAR_BANK_CODE("sndClearBankCode", "发起清算行号"),
+
+		/** 账号 */
+		ACCT_NO("acctNo", "账号"),
+		/** 账户名称 */
+		ACCT_NAME("acctName", "账户名称"),
+		/** 账户类型 */
+		ACCT_TYPE("acctType", "账户类型"),
+		/** 账户状态 */
+		ACCT_STAT("acctStat", "账户状态"),
+		/** 账户性质 */
+		ACCT_ATTR("acctAttr", "账户性质"),
+
+		/** 批次号 */
+		BATCH_ID("batchId", "批次号"),
+		/** 批量文件名称 */
+		BATCH_FILE("batchFile", "批量文件名称"),
+		/** 批次类型 */
+		BATCH_TYPE("batchType", "批次类型"),
+		/** 批次状态 */
+		PROCESS_STATUS("processStatus", "批次状态"),
+
+		/** 业务类型 */
+		BIZ_TYPE("bizType", "业务类型"),
+		/** 业务种类 */
+		BIZ_CLASS("bizClass ", "业务种类"),
+
+		/** 交易流水号 */
+		TRANS_ID("transId", "交易流水号"),
+		/** 交易笔数 */
+		TRANS_NUMBER("transNumber", "交易笔数"),
+		/** 交易金额 */
+		TRANS_AMT("transAmt", "交易金额"),
+		/** 交易类型 */
+		TRANS_TYPE_CODE("transTypeCode", "交易类型"),
+		/** 交易码 */
+		TRANS_CODE("transCode", "交易码"),
+		/** 交易日期 */
+		TRANS_DATE("transDate", "交易日期"),
+		/** 工作日期 */
+		WORK_DATE("workDate", "工作日期"),
+
+		/** 系统号 */
+		SYS_CODE("sysCode", "系统号"),
+		/** 清算日期 */
+		CLEAR_DATE("clearDate", "清算日期"),
+		/** 清算场次 */
+		CLEAR_ROUND("clearRound", "清算场次"),
+		/** 系清算状态 */
+		CLEAR_STATE("clearState", "清算状态"),
+		/** 轧差日期 */
+		NETTING_DATE("nettingDate", "轧差日期"),
+		/** 轧差场次 */
+		NETTING_ROUND("nettingRound", "轧差场次"),
+		/** 轧差状态 */
+		NETTING_STATE("nettingState", "轧差状态"),
+
+		/** 借贷标识 */
+		DC_FLAG("dcFlag", "借贷标识"),
+		/** 报文标识号 */
+		MSG_ID("msgId", "报文标识号"),
+		/** 报文类型 */
+		MSG_TYPE("msgType", "报文类型"),
+
+		/** 流水号 */
+		SERIAL_NO("serialNo", "流水号"),
+		/** 渠道流水号 */
+		CHANL_SERIAL_NO("chanlSerialNo", "渠道流水号");
+
+		private String code;
+
+		private String name;
+
+		FieldKey(String code, String name) {
 			this.code = code;
 			this.name = name;
 		}

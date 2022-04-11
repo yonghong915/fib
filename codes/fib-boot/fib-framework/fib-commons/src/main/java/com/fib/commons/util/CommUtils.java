@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 
 import com.fib.commons.config.Configuration;
 import com.fib.commons.config.parser.ConfigurationManager;
@@ -140,6 +141,18 @@ public class CommUtils {
 		@Override
 		public int hashCode() {
 			return 32;
+		}
+	}
+
+	/**
+	 * 断言对象是否为{@code null} ，如果不为{@code null} ,就执行传入的操作
+	 * 
+	 * @param value
+	 * @param errorSupplier
+	 */
+	public static void isNull(Object value, Consumer<Object> action) {
+		if (null != value) {
+			action.accept(value);
 		}
 	}
 }

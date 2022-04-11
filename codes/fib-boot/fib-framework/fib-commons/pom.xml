@@ -144,12 +144,9 @@
 			<artifactId>dubbo</artifactId>
 			<version>${dubbo.version}</version>
 		</dependency>
-		
-		<!-- <dependency>
-		   <groupId>org.jboss.netty</groupId>
-		   <artifactId>netty</artifactId>
-		   <version>3.2.10.Final</version>
-		</dependency> -->
+
+		<!-- <dependency> <groupId>org.jboss.netty</groupId> <artifactId>netty</artifactId> 
+			<version>3.2.10.Final</version> </dependency> -->
 
 		<dependency>
 			<groupId>info.monitorenter</groupId>
@@ -210,6 +207,13 @@
 					<artifactId>quartz</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

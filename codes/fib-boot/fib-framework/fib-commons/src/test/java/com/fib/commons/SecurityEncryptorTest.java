@@ -23,7 +23,7 @@ public class SecurityEncryptorTest {
 	@Test
 	public void testEncryptAndDecrypt4SM4() {
 		String body = "明天好，继续努力1233bddg!@#*&^%$#$*())__++";
-		String content = JSONUtil.toJsonStr(ResultUtil.error("000000", "sucess", body));
+		String content = JSONUtil.toJsonStr(ResultUtil.message("000000", "sucess", body));
 		logger.info("before enrypt data ：{}", content);
 
 		String securityKey = "3pzISVLZvPXuFg7m";
@@ -42,7 +42,7 @@ public class SecurityEncryptorTest {
 	@Test
 	public void testEncryptAndDecrypt4SM2() {
 		String body = "明天好，继续努力1233bddg!@#*&^%$#$*())__++";
-		String content = JSONUtil.toJsonStr(ResultUtil.error("000000", "sucess", body));
+		String content = JSONUtil.toJsonStr(ResultUtil.message("000000", "sucess", body));
 		logger.info("before enrypt data ：{}", content);
 
 		String otherpublicKey = "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEsb6Eodd/rSsBdIAmSQulFG2ddlO75Ye/uZfk1zgaTUiSy0cBVSFOgY2AQxTL+SmGLV24oKaG6IjiJdSfcciffg==";
@@ -62,7 +62,7 @@ public class SecurityEncryptorTest {
 	@Test
 	public void testSignAndVerify4SM2() {
 		String body = "明天好，继续努力1233bddg!@#*&^%$#$*())__++";
-		String content = JSONUtil.toJsonStr(ResultUtil.error("000000", "sucess", body));
+		String content = JSONUtil.toJsonStr(ResultUtil.message("000000", "sucess", body));
 		logger.info("before enrypt data ：{}", content);
 
 		String ownPrivateKey = "MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQgMHuFx4Ww2QToOSWNeG2XFLJtoqh10sRRaZnYp+cO1T2gCgYIKoEcz1UBgi2hRANCAATuzT9+2dtL/FztfhBHgvtinUI50M8RZBEvN8+y8nQSfjJ5yKd0OUcvj1tbL5C6bFsc8ak6PpsJbPYcpnk42Qj+";

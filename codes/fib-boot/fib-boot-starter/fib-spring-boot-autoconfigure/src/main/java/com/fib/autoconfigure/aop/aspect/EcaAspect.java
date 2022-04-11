@@ -1,6 +1,7 @@
 package com.fib.autoconfigure.aop.aspect;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -17,10 +18,7 @@ import org.springframework.stereotype.Component;
 import com.fib.autoconfigure.aop.EcaEvent;
 import com.fib.autoconfigure.aop.aspect.annotation.EcaAnnotation;
 import com.fib.commons.exception.BusinessException;
-import com.fib.core.base.dto.BaseDTO;
 import com.fib.core.util.SpringContextUtils;
-
-import cn.hutool.core.util.StrUtil;
 
 @Aspect
 @Component
@@ -45,9 +43,6 @@ public class EcaAspect {
 
 		String[] services = ecaAnnotation.service();
 		for (String service : services) {
-			if (StrUtil.isEmptyIfStr(service)) {
-				continue;
-			}
 			String[] svrStrs = service.split(":", -1);
 
 			String event = svrStrs[0];
@@ -60,7 +55,7 @@ public class EcaAspect {
 
 			Object obj = SpringContextUtils.getBean(beanName);
 			try {
-				Object rtnObj = obj.getClass().getMethod(methodName, BaseDTO.class).invoke(obj, "beps.121.001.01");
+				Object rtnObj = obj.getClass().getMethod(methodName, Map.class).invoke(obj, args);
 				LOGGER.info(String.valueOf(rtnObj));
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 					| NoSuchMethodException | SecurityException e) {

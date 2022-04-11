@@ -7,9 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.fib.commons.exception.BusinessException;
 import com.fib.commons.exception.CommonException;
+import com.fib.core.util.StatusCode;
 import com.fib.core.util.ThreadLocalMessageContext;
 import com.fib.upp.modules.common.service.ICommonService;
+import com.fib.upp.util.Constant;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
@@ -22,10 +25,10 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	@Override
 	public Map<String, Object> execute(Map<String, ? extends Object> context) {
 		LOGGER.info("ProcessPaymentOrderServiceImpl...>{}", context);
+		Assert.notNull(context, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
 		final Map<String, Object> newContext = validateContextByDefault(context);
 
 		// PaymentOrderStepSetting paymentOrderStepSettingId
-		Assert.isNull(newContext, () -> new CommonException("systemCode"));
 		ThreadLocalMessageContext.INSTANCE.set("paymentOrderStepSetting", newContext);
 		Map<String, Object> rtnMap = MapUtil.newHashMap();
 
@@ -110,9 +113,10 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 		LOGGER.info("validate order start....");
 		Map<String, Object> newContext = MapUtil.newHashMap();
 		// 流水号唯一校验
-		String transactionId = MapUtil.getStr(context, "transactionId");
+		String transactionId = MapUtil.getStr(context, Constant.FieldKey.TRANS_ID.code());
 		if (CharSequenceUtil.isNotBlank(transactionId)) {// 如果为 false 抛出给定的异常
-			Assert.isTrue(isTransactionIdUnique(transactionId), () -> new CommonException("systemCode"));
+			Assert.isTrue(isTransactionIdUnique(transactionId),
+					() -> new BusinessException(StatusCode.PARAMS_DUPLICATE, transactionId));
 		}
 
 		// 交易机构

@@ -2,6 +2,7 @@ package com.fib.commons.exception;
 
 import com.fib.commons.web.RestStatus;
 
+import cn.hutool.core.text.StrFormatter;
 import lombok.Getter;
 
 /**
@@ -20,22 +21,24 @@ public class BusinessException extends BaseException {
 	@Getter
 	private final String msg;
 
-	public BusinessException(String errCode, String message) {
-		super(message);
+	public BusinessException(String errCode, String errMsg, Object... args) {
+		super(errMsg);
 		this.code = errCode;
-		this.msg = message;
+		this.msg = StrFormatter.format(errMsg, args);
 	}
 
-	public BusinessException(RestStatus restStatus) {
+	public BusinessException(RestStatus restStatus, Object... args) {
 		super(restStatus.message());
 		this.code = restStatus.code();
-		this.msg = restStatus.message();
+		String errMsg = restStatus.message();
+		this.msg = StrFormatter.format(errMsg, args);
 	}
 
-	public BusinessException(RestStatus restStatus, Throwable cause) {
+	public BusinessException(RestStatus restStatus, Throwable cause, Object... args) {
 		super(restStatus.message(), cause);
 		this.code = restStatus.code();
-		this.msg = restStatus.message();
+		String errMsg = restStatus.message();
+		this.msg = StrFormatter.format(errMsg, args);
 	}
 
 	@Override
@@ -50,5 +53,4 @@ public class BusinessException extends BaseException {
 	public String getMsg() {
 		return msg;
 	}
-
 }

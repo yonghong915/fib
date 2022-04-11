@@ -27,7 +27,7 @@ public class MessagePackRuleServiceImpl extends ServiceImpl<MessagePackRuleMappe
 		try {
 			return messagePackRuleMapper.selectList(null);
 		} catch (Exception e) {
-			throw new BusinessException(StatusCode.DB_EXCEPTION);
+			throw new BusinessException(StatusCode.DB_EXCEPTION,e);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class MessagePackRuleServiceImpl extends ServiceImpl<MessagePackRuleMappe
 		try {
 			return Opt.ofNullable(messagePackRuleMapper.getMessagePackRule(messageTypeCode));
 		} catch (Exception e) {
-			throw new BusinessException(StatusCode.DB_EXCEPTION);
+			throw new BusinessException(StatusCode.DB_EXCEPTION,e);
 		}
 	}
 }

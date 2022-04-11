@@ -38,7 +38,7 @@ public class GlobalExceptionHandler<T> {
 	@ExceptionHandler(BusinessException.class)
 	public ResultRsp<T> handler(BusinessException e) {
 		logger.error("Restful Http请求发生异常.", e);
-		return ResultUtil.error(e.getCode(), e.getMsg());
+		return ResultUtil.message(e.getCode(), e.getMsg());
 	}
 
 	@ExceptionHandler(Exception.class)

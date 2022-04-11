@@ -1,7 +1,9 @@
 package com.fib.upp.entity;
 
+import java.math.BigInteger;
 import java.util.Objects;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fib.core.base.dto.BaseDTO;
 import com.fib.upp.util.BitStateUtil;
 
@@ -18,6 +20,10 @@ public class MessagePackRule extends BaseDTO {
 	 * 
 	 */
 	private static final long serialVersionUID = -5455320887301852653L;
+
+	/** 主键 */
+	@TableId("pk_id")
+	private BigInteger pkId;
 
 	/** 报文类型 */
 	private String messageTypeCode;
