@@ -1,4 +1,4 @@
-package com.fib.upp.mapper;
+package com.fib.upp.modules.beps.mapper;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Update;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fib.upp.entity.BepsQueue;
-import com.fib.upp.entity.BepsQueueHeader;
-import com.fib.upp.entity.BepsQueueItem;
+import com.fib.upp.modules.beps.entity.BepsQueue;
+import com.fib.upp.modules.beps.entity.BepsQueueHeader;
+import com.fib.upp.modules.beps.entity.BepsQueueItem;
 import com.fib.upp.util.EnumConstants;
 
 /**
@@ -24,7 +24,7 @@ import com.fib.upp.util.EnumConstants;
 public interface BepsQueueMapper extends BaseMapper<BepsQueue> {
 
 	@Select("getQueueItemsByQueueId")
-	List<BepsQueueItem> getQueueItemsByQueueId(Long queueId);
+	List<BepsQueueItem> getQueueItemsByQueueId(String queueId);
 
 	@Update("updateQueueHeaderStatus")
 	int updateQueueHeaderStatus(BepsQueueHeader queueHeader);

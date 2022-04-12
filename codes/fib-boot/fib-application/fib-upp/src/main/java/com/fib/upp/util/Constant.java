@@ -31,6 +31,48 @@ public class Constant {
 		}
 	}
 
+	public enum QueueType {
+		TMA001("TMA001", "大额"), ISA001("ISA001", "小额"), MMA001("MMA001", "小额"), RMD001("RMD001", "小额");
+
+		private String code;
+
+		private String name;
+
+		QueueType(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
+	public enum QueueStatus {
+		OPN("OPN", "大额"), CLS("CLS", "小额"), CRT("CRT", "小额"), FPC("FPC", "小额");
+
+		private String code;
+
+		private String name;
+
+		QueueStatus(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
 	public enum BatchType {
 		/** 普通借记-来账 */
 		COMM_TID_IN("commTIDIn", "普通借记-来账", ""),
@@ -92,10 +134,10 @@ public class Constant {
 
 	public enum ServiceName {
 		/** 普通借记-来账 */
-		PROCESS_PAYMENT_ORDER("processPaymentOrder", "普通借记-来账")
+		PROCESS_PAYMENT_ORDER("processPaymentOrder", "普通借记-来账"),
 
 		/** 普通贷记-来账 */
-		;
+		SEND_MESSAGE_BY_QUEUE("sendMessageByQueue", "普通借记-来账");
 
 		private String code;
 
@@ -210,7 +252,12 @@ public class Constant {
 		/** 流水号 */
 		SERIAL_NO("serialNo", "流水号"),
 		/** 渠道流水号 */
-		CHANL_SERIAL_NO("chanlSerialNo", "渠道流水号");
+		CHANL_SERIAL_NO("chanlSerialNo", "渠道流水号"),
+
+		/** 队列类型 */
+		QUEUE_ID("queueId", "队列编码"),
+		/** 队列类型 */
+		QUEUE_TYPE("queueType", "队列类型");
 
 		private String code;
 

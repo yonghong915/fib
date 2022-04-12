@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.fib.upp.mapper.BepsQueueMapper">
+<mapper
+	namespace="com.fib.upp.modules.beps.mapper.BepsQueueMapper">
 	<sql id="BASE_COLUMN_LIST">
 		message_type,transaction_type,send_clearing_bank,receive_clearing_bank,return_limited,original_message_id,batch_id
 	</sql>
 
 	<!-- -->
-	<select id="getQueueItemsByQueueId" parameterType="com.fib.upp.entity.BepsQueueItem"
-		resultType="com.fib.upp.entity.BepsQueueItem">
+	<select id="getQueueItemsByQueueId"
+		parameterType="com.fib.upp.modules.beps.entity.BepsQueueItem"
+		resultType="com.fib.upp.modules.beps.entity.BepsQueueItem">
 		SELECT * FROM beps_queue_item
 		<where>
 			<if test="queueId != null">
@@ -17,40 +19,56 @@
 		</where>
 	</select>
 
-	<update id="updateQueueHeaderStatus" parameterType="com.fib.upp.entity.BepsQueueHeader">
+	<update id="updateQueueHeaderStatus"
+		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
 		UPDATE beps_queue_header
 		SET status=#{status}
-		WHERE
-		pk_id=#{pkId}
+		WHERE queue_id=#{queueId}
 	</update>
 
-	<select id="getQueueHeader" parameterType="com.fib.upp.entity.BepsQueueHeader"
-		resultType="com.fib.upp.entity.BepsQueueHeader">
+	<select id="getQueueHeader"
+		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader"
+		resultType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
 		SELECT *
 		FROM beps_queue_header
-		WHERE status=#{status}
-		AND queue_type=#{queueType}
+		<where>
+			<if test="status != null and status != ''">
+				AND status=#{status}
+			</if>
+
+			<if test="queueType != null and queueType != ''">
+				AND queue_type=#{queueType}
+			</if>
+			
+			<if test="queueId != null and queueId != ''">
+				AND queue_id=#{queueId}
+			</if>
+		</where>
 	</select>
 
-	<update id="updateQueueItemStatus" parameterType="com.fib.upp.entity.BepsQueueItem">
+	<update id="updateQueueItemStatus"
+		parameterType="com.fib.upp.modules.beps.entity.BepsQueueItem">
 		UPDATE beps_queue_item
 		SET status=#{status}
 		WHERE queue_id=#{queueId}
 		AND record_id IN
-		<foreach collection="recordIds" item="recordId" index="index" open="(" close=")" separator=",">
+		<foreach collection="recordIds" item="recordId" index="index"
+			open="(" close=")" separator=",">
 			#{recordId}
 		</foreach>
 	</update>
 
-	<select id="getQueueByQueueType" parameterType="string" resultType="com.fib.upp.entity.BepsQueue">
+	<select id="getQueueByQueueType" parameterType="string"
+		resultType="com.fib.upp.modules.beps.entity.BepsQueue">
 		SELECT queue_type,queue_status
 		FROM beps_queue
 		WHERE
 		queue_type=#{queueType}
 	</select>
 
-	<insert id="createQueueHeader" parameterType="com.fib.upp.entity.BepsQueueHeader">
-		INSERT INTO beps_queue_header(pk_id,queue_type,status)
-		VALUES(#{pkId},#{queueType},#{status})
+	<insert id="createQueueHeader"
+		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
+		INSERT INTO beps_queue_header(queue_id,queue_type,status)
+		VALUES(#{queueId},#{queueType},#{status})
 	</insert>
 </mapper>

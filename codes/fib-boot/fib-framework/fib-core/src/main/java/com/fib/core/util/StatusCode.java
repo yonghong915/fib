@@ -81,11 +81,10 @@ public enum StatusCode implements RestStatus {
 	PARAMS_CHECK_EXCEPTION("E000005", "参数校验异常"),
 
 	/**
-	 * 参数校验异常
+	 * 参数为空
 	 */
 	PARAMS_CHECK_NULL("E000006", "参数为空"),
-	
-	
+
 	/**
 	 * 参数{}重复
 	 */
@@ -103,9 +102,10 @@ public enum StatusCode implements RestStatus {
 	/***/
 	UNSUPPORTED_GRANT_TYPE("1003", "不支持的认证模式"),
 
-	/**
-	 * 其他异常
-	 */
+	/** 其他异常 */
+	RTN_NULL("E000011", "{}"),
+
+	/** 其他异常 */
 	OTHER_EXCEPTION("E000009", "其他异常");
 
 	private final String code;

@@ -10,6 +10,9 @@ import com.fib.core.util.ConstantUtil;
 import cn.hutool.core.util.IdUtil;
 
 public class ThreadMdcUtil {
+	private ThreadMdcUtil() {
+	}
+
 	public static void setTraceIdIfAbsent() {
 		if (MDC.get(ConstantUtil.TRACE_ID) == null) {
 			MDC.put(ConstantUtil.TRACE_ID, IdUtil.simpleUUID());

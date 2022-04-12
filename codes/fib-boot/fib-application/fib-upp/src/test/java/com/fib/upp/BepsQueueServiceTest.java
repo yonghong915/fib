@@ -1,25 +1,36 @@
 package com.fib.upp;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fib.upp.entity.BepsQueue;
-import com.fib.upp.mapper.BepsQueueMapper;
-import com.fib.upp.service.IBepsQueueService;
-import com.fib.upp.service.beps.impl.BepsQueueServiceImpl;
+import com.fib.upp.modules.beps.entity.BepsQueue;
+import com.fib.upp.modules.beps.mapper.BepsQueueMapper;
+import com.fib.upp.modules.beps.service.IBepsQueueService;
+import com.fib.upp.modules.beps.service.impl.BepsQueueServiceImpl;
+import com.fib.upp.modules.common.service.ICommonService;
 
-public class BepsServiceTest {
+import cn.hutool.core.map.MapUtil;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = UppApplication.class)
+public class BepsQueueServiceTest {
 
 //	@Autowired
 //	private IBepsPackService bepsPackService;
 //
 
 	private IBepsQueueService bepsQueueService;
+
+	@Autowired
+	private ICommonService smallPackService;
 
 	@Mock
 	private BepsQueueMapper bepsQueueMapper;
@@ -32,10 +43,15 @@ public class BepsServiceTest {
 	}
 
 	@Test
-	public void testGetQueueByQueueType() {
-		BepsQueue bq = bepsQueueService.getQueueByQueueType("I");
-		assertEquals(null, bq.getId());
+	public void testSmallPack() {
+		smallPackService.execute(MapUtil.of("chanlSerialNo", "12334455"));
 	}
+
+//	@Test
+//	public void testGetQueueByQueueType() {
+//		Opt<BepsQueue> bqOpt = bepsQueueService.getQueueByQueueType("I");
+//		bqOpt.orElseThrow();
+//	}
 //
 //	@Test
 //	@Ignore("stop tmp")
