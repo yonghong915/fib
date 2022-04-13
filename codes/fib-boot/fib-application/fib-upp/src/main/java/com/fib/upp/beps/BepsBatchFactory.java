@@ -4,6 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fib.upp.service.beps.BepsBatchService;
+import com.fib.upp.util.Constant;
+
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 
 /**
  * 
@@ -20,12 +24,11 @@ public class BepsBatchFactory {
 
 	public static BepsBatchService getBepsBatchService(String batchType) {
 		logger.info("");
-		return null;
-//		if (StrUtil.isEmpty(batchType)) {
-//			logger.error("batchType can not be empty.");
-//			throw new IllegalArgumentException("batchType can not be empty.");
-//		}
-//		String serviceName = Constant.BatchType.getServiceName(batchType);
-//		return SpringUtil.getBean(serviceName, BepsBatchService.class);
+		if (StrUtil.isEmptyIfStr(batchType)) {
+			logger.error("batchType can not be empty.");
+			throw new IllegalArgumentException("batchType can not be empty.");
+		}
+		String serviceName = Constant.BatchType.getServiceName(batchType);
+		return SpringUtil.getBean(serviceName, BepsBatchService.class);
 	}
 }

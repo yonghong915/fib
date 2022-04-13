@@ -1,7 +1,7 @@
-package com.fib.upp.service;
+package com.fib.upp.modules.cnaps.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.fib.upp.entity.cnaps.CnapsSystemStatus;
+import com.fib.upp.modules.cnaps.entity.CnapsSystemStatus;
 
 import cn.hutool.core.lang.Opt;
 

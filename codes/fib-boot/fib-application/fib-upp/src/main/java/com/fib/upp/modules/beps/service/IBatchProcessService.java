@@ -1,4 +1,4 @@
-package com.fib.upp.service.beps;
+package com.fib.upp.modules.beps.service;
 
 import com.fib.upp.entity.BatchProcess;
 

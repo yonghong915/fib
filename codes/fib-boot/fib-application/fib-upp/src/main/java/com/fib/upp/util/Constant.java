@@ -53,13 +53,34 @@ public class Constant {
 	}
 
 	public enum QueueStatus {
-		OPN("OPN", "大额"), CLS("CLS", "小额"), CRT("CRT", "小额"), FPC("FPC", "小额");
+		OPN("OPN", "大额"), CLS("CLS", "小额"), FPC("FPC", "小额");
 
 		private String code;
 
 		private String name;
 
 		QueueStatus(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
+	public enum QueueItemStatus {
+		CRT("CRT", "小额"), END("END", "小额"), FAILED("FAILED", "小额");
+
+		private String code;
+
+		private String name;
+
+		QueueItemStatus(String code, String name) {
 			this.code = code;
 			this.name = name;
 		}
@@ -133,11 +154,11 @@ public class Constant {
 	}
 
 	public enum ServiceName {
-		/** 普通借记-来账 */
-		PROCESS_PAYMENT_ORDER("processPaymentOrder", "普通借记-来账"),
+		/** 支付订单处理 */
+		PROCESS_PAYMENT_ORDER("processPaymentOrder", " 支付订单处理"),
 
-		/** 普通贷记-来账 */
-		SEND_MESSAGE_BY_QUEUE("sendMessageByQueue", "普通借记-来账");
+		/** 队列发包 */
+		SEND_MESSAGE_BY_QUEUE("sendMessageByQueue", "队列发包");
 
 		private String code;
 

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fib.commons.exception.BusinessException;
 import com.fib.upp.beps.BepsBatchFactory;
 import com.fib.upp.entity.BatchProcess;
+import com.fib.upp.modules.beps.service.IBatchProcessService;
 
 import cn.hutool.core.lang.Opt;
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 
@@ -25,9 +27,9 @@ public class BepsDealBatchService {
 
 	public void execute(String batchId) {
 		logger.info("Enter BepsDealBatch...batchId:[{}]", batchId);
-//		if (StrUtil.isEmpty(batchId)) {
-//			return;
-//		}
+		if (StrUtil.isEmptyIfStr(batchId)) {
+			return;
+		}
 		// 查询批次信息，若批次状态为登记（00），则说明未进行过批处理，调用订单流程;否则不调用订单流程，只需判断是否到期状态
 		// batch_process where batch_id=?
 		Opt<BatchProcess> optBp = batchProcessService.getBatchProcess(batchId);

@@ -1,8 +1,8 @@
-package com.fib.upp.mapper;
+package com.fib.upp.modules.cnaps.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fib.upp.entity.cnaps.CnapsSystemStatus;
+import com.fib.upp.modules.cnaps.entity.CnapsSystemStatus;
 import com.fib.upp.util.EnumConstants;
 
 @DS(EnumConstants.DATASOURCE_UPP)

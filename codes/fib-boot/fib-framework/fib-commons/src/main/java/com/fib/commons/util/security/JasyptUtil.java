@@ -25,7 +25,7 @@ public class JasyptUtil {
 		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		EnvironmentStringPBEConfig config = new EnvironmentStringPBEConfig();
 		encryptor.setAlgorithm(ALGORITHM);
-		encryptor.setPassword(StrUtil.isEmpty(securityKey) ? DEFAULT_SECRET_KEY : securityKey);
+		encryptor.setPassword(StrUtil.isEmptyIfStr(securityKey) ? DEFAULT_SECRET_KEY : securityKey);
 		encryptor.setConfig(config);
 		return encryptor.encrypt(plainText);
 	}
@@ -34,7 +34,7 @@ public class JasyptUtil {
 		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		EnvironmentStringPBEConfig config = new EnvironmentStringPBEConfig();
 		encryptor.setAlgorithm(ALGORITHM);
-		encryptor.setPassword(StrUtil.isEmpty(securityKey) ? DEFAULT_SECRET_KEY : securityKey);
+		encryptor.setPassword(StrUtil.isEmptyIfStr(securityKey) ? DEFAULT_SECRET_KEY : securityKey);
 		encryptor.setConfig(config);
 		return encryptor.decrypt(cipherText);
 	}

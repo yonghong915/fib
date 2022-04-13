@@ -1,4 +1,4 @@
-package com.fib.upp.service.impl;
+package com.fib.upp.modules.beps.service.impl;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fib.commons.exception.BusinessException;
 import com.fib.core.base.dto.BaseDTO;
 import com.fib.core.util.StatusCode;
-import com.fib.upp.entity.MessagePackRule;
-import com.fib.upp.mapper.MessagePackRuleMapper;
-import com.fib.upp.service.IMessagePackRuleService;
+import com.fib.upp.modules.beps.entity.MessagePackRule;
+import com.fib.upp.modules.beps.mapper.MessagePackRuleMapper;
+import com.fib.upp.modules.beps.service.IMessagePackRuleService;
 
 import cn.hutool.core.lang.Opt;
 

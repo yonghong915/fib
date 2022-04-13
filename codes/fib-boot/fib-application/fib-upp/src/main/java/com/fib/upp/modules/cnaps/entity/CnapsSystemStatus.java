@@ -1,4 +1,4 @@
-package com.fib.upp.entity.cnaps;
+package com.fib.upp.modules.cnaps.entity;
 
 import java.math.BigInteger;
 

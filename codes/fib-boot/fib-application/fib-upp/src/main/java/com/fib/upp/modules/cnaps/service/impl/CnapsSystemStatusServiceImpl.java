@@ -1,4 +1,4 @@
-package com.fib.upp.service.impl;
+package com.fib.upp.modules.cnaps.service.impl;
 
 import org.springframework.stereotype.Service;
 
@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fib.commons.exception.BusinessException;
 import com.fib.commons.exception.CommonException;
 import com.fib.core.util.StatusCode;
-import com.fib.upp.entity.cnaps.CnapsSystemStatus;
-import com.fib.upp.mapper.CnapsSystemStatusMapper;
-import com.fib.upp.service.ICnapsSystemStatusService;
+import com.fib.upp.modules.cnaps.entity.CnapsSystemStatus;
+import com.fib.upp.modules.cnaps.mapper.CnapsSystemStatusMapper;
+import com.fib.upp.modules.cnaps.service.ICnapsSystemStatusService;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Opt;

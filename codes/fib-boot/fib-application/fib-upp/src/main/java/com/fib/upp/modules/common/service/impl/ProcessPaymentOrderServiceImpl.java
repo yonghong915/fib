@@ -43,7 +43,7 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 		// ----------
 		// 通过销售流程配置，决定是否进行订单处理
 		boolean processOrder = triggerProcessOrder(newContext);
-
+		LOGGER.info("processOrder={}", processOrder);
 		rtnMap.put("aaa", "sss");
 		return rtnMap;
 	}
@@ -54,7 +54,7 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerProcessOrder(Map context) {
+	public boolean triggerProcessOrder(Map<String, Object> context) {
 		return checkSalesStep(context, "processOrder");
 	}
 
@@ -64,7 +64,7 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerProcessPayment(Map context) {
+	public boolean triggerProcessPayment(Map<String, Object> context) {
 		return checkSalesStep(context, "processPayment");
 	}
 
@@ -74,7 +74,7 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerApproveOrder(Map context) {
+	public boolean triggerApproveOrder(Map<String, Object> context) {
 		return checkSalesStep(context, "approveOrder");
 	}
 
@@ -84,7 +84,7 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerProcessInvoice(Map context) {
+	public boolean triggerProcessInvoice(Map<String, Object> context) {
 		return checkSalesStep(context, "processInvoice");
 	}
 
@@ -94,13 +94,13 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerFulfill(Map context) {
+	public boolean triggerFulfill(Map<String, Object> context) {
 		return checkSalesStep(context, "fulfill");
 	}
 
-	private boolean checkSalesStep(Map context, String step) {
+	private boolean checkSalesStep(Map<String, Object> context, String step) {
 		boolean result = true;
-
+		//
 		return result;
 	}
 
@@ -148,8 +148,8 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 				Map<String, Object> pam = MapUtil.newHashMap();
 				pam.put("111", "aaaa" + cnt.getAndIncrement());
 				ThreadLocalMessageContext.INSTANCE.set("parmaMap", pam);
-				System.out.println(
-						Thread.currentThread().getName() + " " + ThreadLocalMessageContext.INSTANCE.get("parmaMap"));
+				LOGGER.info("{} {}", Thread.currentThread().getName(),
+						ThreadLocalMessageContext.INSTANCE.get("parmaMap"));
 			}).start();
 		}
 	}

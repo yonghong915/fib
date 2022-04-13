@@ -1,10 +1,11 @@
-package com.fib.upp.entity;
+package com.fib.upp.modules.beps.entity;
 
 import java.math.BigInteger;
 import java.util.Objects;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fib.core.base.dto.BaseDTO;
+import com.fib.upp.entity.MessagePackElement;
 import com.fib.upp.util.BitStateUtil;
 
 /**
@@ -102,5 +103,44 @@ public class MessagePackRule extends BaseDTO {
 
 	public void setRuleValue(Integer ruleValue) {
 		this.ruleValue = ruleValue;
+	}
+
+	public String getPackStr(MessagePackElement packElem) {
+		StringBuilder sb = new StringBuilder();
+		if (transactionType()) {
+			sb.append(String.format("%1$-6s", getTrim(packElem.getTransactionType())));
+		}
+
+		// 发起清算行
+		if (sendClearingBank()) {
+			sb.append(String.format("%1$-14s", getTrim(packElem.getSendClearingBank())));
+		}
+		// 接收清算行
+		if (receiveClearBank()) {
+			sb.append(String.format("%1$-14s", getTrim(packElem.getReceiveClearingBank())));
+		}
+		// 相同的回执期
+		if (returnLimited()) {
+			sb.append(String.format("%1$-2s", getTrim(packElem.getReturnLimited())));
+		}
+		// 原报文标识号:当前工作日期（8位数字）+报文序号（8位数字，不足8位的，左补0）组成，共16位长度，例如2010020200000001
+		if (originalMessageId()) {
+			sb.append(String.format("%1$-16s", getTrim(packElem.getOriginalMessageId())));
+		}
+		// 批次号
+		if (batchId()) {
+			sb.append(String.format("%1$-20s", getTrim(packElem.getBatchId())));
+		}
+		// 包序号，默认为零
+		sb.append(String.format("%1$-6s", "pkg" + packElem.getPackNO()));
+
+		return sb.toString();
+	}
+
+	public static String getTrim(String str) {
+		if (null != str) {
+			return str.trim();
+		}
+		return "";
 	}
 }

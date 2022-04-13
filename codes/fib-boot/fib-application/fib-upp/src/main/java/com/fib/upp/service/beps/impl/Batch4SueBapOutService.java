@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 import com.fib.commons.exception.BusinessException;
 import com.fib.upp.entity.BatchProcess;
 import com.fib.upp.entity.BatchProcessDetail;
+import com.fib.upp.modules.beps.service.IBatchProcessDetailService;
+import com.fib.upp.modules.beps.service.IBatchProcessService;
 import com.fib.upp.service.beps.BepsBatchService;
-import com.fib.upp.service.beps.IBatchProcessDetailService;
-import com.fib.upp.service.beps.IBatchProcessService;
 import com.fib.upp.util.Constant;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Opt;
 
 @Service("sueBapOutService")
@@ -22,9 +23,6 @@ public class Batch4SueBapOutService implements BepsBatchService {
 
 	@Autowired
 	private IBatchProcessDetailService batchProcessDetailService;
-
-//	@Autowired
-//	private IOrderService orderService;
 
 	@Override
 	public void execute(String batchId) {
@@ -41,13 +39,13 @@ public class Batch4SueBapOutService implements BepsBatchService {
 
 	private void dealTOCBatchForOrderIt(String batchId) {
 		List<BatchProcessDetail> list = batchProcessDetailService.getBatchProcessDetail(batchId);
-//		if (CollUtil.isEmpty(list)) {
-//			return;
-//		}
+		if (CollUtil.isEmpty(list)) {
+			return;
+		}
 		list.stream().forEach(batchProcessDetail -> {
 
 		});
-		// orderService.processPaymentOrder();
+
 	}
 
 }

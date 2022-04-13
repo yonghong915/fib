@@ -1,10 +1,10 @@
-package com.fib.upp.service;
+package com.fib.upp.modules.beps.service;
 
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fib.core.base.dto.BaseDTO;
-import com.fib.upp.entity.MessagePackRule;
+import com.fib.upp.modules.beps.entity.MessagePackRule;
 
 import cn.hutool.core.lang.Opt;
 

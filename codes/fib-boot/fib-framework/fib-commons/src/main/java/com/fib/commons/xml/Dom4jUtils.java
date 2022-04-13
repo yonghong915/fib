@@ -2,21 +2,28 @@ package com.fib.commons.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXValidator;
+import org.dom4j.util.XMLErrorHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.fib.commons.exception.CommonException;
@@ -34,6 +41,7 @@ import cn.hutool.core.util.StrUtil;
  * @date 2021-01-06
  */
 public class Dom4jUtils {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Dom4jUtils.class);
 	private static final String DEFAULT_NAMESPACE = "http://www.fib.com/schema";
 	private static final String DEFAULT_SAX_FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
 	private static final String DEFAULT_NAMESPACE_NAME = "default";
@@ -43,7 +51,7 @@ public class Dom4jUtils {
 	}
 
 	public static Document createDocument(String fileName) {
-		if (CharSequenceUtil.isEmpty(fileName)) {
+		if (StrUtil.isEmptyIfStr(fileName)) {
 			throw new CommonException("fileName must be not empty.");
 		}
 		InputStream is = FileUtil.getInputStream(fileName);
@@ -154,18 +162,18 @@ public class Dom4jUtils {
 		DocumentFactory factory = new DocumentFactory();
 		factory.setXPathNamespaceURIs(map);
 		SAXReader reader = new SAXReader(factory);
-		reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+		reader.setFeature(DEFAULT_SAX_FEATURE, true);
 		try {
-			return reader.read(new ByteArrayInputStream(xml.getBytes("UTF-8")));
-		} catch (UnsupportedEncodingException | DocumentException e) {
+			return reader.read(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+		} catch (DocumentException e) {
 			throw new CommonException("Failed to read xml.", e);
 		}
 	}
 
 	public static XPath getXPath(Element rootEle, String xpath) {
-		Map<String, String> nameSpaceMap = new HashMap<String, String>();
+		Map<String, String> nameSpaceMap = new HashMap<>();
 		nameSpaceMap.put(DEFAULT_NAMESPACE_NAME, rootEle.getNamespaceURI());
-		xpath = xpath.replaceAll("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
+		xpath = xpath.replace("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
 		XPath xItemName = rootEle.createXPath(xpath);
 		xItemName.setNamespaceURIs(nameSpaceMap);
 		return xItemName;
@@ -189,14 +197,14 @@ public class Dom4jUtils {
 		nameSpaceMap.put(namespaceKey, namespace);
 		DocumentFactory.getInstance().setXPathNamespaceURIs(nameSpaceMap);
 
-		xpathExpression = xpathExpression.replaceAll("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
+		xpathExpression = xpathExpression.replace("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
 		return DocumentFactory.getInstance().createXPath(xpathExpression);
 	}
 
 	public static String getXPathValue(Document doc, String xpath) {
 		Node node = doc.selectSingleNode(xpath);
 		if (Objects.isNull(node)) {
-			return StrUtil.EMPTY;
+			return CharSequenceUtil.EMPTY;
 		}
 		return node.getText();
 	}
@@ -204,7 +212,7 @@ public class Dom4jUtils {
 	public static String getXPathValue(Node node, String xpath) {
 		Node childNode = node.selectSingleNode(xpath);
 		if (Objects.isNull(childNode)) {
-			return StrUtil.EMPTY;
+			return CharSequenceUtil.EMPTY;
 		}
 		return childNode.getText();
 	}
@@ -251,118 +259,56 @@ public class Dom4jUtils {
 		}
 	}
 
-	public void check() {
-//		// 创建默认的XML错误处理器
-//		XMLErrorHandler errorHandler = new XMLErrorHandler();
-//		// 获取基于 SAX 的解析器的实例
-//		SAXParserFactory factory = SAXParserFactory.newInstance();
-//		// 解析器在解析时验证 XML 内容。
-//		factory.setValidating(true);
-//		// 指定由此代码生成的解析器将提供对 XML 名称空间的支持。
-//		factory.setNamespaceAware(true);
-//		// 使用当前配置的工厂参数创建 SAXParser 的一个新实例。
-//		try {
-//			SAXParser parser = factory.newSAXParser();
-//			// 创建一个读取工具
-//			SAXReader xmlReader = new SAXReader();
-//			// 获取要校验xml文档实例
-//			Document xmlDocument = (Document) xmlReader.read(new File(xmlFileName));
-//			// 设置 XMLReader 的基础实现中的特定属性。核心功能和属性列表可以在
-//			// [url]http://sax.sourceforge.net/?selected=get-set[/url] 中找到。
-//			parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-//					"http://www.w3.org/2001/XMLSchema");
-//			parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaSource", "file:" + xsdFileName);
-//			// 创建一个SAXValidator校验工具，并设置校验工具的属性
-//			SAXValidator validator = new SAXValidator(parser.getXMLReader());
-//			// 设置校验工具的错误处理器，当发生错误时，可以从处理器对象中得到错误信息。
-//			validator.setErrorHandler(errorHandler);
-//			// 校验
-//			validator.validate(xmlDocument);
-//
-////            XMLWriter writer = new XMLWriter(OutputFormat.createPrettyPrint()); 
-//			// 如果错误信息不为空，说明校验失败，打印错误信息
-//
-//			if (errorHandler.getErrors().hasContent()) {
-//				Element e = errorHandler.getErrors();
-//				List<Node> list = e.content();
-//				int count = 0;
-//				String result = "";
-//				for (Node node : list) {
-//					String error = node.getText().split(":")[1];
-//					if (error.contains("元素") && error.contains("无效")) {
-//						count++;
-//						result += error + " ";
-//					}
-//				}
-//				System.err.println("共有" + count + "处错误");
-//				System.err.println(result);
-//			} else {
-//				System.err.println("Good! XML文件通过XSD文件校验成功！");
-//			}
-//		} catch (ParserConfigurationException | SAXException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+	static final String SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
-	}
+	static final String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
-	public static void main(String[] args) {
+	static final String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
-		String msg = "<Document xmlns=\"urn:cnaps:std:beps:2010:tech:xsd:beps.121.001.01\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n"
-				+ "\r\n" + "  <CstmrCdtTrf>\r\n" + "    <PKGGrpHdr>\r\n" + "      <MsgId>2021032375961815</MsgId>\r\n"
-				+ "      <CreDtTm>2021-03-23T11:41:39</CreDtTm>\r\n" + "      <InstgPty>\r\n"
-				+ "        <InstgDrctPty>102100099996</InstgDrctPty>\r\n" + "      </InstgPty>\r\n"
-				+ "      <InstdPty>\r\n" + "        <InstdDrctPty>313684093748</InstdDrctPty>\r\n"
-				+ "      </InstdPty>\r\n" + "      <NbOfTxs>1</NbOfTxs>\r\n"
-				+ "      <CtrlSum Ccy=\"CNY\">100.00</CtrlSum>\r\n" + "      <SysCd>BEPS</SysCd>\r\n"
-				+ "    </PKGGrpHdr>\r\n" + "    <NPCPrcInf>\r\n" + "      <PrcSts>PR03</PrcSts>\r\n"
-				+ "      <PrcCd>NEZI0000</PrcCd>\r\n" + "      <NetgDt>2021-03-23</NetgDt>\r\n"
-				+ "      <NetgRnd>03</NetgRnd>\r\n" + "      <RcvTm>2021-03-23T11:41:39</RcvTm>\r\n"
-				+ "      <TrnsmtTm>2021-03-23T11:41:39</TrnsmtTm>\r\n" + "    </NPCPrcInf>\r\n"
-				+ "    <CstmrCdtTrfInf>\r\n" + "      <TxId>2021032332670371</TxId>\r\n" + "      <Dbtr>\r\n"
-				+ "        <Nm>待报解预算收入-待报解预算收入（代理支库专用）</Nm>\r\n" + "        <PstlAdr>\r\n"
-				+ "          <AdrLine>abcdegg</AdrLine>\r\n" + "        </PstlAdr>\r\n" + "      </Dbtr>\r\n"
-				+ "      <DbtrAcct>\r\n" + "        <Id>\r\n" + "          <Othr>\r\n"
-				+ "            <Id>3100028011200311022</Id>\r\n" + "            <Issr>102653005001</Issr>\r\n"
-				+ "          </Othr>\r\n" + "        </Id>\r\n" + "      </DbtrAcct>\r\n" + "      <DbtrAgt>\r\n"
-				+ "        <BrnchId>\r\n" + "          <Id>102653005077</Id>\r\n" + "        </BrnchId>\r\n"
-				+ "      </DbtrAgt>\r\n" + "      <CdtrAgt>\r\n" + "        <BrnchId>\r\n"
-				+ "          <Id>313684093748</Id>\r\n" + "        </BrnchId>\r\n" + "      </CdtrAgt>\r\n"
-				+ "      <Cdtr>\r\n" + "        <Nm>左建英</Nm>\r\n" + "      </Cdtr>\r\n" + "      <CdtrAcct>\r\n"
-				+ "        <Id>\r\n" + "          <Othr>\r\n" + "            <Id>6231990000001208674</Id>\r\n"
-				+ "            <Issr>313684093748</Issr>\r\n" + "          </Othr>\r\n" + "        </Id>\r\n"
-				+ "      </CdtrAcct>\r\n" + "      <Amt Ccy=\"CNY\">100.00</Amt>\r\n" + "      <PmtTpInf>\r\n"
-				+ "        <CtgyPurp>\r\n" + "          <Prtry>A100</Prtry>\r\n" + "        </CtgyPurp>\r\n"
-				+ "      </PmtTpInf>\r\n" + "      <Purp>\r\n" + "        <Prtry>02102</Prtry>\r\n"
-				+ "      </Purp>\r\n" + "      <AddtlInf>621032010221687457</AddtlInf>\r\n"
-				+ "    </CstmrCdtTrfInf>\r\n" + "  </CstmrCdtTrf></Document>";
+	static final String ATTRIBUTE_LINE = "line";
 
-		String xpath = "ns:Document/ns:CstmrCdtTrf/ns:CstmrCdtTrfInf/ns:Dbtr/ns:PstlAdr/ns:AdrLine/text()";
+	public static boolean check(Document xmlDocument, String xsdFileName) {
+		StringBuilder errorMsg = new StringBuilder();
+
+		// 创建默认的XML错误处理器
+		XMLErrorHandler errorHandler = new XMLErrorHandler();
+		// 获取基于 SAX 的解析器的实例
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		// 解析器在解析时验证 XML 内容。
+		factory.setValidating(true);
+		// 指定由此代码生成的解析器将提供对 XML 名称空间的支持。
+		factory.setNamespaceAware(true);
+		// 使用当前配置的工厂参数创建 SAXParser 的一个新实例。
 		try {
-			Document doc = getXPathDocument(msg, "urn:cnaps:std:beps:2010:tech:xsd:beps.121.001.01");
-			String rt = getXPathValue(doc, xpath);
-			System.out.println(rt);
+			SAXParser parser = factory.newSAXParser();
 
-			Map<String, String> nameSpaceMap = new HashMap<String, String>();
-			Document document = DocumentHelper.parseText(msg);
-			nameSpaceMap.put(DEFAULT_NAMESPACE_NAME, document.getRootElement().getNamespaceURI());
-			String path = "/Document/CstmrCdtTrf/CstmrCdtTrfInf/Dbtr/PstlAdr/AdrLine";
-			path = path.replaceAll("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
-			System.out.println(path);
-			XPath xItemName = document.getRootElement().createXPath(path);
-			xItemName.setNamespaceURIs(nameSpaceMap);
-			String returnstr = "";
-			Node element = xItemName.selectSingleNode(document.getRootElement());
-			if (element != null) {
-				returnstr = element.getText();
+			parser.setProperty(SCHEMA_LANGUAGE, XML_SCHEMA);
+			parser.setProperty(SCHEMA_SOURCE, xsdFileName);
+
+			// 创建一个SAXValidator校验工具，并设置校验工具的属性
+			SAXValidator validator = new SAXValidator(parser.getXMLReader());
+			// 设置校验工具的错误处理器，当发生错误时，可以从处理器对象中得到错误信息。
+			validator.setErrorHandler(errorHandler);
+			// 校验
+			validator.validate(xmlDocument);
+
+			// 如果错误信息不为空，说明校验失败，打印错误信息
+			if (errorHandler.getErrors().hasContent()) {
+				List<Element> elements = errorHandler.getErrors().elements();
+				for (Element element : elements) {
+					String line = String.valueOf(Integer.parseInt(element.attributeValue(ATTRIBUTE_LINE)) - 1);
+					String text = element.getText();
+					errorMsg.append("(第 " + line + "行出现错误) " + text);
+				}
+				errorMsg.append("XML文件通过XSD文件校验失败！");
+			} else {
+				LOGGER.error("Good! XML文件通过XSD文件校验成功！");
+				return true;
 			}
-
-			System.out.println("returnstr=" + returnstr);
-
-		} catch (DocumentException | SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ParserConfigurationException | SAXException e) {
+			LOGGER.error("XML文件通过XSD文件校验失败", e);
+			return false;
 		}
-
+		return StrUtil.isEmptyIfStr(errorMsg.toString());
 	}
 }

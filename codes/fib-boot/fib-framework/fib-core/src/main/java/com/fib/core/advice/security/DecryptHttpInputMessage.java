@@ -2,6 +2,7 @@ package com.fib.core.advice.security;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import com.fib.core.base.service.ISecurityService;
 import com.fib.core.util.ConstantUtil;
 import com.fib.core.util.SpringContextUtils;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
@@ -37,7 +39,11 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 	private HttpHeaders headers;
 	private InputStream body;
 
-	public DecryptHttpInputMessage(HttpInputMessage inputMessage, String charset, boolean showLog) throws Exception {
+	public DecryptHttpInputMessage(HttpInputMessage inputMessage, String charset, boolean showLog) throws IOException {
+
+		if (StrUtil.isEmptyIfStr(charset)) {
+			charset = CharsetUtil.CHARSET_UTF_8.name();
+		}
 
 		this.headers = inputMessage.getHeaders();
 		String content = new BufferedReader(new InputStreamReader(inputMessage.getBody())).lines()
@@ -45,20 +51,21 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 		String authentication = headers.getFirst("authentication");
 		String securityKey = headers.getFirst("securityKey");
 		String systemCode = headers.getFirst("systemCode");
-		if (StrUtil.isEmpty(authentication) || StrUtil.isEmpty(securityKey) || StrUtil.isEmpty(systemCode)) {
-			// TODO
+		if (StrUtil.isEmptyIfStr(authentication) || StrUtil.isEmptyIfStr(securityKey)
+				|| StrUtil.isEmptyIfStr(systemCode)) {
+			//
 		}
 
 		ISecurityService securityService = SpringContextUtils.getBean("securityService");
 
 		String ownPrivateKey = securityService.queryPrivateKey(ConstantUtil.UPP_SYSTEM_CODE);
-		if (StrUtil.isEmpty(ownPrivateKey)) {
-			// TODO
+		if (StrUtil.isEmptyIfStr(ownPrivateKey)) {
+			//
 		}
 
 		String otherpublicKey = securityService.queryPublicKey(systemCode);
-		if (StrUtil.isEmpty(otherpublicKey)) {
-			// TODO
+		if (StrUtil.isEmptyIfStr(otherpublicKey)) {
+			//
 		}
 
 		/* 1.用自己私钥对非对称密钥解密-SM2 */
@@ -68,7 +75,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 
 		/* 2.用对称加密算法对报文内容解密-SM4 */
 		if (!JSONUtil.isJson(content)) {
-			// TODO
+			//
 		}
 
 		JSONObject jsonCxt = JSONUtil.parseObj(content);
@@ -83,8 +90,8 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 
 		JSONObject messageBody = JSONUtil.parseObj(bodySource);
 		String rspCode = messageBody.getStr("rspCode");
-		if (!StrUtil.equals("000000", rspCode)) {
-			// TODO
+		if (!CharSequenceUtil.equals("000000", rspCode)) {
+			//
 		}
 
 		Object data = messageBody.getObj("rspObj");
@@ -95,11 +102,11 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 
 		/* 4.用对方公钥对摘要验签-SM2 */
 		boolean verifyFlag = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2")
-				.verify(StrUtil.bytes(bodyHash, CharsetUtil.CHARSET_UTF_8), HexUtil.decodeHex(authentication),
+				.verify(CharSequenceUtil.bytes(bodyHash, CharsetUtil.CHARSET_UTF_8), HexUtil.decodeHex(authentication),
 						SecureUtil.decode(otherpublicKey));
-		log.info("verifyFlag=" + verifyFlag);
+		log.info("verifyFlag={}", verifyFlag);
 		if (!verifyFlag) {
-			// TODO
+			//
 		}
 		this.body = new ByteArrayInputStream(JSONUtil.toJsonStr(data).getBytes());
 	}

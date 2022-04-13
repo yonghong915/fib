@@ -1,5 +1,6 @@
 package com.fib.core.advice.security;
 
+import java.lang.reflect.Method;
 import java.util.Date;
 
 import org.apache.dubbo.rpc.model.ScopeModelUtil;
@@ -14,6 +15,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import com.fib.commons.exception.BusinessException;
 import com.fib.commons.security.SecurityEncryptor;
 import com.fib.commons.util.CommUtils;
 import com.fib.core.annotation.security.Encrypt;
@@ -21,9 +23,12 @@ import com.fib.core.base.service.ISecurityService;
 import com.fib.core.config.SecretKeyConfig;
 import com.fib.core.util.ConstantUtil;
 import com.fib.core.util.SpringContextUtils;
+import com.fib.core.util.StatusCode;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
@@ -51,7 +56,9 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
 	@Override
 	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-		if (returnType.getMethod().isAnnotationPresent(Encrypt.class) && secretKeyConfig.isOpen()) {
+		Assert.notNull(returnType, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
+		Method method = returnType.getMethod();
+		if (null != method && method.isAnnotationPresent(Encrypt.class) && secretKeyConfig.isOpen()) {
 			encryptFlag = true;
 		}
 		return encryptFlag;
@@ -61,6 +68,7 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
 			Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
 			ServerHttpResponse response) {
+		Assert.notNull(returnType, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
 		Boolean status = encryptLocal.get();
 		if (null != status && !status) {
 			encryptLocal.remove();
@@ -70,7 +78,11 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 			return body;
 		}
 
-		Encrypt en = returnType.getMethod().getAnnotation(Encrypt.class);
+		Method method = returnType.getMethod();
+		if (null == method) {
+			return body;
+		}
+		Encrypt en = method.getAnnotation(Encrypt.class);
 		if (null == en) {
 			return body;
 		}
@@ -90,12 +102,13 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 			ISecurityService securityService = SpringContextUtils.getBean("securityService");
 			String ownPrivateKey = securityService.queryPrivateKey(ConstantUtil.UPP_SYSTEM_CODE);
 			String otherPublicKey = securityService.queryPublicKey(ConstantUtil.OTHER_SYSTEM_CODE);
-			if (StrUtil.isEmpty(ownPrivateKey) || StrUtil.isEmpty(otherPublicKey)) {
-				// TODO
+			if (StrUtil.isEmptyIfStr(ownPrivateKey) || StrUtil.isEmptyIfStr(otherPublicKey)) {
+				//
 			}
 
 			byte[] signedContext = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2")
-					.sign(StrUtil.bytes(contentHash, CharsetUtil.CHARSET_UTF_8), SecureUtil.decode(ownPrivateKey));
+					.sign(CharSequenceUtil.bytes(contentHash, CharsetUtil.CHARSET_UTF_8),
+							SecureUtil.decode(ownPrivateKey));
 			logger.info("authentication={}", HexUtil.encodeHexStr(signedContext));
 
 			/* 3.用对方公钥对非对称密钥加密-SM2 */
@@ -103,13 +116,13 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 			logger.info("securityKeySource={}", securityKeySource);
 
 			byte[] cipherTxt = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2")
-					.encrypt(StrUtil.bytes(securityKeySource, CharsetUtil.CHARSET_UTF_8),
+					.encrypt(CharSequenceUtil.bytes(securityKeySource, CharsetUtil.CHARSET_UTF_8),
 							SecureUtil.decode(otherPublicKey));
 			logger.info("securityKey={}", HexUtil.encodeHexStr(cipherTxt));
 
 			/* 4.用对称加密算法对报文内容加密-SM4 */
 			byte[] encryptedBodyContent = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null)
-					.getExtension("SM4").encrypt(StrUtil.bytes(content, CharsetUtil.CHARSET_UTF_8),
+					.getExtension("SM4").encrypt(CharSequenceUtil.bytes(content, CharsetUtil.CHARSET_UTF_8),
 							securityKeySource.getBytes(CharsetUtil.CHARSET_UTF_8));
 
 			String bodyHash = HexUtil.encodeHexStr(encryptedBodyContent);

@@ -1,8 +1,8 @@
-package com.fib.upp.mapper;
+package com.fib.upp.modules.beps.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fib.upp.entity.MessagePackRule;
+import com.fib.upp.modules.beps.entity.MessagePackRule;
 import com.fib.upp.util.EnumConstants;
 
 /**

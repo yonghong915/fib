@@ -26,7 +26,7 @@ public class CnapsCtrler {
 	 * @return
 	 */
 	@PostMapping("/execute")
-	public ResultRsp<?> execute() {
+	public ResultRsp<Object> execute() {
 		LOGGER.info("execute");
 		return ResultUtil.message(null);
 	}

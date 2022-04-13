@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fib.upp.entity.cnaps.CnapsSystemStatus;
-import com.fib.upp.service.ICnapsSystemStatusService;
+import com.fib.upp.modules.cnaps.entity.CnapsSystemStatus;
+import com.fib.upp.modules.cnaps.service.ICnapsSystemStatusService;
 
 import cn.hutool.core.lang.Opt;
 

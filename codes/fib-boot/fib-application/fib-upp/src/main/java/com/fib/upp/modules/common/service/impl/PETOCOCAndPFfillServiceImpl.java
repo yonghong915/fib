@@ -105,6 +105,7 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 	private BigDecimal getLmtAmt(String systemCode) {
 		ICommonService commSrv = SpringContextUtils.getBean("lmtAmtService");
 		Map<String, Object> rspMap = commSrv.execute(null);
+		@SuppressWarnings("unchecked")
 		List<String> list = MapUtil.get(rspMap, "lmtAmtLst", List.class);
 		String lmtAmt = DEFAULT_LMT_AMT;
 		if (CollUtil.isNotEmpty(list)) {

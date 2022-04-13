@@ -3,6 +3,7 @@ package com.fib.upp.modules.beps.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -30,7 +31,7 @@ public interface BepsQueueMapper extends BaseMapper<BepsQueue> {
 	int updateQueueHeaderStatus(BepsQueueHeader queueHeader);
 
 	@Update("updateQueueItemStatus")
-	int updateQueueItemStatus(BepsQueueItem queueItem);
+	int updateQueueItemStatus(BepsQueueItem queueItem, @Param("recordIds") List<String> recordIds);
 
 	@Select("getQueueByQueueType")
 	BepsQueue getQueueByQueueType(String queueType);

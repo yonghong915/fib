@@ -23,7 +23,8 @@
 		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
 		UPDATE beps_queue_header
 		SET status=#{status}
-		WHERE queue_id=#{queueId}
+		WHERE
+		queue_id=#{queueId}
 	</update>
 
 	<select id="getQueueHeader"
@@ -39,7 +40,7 @@
 			<if test="queueType != null and queueType != ''">
 				AND queue_type=#{queueType}
 			</if>
-			
+
 			<if test="queueId != null and queueId != ''">
 				AND queue_id=#{queueId}
 			</if>
@@ -52,7 +53,7 @@
 		SET status=#{status}
 		WHERE queue_id=#{queueId}
 		AND record_id IN
-		<foreach collection="recordIds" item="recordId" index="index"
+		<foreach collection="list" item="recordId" index="index"
 			open="(" close=")" separator=",">
 			#{recordId}
 		</foreach>
@@ -68,7 +69,8 @@
 
 	<insert id="createQueueHeader"
 		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
-		INSERT INTO beps_queue_header(queue_id,queue_type,status)
+		INSERT INTO
+		beps_queue_header(queue_id,queue_type,status)
 		VALUES(#{queueId},#{queueType},#{status})
 	</insert>
 </mapper>

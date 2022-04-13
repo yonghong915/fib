@@ -11,7 +11,7 @@ import com.fib.commons.exception.CommonException;
 import com.fib.commons.xml.Dom4jUtils;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.StrUtil;
 
 public class InputStreamHandler implements BaseXMLHandler {
 	private boolean validate;
@@ -30,7 +30,7 @@ public class InputStreamHandler implements BaseXMLHandler {
 
 	@Override
 	public Configuration load() {
-		if (CharSequenceUtil.isEmpty(configName)) {
+		if (StrUtil.isEmptyIfStr(configName)) {
 			throw new CommonException("There is not exists configName.");
 		}
 		ConfigurationParser parser = ConfigurationParserFactory.getParser(configName);
@@ -39,7 +39,7 @@ public class InputStreamHandler implements BaseXMLHandler {
 
 	@Override
 	public Configuration load(String configName, ConfigurationParser parser) {
-		if (CharSequenceUtil.isEmpty(fileName)) {
+		if (StrUtil.isEmptyIfStr(fileName)) {
 			throw new CommonException("There is not exists fileName.");
 		}
 		InputStream is = FileUtil.getInputStream(fileName);

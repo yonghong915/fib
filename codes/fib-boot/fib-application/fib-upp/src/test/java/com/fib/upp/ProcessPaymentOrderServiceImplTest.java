@@ -1,5 +1,7 @@
 package com.fib.upp;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,5 +26,6 @@ public class ProcessPaymentOrderServiceImplTest {
 		Map<String, Object> context = new HashMap<>();
 		context.put(Constant.FieldKey.TRANS_ID.code(), "1223344555");
 		processPaymentOrder.execute(context);
+		assertTrue(true);
 	}
 }
