@@ -320,31 +320,68 @@ public class Constant {
 		}
 	}
 
+	public enum JavaDataType {
+		STRING("String", "大额"), BYTE_ARRAY("byte[]", "小额"), INT("int", "大额"), BYTE("byte", "大额"), LONG("long", "大额"),
+		SHORT("short", "大额");
+
+		private String code;
+
+		private String name;
+
+		JavaDataType(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
+	public enum MessageType {
+		COMMON("common", "大额"), XML("xml", "小额"), TAG("tag", "大额"), SWIFT("swift", "大额");
+
+		private String code;
+
+		private String name;
+
+		MessageType(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
 	public static String getJavaTypeByDataType(int i) {
 		switch (i) {
-		case 3000:
-		case 3001:
-		case 3006:
-		case 3010:
-		case 3011:
-			return "String";
+		case 3000, 3001, 3006, 3010, 3011:
+			return JavaDataType.STRING.code();
 
 		case 3002:
-			return "byte[]";
+			return JavaDataType.BYTE_ARRAY.code();
 
-		case 3003:
-		case 3007:
-			return "int";
+		case 3003, 3007:
+			return JavaDataType.INT.code();
 
 		case 3004:
-			return "byte";
+			return JavaDataType.BYTE.code();
 
-		case 3005:
-		case 3008:
-			return "short";
+		case 3005, 3008:
+			return JavaDataType.SHORT.code();
 
 		case 3009:
-			return "long";
+			return JavaDataType.LONG.code();
 		default:
 			throw new CommonException("Constant.dataType.notExist");
 		}
@@ -356,13 +393,13 @@ public class Constant {
 	public static final int RIGHT = 5002;
 
 	public static int getMessageTypeByText(String type) {
-		if ("common".equalsIgnoreCase(type))
+		if (MessageType.COMMON.code().equalsIgnoreCase(type))
 			return 1000;
-		if ("xml".equalsIgnoreCase(type))
+		if (MessageType.XML.code().equalsIgnoreCase(type))
 			return 1001;
-		if ("tag".equalsIgnoreCase(type))
+		if (MessageType.TAG.code().equalsIgnoreCase(type))
 			return 1002;
-		if ("swift".equalsIgnoreCase(type))
+		if (MessageType.SWIFT.code().equalsIgnoreCase(type))
 			return 1003;
 		else
 			throw new CommonException("Constant.messageTypeText.notExist");
@@ -397,10 +434,38 @@ public class Constant {
 			throw new CommonException("Constant.fieldTypeText.notExist");
 	}
 
+	public enum DataType {
+		SHORT("short", 3005, "大额"), STR("str", 3000, "小额"), NUM("num", 3001, "大额"), DOUBLE("double", 3011, "大额");
+
+		private String code;
+
+		private String name;
+
+		private int fieldDataType;
+
+		DataType(String code, int fieldDataType, String name) {
+			this.code = code;
+			this.fieldDataType = fieldDataType;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+
+		public int dataType() {
+			return fieldDataType;
+		}
+	}
+
 	public static int getDataTypeByText(String s) {
-		if ("str".equalsIgnoreCase(s))
+		if (DataType.STR.code().equalsIgnoreCase(s))
 			return 3000;
-		if ("num".equalsIgnoreCase(s))
+		if (DataType.NUM.code().equalsIgnoreCase(s))
 			return 3001;
 		if ("bin".equalsIgnoreCase(s))
 			return 3002;
@@ -408,7 +473,7 @@ public class Constant {
 			return 3003;
 		if ("byte".equalsIgnoreCase(s))
 			return 3004;
-		if ("short".equalsIgnoreCase(s))
+		if (DataType.SHORT.code().equalsIgnoreCase(s))
 			return 3005;
 		if ("datetime".equalsIgnoreCase(s))
 			return 3006;
@@ -420,7 +485,7 @@ public class Constant {
 			return 3009;
 		if ("decimal".equalsIgnoreCase(s))
 			return 3010;
-		if ("double".equalsIgnoreCase(s))
+		if (DataType.DOUBLE.code().equalsIgnoreCase(s))
 			return 3011;
 		else
 			throw new CommonException("Constant.dataTypeText.notExist");
@@ -429,13 +494,13 @@ public class Constant {
 	public static String getDataTypeText(int i) {
 		switch (i) {
 		case 3000:
-			return "str";
+			return DataType.STR.code();
 
 		case 3001:
-			return "num";
+			return DataType.NUM.code();
 
 		case 3011:
-			return "double";
+			return DataType.DOUBLE.code();
 
 		case 3006:
 			return "datetime";
@@ -453,7 +518,7 @@ public class Constant {
 			return "byte";
 
 		case 3005:
-			return "short";
+			return DataType.SHORT.code();
 
 		case 3008:
 			return "net-short";

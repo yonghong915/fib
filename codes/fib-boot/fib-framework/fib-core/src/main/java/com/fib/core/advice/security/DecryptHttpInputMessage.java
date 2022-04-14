@@ -39,7 +39,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 	private HttpHeaders headers;
 	private InputStream body;
 
-	public DecryptHttpInputMessage(HttpInputMessage inputMessage, String charset, boolean showLog) throws IOException {
+	public DecryptHttpInputMessage(HttpInputMessage inputMessage, String charset) throws IOException {
 
 		if (StrUtil.isEmptyIfStr(charset)) {
 			charset = CharsetUtil.CHARSET_UTF_8.name();
@@ -82,10 +82,10 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 		JSONArray jsonBody = jsonCxt.getJSONArray("body");
 		String encryptedBody = (String) jsonBody.get(0);
 		log.info("encryptedBody={}", encryptedBody);
-		byte[] body = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM4")
+		byte[] msgBody = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM4")
 				.decrypt(HexUtil.decodeHex(encryptedBody), encryptedKey);
 
-		String bodySource = StrUtil.str(body, CharsetUtil.CHARSET_UTF_8);
+		String bodySource = StrUtil.str(msgBody, CharsetUtil.CHARSET_UTF_8);
 		log.info("bodySource={}", bodySource);
 
 		JSONObject messageBody = JSONUtil.parseObj(bodySource);

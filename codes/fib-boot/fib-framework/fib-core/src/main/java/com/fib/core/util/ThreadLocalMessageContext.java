@@ -1,5 +1,7 @@
 package com.fib.core.util;
 
+import org.springframework.util.ClassUtils;
+
 import com.fib.commons.util.CommUtils;
 
 public enum ThreadLocalMessageContext {
@@ -39,5 +41,14 @@ public enum ThreadLocalMessageContext {
 
 	public Object get(String key) {
 		return ThreadLocalMessageContext.INSTANCE.getMessageContext().getProperty(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T get(String key, Class<T> clazz) {
+		Object obj = ThreadLocalMessageContext.INSTANCE.getMessageContext().getProperty(key);
+		if (ClassUtils.isAssignable(clazz, obj.getClass())) {
+			return (T) obj;
+		}
+		return null;
 	}
 }

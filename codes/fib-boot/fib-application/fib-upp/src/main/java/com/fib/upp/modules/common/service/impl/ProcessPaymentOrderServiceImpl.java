@@ -11,6 +11,7 @@ import com.fib.commons.exception.BusinessException;
 import com.fib.commons.exception.CommonException;
 import com.fib.core.util.StatusCode;
 import com.fib.core.util.ThreadLocalMessageContext;
+import com.fib.upp.modules.common.entity.PaymentOrderStepSetting;
 import com.fib.upp.modules.common.service.ICommonService;
 import com.fib.upp.util.Constant;
 
@@ -42,7 +43,7 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 		// processOrder
 		// ----------
 		// 通过销售流程配置，决定是否进行订单处理
-		boolean processOrder = triggerProcessOrder(newContext);
+		boolean processOrder = triggerProcessOrder();
 		LOGGER.info("processOrder={}", processOrder);
 		rtnMap.put("aaa", "sss");
 		return rtnMap;
@@ -54,8 +55,8 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerProcessOrder(Map<String, Object> context) {
-		return checkSalesStep(context, "processOrder");
+	public boolean triggerProcessOrder() {
+		return checkSalesStep("processOrder");
 	}
 
 	/**
@@ -64,8 +65,8 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerProcessPayment(Map<String, Object> context) {
-		return checkSalesStep(context, "processPayment");
+	public boolean triggerProcessPayment() {
+		return checkSalesStep("processPayment");
 	}
 
 	/**
@@ -74,8 +75,8 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerApproveOrder(Map<String, Object> context) {
-		return checkSalesStep(context, "approveOrder");
+	public boolean triggerApproveOrder() {
+		return checkSalesStep("approveOrder");
 	}
 
 	/**
@@ -84,8 +85,8 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerProcessInvoice(Map<String, Object> context) {
-		return checkSalesStep(context, "processInvoice");
+	public boolean triggerProcessInvoice() {
+		return checkSalesStep("processInvoice");
 	}
 
 	/**
@@ -94,13 +95,19 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	 * @param context
 	 * @return
 	 */
-	public boolean triggerFulfill(Map<String, Object> context) {
-		return checkSalesStep(context, "fulfill");
+	public boolean triggerFulfill() {
+		return checkSalesStep("fulfill");
 	}
 
-	private boolean checkSalesStep(Map<String, Object> context, String step) {
+	private boolean checkSalesStep(String step) {
 		boolean result = true;
-		//
+		PaymentOrderStepSetting poss = ThreadLocalMessageContext.INSTANCE.get("paymentOrderStepSetting",
+				PaymentOrderStepSetting.class);
+		if (null != poss) {
+			String possId = poss.getPaymentOrderStepSettingId();
+
+			result = !("N".equals(possId) || possId.equals(step));
+		}
 		return result;
 	}
 
@@ -132,11 +139,13 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 	}
 
 	private Object getParty(String tradePartyId) {
+		Assert.notBlank(tradePartyId, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
 		// Party partyId
 		return null;
 	}
 
 	private boolean isTransactionIdUnique(String transactionId) {
+		Assert.notBlank(transactionId, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
 		// OrderHeader transactionId
 		return false;
 	}
@@ -149,7 +158,7 @@ public class ProcessPaymentOrderServiceImpl implements ICommonService {
 				pam.put("111", "aaaa" + cnt.getAndIncrement());
 				ThreadLocalMessageContext.INSTANCE.set("parmaMap", pam);
 				LOGGER.info("{} {}", Thread.currentThread().getName(),
-						ThreadLocalMessageContext.INSTANCE.get("parmaMap"));
+						ThreadLocalMessageContext.INSTANCE.get("parmaMap", Map.class));
 			}).start();
 		}
 	}

@@ -48,7 +48,7 @@ public class SpringContextUtils implements ApplicationContextAware, DisposableBe
 	 * @return
 	 */
 	public static <T> T getBean(Class<T> clz) {
-		return (T) applicationContext.getBean(clz);
+		return applicationContext.getBean(clz);
 	}
 
 	@Override

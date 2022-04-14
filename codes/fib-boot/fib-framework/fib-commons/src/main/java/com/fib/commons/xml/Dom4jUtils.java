@@ -1,6 +1,7 @@
 package com.fib.commons.xml;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -173,7 +174,7 @@ public class Dom4jUtils {
 	public static XPath getXPath(Element rootEle, String xpath) {
 		Map<String, String> nameSpaceMap = new HashMap<>();
 		nameSpaceMap.put(DEFAULT_NAMESPACE_NAME, rootEle.getNamespaceURI());
-		xpath = xpath.replace("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
+		xpath = xpath.replace(File.separator, File.separator + DEFAULT_NAMESPACE_NAME + ":");
 		XPath xItemName = rootEle.createXPath(xpath);
 		xItemName.setNamespaceURIs(nameSpaceMap);
 		return xItemName;
@@ -197,7 +198,7 @@ public class Dom4jUtils {
 		nameSpaceMap.put(namespaceKey, namespace);
 		DocumentFactory.getInstance().setXPathNamespaceURIs(nameSpaceMap);
 
-		xpathExpression = xpathExpression.replace("/", "/" + DEFAULT_NAMESPACE_NAME + ":");
+		xpathExpression = xpathExpression.replace(File.separator, File.separator + DEFAULT_NAMESPACE_NAME + ":");
 		return DocumentFactory.getInstance().createXPath(xpathExpression);
 	}
 

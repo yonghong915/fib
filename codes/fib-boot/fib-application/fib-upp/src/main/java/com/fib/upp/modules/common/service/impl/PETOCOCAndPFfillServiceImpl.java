@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.fib.commons.exception.BusinessException;
 import com.fib.core.util.SpringContextUtils;
+import com.fib.core.util.StatusCode;
 import com.fib.upp.modules.common.service.ICommonService;
 import com.fib.upp.modules.common.service.ServiceDispatcher;
 import com.fib.upp.util.Constant;
@@ -64,9 +65,7 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 		String isPosthaste = "";
 		// ProductCategoryMember productId
 		List<String> list = CollUtil.newArrayList();
-
-		Assert.isFalse(CollUtil.isEmpty(list), () -> new BusinessException("aa", "系统中不存在当前业务"));
-
+		Assert.isFalse(CollUtil.isEmpty(list), () -> new BusinessException(StatusCode.RTN_NULL, "系统中不存在当前业务"));
 		int len = list.size();
 		if (len == 1) {
 			String productCategoryId = list.get(0);
@@ -75,21 +74,22 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 				BigDecimal lmtAmt = getLmtAmt(systemCode);
 				BigDecimal sum = new BigDecimal(transAmt);
 				if (sum.compareTo(lmtAmt) > 0) {
-					throw new BusinessException("bbb", "当前交易金额已超过小额限额控制，不能发起小额业务");
+					throw new BusinessException(StatusCode.RTN_NULL, "当前交易金额已超过小额限额控制，不能发起小额业务");
 				}
 			} else if (productCategoryId.contains("HVPS")) {
 				systemCode = "HVPS";
 			} else {
-				throw new BusinessException("ccc", "二代支付系统只支持大额（HVPS）与小额（BEPS）系统下的业务种类，不支持当前业务种类");
+				throw new BusinessException(StatusCode.RTN_NULL, "二代支付系统只支持大额（HVPS）与小额（BEPS）系统下的业务种类，不支持当前业务种类");
 			}
+			return systemCode;
+		}
+
+		if (!"3".equals(isPosthaste)) {
+			systemCode = "HVPS";
 		} else {
-			if (!"3".equals(isPosthaste)) {
-				systemCode = "HVPS";
-			} else {
-				BigDecimal lmtAmt = getLmtAmt(systemCode);
-				BigDecimal sum = new BigDecimal(transAmt);
-				systemCode = (sum.compareTo(lmtAmt) > 0) ? "HVPS" : "BEPS";
-			}
+			BigDecimal lmtAmt = getLmtAmt(systemCode);
+			BigDecimal sum = new BigDecimal(transAmt);
+			systemCode = (sum.compareTo(lmtAmt) > 0) ? "HVPS" : "BEPS";
 		}
 		return systemCode;
 	}
@@ -103,6 +103,7 @@ public class PETOCOCAndPFfillServiceImpl implements ICommonService {
 	 * @return
 	 */
 	private BigDecimal getLmtAmt(String systemCode) {
+		Assert.notBlank(systemCode, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
 		ICommonService commSrv = SpringContextUtils.getBean("lmtAmtService");
 		Map<String, Object> rspMap = commSrv.execute(null);
 		@SuppressWarnings("unchecked")
