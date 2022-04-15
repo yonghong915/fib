@@ -219,6 +219,9 @@ public class Constant {
 		/** 账户性质 */
 		ACCT_ATTR("acctAttr", "账户性质"),
 
+		/** 账户余额 */
+		ACCT_BAL("acctBal", "账户余额"),
+
 		/** 批次号 */
 		BATCH_ID("batchId", "批次号"),
 		/** 批量文件名称 */
@@ -228,6 +231,9 @@ public class Constant {
 		/** 批次状态 */
 		PROCESS_STATUS("processStatus", "批次状态"),
 
+		/** 文件名 */
+		FILE_NAME("fileName", "文件名"),
+
 		/** 业务类型 */
 		BIZ_TYPE("bizType", "业务类型"),
 		/** 业务种类 */
@@ -236,7 +242,7 @@ public class Constant {
 		/** 交易流水号 */
 		TRANS_ID("transId", "交易流水号"),
 		/** 交易笔数 */
-		TRANS_NUMBER("transNumber", "交易笔数"),
+		TRANS_NUM("transNume", "交易笔数"),
 		/** 交易金额 */
 		TRANS_AMT("transAmt", "交易金额"),
 		/** 交易类型 */
@@ -248,6 +254,12 @@ public class Constant {
 		/** 工作日期 */
 		WORK_DATE("workDate", "工作日期"),
 
+		/** 币种 */
+		CURRENCY_TYPE("currencyType", "币种"),
+		/** 银行附言 */
+		BANK_POSTSCRIPT("bankPostscript", "银行附言"),
+		/** 客户附言 */
+		CUST_POSTSCRIPT("custPostscript", "客户附言"),
 		/** 系统号 */
 		SYS_CODE("sysCode", "系统号"),
 		/** 清算日期 */
@@ -278,7 +290,10 @@ public class Constant {
 		/** 队列类型 */
 		QUEUE_ID("queueId", "队列编码"),
 		/** 队列类型 */
-		QUEUE_TYPE("queueType", "队列类型");
+		QUEUE_TYPE("queueType", "队列类型"),
+
+		/** 渠道 */
+		CHANNEL("channel", "渠道");
 
 		private String code;
 
@@ -540,6 +555,16 @@ public class Constant {
 		}
 
 		public static final String CONFIG_EMPTY_KEY = "config.null";
+	}
+
+	public static final class ConstantUtil {
+		private ConstantUtil() {
+		}
+
+		/** 数据精度-金额精度 */
+		public static final int AMT_SCALE = 2;
+
+		public static final String DEF_CHANNEL = "1001";
 	}
 
 }

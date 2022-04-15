@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fib.commons.exception.BusinessException;
 import com.fib.upp.beps.BepsBatchFactory;
-import com.fib.upp.entity.BatchProcess;
+import com.fib.upp.modules.beps.entity.BatchProcess;
 import com.fib.upp.modules.beps.service.IBatchProcessService;
 
 import cn.hutool.core.lang.Opt;

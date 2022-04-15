@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fib.commons.exception.BusinessException;
-import com.fib.upp.entity.BatchProcess;
-import com.fib.upp.entity.BatchProcessDetail;
+import com.fib.upp.modules.beps.entity.BatchProcess;
+import com.fib.upp.modules.beps.entity.BatchProcessDetail;
 import com.fib.upp.modules.beps.service.IBatchProcessDetailService;
 import com.fib.upp.modules.beps.service.IBatchProcessService;
 import com.fib.upp.service.beps.BepsBatchService;

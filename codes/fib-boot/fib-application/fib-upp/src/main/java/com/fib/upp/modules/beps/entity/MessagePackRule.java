@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fib.core.base.dto.BaseDTO;
-import com.fib.upp.entity.MessagePackElement;
 import com.fib.upp.util.BitStateUtil;
 
 /**

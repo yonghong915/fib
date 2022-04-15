@@ -1,4 +1,4 @@
-package com.fib.upp.entity;
+package com.fib.upp.modules.beps.entity;
 
 public class MessagePackElement {
 	/*

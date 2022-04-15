@@ -81,7 +81,7 @@ public enum StatusCode implements RestStatus {
 	PARAMS_CHECK_EXCEPTION("E000005", "参数校验异常"),
 
 	/**
-	 * 参数为空
+	 * 参数[{}]为空
 	 */
 	PARAMS_CHECK_NULL("E000006", "参数为空"),
 
@@ -106,7 +106,14 @@ public enum StatusCode implements RestStatus {
 	RTN_NULL("E000011", "{}"),
 
 	/** 其他异常 */
-	OTHER_EXCEPTION("E000009", "其他异常");
+	OTHER_EXCEPTION("E000009", "其他异常"),
+	
+	/** 账户状态不符 */
+	ACCT_STAT_INCOMP("E000009", "账户状态不符"),
+	
+	/** 账户余额不足 */
+	ACCT_BAL_INSUFFICIENT ("E000009", "账户余额不足"),
+	;
 
 	private final String code;
 
