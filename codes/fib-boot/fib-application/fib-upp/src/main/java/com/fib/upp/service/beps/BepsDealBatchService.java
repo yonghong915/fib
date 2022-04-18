@@ -32,7 +32,7 @@ public class BepsDealBatchService {
 		}
 		// 查询批次信息，若批次状态为登记（00），则说明未进行过批处理，调用订单流程;否则不调用订单流程，只需判断是否到期状态
 		// batch_process where batch_id=?
-		Opt<BatchProcess> optBp = batchProcessService.getBatchProcess(batchId);
+		Opt<BatchProcess> optBp = batchProcessService.getBatchProcessByBatchId(batchId);
 		BatchProcess batchProcess = optBp.orElseThrow(() -> new BusinessException("aaaa", "bbbb"));
 		String batchType = batchProcess.getBatchType();
 		// 判断是否超期

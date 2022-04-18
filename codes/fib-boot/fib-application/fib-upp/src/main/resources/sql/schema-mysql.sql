@@ -114,4 +114,16 @@ CREATE TABLE BEPS_QUEUE
         MESSAGE_TYPE VARCHAR(20) NOT NULL, SERVICE_NAME VARCHAR(60), MSG_VERSION CHARACTER(1), OPERATION_TYPE VARCHAR(20),
         LAST_UPDATED_STAMP TIMESTAMP, LAST_UPDATED_TX_STAMP TIMESTAMP, CREATED_STAMP TIMESTAMP, CREATED_TX_STAMP
         TIMESTAMP, PRIMARY KEY (MESSAGE_TYPE)
-    )
+    );
+    
+    create table  batch_process_group(
+	   batch_group_id varchar(50),
+	   trans_num int,
+	   trans_amt decimal(20,2),
+	   drawee_acct_no varchar(20),
+	   drawee_acct_name varchar(200),
+	   biz_type varchar(10),
+	   batch_type varchar(20),
+	   trans_id varchar(50),
+	   party_id varchar(20),
+	   teller_id varchar(20));

@@ -194,10 +194,18 @@ public class Constant {
 		PAYEE_ACCT_NO("payeeAcctNo", "收款账号"),
 		/** 收款户名 */
 		PAYEE_ACCT_NAME("payeeAcctName", "收款户名"),
+
+		/** 收款清算行 */
+		PAYEE_CLEAR_BANK_CODE("payeeClearBankCode", "收款清算行"),
+
 		/** 付款行号 */
 		DRAWEE_BANK_CODE("draweeBankCode", "付款行号"),
 		/** 付款行名 */
 		DRAWEE_BANK_NAME("draweeBankName", "付款行名"),
+
+		/** 付款清算行 */
+		DRAWEE_CLEAR_BANK_CODE("draweeClearBankCode", "付款清算行"),
+
 		/** 付款账号 */
 		DRAWEE_ACCT_NO("draweeAcctNo", "付款账号"),
 		/** 付款户名 */

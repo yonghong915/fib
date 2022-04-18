@@ -28,7 +28,9 @@ public class Batch4SueBapOutService implements BepsBatchService {
 	public void execute(String batchId) {
 		// 查询批次信息，若批次状态为登记（00），则说明未进行过批处理，调用订单流程;否则不调用订单流程，只需判断是否到期状态
 		// batch_process where batch_id=?
-		Opt<BatchProcess> optBp = batchProcessService.getBatchProcess(batchId);
+		BatchProcess bp = new BatchProcess();
+		bp.setBatchId(batchId);
+		Opt<BatchProcess> optBp = batchProcessService.getBatchProcess(bp);
 		BatchProcess batchProcess = optBp.orElseThrow(() -> new BusinessException("aaaa", "bbbb"));
 		String processStatus = batchProcess.getProcessStatus();
 		if (Constant.BatchStatus.REGISTER.code().equals(processStatus)) {
@@ -45,7 +47,5 @@ public class Batch4SueBapOutService implements BepsBatchService {
 		list.stream().forEach(batchProcessDetail -> {
 
 		});
-
 	}
-
 }

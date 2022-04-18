@@ -109,10 +109,10 @@ public enum StatusCode implements RestStatus {
 	OTHER_EXCEPTION("E000009", "其他异常"),
 	
 	/** 账户状态不符 */
-	ACCT_STAT_INCOMP("E000009", "账户状态不符"),
+	ACCT_STAT_INCOMP("E000019", "账户状态不符"),
 	
 	/** 账户余额不足 */
-	ACCT_BAL_INSUFFICIENT ("E000009", "账户余额不足"),
+	ACCT_BAL_INSUFFICIENT ("E000029", "账户余额不足"),
 	;
 
 	private final String code;

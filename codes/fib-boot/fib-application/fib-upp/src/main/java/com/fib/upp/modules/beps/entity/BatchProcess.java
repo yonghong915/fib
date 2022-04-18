@@ -10,6 +10,7 @@ import java.math.BigDecimal;
  * @date 2021-02-24
  */
 public class BatchProcess {
+	private String batchGroupId;
 	private String batchId;
 	private String batchType;
 	private String processStatus;
@@ -32,6 +33,14 @@ public class BatchProcess {
 	private String sndClearBankCode;
 
 	private String rcvClearBankCode;
+
+	public String getBatchGroupId() {
+		return batchGroupId;
+	}
+
+	public void setBatchGroupId(String batchGroupId) {
+		this.batchGroupId = batchGroupId;
+	}
 
 	public String getBatchId() {
 		return batchId;
