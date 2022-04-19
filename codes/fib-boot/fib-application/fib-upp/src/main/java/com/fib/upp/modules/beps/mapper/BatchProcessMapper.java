@@ -33,4 +33,6 @@ public interface BatchProcessMapper {
 	List<BatchProcessDetail> getBatchProcessDetail(BatchProcessDetail bpd);
 
 	int updateBatchProcessDetail(BatchProcessDetail bpd);
+
+	int insertBatch(List<BatchProcessDetail> list);
 }

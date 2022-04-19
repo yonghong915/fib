@@ -77,5 +77,10 @@
 		queue_type=#{queueType}
 	</select>
 
-
+	<insert id="insertBatch">
+		INSERT INTO batch_process_item(batch_id,batch_seq_id) VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{item.batchId},#{item.batchSeqId})
+		</foreach>
+	</insert>
 </mapper>

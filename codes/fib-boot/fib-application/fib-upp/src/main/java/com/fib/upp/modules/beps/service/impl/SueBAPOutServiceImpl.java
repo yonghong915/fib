@@ -11,24 +11,31 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.extension.injector.methods.InsertBatchSomeColumn;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fib.commons.exception.BusinessException;
 import com.fib.commons.util.CommUtils;
 import com.fib.core.util.StatusCode;
 import com.fib.upp.modules.beps.entity.BatchProcess;
+import com.fib.upp.modules.beps.entity.BatchProcessDetail;
 import com.fib.upp.modules.beps.entity.BatchProcessGroup;
 import com.fib.upp.modules.beps.service.IBatchProcessService;
 import com.fib.upp.modules.beps.service.ISueBAPOutService;
 import com.fib.upp.util.Constant;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Opt;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -42,6 +49,7 @@ import cn.hutool.core.util.StrUtil;
 @Service("sueBAPOutService")
 public class SueBAPOutServiceImpl implements ISueBAPOutService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SueBAPOutServiceImpl.class);
+	private static final String DELIMITER = "!^";
 
 	@Autowired
 	private IBatchProcessService batchProcessService;
@@ -98,91 +106,31 @@ public class SueBAPOutServiceImpl implements ISueBAPOutService {
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> dataList = MapUtil.get(rtnMap, "dataList", List.class);
 
-		String payeeBankCode = null;
 		String payeeClearBankCode = null;
-		Opt<BatchProcess> bpOpt = null;
+		List<BatchProcessDetail> bpdList = CollUtil.newArrayList();
+		BatchProcessDetail bpd = null;
+		Map<String, BatchProcess> bpMap = MapUtil.newHashMap();
+		String batchId = null;
 		for (Map<String, Object> dataMap : dataList) {
-			payeeBankCode = MapUtil.getStr(dataMap, Constant.FieldKey.PAYEE_BANK_CODE.code());
 			payeeClearBankCode = MapUtil.getStr(dataMap, Constant.FieldKey.PAYEE_CLEAR_BANK_CODE.code());
 			BigDecimal transSumDetail = new BigDecimal(MapUtil.getStr(dataMap, Constant.FieldKey.TRANS_AMT.code()));
 			// 校验小额限额 amtLmt
 			// 创建批次：
 			// 根据清算行行号+批次头+业务类型+批次类型+批次状态（登记） 查询批次表 如果有累加金额与笔数，如果没有就新建
-			BatchProcess bpParam = new BatchProcess();
-			bpParam.setSndClearBankCode(draweeClearBankCode);
-			bpParam.setRcvClearBankCode(payeeClearBankCode);
-			bpParam.setBatchGroupId(batchGroupId);
-			bpParam.setBizType(bizType);
-			bpParam.setBatchType(Constant.BatchType.SUE_BAP_OUT.code());
-			bpParam.setProcessStatus(Constant.BatchStatus.REGISTER.code());
 
-			AtomicReference<BatchProcess> arBp = new AtomicReference<>();
-			List<BatchProcess> bpList = new ArrayList<>();
-			if (bpList.contains(bpParam)) {
-
-			}
-
-			bpOpt = batchProcessService.getBatchProcess(bpParam);
-			if (null != bpOpt && bpOpt.isPresent()) {
-				bpParam.setTransNum(bpOpt.get().getTransNum() + 1);
-				bpParam.setTransAmt(bpOpt.get().getTransAmt().add(transSumDetail));
-				bpParam.setBatchId(bpOpt.get().getBatchId());
-				batchProcessService.updateBatchProcess(bpParam);
-			} else {
-				bpParam.setTransNum(1);
-				batchProcessService.insertBatchProcess(bpParam);
-			}
-
-			// Map<String, Object> bpdMap = buildBatchProcessDetail(batchId, dataMap);
-		}
-
-		return null;
-	}
-
-	public static void main(String[] args) {
-		List<Map<String, Object>> dataList = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			String randDom = CommUtils.getRandom("0123456789", 1);
-			Map<String, Object> bpMap = new HashMap<>();
-			String[] clearBankCode = { "4564456456", "4564456457" };
-			String[] bizType = { "C211", "E101" };
-			if (randDom.equals(String.valueOf(i))) {
-				bpMap.put("draweeClearBankCode", "313948495");
-				bpMap.put("payeeClearBankCode", clearBankCode[0]);
-				bpMap.put("batchGroupId", "100001");
-				bpMap.put("bizType", bizType[0]);
-				bpMap.put("transAmt", "10");
-				bpMap.put("batchType", Constant.BatchType.SUE_BAP_OUT.code());
-				bpMap.put("brocessStatus", Constant.BatchStatus.REGISTER.code());
-			} else {
-				bpMap.put("draweeClearBankCode", "313948495");
-				bpMap.put("payeeClearBankCode", clearBankCode[1]);
-				bpMap.put("batchGroupId", "100001");
-				bpMap.put("bizType", bizType[1]);
-				bpMap.put("transAmt", "10");
-				bpMap.put("batchType", Constant.BatchType.SUE_BAP_OUT.code());
-				bpMap.put("brocessStatus", Constant.BatchStatus.REGISTER.code());
-			}
-			dataList.add(bpMap);
-		}
-
-		Map<String, BatchProcess> bpMap = new HashMap<>();
-		for (Map<String, Object> dataMap : dataList) {
-			String draweeClearBankCode = MapUtil.getStr(dataMap, "draweeClearBankCode");
-			String payeeClearBankCode = MapUtil.getStr(dataMap, "payeeClearBankCode");
-			String batchGroupId = MapUtil.getStr(dataMap, "batchGroupId");
-			String bizType = MapUtil.getStr(dataMap, "bizType");
-			String transAmt = MapUtil.getStr(dataMap, "transAmt");
-			StringJoiner sj = new StringJoiner("|");
-			sj.add(draweeClearBankCode).add(payeeClearBankCode).add(batchGroupId).add(bizType)
+			StringJoiner joiner = new StringJoiner(DELIMITER);
+			joiner.add(draweeClearBankCode).add(payeeClearBankCode).add(batchGroupId).add(bizType)
 					.add(Constant.BatchType.SUE_BAP_OUT.code()).add(Constant.BatchStatus.REGISTER.code());
-			String bpKey = sj.toString();
+			String bpKey = joiner.toString();
 			if (bpMap.containsKey(bpKey)) {
 				BatchProcess bp = MapUtil.get(bpMap, bpKey, BatchProcess.class);
+				batchId = bp.getBatchId();
 				bp.setTransNum(bp.getTransNum() + 1);
-				bp.setTransAmt(bp.getTransAmt().add(new BigDecimal(transAmt)));
+				bp.setTransAmt(bp.getTransAmt().add(transSumDetail));
 			} else {
 				BatchProcess bpParam = new BatchProcess();
+				batchId = IdUtil.randomUUID();
+				bpParam.setBatchId(batchId);
 				bpParam.setSndClearBankCode(draweeClearBankCode);
 				bpParam.setRcvClearBankCode(payeeClearBankCode);
 				bpParam.setBatchGroupId(batchGroupId);
@@ -190,19 +138,34 @@ public class SueBAPOutServiceImpl implements ISueBAPOutService {
 				bpParam.setBatchType(Constant.BatchType.SUE_BAP_OUT.code());
 				bpParam.setProcessStatus(Constant.BatchStatus.REGISTER.code());
 
-				bpParam.setTransAmt(new BigDecimal(transAmt));
+				bpParam.setTransAmt(transSumDetail);
 				bpParam.setTransNum(1);
 
 				bpMap.put(bpKey, bpParam);
 			}
+
+			bpd = buildBatchProcessDetail(batchId, dataMap);
+			bpdList.add(bpd);
 		}
+
+	
+		// 入库
 		Iterator<Entry<String, BatchProcess>> iter = bpMap.entrySet().iterator();
 		while (iter.hasNext()) {
-			Entry<String, BatchProcess> s = iter.next();
-			String key = s.getKey();
-			BatchProcess bps = s.getValue();
-			System.out.println("key=" + key + "   bps=" + bps.getTransNum() + " " + bps.getTransAmt());
+			Entry<String, BatchProcess> entry = iter.next();
+			batchProcessService.insertBatchProcess(entry.getValue());
 		}
+		
+		batchProcessService.insertBatch(bpdList);
+		return rtnMap;
+	}
+
+	private BatchProcessDetail buildBatchProcessDetail(String batchId, Map<String, Object> dataMap) {
+		BatchProcessDetail bpd = new BatchProcessDetail();
+		bpd.setBatchId(batchId);
+		bpd.setBizType(MapUtil.getStr(dataMap, Constant.FieldKey.BIZ_TYPE.code()));
+		bpd.setDraweeAcctNo(MapUtil.getStr(dataMap, Constant.FieldKey.DRAWEE_ACCT_NO.code()));
+		return bpd;
 	}
 
 	private Map<String, Object> checkFile(Map<String, Object> checkMap) {

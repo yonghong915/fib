@@ -64,7 +64,6 @@ public class BatchProcessServiceImpl implements IBatchProcessService {
 	@Override
 	public int insertBatchProcess(BatchProcess bp) {
 		try {
-			bp.setBatchId(IdUtil.randomUUID());
 			return batchProcessMapper.insertBatchProcess(bp);
 		} catch (Exception e) {
 			throw new BusinessException(StatusCode.DB_EXCEPTION, e);
@@ -134,5 +133,10 @@ public class BatchProcessServiceImpl implements IBatchProcessService {
 		} catch (Exception e) {
 			throw new BusinessException(StatusCode.DB_EXCEPTION, e);
 		}
+	}
+
+	@Override
+	public int insertBatch(List<BatchProcessDetail> list) {
+		return batchProcessMapper.insertBatch(list);
 	}
 }
