@@ -6,10 +6,10 @@ spring:  application:    name: fib-app
           username: uppapp
           password: uppapp1234
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://192.168.56.11:3306/uppdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&nullCatalogMeansCurrent=true
+          url: jdbc:mysql://192.168.56.11:3306/uppdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&nullCatalogMeansCurrent=true&allowMultiQueries=true
         uppdb:
           username: uppapp
           password: uppapp1234
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://192.168.56.11:3306/uppdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&nullCatalogMeansCurrent=true  main:    banner-mode: off  messages:    basename: i18n.message
+          url: jdbc:mysql://192.168.56.11:3306/uppdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&nullCatalogMeansCurrent=true&allowMultiQueries=true  main:    banner-mode: off  messages:    basename: i18n.message
            logging:  pattern:    level: debug  mybatis-plus:  global-config:    banner: false  configuration:    map-underscore-to-camel-case: true    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  mapper-locations:  - classpath*:config/mapper/*Mapper.xml fib:  retry:    enable: true    retryCount: 5    timeout: 10000

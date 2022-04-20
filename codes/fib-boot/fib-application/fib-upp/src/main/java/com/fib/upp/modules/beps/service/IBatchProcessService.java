@@ -32,5 +32,5 @@ public interface IBatchProcessService {
 
 	int updateBatchProcessDetail(BatchProcessDetail bpd);
 
-	int insertBatch(List<BatchProcessDetail> list);
+	int insertBatch4BPD(List<BatchProcessDetail> list);
 }

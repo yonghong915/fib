@@ -2,38 +2,29 @@ package com.fib.upp.modules.beps.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.StringJoiner;
-import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.extension.injector.methods.InsertBatchSomeColumn;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fib.commons.exception.BusinessException;
-import com.fib.commons.util.CommUtils;
 import com.fib.core.util.StatusCode;
 import com.fib.upp.modules.beps.entity.BatchProcess;
 import com.fib.upp.modules.beps.entity.BatchProcessDetail;
 import com.fib.upp.modules.beps.entity.BatchProcessGroup;
 import com.fib.upp.modules.beps.service.IBatchProcessService;
 import com.fib.upp.modules.beps.service.ISueBAPOutService;
+import com.fib.upp.modules.common.service.ServiceDispatcher;
 import com.fib.upp.util.Constant;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.lang.Opt;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.NumberUtil;
@@ -91,11 +82,10 @@ public class SueBAPOutServiceImpl implements ISueBAPOutService {
 		bpg.setTransNum(transNum);
 		bpg.setTransAmt(transAmt);
 		bpg.setBatchType(Constant.BatchType.SUE_BAP_OUT.code());
-		bpg.setTransId("50100" + LocalDateTimeUtil.format(LocalDateTimeUtil.now(), "yyyyMMddHHmmssSSS")
-				+ CommUtils.getRandom("0123456789", 10));
 		bpg.setBizType(bizType);
 		bpg.setDraweeAcctNo(draweeAcctNo);
 		bpg.setDraweeAcctName(draweeAcctName);
+		bpg.setTransId(chanlSerialNo);
 		bpg.setPartyId("1101");
 		bpg.setTellerId("1219");
 
@@ -146,17 +136,23 @@ public class SueBAPOutServiceImpl implements ISueBAPOutService {
 
 			bpd = buildBatchProcessDetail(batchId, dataMap);
 			bpdList.add(bpd);
+
+			if (bpdList.size() == 100) {
+				batchProcessService.insertBatch4BPD(bpdList);
+				bpdList = CollUtil.newArrayList();
+			}
 		}
 
-	
+		if (!bpdList.isEmpty()) {
+			batchProcessService.insertBatch4BPD(bpdList);
+		}
+
 		// 入库
 		Iterator<Entry<String, BatchProcess>> iter = bpMap.entrySet().iterator();
 		while (iter.hasNext()) {
 			Entry<String, BatchProcess> entry = iter.next();
 			batchProcessService.insertBatchProcess(entry.getValue());
 		}
-		
-		batchProcessService.insertBatch(bpdList);
 		return rtnMap;
 	}
 
@@ -177,8 +173,10 @@ public class SueBAPOutServiceImpl implements ISueBAPOutService {
 		String channel = MapUtil.getStr(checkMap, Constant.FieldKey.CHANNEL.code());
 		channel = StrUtil.isEmptyIfStr(transAmt) ? Constant.ConstantUtil.DEF_CHANNEL : channel;
 		// FTP下载文件到本地目录
-		String localFileName = "D:/datafile/10223232222.txt";
-		// 解密文件内容 DESUtil.decrypt
+		String localFileName = "";
+		if (!"0190".equals(channel)) {
+			// 解密文件内容 DESUtil.decrypt
+		}
 		// 判断文件编码是否UTF-8
 		// 校验文件内容
 		// 校验总金额、总记录数与传入的参数是否相等
@@ -192,7 +190,54 @@ public class SueBAPOutServiceImpl implements ISueBAPOutService {
 
 	@Override
 	public Map<String, Object> review(Map<String, ? extends Object> context) {
-		return null;
-	}
+		LOGGER.info("review--->params is [{}]", context);
+		Assert.notNull(context, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
+		String batchGroupId = MapUtil.getStr(context, Constant.FieldKey.BATCH_GROUP_ID.code());
+		String internalAccount = MapUtil.getStr(context, "internalAccount");
+		String batchType = MapUtil.getStr(context, Constant.FieldKey.BATCH_TYPE.code());
+		String bizType = MapUtil.getStr(context, Constant.FieldKey.BIZ_TYPE.code());
 
+		String chanlSerialNo = MapUtil.getStr(context, Constant.FieldKey.CHANL_SERIAL_NO.code());
+		//// 复核结果:0：同意;1：拒绝
+		String checkType = MapUtil.getStr(context, "checkType");
+
+		Assert.notBlank(batchGroupId, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
+
+		BatchProcessGroup bpg = new BatchProcessGroup();
+		bpg.setBatchGroupId(batchGroupId);
+		List<BatchProcessGroup> bpdList = batchProcessService.getBatchProcessGroup(bpg);
+		Assert.isFalse(CollUtil.isEmpty(bpdList),
+				() -> new BusinessException(StatusCode.RTN_NULL, "输入批次头号[" + batchGroupId + "]不正确"));
+		bpg = bpdList.get(0);
+		Assert.notNull(bpg, () -> new BusinessException(StatusCode.RTN_NULL, "输入批次头号[" + batchGroupId + "]不正确"));
+		if (Constant.BatchType.SUE_BAP_OUT.code().equals(batchType)) {
+			Assert.notBlank(internalAccount, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
+			// 校验账户类型及余额
+			// 同意时销客户购买重要凭证 cancelCustomerVoucher
+
+			// 当为往账定期贷记时，需要将前台输入扣款内部账记入批次头里
+			// BatchProcessGroup
+		}
+
+		// 查询出批次头对应所有已登记批次号
+		BatchProcess bp = new BatchProcess();
+		bp.setBatchGroupId(batchGroupId);
+		bp.setProcessStatus(Constant.BatchStatus.REGISTER.code());
+		bp.setBizType(bizType);
+		List<BatchProcess> bpList = batchProcessService.getBatchProcessList(bp);
+		Assert.notNull(CollUtil.isEmpty(bpList), () -> new BusinessException(StatusCode.RTN_NULL, "没有查询到对应的批次信息"));
+		bpList.stream().forEach(baP -> {
+			baP.setChanlSerialNo(chanlSerialNo);
+			if ("0".equals(checkType)) {// 复核通过
+				batchProcessService.updateBatchProcess(baP);// 新事务提交
+				// dealBatch
+				ServiceDispatcher.runAsync(Constant.ServiceName.DEAL_BATCH_SRV.code(),
+						MapUtil.of(Constant.FieldKey.BATCH_ID.code(), baP.getBatchId()));
+			} else if ("1".equals(checkType)) {// 复核拒绝
+				baP.setProcessStatus(Constant.BatchStatus.CANCEL.code());
+				batchProcessService.updateBatchProcess(baP);// 新事务提交
+			}
+		});
+		return MapUtil.of("returnType", "S");
+	}
 }

@@ -13,6 +13,7 @@ public interface ISueBAPOutService {
 	public Map<String, Object> register(Map<String, ? extends Object> context);
 
 	/**
+	 * 定期借贷记复核
 	 * 
 	 * @param context
 	 * @return

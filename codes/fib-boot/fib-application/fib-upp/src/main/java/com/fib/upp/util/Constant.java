@@ -158,7 +158,9 @@ public class Constant {
 		PROCESS_PAYMENT_ORDER("processPaymentOrder", " 支付订单处理"),
 
 		/** 队列发包 */
-		SEND_MESSAGE_BY_QUEUE("sendMessageByQueue", "队列发包");
+		SEND_MESSAGE_BY_QUEUE("sendMessageByQueue", "队列发包"),
+		/** 批次处理服务 */
+		DEAL_BATCH_SRV("dealBatchService", "批次处理服务");
 
 		private String code;
 
@@ -229,6 +231,9 @@ public class Constant {
 
 		/** 账户余额 */
 		ACCT_BAL("acctBal", "账户余额"),
+
+		/** 批次号 */
+		BATCH_GROUP_ID("batchGroupId", "批次号"),
 
 		/** 批次号 */
 		BATCH_ID("batchId", "批次号"),

@@ -126,4 +126,57 @@ CREATE TABLE BEPS_QUEUE
 	   batch_type varchar(20),
 	   trans_id varchar(50),
 	   party_id varchar(20),
-	   teller_id varchar(20));
+	   teller_id varchar(20),
+	   PRIMARY KEY (batch_group_id)
+  );
+  
+  
+    create table  batch_process(
+       batch_id varchar(50),
+	   batch_group_id varchar(50),
+	   batch_type varchar(50),
+	   process_status char(2),
+	   trans_num int,
+	   trans_amt decimal(20,2),
+	   succ_num int,
+	   succ_amt decimal(20,2),
+	   fail_num int,
+	   fail_amt decimal(20,2),
+	   chanl_serial_no varchar(50),
+	   biz_type varchar(20),
+	   snd_Clear_Bank_Code varchar(20),
+	   rcv_Clear_Bank_Code varchar(20),
+	   PRIMARY KEY (batch_id)
+  );
+  
+    create table  batch_process_detail(
+       batch_id varchar(50),
+	   batch_seq_id varchar(50),
+	   payee_acct_no varchar(50),
+	   payee_acct_name varchar(20),
+	   payee_acct_type varchar(20),
+	   payee_address varchar(20),
+	   payee_bank_code varchar(20),
+	   payee_bank_name varchar(50),
+	   payee_clear_bank_code varchar(20),
+	   payee_clear_bank_name varchar(50),
+	   drawee_acct_no varchar(50),
+	   drawee_acct_name varchar(50),
+	   drawee_acct_type varchar(50),
+	   drawee_address varchar(50),
+	   drawee_bank_code varchar(50),
+	   drawee_bank_name varchar(50),
+	   drawee_clear_bank_code varchar(50),
+	   drawee_clear_bank_name varchar(50),
+	   currency_type varchar(50),
+	   trans_amt decimal(20,2),
+	   sys_code varchar(20),
+	   biz_type varchar(20),
+	   biz_class varchar(20),
+	   order_id varchar(20),
+	   opp_id varchar(20),
+	   rsp_code varchar(20),
+	   rsp_msg varchar(20),
+	   cust_postscript varchar(20),
+	   primary key (batch_id,batch_seq_id)
+  );

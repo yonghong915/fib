@@ -136,7 +136,7 @@ public class BatchProcessServiceImpl implements IBatchProcessService {
 	}
 
 	@Override
-	public int insertBatch(List<BatchProcessDetail> list) {
-		return batchProcessMapper.insertBatch(list);
+	public int insertBatch4BPD(List<BatchProcessDetail> list) {
+		return batchProcessMapper.insertBatch4BPD(list);
 	}
 }

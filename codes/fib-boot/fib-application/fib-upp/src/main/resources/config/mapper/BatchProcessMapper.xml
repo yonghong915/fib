@@ -37,50 +37,127 @@
 	</update>
 
 
-	<select id="getQueueHeader"
-		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader"
-		resultType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
-		SELECT *
-		FROM beps_queue_header
+	<insert id="insertBatchProcess"
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcess">
+		INSERT INTO
+		batch_process(batch_id,batch_group_id,batch_type,process_status,trans_amt,chanl_serial_no,biz_type,snd_clear_bank_code,rcv_clear_bank_Code)
+		VALUES(#{batchId},#{batchGroupId},#{batchType},#{processStatus},#{transAmt},#{chanlSerialNo},#{bizType},#{sndClearBankCode},#{rcvClearBankCode})
+	</insert>
+
+	<select id="getBatchProcess"
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcess"
+		resultType="com.fib.upp.modules.beps.entity.BatchProcess">
+		SELECT * FROM batch_process
 		<where>
-			<if test="status != null and status != ''">
-				AND status=#{status}
+			<if test="batchId != null">
+				and batch_id = #{batchId}
 			</if>
-
-			<if test="queueType != null and queueType != ''">
-				AND queue_type=#{queueType}
+			<if test="processStatus != null">
+				and process_status = #{processStatus}
 			</if>
-
-			<if test="queueId != null and queueId != ''">
-				AND queue_id=#{queueId}
+			<if test="batchType != null">
+				and batch_type = #{batchType}
 			</if>
 		</where>
 	</select>
 
-	<update id="updateQueueItemStatus"
-		parameterType="com.fib.upp.modules.beps.entity.BepsQueueItem">
-		UPDATE beps_queue_item
-		SET status=#{status}
-		WHERE queue_id=#{queueId}
-		AND record_id IN
-		<foreach collection="list" item="recordId" index="index"
-			open="(" close=")" separator=",">
-			#{recordId}
+	<update id="updateBatchProcess"
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcess">
+		UPDATE batch_process
+		<set>
+			<if test="succNum != null and succNum != ''">
+				succ_num=#{succNum},
+			</if>
+			<if test="succAmt != null and succAmt != ''">
+				succ_amt=#{succAmt},
+			</if>
+			<if test="failNum != null and failNum != ''">
+				fail_num=#{failNum},
+			</if>
+			<if test="failAmt != null and failAmt != ''">
+				fail_amt=#{failAmt},
+			</if>
+		</set>
+		WHERE batch_id=#{batchId}
+	</update>
+
+	<insert id="insertBatchProcessDetail"
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		INSERT INTO
+		batch_process_detail(batch_id,batch_seq_id,payee_acct_no,payee_acct_name,payee_acct_type,payee_address,payee_bank_code,payee_bank_name,payee_clear_bank_code,payee_clear_bank_name,drawee_acct_no,drawee_acct_name,drawee_acct_type,drawee_address,drawee_bank_code,drawee_bank_name,drawee_clear_bank_code,drawee_clear_bank_name,currency_type,trans_amt,sys_code,biz_type,biz_class,cust_postscript)
+		VALUES(#{batchId},#{batchSeqId},#{payeeAcctNo},#{payeeAcctName},#{payeeAcctType},#{payeeAddress},#{payeeBankCode},#{payeeBankName},#{payeeClearBankCode},#{payeeClearBankName},#{draweeAcctNo},#{draweeAcctName},#{draweeAcctType},#{draweeAddress},#{draweeBankCode},#{draweeBankName},#{draweeClearBankCode},#{draweeClearBankName},#{currencyType},#{transAmt},#{sysCode},#{bizType},#{bizClass},#{custPostscript})
+	</insert>
+
+	<select id="getBatchProcessDetail"
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem"
+		resultType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		SELECT * FROM batch_process_detail
+		<where>
+			<if test="batchId != null">
+				and batch_id = #{batchId}
+			</if>
+			<if test="orderId != null">
+				and order_id = #{orderId}
+			</if>
+			<if test="oppId != null">
+				and opp_id = #{oppId}
+			</if>
+			<if test="sysCode != null">
+				and sys_code = #{sysCode}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateBatchProcessDetail"
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		UPDATE batch_process_detail
+		<set>
+			<if test="orderId != null and orderId != ''">
+				order_id=#{orderId},
+			</if>
+			<if test="oppId != null and oppId != ''">
+				opp_id=#{oppId},
+			</if>
+			<if test="rspCode != null and rspCode != ''">
+				rsp_code=#{rspCode},
+			</if>
+			<if test="rspMsg != null and rspMsg != ''">
+				rsp_msg=#{rspMsg},
+			</if>
+		</set>
+		WHERE batch_id=#{batchId}
+	</update>
+
+	<update id="updateBatch4BPD"
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			UPDATE batch_process_detail
+			<set>
+				<if test="item.orderId != null and item.orderId != ''">
+					order_id=#{item.orderId},
+				</if>
+				<if test="item.oppId != null and item.oppId != ''">
+					opp_id=#{oppId},
+				</if>
+				<if test="item.rspCode != null and item.rspCode != ''">
+					rsp_code=#{item.rspCode},
+				</if>
+				<if test="item.rspMsg != null and item.rspMsg != ''">
+					rsp_msg=#{item.rspMsg},
+				</if>
+			</set>
+			WHERE batch_id=#{item.batchId} and batch_seq_id=#{item.batchSeqId}
 		</foreach>
 	</update>
 
-	<select id="getQueueByQueueType" parameterType="string"
-		resultType="com.fib.upp.modules.beps.entity.BepsQueue">
-		SELECT queue_type,queue_status
-		FROM beps_queue
-		WHERE
-		queue_type=#{queueType}
-	</select>
-
-	<insert id="insertBatch">
-		INSERT INTO batch_process_item(batch_id,batch_seq_id) VALUES
-		<foreach collection="list" item="item" separator=",">
-			(#{item.batchId},#{item.batchSeqId})
+	<insert id="insertBatch4BPD">
+		INSERT INTO
+		batch_process_detail(batch_process_item(batch_id,batch_seq_id,payee_acct_no,payee_acct_name,payee_acct_type,payee_address,payee_bank_code,payee_bank_name,payee_clear_bank_code,payee_clear_bank_name,drawee_acct_no,drawee_acct_name,drawee_acct_type,drawee_address,drawee_bank_code,drawee_bank_name,drawee_clear_bank_code,drawee_clear_bank_name,currency_type,trans_amt,sys_code,biz_type,biz_class,cust_postscript)
+		VALUES
+		<foreach collection="list" item="item" separator=","
+			index="index">
+			(#{item.batchId},#{item.batchSeqId},#{item.payeeAcctNo},#{item.payeeAcctName},#{item.payeeAcctType},#{item.payeeAddress},#{item.payeeBankCode},#{item.payeeBankName},#{item.payeeClearBankCode},#{item.payeeClearBankName},#{item.draweeAcctNo},#{item.draweeAcctName},#{item.draweeAcctType},#{item.draweeAddress},#{item.draweeBankCode},#{item.draweeBankName},#{item.draweeClearBankCode},#{item.draweeClearBankName},#{item.currencyType},#{item.transAmt},#{item.sysCode},#{item.bizType},#{item.bizClass},#{item.custPostscript})
 		</foreach>
 	</insert>
 </mapper>
