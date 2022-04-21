@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fib.upp.modules.beps.entity.BepsQueue;
 import com.fib.upp.modules.beps.entity.BepsQueueHeader;
 import com.fib.upp.modules.beps.entity.BepsQueueItem;
-import com.fib.upp.util.EnumConstants;
+import com.fib.upp.util.UppEnumConstants;
 
 /**
  * 
@@ -21,7 +21,7 @@ import com.fib.upp.util.EnumConstants;
  * @since 1.0
  * @date 2021-01-25
  */
-@DS(EnumConstants.DATASOURCE_UPP)
+@DS(UppEnumConstants.DATASOURCE_UPP)
 public interface BepsQueueMapper extends BaseMapper<BepsQueue> {
 
 	@Select("getQueueItemsByQueueId")

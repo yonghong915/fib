@@ -1,7 +1,7 @@
 package com.fib.commons.exception;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 
 /**
  * 通用异常
@@ -26,7 +26,7 @@ public class CommonException extends BaseException {
 	}
 
 	public CommonException(String messageTemplate, Object... params) {
-		super(StrUtil.format(messageTemplate, params));
+		super(CharSequenceUtil.format(messageTemplate, params));
 	}
 
 	public CommonException(String message, Throwable throwable) {
@@ -34,6 +34,6 @@ public class CommonException extends BaseException {
 	}
 
 	public CommonException(Throwable throwable, String messageTemplate, Object... params) {
-		super(StrUtil.format(messageTemplate, params), throwable);
+		super(CharSequenceUtil.format(messageTemplate, params), throwable);
 	}
 }

@@ -1,7 +1,6 @@
 package com.fib.upp.util;
 
-
-public interface EnumConstants extends com.fib.commons.util.constant.EnumConstants {
+public interface UppEnumConstants extends com.fib.commons.util.constant.EnumConstants {
 	String CLEAR_BANK_CODE = "333333333";
 	String TX_ID_SEQ_NAME = "";
 	String MESSAGE_ID_SEQ_NAME = "";
@@ -118,7 +117,7 @@ public interface EnumConstants extends com.fib.commons.util.constant.EnumConstan
 					return thisObj.code;
 				}
 			}
-			throw new IllegalArgumentException("Unsupport Type " + name);
+			throw new IllegalArgumentException("Unsupport MessageObjectType " + name);
 		}
 
 		public static String getNameByCode(int code) {
@@ -127,7 +126,7 @@ public interface EnumConstants extends com.fib.commons.util.constant.EnumConstan
 					return thisObj.name;
 				}
 			}
-			throw new IllegalArgumentException("Unsupport Type " + code);
+			throw new IllegalArgumentException("Unsupport MessageObjectType " + code);
 		}
 	}
 
@@ -172,7 +171,7 @@ public interface EnumConstants extends com.fib.commons.util.constant.EnumConstan
 					return thisObj.code;
 				}
 			}
-			throw new IllegalArgumentException("Unsupport Type " + name);
+			throw new IllegalArgumentException("Unsupport ProcessorType " + name);
 		}
 
 		public static String getNameByCode(int code) {
@@ -181,7 +180,7 @@ public interface EnumConstants extends com.fib.commons.util.constant.EnumConstan
 					return thisObj.name;
 				}
 			}
-			throw new IllegalArgumentException("Unsupport Type " + code);
+			throw new IllegalArgumentException("Unsupport ProcessorType " + code);
 		}
 	}
 }

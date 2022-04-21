@@ -3,9 +3,9 @@ package com.fib.upp.modules.cnaps.mapper;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fib.upp.modules.cnaps.entity.CnapsSystemStatus;
-import com.fib.upp.util.EnumConstants;
+import com.fib.upp.util.UppEnumConstants;
 
-@DS(EnumConstants.DATASOURCE_UPP)
+@DS(UppEnumConstants.DATASOURCE_UPP)
 public interface CnapsSystemStatusMapper extends BaseMapper<CnapsSystemStatus> {
 	CnapsSystemStatus getCnapsSystemStatus(String systemCode, String clearBankNo);
 }

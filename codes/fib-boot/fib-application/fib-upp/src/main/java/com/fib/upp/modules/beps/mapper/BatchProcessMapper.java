@@ -6,7 +6,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.fib.upp.modules.beps.entity.BatchProcess;
 import com.fib.upp.modules.beps.entity.BatchProcessDetail;
 import com.fib.upp.modules.beps.entity.BatchProcessGroup;
-import com.fib.upp.util.EnumConstants;
+import com.fib.upp.util.UppEnumConstants;
 
 /**
  * 
@@ -14,7 +14,7 @@ import com.fib.upp.util.EnumConstants;
  * @version 1.0
  * @date 2022-04-15 16:37:10
  */
-@DS(EnumConstants.DATASOURCE_UPP)
+@DS(UppEnumConstants.DATASOURCE_UPP)
 public interface BatchProcessMapper {
 	int insertBatchProcessGroup(BatchProcessGroup bpg);
 

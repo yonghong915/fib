@@ -34,13 +34,4 @@ public class DecimalFormatUtil {
 		unload();
 		return ret;
 	}
-
-	public static Number parse(String source) {
-		return null;
-//		try {
-//			return formaterHolder.get().parse(source);
-//		} catch (ParseException e) {
-//			throw new CommonException(e);
-//		}
-	}
 }
