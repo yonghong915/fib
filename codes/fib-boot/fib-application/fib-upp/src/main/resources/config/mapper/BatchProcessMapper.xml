@@ -82,15 +82,15 @@
 	</update>
 
 	<insert id="insertBatchProcessDetail"
-		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessDetail">
 		INSERT INTO
 		batch_process_detail(batch_id,batch_seq_id,payee_acct_no,payee_acct_name,payee_acct_type,payee_address,payee_bank_code,payee_bank_name,payee_clear_bank_code,payee_clear_bank_name,drawee_acct_no,drawee_acct_name,drawee_acct_type,drawee_address,drawee_bank_code,drawee_bank_name,drawee_clear_bank_code,drawee_clear_bank_name,currency_type,trans_amt,sys_code,biz_type,biz_class,cust_postscript)
 		VALUES(#{batchId},#{batchSeqId},#{payeeAcctNo},#{payeeAcctName},#{payeeAcctType},#{payeeAddress},#{payeeBankCode},#{payeeBankName},#{payeeClearBankCode},#{payeeClearBankName},#{draweeAcctNo},#{draweeAcctName},#{draweeAcctType},#{draweeAddress},#{draweeBankCode},#{draweeBankName},#{draweeClearBankCode},#{draweeClearBankName},#{currencyType},#{transAmt},#{sysCode},#{bizType},#{bizClass},#{custPostscript})
 	</insert>
 
 	<select id="getBatchProcessDetail"
-		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem"
-		resultType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessDetail"
+		resultType="com.fib.upp.modules.beps.entity.BatchProcessDetail">
 		SELECT * FROM batch_process_detail
 		<where>
 			<if test="batchId != null">
@@ -109,7 +109,7 @@
 	</select>
 
 	<update id="updateBatchProcessDetail"
-		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessDetail">
 		UPDATE batch_process_detail
 		<set>
 			<if test="orderId != null and orderId != ''">
@@ -129,7 +129,7 @@
 	</update>
 
 	<update id="updateBatch4BPD"
-		parameterType="com.fib.upp.modules.beps.entity.BatchProcessItem">
+		parameterType="com.fib.upp.modules.beps.entity.BatchProcessDetail">
 		<foreach collection="list" item="item" index="index"
 			separator=";">
 			UPDATE batch_process_detail

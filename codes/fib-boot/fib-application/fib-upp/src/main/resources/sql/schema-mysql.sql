@@ -180,3 +180,32 @@ CREATE TABLE BEPS_QUEUE
 	   cust_postscript varchar(20),
 	   primary key (batch_id,batch_seq_id)
   );
+  
+  
+  create table payment_prefer_info ( 
+    payment_prefer_id BIGINT(20) , 
+    order_id BIGINT(20) , 
+    payment_method_type_id VARCHAR(50) , 
+    payment_method_id VARCHAR(50) , 
+    trans_amt decimal (20,2)   ,
+    payment_status VARCHAR(50) , 
+    acct_no VARCHAR(50) , 
+    acct_name VARCHAR(50) , 
+    acct_type VARCHAR(50) , 
+    sys_code VARCHAR(50) , 
+    bank_code VARCHAR(50) , 
+    bank_name VARCHAR(50) , 
+    trade_org_id VARCHAR(50) , 
+    dc_flag VARCHAR(50) , 
+    route_id VARCHAR(50) , 
+    item_seq_id VARCHAR(50) , 
+    cust_postscript VARCHAR(50) , 
+    bank_postscript VARCHAR(50) ,
+    del_flag SMALLINT DEFAULT 0 COMMENT '删除标志',
+  create_by BIGINT(20)  DEFAULT 0 COMMENT '创建人',
+  create_dt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_by BIGINT(0)  DEFAULT 0 COMMENT '更新人',
+  update_dt TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (payment_prefer_id) 
+ );
+  

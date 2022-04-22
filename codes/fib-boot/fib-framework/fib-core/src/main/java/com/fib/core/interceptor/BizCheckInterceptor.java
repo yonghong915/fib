@@ -42,10 +42,10 @@ public class BizCheckInterceptor implements HandlerInterceptor {
 		}
 
 		/* 业务校验 */
-		return checkBiz(bizCheck, request, response);
+		return checkBiz(bizCheck, request);
 	}
 
-	private boolean checkBiz(BizCheck bizCheck, HttpServletRequest request, HttpServletResponse response) {
+	private boolean checkBiz(BizCheck bizCheck, HttpServletRequest request) {
 		String serviceName = bizCheck.serviceName();
 		if (null == serviceName || serviceName.isEmpty()) {// 不用校验
 			return true;

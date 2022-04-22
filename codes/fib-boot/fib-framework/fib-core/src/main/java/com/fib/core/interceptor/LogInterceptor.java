@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.fib.core.util.ConstantUtil;
 
@@ -33,11 +32,6 @@ public class LogInterceptor implements HandlerInterceptor {
 
 		MDC.put(ConstantUtil.TRACE_ID, traceId);
 		return true;
-	}
-
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
 	}
 
 	@Override

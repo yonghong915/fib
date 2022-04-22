@@ -10,21 +10,19 @@ import com.fib.upp.modules.beps.entity.BatchProcess;
 import com.fib.upp.modules.beps.entity.BatchProcessDetail;
 import com.fib.upp.modules.beps.service.IBatchProcessDetailService;
 import com.fib.upp.modules.beps.service.IBatchProcessService;
-import com.fib.upp.service.beps.BepsBatchService;
 import com.fib.upp.util.Constant;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Opt;
 
 @Service("sueBapOutService")
-public class Batch4SueBapOutService implements BepsBatchService {
+public class Batch4SueBapOutService {
 	@Autowired
 	private IBatchProcessService batchProcessService;
 
 	@Autowired
 	private IBatchProcessDetailService batchProcessDetailService;
 
-	@Override
 	public void execute(String batchId) {
 		// 查询批次信息，若批次状态为登记（00），则说明未进行过批处理，调用订单流程;否则不调用订单流程，只需判断是否到期状态
 		// batch_process where batch_id=?

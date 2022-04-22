@@ -3,11 +3,6 @@ package com.fib.core.base.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Data;
-import lombok.ToString;
-
-@ToString
-@Data
 public abstract class BaseDTO implements Serializable {
 	/**
 	 * 
