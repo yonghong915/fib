@@ -47,7 +47,7 @@
 		<disruptor.version>3.4.2</disruptor.version>
 
 
-		<springboot.version>2.5.0</springboot.version>
+		<springboot.version>2.5.12</springboot.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 		<powermock.version>1.7.4</powermock.version>
 		<junit.version>4.13.1</junit.version>
