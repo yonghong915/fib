@@ -31,6 +31,76 @@ public class Constant {
 		}
 	}
 
+	/**
+	 * 报文类型
+	 * 
+	 * @author fangyh
+	 * @version 1.0
+	 * @date 2022-04-24 16:50:17
+	 */
+	public enum MsgType {
+		BEPS_121_001_01("beps.121.001.01", "小额单笔"), BEPS_125_001_01("beps.121.001.01", "小额");
+
+		private String code;
+
+		private String name;
+
+		MsgType(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
+	public enum MsgDirection {
+		IN("I", "大额"), OUT("O", "小额");
+
+		private String code;
+
+		private String name;
+
+		MsgDirection(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
+	public enum ProcessStatus {
+		PR01("PR01", "大额"), PR03("PR03", "小额");
+
+		private String code;
+
+		private String name;
+
+		ProcessStatus(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
 	public enum QueueType {
 		TMA001("TMA001", "大额"), ISA001("ISA001", "小额"), MMA001("MMA001", "小额"), RMD001("RMD001", "小额");
 
@@ -268,7 +338,7 @@ public class Constant {
 		WORK_DATE("workDate", "工作日期"),
 
 		/** 币种 */
-		CURRENCY_TYPE("currencyType", "币种"),
+		CURRENCY_CODE("currencyCode", "币种"),
 		/** 银行附言 */
 		BANK_POSTSCRIPT("bankPostscript", "银行附言"),
 		/** 客户附言 */
@@ -299,6 +369,12 @@ public class Constant {
 		SERIAL_NO("serialNo", "流水号"),
 		/** 渠道流水号 */
 		CHANL_SERIAL_NO("chanlSerialNo", "渠道流水号"),
+
+		/** 交易流水号 */
+		TRANS_SERIAL_NO("transSerialNo", "交易流水号"),
+
+		/** 支付流水号 */
+		PAY_SERIAL_NO("paySerialNo", "支付流水号"),
 
 		/** 队列类型 */
 		QUEUE_ID("queueId", "队列编码"),

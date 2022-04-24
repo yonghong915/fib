@@ -209,3 +209,29 @@ CREATE TABLE BEPS_QUEUE
   PRIMARY KEY (payment_prefer_id) 
  );
   
+  
+  create table upp_msg_register(
+   pk_id BIGINT(20) NOT NULL COMMENT '主键编码',
+   pay_serial_no varchar(50) NOT NULL COMMENT '支付流水号',
+   sys_code varchar(10) NOT NULL COMMENT '系统编号',
+   msg_type_code varchar(50) NOT NULL COMMENT '报文类型',
+   msg_id varchar(20) NOT NULL COMMENT '报文标识号',
+   msg_direction char(1) NOT NULL COMMENT '报文方向,I来/O往', 
+   sys_date char(10) NOT NULL  COMMENT '人行日期',
+   netting_date char(10) COMMENT '轧差日期',
+   netting_round char(2) COMMENT '轧差场次',
+   process_status varchar(10) COMMENT '处理状态',
+   trans_amt decimal(20,2),
+   trans_num int,
+   succ_amt decimal(20,2),
+   succ_num int,
+   snd_bank_code  varchar(20) COMMENT '发起行号',
+   rcv_bank_code varchar(20) COMMENT '接收行号',
+   msg_content_id BIGINT(20) NOT NULL COMMENT '报文内容编码',
+   del_flag SMALLINT DEFAULT 0 COMMENT '删除标志',
+  create_by BIGINT(20)  DEFAULT 0 COMMENT '创建人',
+  create_dt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  update_by BIGINT(0)  DEFAULT 0 COMMENT '更新人',
+  update_dt TIMESTAMP(0) COMMENT '更新时间',
+   PRIMARY KEY (pk_id)
+);
