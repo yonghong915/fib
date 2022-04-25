@@ -31,6 +31,27 @@ public class Constant {
 		}
 	}
 
+	public enum CurrencyCode {
+		CNY("CNY", "人民币"), BEPS("BEPS", "小额");
+
+		private String code;
+
+		private String name;
+
+		CurrencyCode(String code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+
+		public String code() {
+			return code;
+		}
+
+		public String value() {
+			return name;
+		}
+	}
+
 	/**
 	 * 报文类型
 	 * 

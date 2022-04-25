@@ -210,7 +210,7 @@ CREATE TABLE BEPS_QUEUE
  );
   
   
-  create table upp_msg_register(
+  create table msg_register_info(
    pk_id BIGINT(20) NOT NULL COMMENT '主键编码',
    pay_serial_no varchar(50) NOT NULL COMMENT '支付流水号',
    sys_code varchar(10) NOT NULL COMMENT '系统编号',
@@ -234,4 +234,31 @@ CREATE TABLE BEPS_QUEUE
   update_by BIGINT(0)  DEFAULT 0 COMMENT '更新人',
   update_dt TIMESTAMP(0) COMMENT '更新时间',
    PRIMARY KEY (pk_id)
+);
+
+
+create table acct_trans_register(
+   pk_id BIGINT(20) NOT NULL COMMENT '主键编码',
+   chanl_serial_no varchar(50) NOT NULL COMMENT '渠道流水号',
+   dr_acct_no varchar(50) NOT NULL,
+   dr_acct_name varchar(200) NOT NULL,
+   cr_acct_no  varchar(50) NOT NULL,
+   cr_acct_name  varchar(200) NOT NULL,
+   currency_code varchar(4) NOT NULL,
+   tran_amt decimal(21,2) NOT NULL ,
+   order_id BIGINT(20) NOT NULL,
+   op_id BIGINT(20),
+   sys_code varchar(10) NOT NULL COMMENT '系统编号',
+   trans_org_code varchar(20),
+   billing_date varchar(10),
+   core_serial_no varchar(20),
+   acct_reg_type varchar(20) NOT NULL COMMENT '账户状态[POSTING:过账; CLEARING:清算，记备付金 ; SUSPEND:挂账转滞留 SueBAPIn：定期来贷清算中心与落地机构账;FEE_POSTING:手续费]',
+   status_id varchar(20) NOT NULL COMMENT '记账状态[RECEIVED:已成功  ROLLBACK:已冲正  REFUND：已蓝冲',
+   remark varchar(200) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '备注',
+   del_flag SMALLINT DEFAULT 0 COMMENT '删除标志',
+   create_by BIGINT(20)  DEFAULT 0 COMMENT '创建人',
+   create_dt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+   update_by BIGINT(0)  DEFAULT 0 COMMENT '更新人',
+   update_dt TIMESTAMP(0) COMMENT '更新时间',
+   PRIMARY KEY (pk_id) 
 );
