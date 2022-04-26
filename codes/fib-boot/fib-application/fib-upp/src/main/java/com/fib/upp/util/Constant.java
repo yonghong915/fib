@@ -308,7 +308,20 @@ public class Constant {
 		RCV_CLEAR_BANK_CODE("rcvClearBankCode", "接收清算行号"),
 		/** 发送清算行号 */
 		SND_CLEAR_BANK_CODE("sndClearBankCode", "发起清算行号"),
-
+		/** 清算行号 */
+		CLEAR_BANK_CODE("clearBankCode", "清算行号"),
+		/** 原系统日期 */
+		ORIG_SYS_DATE("origSysDate", "原系统日期"),
+		/** 原系统状态 */
+		ORIG_SYS_STATUS("origSysStatus", "原系统状态"),
+		/** 当前系统日期 */
+		CURRENT_SYS_DATE("currentSysDate", "当前系统日期"),
+		/** 当前系统状态 */
+		CURRENT_SYS_STATUS("currentSysStatus", "当前系统状态"),
+		/** 处理状态 */
+		PROCESS_CODE("processCode", "处理状态"),
+		/** 登录状态 */
+		LOGIN_OPER_TYPE("loginOperType", "登录状态"),
 		/** 账号 */
 		ACCT_NO("acctNo", "账号"),
 		/** 账户名称 */

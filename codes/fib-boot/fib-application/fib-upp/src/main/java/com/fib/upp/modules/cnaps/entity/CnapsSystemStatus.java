@@ -1,11 +1,9 @@
 package com.fib.upp.modules.cnaps.entity;
 
-import java.math.BigInteger;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.fib.core.base.dto.BaseDTO;
+import com.fib.core.base.entity.BaseEntity;
 
 import cn.hutool.core.builder.EqualsBuilder;
 import cn.hutool.core.builder.HashCodeBuilder;
@@ -17,7 +15,7 @@ import cn.hutool.core.builder.HashCodeBuilder;
  * @version 1.0
  * @date 2022-03-25 09:17:18
  */
-public class CnapsSystemStatus extends BaseDTO {
+public class CnapsSystemStatus extends BaseEntity {
 
 	/**
 	 * 
@@ -26,25 +24,38 @@ public class CnapsSystemStatus extends BaseDTO {
 
 	/** 主键 */
 	@TableId("pk_id")
-	private BigInteger pkId;
+	private Long pkId;
 
 	/** 系统编码 */
-	private String systemCode;
+	private String sysCode;
+
+	/** 原系统日期 */
+	private String origSysDate;
+
+	/** 原系统状态 */
+	private String origSysStatus;
 
 	/** 清算行号 */
-	private String clearBankNo;
+	private String clearBankCode;
 
 	/** 系统当前日期 */
-	private String currentSystemDate;
+	private String currentSysDate;
 
 	/** 系统当前状态 */
-	private String currentSystemStatus;
+	private String currentSysStatus;
 
 	/** 节假日标志 */
 	private String holidayFlag;
 
+	private String specialWorkDayFlag;
+
+	/** 系统下一日期 */
+	private String nextSysDate;
+
 	/** 登录标志 */
-	private String loginOperationType;
+	private String loginOperType;
+
+	private String processCode;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -58,11 +69,10 @@ public class CnapsSystemStatus extends BaseDTO {
 			return false;
 		}
 		CnapsSystemStatus rhs = (CnapsSystemStatus) obj;
-		return new EqualsBuilder().append(this.systemCode, rhs.systemCode).append(this.clearBankNo, rhs.clearBankNo)
-				.append(this.currentSystemDate, rhs.currentSystemDate)
-				.append(this.currentSystemStatus, rhs.getCurrentSystemStatus())
-				.append(this.holidayFlag, rhs.holidayFlag).append(this.loginOperationType, rhs.loginOperationType)
-				.isEquals();
+		return new EqualsBuilder().append(this.sysCode, rhs.sysCode).append(this.clearBankCode, rhs.clearBankCode)
+				.append(this.currentSysDate, rhs.currentSysDate)
+				.append(this.currentSysStatus, rhs.getCurrentSysStatus()).append(this.holidayFlag, rhs.holidayFlag)
+				.append(this.loginOperType, rhs.loginOperType).isEquals();
 	}
 
 	@Override
@@ -75,36 +85,60 @@ public class CnapsSystemStatus extends BaseDTO {
 		return ToStringBuilder.reflectionToString(this);
 	}
 
-	public String getSystemCode() {
-		return systemCode;
+	public Long getPkId() {
+		return pkId;
 	}
 
-	public void setSystemCode(String systemCode) {
-		this.systemCode = systemCode;
+	public void setPkId(Long pkId) {
+		this.pkId = pkId;
 	}
 
-	public String getClearBankNo() {
-		return clearBankNo;
+	public String getSysCode() {
+		return sysCode;
 	}
 
-	public void setClearBankNo(String clearBankNo) {
-		this.clearBankNo = clearBankNo;
+	public void setSysCode(String sysCode) {
+		this.sysCode = sysCode;
 	}
 
-	public String getCurrentSystemDate() {
-		return currentSystemDate;
+	public String getOrigSysDate() {
+		return origSysDate;
 	}
 
-	public void setCurrentSystemDate(String currentSystemDate) {
-		this.currentSystemDate = currentSystemDate;
+	public void setOrigSysDate(String origSysDate) {
+		this.origSysDate = origSysDate;
 	}
 
-	public String getCurrentSystemStatus() {
-		return currentSystemStatus;
+	public String getOrigSysStatus() {
+		return origSysStatus;
 	}
 
-	public void setCurrentSystemStatus(String currentSystemStatus) {
-		this.currentSystemStatus = currentSystemStatus;
+	public void setOrigSysStatus(String origSysStatus) {
+		this.origSysStatus = origSysStatus;
+	}
+
+	public String getClearBankCode() {
+		return clearBankCode;
+	}
+
+	public void setClearBankCode(String clearBankCode) {
+		this.clearBankCode = clearBankCode;
+	}
+
+	public String getCurrentSysDate() {
+		return currentSysDate;
+	}
+
+	public void setCurrentSysDate(String currentSysDate) {
+		this.currentSysDate = currentSysDate;
+	}
+
+	public String getCurrentSysStatus() {
+		return currentSysStatus;
+	}
+
+	public void setCurrentSysStatus(String currentSysStatus) {
+		this.currentSysStatus = currentSysStatus;
 	}
 
 	public String getHolidayFlag() {
@@ -115,11 +149,35 @@ public class CnapsSystemStatus extends BaseDTO {
 		this.holidayFlag = holidayFlag;
 	}
 
-	public String getLoginOperationType() {
-		return loginOperationType;
+	public String getSpecialWorkDayFlag() {
+		return specialWorkDayFlag;
 	}
 
-	public void setLoginOperationType(String loginOperationType) {
-		this.loginOperationType = loginOperationType;
+	public void setSpecialWorkDayFlag(String specialWorkDayFlag) {
+		this.specialWorkDayFlag = specialWorkDayFlag;
+	}
+
+	public String getNextSysDate() {
+		return nextSysDate;
+	}
+
+	public void setNextSysDate(String nextSysDate) {
+		this.nextSysDate = nextSysDate;
+	}
+
+	public String getLoginOperType() {
+		return loginOperType;
+	}
+
+	public String getProcessCode() {
+		return processCode;
+	}
+
+	public void setProcessCode(String processCode) {
+		this.processCode = processCode;
+	}
+
+	public void setLoginOperType(String loginOperType) {
+		this.loginOperType = loginOperType;
 	}
 }

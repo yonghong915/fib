@@ -27,10 +27,10 @@ public class CnapsSystemStatusServiceImpl extends ServiceImpl<CnapsSystemStatusM
 	// "inValidate:messagePackRuleService:getMessagePackRule")
 	public Opt<CnapsSystemStatus> getCnapsSystemStatus(CnapsSystemStatus css) {
 		Assert.notNull(css, () -> new CommonException("css"));
-		Assert.notBlank(css.getSystemCode(), () -> new CommonException("systemCode"));
-		Assert.notBlank(css.getClearBankNo(), () -> new CommonException("clearBankNo"));
-		String systemCode = css.getSystemCode();
-		String clearBankNo = css.getClearBankNo();
+		Assert.notBlank(css.getSysCode(), () -> new CommonException("systemCode"));
+		Assert.notBlank(css.getClearBankCode(), () -> new CommonException("clearBankNo"));
+		String systemCode = css.getSysCode();
+		String clearBankNo = css.getClearBankCode();
 		try {
 			return Opt.ofNullable(cnapsSystemStatusMapper.getCnapsSystemStatus(systemCode, clearBankNo));
 		} catch (Exception e) {

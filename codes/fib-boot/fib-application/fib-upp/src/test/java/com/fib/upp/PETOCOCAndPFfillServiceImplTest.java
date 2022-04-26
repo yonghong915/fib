@@ -1,5 +1,7 @@
 package com.fib.upp;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ public class PETOCOCAndPFfillServiceImplTest {
 		Map<String, Object> context = new HashMap<>();
 		context.put(Constant.FieldKey.SYS_CODE.code(), Constant.SysCode.HVPS.code());
 		context.put(Constant.FieldKey.TRANS_ID.code(), "1223344555");
-		pETOCOCAndPFfill.execute(context);
+		Map<String, Object> rtnMap = pETOCOCAndPFfill.execute(context);
+		assertNotNull(rtnMap);
 	}
 }
