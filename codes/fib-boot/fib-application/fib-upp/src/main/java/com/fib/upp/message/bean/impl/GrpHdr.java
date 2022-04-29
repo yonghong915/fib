@@ -12,6 +12,7 @@ public class GrpHdr extends MessageBean {
 	private String systemCode;
 	private String remark;
 
+	@Override
 	public Object getAttribute(String name) {
 		if ("MessageIdentification".equals(name)) {
 			return this.getMessageIdentification();
@@ -33,6 +34,7 @@ public class GrpHdr extends MessageBean {
 		return null;
 	}
 
+	@Override
 	public void setAttribute(String name, Object value) {
 		if ("MessageIdentification".equals(name)) {
 			this.setMessageIdentification((String) value);
@@ -115,5 +117,111 @@ public class GrpHdr extends MessageBean {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	@Override
+	public void validate() {
+		//
+	}
+
+	@Override
+	public String toString() {
+		return toString(false);
+	}
+
+	@Override
+	public String toString(boolean isWrap) {
+		return toString(isWrap, false);
+	}
+
+	@Override
+	public String toString(boolean isWrap, boolean isTable) {
+		StringBuilder buf = new StringBuilder(10240);
+		if (null != messageIdentification) {
+			buf.append("<a n=\"messageIdentification\" t=\"str\">");
+			buf.append(messageIdentification);
+			buf.append("</a>");
+		}
+		if (null != creationDateTime) {
+			buf.append("<a n=\"creationDateTime\" t=\"datetime\">");
+			buf.append(creationDateTime);
+			buf.append("</a>");
+		}
+		if (null != instructingDirectParty) {
+			buf.append("<a n=\"instructingDirectParty\" t=\"str\">");
+			buf.append(instructingDirectParty);
+			buf.append("</a>");
+		}
+		if (null != instructingParty) {
+			buf.append("<a n=\"instructingParty\" t=\"str\">");
+			buf.append(instructingParty);
+			buf.append("</a>");
+		}
+		if (null != instructedDirectParty) {
+			buf.append("<a n=\"instructedDirectParty\" t=\"str\">");
+			buf.append(instructedDirectParty);
+			buf.append("</a>");
+		}
+		if (null != instructedParty) {
+			buf.append("<a n=\"instructedParty\" t=\"str\">");
+			buf.append(instructedParty);
+			buf.append("</a>");
+		}
+		if (null != systemCode) {
+			buf.append("<a n=\"systemCode\" t=\"str\">");
+			buf.append(systemCode);
+			buf.append("</a>");
+		}
+		if (null != remark) {
+			buf.append("<a n=\"remark\" t=\"str\">");
+			buf.append(remark);
+			buf.append("</a>");
+		}
+		if (0 == buf.length()) {
+			return null;
+		} else {
+			if (isTable) {
+				buf.insert(0, "<b>");
+			} else {
+				buf.insert(0, "<b c=\"com.giantstone.cnaps2.messagebean.recv.req.GrpHdr\">");
+			}
+			buf.append("</b>");
+			if (!isWrap) {
+				buf = new StringBuilder(buf.toString());
+				buf.insert(0, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+				return buf.toString();
+			} else {
+				return buf.toString();
+			}
+		}
+	}
+
+	@Override
+	public boolean isNull() {
+		if (null != messageIdentification) {
+			return false;
+		}
+		if (null != creationDateTime) {
+			return false;
+		}
+		if (null != instructingDirectParty) {
+			return false;
+		}
+		if (null != instructingParty) {
+			return false;
+		}
+		if (null != instructedDirectParty) {
+			return false;
+		}
+		if (null != instructedParty) {
+			return false;
+		}
+		if (null != systemCode) {
+			return false;
+		}
+		if (null != remark) {
+			return false;
+		}
+		return true;
 	}
 }

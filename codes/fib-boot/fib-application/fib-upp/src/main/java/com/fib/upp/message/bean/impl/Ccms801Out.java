@@ -15,6 +15,7 @@ public class Ccms801Out extends MessageBean {
 	private String cISChangeNumber;
 	private String parameterChangeNumber;
 
+	@Override
 	public Object getAttribute(String name) {
 		if ("GrpHdr".equals(name)) {
 			return this.getGrpHdr();
@@ -42,6 +43,7 @@ public class Ccms801Out extends MessageBean {
 		return null;
 	}
 
+	@Override
 	public void setAttribute(String name, Object value) {
 		if ("GrpHdr".equals(name)) {
 			this.setGrpHdr((GrpHdr) value);
@@ -154,5 +156,141 @@ public class Ccms801Out extends MessageBean {
 
 	public void setParameterChangeNumber(String parameterChangeNumber) {
 		this.parameterChangeNumber = parameterChangeNumber;
+	}
+
+	@Override
+	public void validate() {
+		//
+	}
+
+	@Override
+	public String toString() {
+		return toString(false);
+	}
+
+	@Override
+	public String toString(boolean isWrap) {
+		return toString(isWrap, false);
+	}
+
+	@Override
+	public String toString(boolean isWrap, boolean isTable) {
+		StringBuilder buf = new StringBuilder(10240);
+		String str = null;
+		if (null != grpHdr) {
+			str = grpHdr.toString(true);
+			if (null != str) {
+				buf.append("<a n=\"grpHdr\" t=\"bean\">");
+				buf.append(str);
+				buf.append("</a>");
+			}
+		}
+		if (null != originalSystemDate) {
+			buf.append("<a n=\"originalSystemDate\" t=\"datetime\">");
+			buf.append(originalSystemDate);
+			buf.append("</a>");
+		}
+		if (null != originalSystemStatus) {
+			buf.append("<a n=\"originalSystemStatus\" t=\"str\">");
+			buf.append(originalSystemStatus);
+			buf.append("</a>");
+		}
+		if (null != currentSystemDate) {
+			buf.append("<a n=\"currentSystemDate\" t=\"datetime\">");
+			buf.append(currentSystemDate);
+			buf.append("</a>");
+		}
+		if (null != currentSystemStatus) {
+			buf.append("<a n=\"currentSystemStatus\" t=\"str\">");
+			buf.append(currentSystemStatus);
+			buf.append("</a>");
+		}
+		if (null != holidayFlag) {
+			buf.append("<a n=\"holidayFlag\" t=\"str\">");
+			buf.append(holidayFlag);
+			buf.append("</a>");
+		}
+		if (null != nextSystemDate) {
+			buf.append("<a n=\"nextSystemDate\" t=\"datetime\">");
+			buf.append(nextSystemDate);
+			buf.append("</a>");
+		}
+		if (null != bankChangeNumber) {
+			buf.append("<a n=\"bankChangeNumber\" t=\"str\">");
+			buf.append(bankChangeNumber);
+			buf.append("</a>");
+		}
+		if (null != baseDataChangeNumber) {
+			buf.append("<a n=\"baseDataChangeNumber\" t=\"str\">");
+			buf.append(baseDataChangeNumber);
+			buf.append("</a>");
+		}
+		if (null != cISChangeNumber) {
+			buf.append("<a n=\"cISChangeNumber\" t=\"str\">");
+			buf.append(cISChangeNumber);
+			buf.append("</a>");
+		}
+		if (null != parameterChangeNumber) {
+			buf.append("<a n=\"parameterChangeNumber\" t=\"str\">");
+			buf.append(parameterChangeNumber);
+			buf.append("</a>");
+		}
+		if (0 == buf.length()) {
+			return null;
+		} else {
+			if (isTable) {
+				buf.insert(0, "<b>");
+			} else {
+				buf.insert(0, "<b c=\"com.giantstone.cnaps2.messagebean.recv.req.CCMS_801_Out\">");
+			}
+			buf.append("</b>");
+			if (!isWrap) {
+				buf = new StringBuilder(buf.toString());
+				buf.insert(0, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+				return buf.toString();
+			} else {
+				return buf.toString();
+			}
+		}
+	}
+
+	@Override
+	public boolean isNull() {
+		if (null != grpHdr) {
+			if (!grpHdr.isNull()) {
+				return false;
+			}
+		}
+		if (null != originalSystemDate) {
+			return false;
+		}
+		if (null != originalSystemStatus) {
+			return false;
+		}
+		if (null != currentSystemDate) {
+			return false;
+		}
+		if (null != currentSystemStatus) {
+			return false;
+		}
+		if (null != holidayFlag) {
+			return false;
+		}
+		if (null != nextSystemDate) {
+			return false;
+		}
+		if (null != bankChangeNumber) {
+			return false;
+		}
+		if (null != baseDataChangeNumber) {
+			return false;
+		}
+		if (null != cISChangeNumber) {
+			return false;
+		}
+		if (null != parameterChangeNumber) {
+			return false;
+		}
+		return true;
 	}
 }

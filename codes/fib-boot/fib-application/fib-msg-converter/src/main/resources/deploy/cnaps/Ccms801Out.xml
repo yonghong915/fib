@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="Ccms801Out" type="xml" xpath="." pack-mode="template" short-text="业务退回应答报文"
+	class="com.fib.upp.message.bean.impl.Ccms801Out" message-charset="UTF-8"
+	name-space="default=urn:cnaps:std:ccms:2010:tech:xsd:ccms.801.001.02|xsi=http://www.w3.org/2001/XMLSchema-instance" schema-valid="true"
+	schema-valid-type="W3C" schema-valid-path="xsd/ccms.801.001.02.xsd">
+	<field name="GrpHdr" short-text="业务头组件" field-type="combine-field" reference="GrpHdr" required="true" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:GrpHdr" />
+	<field name="OriginalSystemDate" short-text="原系统日期" field-type="fixed-field" data-type="datetime" length="10" required="true" shield="false"
+		pattern="yyyy-MM-dd" xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:OrgnlSysDt/text()" />
+	<field name="OriginalSystemStatus" short-text="原系统状态" field-type="fixed-field" data-type="str" length="2" required="true" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:OrgnlSysSts/text()">
+		<value-range>
+			<value short-text="启运" value="01" />
+			<value short-text="停运" value="02" />
+			<value short-text="维护" value="03" />
+			<value short-text="日间" value="10" />
+			<value short-text="营业准备" value="00" />
+			<value short-text="业务截止" value="20" />
+			<value short-text="清算窗口" value="30" />
+			<value short-text="日终处理" value="40" />
+			<value short-text="日切" value="15" />
+		</value-range>
+	</field>
+	<field name="CurrentSystemDate" short-text="系统当前日期" field-type="fixed-field" data-type="datetime" length="10" required="true" shield="false"
+		pattern="yyyy-MM-dd" xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:CurSysDt/text()" />
+	<field name="CurrentSystemStatus" short-text="系统当前状态" field-type="fixed-field" data-type="str" length="2" required="true" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:CurSysSts/text()">
+		<value-range>
+			<value short-text="启运" value="01" />
+			<value short-text="停运" value="02" />
+			<value short-text="维护" value="03" />
+			<value short-text="日间" value="10" />
+			<value short-text="营业准备" value="00" />
+			<value short-text="业务截止" value="20" />
+			<value short-text="清算窗口" value="30" />
+			<value short-text="日终处理" value="40" />
+			<value short-text="日切" value="15" />
+		</value-range>
+	</field>
+	<field name="HolidayFlag" short-text="节假日标志" field-type="fixed-field" data-type="str" length="35" required="true" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:HldayFlg/text()" />
+	<field name="NextSystemDate" short-text="系统下一日期" field-type="fixed-field" data-type="datetime" length="10" required="false" shield="false"
+		pattern="yyyy-mm-dd" xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:NxtSysDt/text()" />
+	<field name="BankChangeNumber" short-text="行名行号变更期数" field-type="fixed-field" data-type="str" length="8" required="false" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:BkChngNb/text()" />
+	<field name="BaseDataChangeNumber" short-text="基础数据变更期数" field-type="fixed-field" data-type="str" length="8" required="false" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:BaseDataChngNb/text()" />
+	<field name="CISChangeNumber" short-text="CIS代理行变更期数" field-type="fixed-field" data-type="str" length="8" required="false" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:CISChngNb/text()" />
+	<field name="ParameterChangeNumber" short-text="系统参数变更期数" field-type="fixed-field" data-type="str" length="8" required="false" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:ParamChngNb/text()" />
+	<template><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+	 <Document xmlns="urn:cnaps:std:ccms:2010:tech:xsd:ccms.801.001.02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	 	<SysStsNtfctn>
+	 	　　<GrpHdr>${GrpHdr}</GrpHdr>
+	 		<SysStsInf>
+	 			<OrgnlSysDt>${OriginalSystemDate}</OrgnlSysDt>
+	 			<OrgnlSysSts>${OriginalSystemStatus}</OrgnlSysSts>
+	 			<CurSysDt>${CurrentSystemDate}</CurSysDt>
+	 			<CurSysSts>${CurrentSystemStatus}</CurSysSts>
+	 			<HldayFlg>${HolidayFlag}</HldayFlg>
+	 			
+	 			<NxtSysDt>${NextSystemDate}</NxtSysDt>
+	 			<BkChngNb>${BankChangeNumber}</BkChngNb>
+	 			<BaseDataChngNb>${BaseDataChangeNumber}</BaseDataChngNb>
+	 			<CISChngNb>${CISChangeNumber}</CISChngNb>
+	 			<ParamChngNb>${ParameterChangeNumber}</ParamChngNb>
+	 		</SysStsInf>
+	 	</SysStsNtfctn>
+	 </Document>
+	]]>
+	</template>
+</message-bean>

@@ -6,19 +6,21 @@ public class Ccms801Bean extends MessageBean {
 	private MsgHeader msgHeader = new MsgHeader();
 	private Ccms801Out ccms801Out = new Ccms801Out();
 
+	@Override
 	public Object getAttribute(String name) {
 		if ("MsgHeader".equals(name)) {
 			return this.getMsgHeader();
-		} else if ("CCMS_801_Out".equals(name)) {
+		} else if ("Ccms801Out".equals(name)) {
 			return this.getCcms801Out();
 		}
 		return null;
 	}
 
+	@Override
 	public void setAttribute(String name, Object value) {
 		if ("MsgHeader".equals(name)) {
 			this.setMsgHeader((MsgHeader) value);
-		} else if ("CCMS_801_Out".equals(name)) {
+		} else if ("Ccms801Out".equals(name)) {
 			this.setCcms801Out((Ccms801Out) value);
 		}
 	}
@@ -37,5 +39,10 @@ public class Ccms801Bean extends MessageBean {
 
 	public void setCcms801Out(Ccms801Out ccms801Out) {
 		this.ccms801Out = ccms801Out;
+	}
+
+	@Override
+	public void validate() {
+		//
 	}
 }

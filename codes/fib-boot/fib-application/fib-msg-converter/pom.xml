@@ -16,6 +16,11 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.dubbo</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+		<dependency>
 			<groupId>com.fib</groupId>
 			<artifactId>fib-commons</artifactId>
 		</dependency>
@@ -24,40 +29,33 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>log4j-core</artifactId>
-          <version>2.17.2</version>
-        </dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.11.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore-nio</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jgroups</groupId>
 			<artifactId>jgroups</artifactId>
 			<version>2.10.0.GA</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.ibm.mq</groupId>
 			<artifactId>com.ibm.mq.allclient</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
@@ -78,17 +76,19 @@
 			<groupId>org.dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-quartz</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 		<!-- 本地jar包 -->
 		<dependency>
 			<groupId>com.giantstone.common.util</groupId>
@@ -97,7 +97,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-common-util.jar</systemPath>
 		</dependency>
-
 		<dependency>
 			<groupId>com.giantstone.message</groupId>
 			<artifactId>giantstone-message-bean</artifactId>
@@ -105,7 +104,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-message-bean.jar</systemPath>
 		</dependency>
-
 		<dependency>
 			<groupId>com.giantstone.dao</groupId>
 			<artifactId>giantstone-dao</artifactId>
@@ -113,7 +111,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-dao.jar</systemPath>
 		</dependency>
-
 		<dependency>
 			<groupId>cmbc.corebank.exception.util</groupId>
 			<artifactId>cmbc-util</artifactId>
@@ -121,7 +118,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/cmbc.corebank.exception.util-20101026-2539.jar</systemPath>
 		</dependency>
-
 		<dependency>
 			<groupId>cmbc.corebank.exception.util</groupId>
 			<artifactId>sapjco3</artifactId>
@@ -129,7 +125,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/sapjco3.jar</systemPath>
 		</dependency>
-
 		<dependency>
 			<groupId>cmbc.corebank.exception.util</groupId>
 			<artifactId>giantstone-httpservicecallclient</artifactId>
@@ -137,7 +132,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-httpservicecallclient.jar</systemPath>
 		</dependency>
-
 		<dependency>
 			<groupId>cmbc.corebank.exception.util</groupId>
 			<artifactId>giantstone-security-control-service</artifactId>

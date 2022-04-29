@@ -1,27 +1,39 @@
 package com.fib.upp.message.parser;
 
+import com.fib.upp.message.metadata.ConstantMB;
 import com.fib.upp.message.metadata.Message;
 
+/**
+ * 报文解析工厂
+ * 
+ * @author fangyh
+ * @version 1.0.0
+ * @date 2021-08-29
+ */
 public class MessageParserFactory {
 	private MessageParserFactory() {
 	}
 
 	public static AbstractMessageParser getMessageParser(Message message) {
-		AbstractMessageParser parser = null;
-		switch (message.getType()) {
-		case 1001:
-			parser = new XmlMessageParser();
+		AbstractMessageParser obj = null;
+		ConstantMB.MessageType messageType = ConstantMB.MessageType.getMessageTypeByCode(message.getType());
+		switch (messageType) {
+		case XML:
+			obj = new XmlMessageParser();
 			break;
-		case 1002:
-			parser = new TagMessageParser();
+
+		case TAG:
+			obj = new TagMessageParser();
 			break;
-		case 1003:
-			parser = new SwiftMessageParser();
+
+		case SWIFT:
+			obj = new SwiftMessageParser();
 			break;
+
 		default:
-			parser = new DefaultMessageParser();
+			obj = new DefaultMessageParser();
 			break;
 		}
-		return parser;
+		return obj;
 	}
 }

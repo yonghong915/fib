@@ -1,5 +1,6 @@
 package com.fib.msgconverter.message.bean;
 
+import com.fib.upp.message.bean.MessageBean;
 import com.giantstone.common.util.CodeUtil;
 
 public class HelloBean extends MessageBean {

@@ -20,6 +20,7 @@ public class MsgHeader extends MessageBean {
 	private String reserve;
 	private String endFlag = "}";
 
+	@Override
 	public Object getAttribute(String name) {
 		if ("BeginFlag".equals(name)) {
 			return this.getBeginFlag();
@@ -57,6 +58,7 @@ public class MsgHeader extends MessageBean {
 		return null;
 	}
 
+	@Override
 	public void setAttribute(String name, Object value) {
 		if ("VersionID".equals(name)) {
 			this.setVersionID((String) value);
@@ -217,5 +219,171 @@ public class MsgHeader extends MessageBean {
 
 	public void setEndFlag(String endFlag) {
 		this.endFlag = endFlag;
+	}
+
+	@Override
+	public void validate() {
+		//
+
+	}
+
+	@Override
+	public String toString() {
+		return toString(false);
+	}
+
+	@Override
+	public String toString(boolean isWrap) {
+		return toString(isWrap, false);
+	}
+
+	@Override
+	public String toString(boolean isWrap, boolean isTable) {
+		StringBuilder buf = new StringBuilder(10240);
+		if (null != versionID) {
+			buf.append("<a n=\"versionID\" t=\"num\">");
+			buf.append(versionID);
+			buf.append("</a>");
+		}
+		if (null != origSender) {
+			buf.append("<a n=\"origSender\" t=\"str\">");
+			buf.append(origSender);
+			buf.append("</a>");
+		}
+		if (null != origSenderSID) {
+			buf.append("<a n=\"origSenderSID\" t=\"str\">");
+			buf.append(origSenderSID);
+			buf.append("</a>");
+		}
+		if (null != origReceiver) {
+			buf.append("<a n=\"origReceiver\" t=\"str\">");
+			buf.append(origReceiver);
+			buf.append("</a>");
+		}
+		if (null != origReceiverSID) {
+			buf.append("<a n=\"origReceiverSID\" t=\"str\">");
+			buf.append(origReceiverSID);
+			buf.append("</a>");
+		}
+		if (null != origSendDate) {
+			buf.append("<a n=\"origSendDate\" t=\"datetime\">");
+			buf.append(origSendDate);
+			buf.append("</a>");
+		}
+		if (null != origSendTime) {
+			buf.append("<a n=\"origSendTime\" t=\"datetime\">");
+			buf.append(origSendTime);
+			buf.append("</a>");
+		}
+		if (null != structType) {
+			buf.append("<a n=\"structType\" t=\"str\">");
+			buf.append(structType);
+			buf.append("</a>");
+		}
+		if (null != mesgType) {
+			buf.append("<a n=\"mesgType\" t=\"str\">");
+			buf.append(mesgType);
+			buf.append("</a>");
+		}
+		if (null != mesgID) {
+			buf.append("<a n=\"mesgID\" t=\"str\">");
+			buf.append(mesgID);
+			buf.append("</a>");
+		}
+		if (null != mesgRefID) {
+			buf.append("<a n=\"mesgRefID\" t=\"str\">");
+			buf.append(mesgRefID);
+			buf.append("</a>");
+		}
+		if (null != mesgPriority) {
+			buf.append("<a n=\"mesgPriority\" t=\"num\">");
+			buf.append(mesgPriority);
+			buf.append("</a>");
+		}
+		if (null != mesgDirection) {
+			buf.append("<a n=\"mesgDirection\" t=\"str\">");
+			buf.append(mesgDirection);
+			buf.append("</a>");
+		}
+		if (null != reserve) {
+			buf.append("<a n=\"reserve\" t=\"str\">");
+			buf.append(reserve);
+			buf.append("</a>");
+		}
+		if (null != endFlag) {
+			buf.append("<a n=\"endFlag\" t=\"str\">");
+			buf.append(endFlag);
+			buf.append("</a>");
+		}
+		if (0 == buf.length()) {
+			return null;
+		} else {
+			if (isTable) {
+				buf.insert(0, "<b>");
+			} else {
+				buf.insert(0, "<b c=\"com.giantstone.cnaps2.messagebean.recv.req.MsgHeader\">");
+			}
+			buf.append("</b>");
+			if (!isWrap) {
+				buf = new StringBuilder(buf.toString());
+				buf.insert(0, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+				return buf.toString();
+			} else {
+				return buf.toString();
+			}
+		}
+	}
+
+	@Override
+	public boolean isNull() {
+		if (null != beginFlag) {
+			return false;
+		}
+		if (null != versionID) {
+			return false;
+		}
+		if (null != origSender) {
+			return false;
+		}
+		if (null != origSenderSID) {
+			return false;
+		}
+		if (null != origReceiver) {
+			return false;
+		}
+		if (null != origReceiverSID) {
+			return false;
+		}
+		if (null != origSendDate) {
+			return false;
+		}
+		if (null != origSendTime) {
+			return false;
+		}
+		if (null != structType) {
+			return false;
+		}
+		if (null != mesgType) {
+			return false;
+		}
+		if (null != mesgID) {
+			return false;
+		}
+		if (null != mesgRefID) {
+			return false;
+		}
+		if (null != mesgPriority) {
+			return false;
+		}
+		if (null != mesgDirection) {
+			return false;
+		}
+		if (null != reserve) {
+			return false;
+		}
+		if (null != endFlag) {
+			return false;
+		}
+		return true;
 	}
 }

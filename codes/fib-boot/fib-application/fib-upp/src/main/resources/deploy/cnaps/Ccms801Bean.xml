@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean message-charset="UTF-8" id="Ccms801Bean" short-text="Ccms801Bean" class="com.fib.upp.message.bean.impl.Ccms801Bean">
+	<field name="MsgHeader" short-text="报文头" field-type="combine-field" reference="MsgHeader" />
+	<field name="Ccms801Out" short-text="报文体" field-type="combine-field" reference="Ccms801Out" />
+</message-bean>

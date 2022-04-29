@@ -66,7 +66,7 @@ import com.fib.msgconverter.commgateway.session.config.SessionConfig;
 import com.fib.msgconverter.commgateway.util.EnumConstants;
 import com.fib.msgconverter.commgateway.util.multilang.MultiLanguageResourceBundle;
 import com.fib.msgconverter.message.bean.generator.MessageBeanCodeGenerator;
-import com.fib.msgconverter.message.metadata.MessageMetadataManager;
+import com.fib.upp.message.metadata.handler.MessageMetadataManager;
 import com.giantstone.base.config.DAOConfiguration;
 import com.giantstone.common.config.ConfigManager;
 import com.giantstone.common.database.ConnectionManager;
