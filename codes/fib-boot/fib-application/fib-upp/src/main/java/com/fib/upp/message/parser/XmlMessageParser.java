@@ -13,12 +13,14 @@ import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
 import com.fib.commons.exception.CommonException;
 import com.fib.commons.util.SortHashMap;
 import com.fib.upp.message.bean.MessageBean;
-import com.fib.upp.message.metadata.Constant;
+import com.fib.upp.message.metadata.ConstantMB;
 import com.fib.upp.message.metadata.Field;
 import com.fib.upp.message.metadata.Message;
 import com.fib.upp.message.metadata.ValueRange;
@@ -26,8 +28,9 @@ import com.fib.upp.util.BeanShellEngine;
 import com.fib.upp.util.ClassUtil;
 import com.fib.upp.util.CodeUtil;
 import com.fib.upp.util.ExceptionUtil;
-import com.fib.upp.util.MultiLanguageResourceBundle;
 import com.fib.upp.util.StringUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * 
@@ -36,18 +39,18 @@ import com.fib.upp.util.StringUtil;
  * @date 2021-08-29
  */
 public class XmlMessageParser extends AbstractMessageParser {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(XmlMessageParser.class);
 	Document document;
 
 	public XmlMessageParser() {
 		document = null;
 	}
 
+	@Override
 	protected int parse(int idx) {
-
 		byte[] dest = new byte[messageData.length - idx];
 		System.arraycopy(messageData, idx, dest, 0, messageData.length - idx);
-		System.out.println("dest=" + new String(dest));
+		LOGGER.info("dest={}", new String(dest));
 		messageData = dest;
 		parse();
 		return idx;
@@ -55,9 +58,9 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 	public MessageBean parse() {
 		if (null == messageData)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parameter.null", new String[] { "messageData" }));
+			throw new CommonException("parameter.null.messageData");
 		if (null == message)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parameter.null", new String[] { "message" }));
+			throw new CommonException("parameter.null.message");
 		if (0 == variableCache.size())
 			loadVariable();
 		if (null != message.getMsgCharset())
@@ -65,11 +68,10 @@ public class XmlMessageParser extends AbstractMessageParser {
 				messageData = (new String(messageData, message.getMsgCharset())).getBytes();
 			} catch (UnsupportedEncodingException unsupportedencodingexception) {
 				unsupportedencodingexception.printStackTrace();
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("message.encoding.unsupport",
-						new String[] { message.getId(), message.getMsgCharset() }));
+				throw new CommonException("message.encoding.unsupport");
 			}
 		if (message.getPreParseEvent() != null)
-			exeShell("pre-parse", message.getPreParseEvent(), ((MessageBean) (null)));
+			exeShell("pre-parse", message.getPreParseEvent(), null);
 		SAXReader saxreader = new SAXReader();
 		try {
 			document = saxreader.read(new InputSource(new StringReader(new String(messageData))));
@@ -95,21 +97,19 @@ public class XmlMessageParser extends AbstractMessageParser {
 		beanshellengine.set("messageBean", messagebean);
 		beanshellengine.set("messageData", messageData);
 		if (0 != variableCache.size()) {
-			Iterator iterator = variableCache.keySet().iterator();
-			Object obj = null;
+			Iterator<String> iterator = variableCache.keySet().iterator();
 			String s2;
 			for (; iterator.hasNext(); beanshellengine.set(s2, variableCache.get(s2)))
-				s2 = (String) iterator.next();
+				s2 = iterator.next();
 
 		}
 		beanshellengine.eval(s1);
 		messageData = (byte[]) beanshellengine.get("messageData");
 		if (0 != variableCache.size()) {
-			Iterator iterator1 = variableCache.keySet().iterator();
-			Object obj1 = null;
+			Iterator<String> iterator1 = variableCache.keySet().iterator();
 			String s3;
 			for (; iterator1.hasNext(); variableCache.put(s3, beanshellengine.get(s3)))
-				s3 = (String) iterator1.next();
+				s3 = iterator1.next();
 
 		}
 	}
@@ -126,9 +126,9 @@ public class XmlMessageParser extends AbstractMessageParser {
 			Class<?> class1 = Class.forName(message.getClassName());
 			if (null != messagebean && !messagebean.getClass().equals(class1) || null == messagebean)
 				messagebean = (MessageBean) class1.getDeclaredConstructor().newInstance();
-		} catch (Exception exception) {
-			exception.printStackTrace(System.err);
-			ExceptionUtil.throwActualException(exception);
+		} catch (Exception e) {
+			LOGGER.error("Failed to....", e);
+			ExceptionUtil.throwActualException(e);
 		}
 		if (null != getParentBean())
 			messagebean.setParent(getParentBean());
@@ -173,12 +173,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			D(messagebean, message, field, s, node);
 			break;
 
-		case 2003:
-		case 2005:
-		case 2006:
-		case 2007:
-		case 2009:
-		case 2010:
+		case 2003, 2005, 2006, 2007, 2009, 2010:
 		default:
 			A(messagebean, message, field, s, node);
 			break;
@@ -194,8 +189,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 		if (null != field.getRowXpath())
 			s1 = (new StringBuilder()).append(s1).append("/").append(field.getRowXpath()).toString();
 		Message message1 = null;
-		Object obj = null;
-		if ("dynamic".equalsIgnoreCase(field.getReferenceType())) {
+		if (ConstantMB.ReferenceType.DYNAMIC.getCode().equalsIgnoreCase(field.getReferenceType())) {
 			message1 = A(field, message, messagebean);
 		} else {
 			Class<?> class1 = getFieldClass(messagebean, field);
@@ -208,47 +202,45 @@ public class XmlMessageParser extends AbstractMessageParser {
 				message1.setFields(field.getSubFields());
 			}
 		}
-		SortHashMap sorthashmap = (SortHashMap) message1.getFields();
+		SortHashMap<String, Field> sorthashmap = (SortHashMap<String, Field>) message1.getFields();
 		String[] as = new String[sorthashmap.size()];
 		String s2 = s1;
 		if (null != message1.getXpath())
 			s2 = (new StringBuilder()).append(s1).append("/").append(message1.getXpath()).toString();
 		for (int i = 0; i < as.length; i++)
 			as[i] = (new StringBuilder()).append(s2).append("/")
-					.append(null != ((Field) sorthashmap.get(i)).getXpath() ? ((Field) sorthashmap.get(i)).getXpath()
-							: ((Field) sorthashmap.get(i)).getName())
-					.toString();
+					.append(null != (sorthashmap.get(i)).getXpath() ? (sorthashmap.get(i)).getXpath() : (sorthashmap.get(i)).getName()).toString();
 
-		ArrayList arraylist = new ArrayList();
-		Object obj1 = null;
+		List<List<Node>> arraylist = new ArrayList<>();
 		for (int j = 0; j < as.length; j++) {
-			List list;
+			List<Node> list;
 			if (node == null)
 				list = document.selectNodes(as[j]);
 			else
 				list = node.selectNodes(as[j]);
-			if (0 != list.size())
+			if (!list.isEmpty())
 				arraylist.add(list);
 		}
 
-		if (0 == arraylist.size())
+		if (arraylist.isEmpty()) {
 			return;
-		int k = ((List) arraylist.get(0)).size();
+		}
+		int k = arraylist.get(0).size();
 		int l = 0;
-		ArrayList arraylist1 = new ArrayList(k);
+		List<MessageBean> arraylist1 = new ArrayList<>(k);
 		MessageBean messagebean1 = null;
 		for (int i1 = 0; i1 < k; i1++) {
 			if (null != field.getPreRowParseEvent())
 				A(field, "row-pre-parse", field.getPreRowParseEvent(), messagebean, null, arraylist1, k, i1);
 			try {
-				Class class2 = Class.forName(message1.getClassName());
-				messagebean1 = (MessageBean) class2.newInstance();
-			} catch (Exception exception) {
-				exception.printStackTrace(System.err);
-				ExceptionUtil.throwActualException(exception);
+				Class<?> class2 = Class.forName(message1.getClassName());
+				messagebean1 = (MessageBean) class2.getDeclaredConstructor().newInstance();
+			} catch (Exception e) {
+				LOGGER.error("Failed to....", e);
+				ExceptionUtil.throwActualException(e);
 			}
 			for (int j1 = 0; j1 < arraylist.size(); j1++)
-				A(messagebean1, message1, (Field) sorthashmap.get(j1), ((String) (null)), (Node) ((List) arraylist.get(j1)).get(i1));
+				A(messagebean1, message1, sorthashmap.get(j1), null, (arraylist.get(j1)).get(i1));
 
 			l++;
 			arraylist1.add(messagebean1);
@@ -258,10 +250,9 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 		if (0 == l) {
 			return;
-		} else {
-			A(messagebean, field, List.class, arraylist1);
-			return;
 		}
+
+		invokeMessageBeanMethod(messagebean, field, List.class, arraylist1);
 	}
 
 	private void E(MessageBean messagebean, Message message, Field field, String s, Node node) {
@@ -273,11 +264,10 @@ public class XmlMessageParser extends AbstractMessageParser {
 		if (null != field.getRowXpath())
 			s1 = (new StringBuilder()).append(s1).append("/").append(field.getRowXpath()).toString();
 		Message message1 = null;
-		Object obj = null;
-		if ("dynamic".equalsIgnoreCase(field.getReferenceType())) {
+		if (ConstantMB.ReferenceType.DYNAMIC.getCode().equalsIgnoreCase(field.getReferenceType())) {
 			message1 = A(field, message, messagebean);
 		} else {
-			Class class1 = getFieldClass(messagebean, field);
+			Class<?> class1 = getFieldClass(messagebean, field);
 			if (null != field.getReference()) {
 				message1 = field.getReference();
 			} else {
@@ -292,9 +282,8 @@ public class XmlMessageParser extends AbstractMessageParser {
 			if (null == s2 || 0 == s2.length())
 				return;
 			int i = parseIntValue(field.getRowNumField(), ClassUtil.getBeanAttributeValue(messagebean, field.getRowNumField().getName()));
-			if ("dynamic".equalsIgnoreCase(field.getReferenceType())) {
-				ArrayList arraylist = new ArrayList(i);
-				Object obj3 = null;
+			if (ConstantMB.ReferenceType.DYNAMIC.getCode().equalsIgnoreCase(field.getReferenceType())) {
+				List<MessageBean> arraylist = new ArrayList<>(i);
 				int k = 0;
 				for (int i1 = 0; i1 < i; i1++) {
 					if (null != field.getPreRowParseEvent())
@@ -302,7 +291,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 					MessageBean messagebean3 = (MessageBean) ClassUtil.createClassInstance(message1.getClassName());
 					messagebean.setMetadata(message);
 					if (null != message.getMsgCharset()) {
-						byte abyte0[] = null;
+						byte[] abyte0 = null;
 						try {
 							abyte0 = s2.getBytes(message.getMsgCharset());
 						} catch (UnsupportedEncodingException unsupportedencodingexception) {
@@ -320,7 +309,6 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 				ClassUtil.setBeanAttributeValue(messagebean, field.getName(), arraylist, List.class);
 			} else {
-				Object obj1 = null;
 				String s3 = (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 				int l = 0;
 				for (int j1 = 0; j1 < i; j1++) {
@@ -374,7 +362,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 
 				if (0 == j)
 					return;
-				A(messagebean, field, List.class, arraylist2);
+				invokeMessageBeanMethod(messagebean, field, List.class, arraylist2);
 			} else {
 				if (null != message1.getXpath())
 					s1 = (new StringBuilder()).append(s1).append("/").append(message1.getXpath()).toString();
@@ -403,21 +391,20 @@ public class XmlMessageParser extends AbstractMessageParser {
 						A(field, "row-post-parse", field.getPostRowParseEvent(), messagebean, messagebean1, arraylist1, k1, k1);
 				} while (null != messagebean1.toString());
 				arraylist1.remove(arraylist1.size() - 1);
-				A(messagebean, field, List.class, arraylist1);
+				invokeMessageBeanMethod(messagebean, field, List.class, arraylist1);
 			}
 		}
 	}
 
-	private void A(MessageBean messagebean, Field field, Class<?> class1, Object obj) {
+	private void invokeMessageBeanMethod(MessageBean messagebean, Field field, Class<?> class1, Object obj) {
 		if (null != class1 && null != obj)
 			try {
-				Method method = messagebean.getClass().getMethod(
-						(new StringBuilder()).append("set").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString(),
-						new Class[] { class1 });
-				method.invoke(messagebean, new Object[] { obj });
-			} catch (Exception exception) {
-				exception.printStackTrace(System.err);
-				ExceptionUtil.throwActualException(exception);
+				Method method = messagebean.getClass()
+						.getMethod((new StringBuilder()).append("set").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString(), class1);
+				method.invoke(messagebean, obj);
+			} catch (Exception e) {
+				LOGGER.error("Failed to....", e);
+				ExceptionUtil.throwActualException(e);
 			}
 	}
 
@@ -431,7 +418,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 		return b.parse(i);
 	}
 
-	private MessageBean A(Message message, MessageBean messagebean, byte abyte0[]) {
+	private MessageBean A(Message message, MessageBean messagebean, byte[] abyte0) {
 		AbstractMessageParser b = MessageParserFactory.getMessageParser(message);
 		b.setVariableCache(variableCache);
 		b.setMessage(message);
@@ -458,7 +445,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			} else {
 				message1 = new Message();
 				message1.setId(s1);
-				message1.setClassName(((Class) (obj)).getName());
+				message1.setClassName(((Class<?>) (obj)).getName());
 				message1.setFields(field.getSubFields());
 			}
 		}
@@ -472,40 +459,41 @@ public class XmlMessageParser extends AbstractMessageParser {
 			MessageBean messagebean1 = A(message2, messagebean, messageData);
 			if (null == messagebean1)
 				return;
-			A(messagebean, field, ((Class) (obj)), messagebean1);
+			invokeMessageBeanMethod(messagebean, field, ((Class<?>) (obj)), messagebean1);
 		} else if (s1.indexOf("@") != -1 || s1.indexOf("(") != -1) {
 			String s2 = A(s1, node, field);
 			if (null == s2 || 0 == s2.length())
 				return;
 			messagebean.setMetadata(message);
 			if (null != message.getMsgCharset()) {
-				byte abyte0[] = null;
+				byte[] abyte0 = null;
 				try {
 					abyte0 = s2.getBytes(message.getMsgCharset());
 				} catch (UnsupportedEncodingException unsupportedencodingexception) {
 					unsupportedencodingexception.printStackTrace();
-					throw new RuntimeException("message.encoding.unsupport");
+					throw new CommonException("message.encoding.unsupport");
 				}
 				MessageBean messagebean3 = A(message1, messagebean, abyte0);
-				A(messagebean, field, ((Class) (obj)), messagebean3);
+				invokeMessageBeanMethod(messagebean, field, ((Class<?>) (obj)), messagebean3);
 			} else {
 				MessageBean messagebean2 = A(message1, messagebean, s2.getBytes());
-				A(messagebean, field, ((Class) (obj)), messagebean2);
+				invokeMessageBeanMethod(messagebean, field, ((Class<?>) (obj)), messagebean2);
 			}
 		} else {
-			List list = null;
+			List<Node> list = null;
 			if (node == null)
 				list = document.selectNodes(s1);
 			else
 				list = node.selectNodes(s1);
-			if (list.size() == 0)
+			if (list.isEmpty()) {
 				return;
+			}
 			if (null != message1.getXpath())
 				s1 = (new StringBuilder()).append(s1).append("/").append(message1.getXpath()).toString();
 			Message message3 = message1.copy();
 			message3.setXpath(s1);
-			MessageBean messagebean4 = beanAssignment(message3, (Node) list.get(0));
-			A(messagebean, field, ((Class) (obj)), messagebean4);
+			MessageBean messagebean4 = beanAssignment(message3, list.get(0));
+			invokeMessageBeanMethod(messagebean, field, ((Class<?>) (obj)), messagebean4);
 		}
 	}
 
@@ -521,17 +509,16 @@ public class XmlMessageParser extends AbstractMessageParser {
 		}
 		String s2 = A(s1, node, field);
 		s2 = new String(A(field, s2.getBytes()));
-		if (null == s2 || 0 == s2.length()) {
-			return;
-		} else {
-			String s3 = Constant.getJavaTypeByDataType(field.getDataType());
-			A(messagebean, field, A(s3), A(s2, s3));
+		if (StrUtil.isEmptyIfStr(s1)) {
 			return;
 		}
+
+		String s3 = ConstantMB.getJavaTypeByDataType(field.getDataType());
+		invokeMessageBeanMethod(messagebean, field, A(s3), getObject(s2, s3));
 	}
 
 	protected Message A(Field field, Message message, MessageBean messagebean) {
-		String as[] = field.getReferenceId().split("\\.");
+		String[] as = field.getReferenceId().split("\\.");
 		Message message1 = message;
 		if (as.length > 1) {
 			MessageBean messagebean1 = messagebean;
@@ -577,37 +564,35 @@ public class XmlMessageParser extends AbstractMessageParser {
 		if ("long".equals(s))
 			return Long.TYPE;
 		else
-			throw new RuntimeException("XmlMessageParser.fieldType.illegal");
+			throw new CommonException("XmlMessageParser.fieldType.illegal");
 	}
 
-	private Object A(String s, String s1) {
-		if (null == s)
+	private Object getObject(String value, String javaType) {
+		if (null == value) {
 			return null;
-		if ("String".equals(s1))
-			return s;
-		if ("byte[]".equals(s1))
-			return s.getBytes();
-		if ("int".equals(s1)) {
-			if ("".equals(s))
-				s = "0";
-			return Integer.valueOf(Integer.parseInt(s));
 		}
-		if ("byte".equals(s1))
-			if (!"".equals(s))
-				return Byte.valueOf(s.getBytes()[0]);
-			else
+		if ("".equals(value)) {
+			value = "0";
+		}
+
+		if ("String".equals(javaType)) {
+			return value;
+		} else if ("byte[]".equals(javaType)) {
+			return value.getBytes();
+		} else if ("int".equals(javaType)) {
+			return Integer.valueOf(Integer.parseInt(value));
+		} else if ("byte".equals(javaType)) {
+			if (!"".equals(value)) {
+				return Byte.valueOf(value.getBytes()[0]);
+			} else {
 				return Byte.valueOf("0");
-		if ("short".equals(s1)) {
-			if ("".equals(s))
-				s = "0";
-			return Short.valueOf(Short.parseShort(s));
-		}
-		if ("long".equals(s1)) {
-			if ("".equals(s))
-				s = "0";
-			return Long.valueOf(Long.parseLong(s));
+			}
+		} else if ("short".equals(javaType)) {
+			return Short.valueOf(Short.parseShort(value));
+		} else if ("long".equals(javaType)) {
+			return Long.valueOf(Long.parseLong(value));
 		} else {
-			throw new RuntimeException("XmlMessageParser.fieldType.illegal");
+			throw new CommonException("XmlMessageParser.fieldType.illegal");
 		}
 	}
 
@@ -625,7 +610,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 		try {
 			class1 = Class.forName(s);
 		} catch (ClassNotFoundException classnotfoundexception) {
-			throw new RuntimeException((new StringBuilder()).append("XmlMessageParser.getFieldClass.class.notFound")
+			throw new CommonException((new StringBuilder()).append("XmlMessageParser.getFieldClass.class.notFound")
 					.append(classnotfoundexception.getMessage()).toString(), classnotfoundexception);
 		}
 		return class1;
@@ -640,8 +625,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			i = Integer.parseInt((String) obj);
 			break;
 
-		case 3003:
-		case 3007:
+		case 3003, 3007:
 			i = ((Integer) obj).intValue();
 			break;
 
@@ -649,26 +633,24 @@ public class XmlMessageParser extends AbstractMessageParser {
 			i = ((Byte) obj).intValue();
 			break;
 
-		case 3005:
-		case 3008:
+		case 3005, 3008:
 			i = ((Short) obj).intValue();
 			break;
 
-		case 3002:
-		case 3006:
+		case 3002, 3006:
 		default:
-			throw new RuntimeException("parseIntValue.dataType.unsupport");
+			throw new CommonException("parseIntValue.dataType.unsupport");
 		}
 		return i;
 	}
 
-	protected byte[] A(Field field, byte abyte0[]) {
+	protected byte[] A(Field field, byte[] abyte0) {
 		if (5000 == field.getPaddingDirection())
 			return abyte0;
 		String s = field.getExtendAttribute("remove_start");
 		if (null != s) {
-			int i = CodeUtil.byteArrayIndexOf(abyte0, CodeUtil.HextoByte(s), 0);
-			byte abyte1[] = abyte0;
+			int i = CodeUtil.byteArrayIndexOf(abyte0, CodeUtil.hextoByte(s), 0);
+			byte[] abyte1 = abyte0;
 			if (-1 != i) {
 				abyte0 = new byte[i];
 				System.arraycopy(abyte1, 0, abyte0, 0, i);
@@ -683,7 +665,7 @@ public class XmlMessageParser extends AbstractMessageParser {
 			if (abyte0.length == j) {
 				return new byte[0];
 			} else {
-				byte abyte2[] = new byte[abyte0.length - j];
+				byte[] abyte2 = new byte[abyte0.length - j];
 				System.arraycopy(abyte0, j, abyte2, 0, abyte2.length);
 				return abyte2;
 			}
@@ -695,13 +677,13 @@ public class XmlMessageParser extends AbstractMessageParser {
 		if (0 > j) {
 			return new byte[0];
 		} else {
-			byte abyte3[] = new byte[j + 1];
+			byte[] abyte3 = new byte[j + 1];
 			System.arraycopy(abyte0, 0, abyte3, 0, abyte3.length);
 			return abyte3;
 		}
 	}
 
-	protected void A(Field field, String s, String s1, MessageBean messagebean, MessageBean messagebean1, List list, int i, int j) {
+	protected void A(Field field, String s, String s1, MessageBean messagebean, MessageBean messagebean1, List<?> list, int i, int j) {
 		BeanShellEngine beanshellengine = new BeanShellEngine();
 		beanshellengine.set("messageParser", this);
 		beanshellengine.set("message", message);
@@ -714,19 +696,17 @@ public class XmlMessageParser extends AbstractMessageParser {
 		beanshellengine.set("currentBean", messagebean1);
 		if (0 != variableCache.size()) {
 			Iterator<String> iterator = variableCache.keySet().iterator();
-			Object obj = null;
 			String s2;
 			for (; iterator.hasNext(); beanshellengine.set(s2, variableCache.get(s2)))
-				s2 = (String) iterator.next();
+				s2 = iterator.next();
 
 		}
 		beanshellengine.eval(s1);
 		if (0 != variableCache.size()) {
 			Iterator<String> iterator1 = variableCache.keySet().iterator();
-			Object obj1 = null;
 			String s3;
 			for (; iterator1.hasNext(); variableCache.put(s3, beanshellengine.get(s3)))
-				s3 = (String) iterator1.next();
+				s3 = iterator1.next();
 
 		}
 	}

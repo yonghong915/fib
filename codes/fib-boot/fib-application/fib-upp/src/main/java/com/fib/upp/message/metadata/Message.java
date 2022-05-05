@@ -19,7 +19,7 @@ public class Message {
 	private int type;
 	private String shortText;
 	private String className;
-	private Map<String, Field> fields;
+	private SortHashMap<String, Field> fields;
 	private String prePackEvent;
 	private String postPackEvent;
 	private String preParseEvent;
@@ -35,7 +35,7 @@ public class Message {
 
 	public Message() {
 		type = ConstantMB.MessageType.COMMON.getCode();
-		fields = new SortHashMap(32);
+		fields = new SortHashMap<>(32);
 		variable = new HashMap<>();
 	}
 
@@ -77,11 +77,11 @@ public class Message {
 		return arraylist;
 	}
 
-	public Map<String, Field> getFields() {
+	public SortHashMap<String, Field> getFields() {
 		return fields;
 	}
 
-	public void setFields(Map<String, Field> sorthashmap) {
+	public void setFields(SortHashMap<String, Field> sorthashmap) {
 		fields = sorthashmap;
 	}
 
@@ -145,7 +145,7 @@ public class Message {
 		return prefix;
 	}
 
-	public void setPrefix(byte abyte0[]) {
+	public void setPrefix(byte[] abyte0) {
 		prefix = abyte0;
 	}
 
@@ -153,7 +153,7 @@ public class Message {
 		return suffix;
 	}
 
-	public void setSuffix(byte abyte0[]) {
+	public void setSuffix(byte[] abyte0) {
 		suffix = abyte0;
 	}
 

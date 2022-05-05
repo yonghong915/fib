@@ -60,7 +60,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 		for (Iterator<String> iterator = mbMap.keySet().iterator(); iterator.hasNext();) {
 			String s = iterator.next();
-			messageData = CodeUtil.replaceAll(messageData, CodeUtil.HextoByte(s), CodeUtil.HextoByte(mbMap.get(s)), 0, messageData.length);
+			messageData = CodeUtil.replaceAll(messageData, CodeUtil.hextoByte(s), CodeUtil.hextoByte(mbMap.get(s)), 0, messageData.length);
 		}
 
 		A();
@@ -127,7 +127,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		}
 	}
 
-	protected void exeShell(Field field, String s, String s1, MessageBean messagebean, List list, int i, int j) {
+	protected void exeShell(Field field, String s, String s1, MessageBean messagebean, List<?> list, int i, int j) {
 		BeanShellEngine beanshellengine = new BeanShellEngine();
 		beanshellengine.set("messageParser", this);
 		beanshellengine.set("message", message);
@@ -155,19 +155,19 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		}
 	}
 
+	@Override
 	protected int parse(int i) {
 		if (!flag && null != getParentBean())
 			messageBean.setParent(getParentBean());
-		Iterator iterator = message.getFields().values().iterator();
-		Object obj = null;
+		Iterator<Field> iterator = message.getFields().values().iterator();
 		while (iterator.hasNext()) {
-			Field field = (Field) iterator.next();
+			Field field = iterator.next();
 			i = B(field, i);
 		}
 		return i;
 	}
 
-	protected int A(Field field, MessageBean messagebean, Message message, int i, byte abyte0[]) {
+	protected int A(Field field, MessageBean messagebean, Message message, int i, byte[] abyte0) {
 		Message message1 = this.message;
 		Field field1 = null;
 		if (null == field.getRowNumField()) {
@@ -176,13 +176,13 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			do {
 				if (k >= as.length)
 					break;
-				field1 = ((Message) message1).getField(as[k].trim());
+				field1 = message1.getField(as[k].trim());
 				if (++k < as.length)
 					if (null != field1.getReference())
 						message1 = field1.getReference();
 					else if (0 != field1.getSubFields().size()) {
 						message1 = new Message();
-						((Message) message1).setFields(field1.getSubFields());
+						message1.setFields(field1.getSubFields());
 					}
 			} while (true);
 		} else {
@@ -192,19 +192,19 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		List<MessageBean> arraylist = new ArrayList<>(j);
 		for (int l = 0; l < j; l++) {
 			if (null != field.getPreRowParseEvent())
-				exeShell(field, "row-pre-parse", field.getPreRowParseEvent(), null, ((List) (arraylist)), j, l);
+				exeShell(field, "row-pre-parse", field.getPreRowParseEvent(), null, arraylist, j, l);
 			MessageBean messagebean1 = (MessageBean) ClassUtil.createClassInstance(message.getClassName());
 			i = B(field, message, messagebean1, i, abyte0);
 			arraylist.add(messagebean1);
 			if (null != field.getPostRowParseEvent())
-				exeShell(field, "row-post-parse", field.getPostRowParseEvent(), messagebean1, ((List) (arraylist)), j, l);
+				exeShell(field, "row-post-parse", field.getPostRowParseEvent(), messagebean1, arraylist, j, l);
 		}
 
 		ClassUtil.setBeanAttributeValue(messagebean, field.getName(), arraylist, List.class);
 		return i;
 	}
 
-	protected int B(Field field, MessageBean messagebean, Message message, int i, byte abyte0[]) {
+	protected int B(Field field, MessageBean messagebean, Message message, int i, byte[] abyte0) {
 		MessageBean messagebean1 = (MessageBean) ClassUtil.createClassInstance(message.getClassName());
 		i = B(field, message, messagebean1, i, abyte0);
 		String s = (new StringBuilder()).append("set").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
@@ -218,7 +218,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 	}
 
 	protected Message B(Field field, Message message, MessageBean messagebean) {
-		String as[] = field.getReferenceId().split("\\.");
+		String[] as = field.getReferenceId().split("\\.");
 		Message message1 = message;
 		if (as.length > 1) {
 			MessageBean messagebean1 = messagebean;
@@ -229,9 +229,9 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		}
 		Field field1 = message1.getField(as[as.length - 1]);
 		Object obj = ClassUtil.getBeanValueByPath(messagebean, field.getReferenceId());
-		ValueRange valuerange = (ValueRange) field1.getValueRange().get(obj);
+		ValueRange valuerange = field1.getValueRange().get(obj);
 		if (null == valuerange)
-			valuerange = (ValueRange) field1.getValueRange().get("default-ref");
+			valuerange = field1.getValueRange().get("default-ref");
 		return valuerange.getReference();
 	}
 
@@ -262,9 +262,9 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				s = obj.toString();
 			}
 		}
-		ValueRange valuerange = (ValueRange) field.getValueRange().get(s);
+		ValueRange valuerange = field.getValueRange().get(s);
 		if (null == valuerange)
-			valuerange = (ValueRange) field.getValueRange().get("default-ref");
+			valuerange = field.getValueRange().get("default-ref");
 		return valuerange.getReference();
 	}
 
@@ -304,7 +304,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				ClassUtil.setBeanAttributeValue(messageBean, field.getName(), aobj[0]);
 				if (F == null) {
 					if (aobj[0] instanceof String)
-						F = CodeUtil.HextoByte(((String) aobj[0]).getBytes());
+						F = CodeUtil.hextoByte(((String) aobj[0]).getBytes());
 					else
 						F = (byte[]) aobj[0];
 					break;
@@ -312,7 +312,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				ByteBuffer bytebuffer = new ByteBuffer(F.length * 2);
 				bytebuffer.append(F);
 				if (aobj[0] instanceof String)
-					bytebuffer.append(CodeUtil.HextoByte(((String) aobj[0]).getBytes()));
+					bytebuffer.append(CodeUtil.hextoByte(((String) aobj[0]).getBytes()));
 				else
 					bytebuffer.append((byte[]) aobj[0]);
 				F = bytebuffer.toBytes();
@@ -379,7 +379,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		if (null != field.getTabPrefix())
 			i += field.getTabPrefix().length;
 		if (null != field.getRefLengthFieldName()) {
-			String as[] = field.getRefLengthFieldName().split("\\.");
+			String[] as = field.getRefLengthFieldName().split("\\.");
 			Message message = this.message;
 			if (as.length > 1) {
 				MessageBean messagebean = messageBean;
@@ -406,7 +406,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				return C(field, i);
 			k = messageData.length - i;
 		}
-		byte abyte0[] = new byte[k];
+		byte[] abyte0 = new byte[k];
 		System.arraycopy(messageData, i, abyte0, 0, k);
 		Message message1 = field.getReference();
 		if (null == message1) {
@@ -415,10 +415,8 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			message1.setShortText(field.getShortText());
 			message1.setFields(field.getSubFields());
 		}
-		Object obj = null;
 		String s = (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 		int j1 = 0;
-		boolean flag = false;
 		while (j1 < abyte0.length) {
 			if (null != field.getPrefix() && (j == 0 && field.isFirRowPrefix() || j > 0))
 				j1 += field.getPrefix().length;
@@ -450,9 +448,6 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 	protected int C(Field field, int i) {
 		int j = 0;
-		boolean flag = false;
-		boolean flag1 = false;
-		Object obj = null;
 		Message message = field.getReference();
 		if (null == message) {
 			message = new Message();
@@ -460,7 +455,6 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			message.setShortText(field.getShortText());
 			message.setFields(field.getSubFields());
 		}
-		Object obj1 = null;
 		String s = (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 		do {
 			if (null != field.getPrefix() && (j == 0 && field.isFirRowPrefix() || j > 0))
@@ -474,7 +468,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			int l = k - i;
 			if (0 == l)
 				break;
-			byte abyte0[] = new byte[l];
+			byte[] abyte0 = new byte[l];
 			System.arraycopy(messageData, i, abyte0, 0, abyte0.length);
 			if (null != field.getPreRowParseEvent())
 				exeShell(field, "row-pre-parse", field.getPreRowParseEvent(), null, null, j, j);
@@ -495,7 +489,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		if (null != field.getRowNumField()) {
 			j = parseIntValue(field.getRowNumField(), ClassUtil.getBeanAttributeValue(messageBean, field.getRowNumField().getName()));
 		} else {
-			String as[] = field.getRowNumFieldName().split("\\.");
+			String[] as = field.getRowNumFieldName().split("\\.");
 			Field field1 = getParentBean().getMetadata().getField(as[1]);
 			j = parseIntValue(field1, ClassUtil.getBeanValueByPath(messageBean, field.getRowNumFieldName()));
 		}
@@ -506,7 +500,6 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			message.setShortText(field.getShortText());
 			message.setFields(field.getSubFields());
 		}
-		Object obj = null;
 		String s = (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 		for (int k = 0; k < j; k++) {
 			if (null != field.getPreRowParseEvent())
@@ -526,9 +519,9 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 	protected int D(Field field, int i) {
 		if (1001 == field.getReference().getType()) {
-			int ai[] = new int[1];
+			int[] ai = new int[1];
 			i = A(field, i, ai);
-			byte abyte0[] = new byte[ai[0]];
+			byte[] abyte0 = new byte[ai[0]];
 			System.arraycopy(messageData, i, abyte0, 0, abyte0.length);
 			XmlMessageParser c = new XmlMessageParser();
 			c.setVariableCache(variableCache);
@@ -543,11 +536,11 @@ public class DefaultMessageParser extends AbstractMessageParser {
 	}
 
 	protected int parseVarCombineField(Field field, int i) {
-		int ai[] = new int[1];
+		int[] ai = new int[1];
 		i = A(field, i, ai);
 		int j = i;
 		if (field.getReference() != null && 1001 == field.getReference().getType()) {
-			byte abyte0[] = new byte[ai[0]];
+			byte[] abyte0 = new byte[ai[0]];
 			System.arraycopy(messageData, i, abyte0, 0, abyte0.length);
 			AbstractMessageParser b = MessageParserFactory.getMessageParser(field.getReference());
 			b.setVariableCache(variableCache);
@@ -586,7 +579,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 	}
 
 	protected int L(Field field, int i) {
-		int ai[] = new int[1];
+		int[] ai = new int[1];
 		i = A(field, i, ai);
 		Field field1 = new Field();
 		field1.setFieldType(2001);
@@ -609,7 +602,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected int A(Field field, int i, int ai[]) {
+	protected int A(Field field, int i, int[] ai) {
 		if (field.getRefLengthField() != null) {
 			Object obj = ClassUtil.getBeanAttributeValue(messageBean, field.getRefLengthField().getName());
 			ai[0] = parseIntValue(field.getRefLengthField(), obj);
@@ -625,7 +618,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			field1.setPaddingDirection(5001);
 			field1.setPattern(field.getPattern());
 			field1.setPadding((byte) 48);
-			Object aobj[] = new Object[1];
+			Object[] aobj = new Object[1];
 			i = parseFixedFieldValue(field1, i, aobj);
 			ai[0] = parseIntValue(field1, aobj[0]);
 			field.setLength(ai[0]);
@@ -644,8 +637,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			i = Integer.parseInt((String) obj);
 			break;
 
-		case 3003:
-		case 3007:
+		case 3003, 3007:
 			i = ((Integer) obj).intValue();
 			break;
 
@@ -653,8 +645,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			i = ((Byte) obj).intValue();
 			break;
 
-		case 3005:
-		case 3008:
+		case 3005, 3008:
 			i = ((Short) obj).intValue();
 			break;
 
@@ -662,8 +653,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			i = ((Long) obj).intValue();
 			break;
 
-		case 3002:
-		case 3006:
+		case 3002, 3006:
 		default:
 			throw new CommonException("parseIntValue.dataType.unsupport");
 		}
@@ -679,10 +669,10 @@ public class DefaultMessageParser extends AbstractMessageParser {
 	}
 
 	protected int J(Field field, int i) {
-		Object aobj[] = new Object[1];
+		Object[] aobj = new Object[1];
 		if (-1 == field.getLength()) {
 			Object obj = ClassUtil.getBeanValueByPath(messageBean, field.getLengthScript());
-			String as[] = field.getLengthScript().split("\\.");
+			String[] as = field.getLengthScript().split("\\.");
 			Message message = this.message;
 			if (as.length > 1) {
 				MessageBean messagebean = messageBean;
@@ -702,13 +692,11 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				ClassUtil.setBeanAttributeValue(messageBean, field.getName(), aobj[0], Byte.TYPE);
 				break;
 
-			case 3003:
-			case 3007:
+			case 3003, 3007:
 				ClassUtil.setBeanAttributeValue(messageBean, field.getName(), aobj[0], Integer.TYPE);
 				break;
 
-			case 3005:
-			case 3008:
+			case 3005, 3008:
 				ClassUtil.setBeanAttributeValue(messageBean, field.getName(), aobj[0], Short.TYPE);
 				break;
 
@@ -725,17 +713,12 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected int parseFixedFieldValue(Field field, int i, Object aobj[]) {
+	protected int parseFixedFieldValue(Field field, int i, Object[] aobj) {
 		int j = 0;
-		Object obj = null;
 		switch (field.getDataType()) {
-		case 3000:
-		case 3001:
-		case 3006:
-		case 3010:
-		case 3011:
+		case 3000, 3001, 3006, 3010, 3011:
 			if (field.getPrefix() != null) {
-				byte abyte8[] = field.getPrefix();
+				byte[] abyte8 = field.getPrefix();
 				for (int k1 = 0; k1 < abyte8.length; k1++)
 					if (abyte8[k1] != messageData[i + k1])
 						throw new CommonException("DefaultMessageParser.parseFixedFieldValue.prefix.illegal");
@@ -743,7 +726,6 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				i += abyte8.length;
 			}
 			if (!field.isStrictDataLength() && field.getPaddingDirection() == 5000) {
-				int k = i;
 				if (field.getSuffix() == null && field != message.getFields().get(message.getFields().size() - 1))
 					throw new CommonException("DefaultMessageParser.parseFixedFieldValue.field.mustHaveSuffix");
 				if (field.getSuffix() != null) {
@@ -777,31 +759,30 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				aobj[0] = "";
 				break;
 			}
-			byte abyte0[] = new byte[j];
+			byte[] abyte0 = new byte[j];
 			System.arraycopy(messageData, i, abyte0, 0, abyte0.length);
 			if ("true".equals(field.getExtendAttribute("remove_over_length")) && abyte0.length > field.getLength()) {
-				byte abyte9[] = abyte0;
+				byte[] abyte9 = abyte0;
 				abyte0 = new byte[field.getLength()];
 				System.arraycopy(abyte9, 0, abyte0, 0, abyte0.length);
 			}
 			if (4001 == field.getDataEncoding())
-				abyte0 = CodeUtil.BCDtoASC(abyte0);
+				abyte0 = CodeUtil.bCDtoASC(abyte0);
 			abyte0 = B(field, abyte0);
 			if (4001 == field.getDataEncoding() || C)
 				if (2001 == field.getFieldType() && field.getRefLengthField() == null) {
 					if (field.getLengthFieldLength() < abyte0.length) {
-						byte abyte10[] = new byte[field.getLengthFieldLength()];
+						byte[] abyte10 = new byte[field.getLengthFieldLength()];
 						if (null != field.getExtendedAttributeText()
-								&& "left".equalsIgnoreCase((String) field.getExtendedAttributes().get("padding-direction")))
+								&& "left".equalsIgnoreCase(field.getExtendedAttributes().get("padding-direction")))
 							System.arraycopy(abyte0, abyte0.length - field.getLengthFieldLength(), abyte10, 0, abyte10.length);
 						else
 							System.arraycopy(abyte0, 0, abyte10, 0, field.getLengthFieldLength());
 						abyte0 = abyte10;
 					}
 				} else if (2000 == field.getFieldType() && field.getLength() < abyte0.length) {
-					byte abyte11[] = new byte[field.getLength()];
-					if (null != field.getExtendedAttributeText()
-							&& "left".equalsIgnoreCase((String) field.getExtendedAttributes().get("padding-direction")))
+					byte[] abyte11 = new byte[field.getLength()];
+					if (null != field.getExtendedAttributeText() && "left".equalsIgnoreCase(field.getExtendedAttributes().get("padding-direction")))
 						System.arraycopy(abyte0, abyte0.length - field.getLength(), abyte11, 0, abyte11.length);
 					else
 						System.arraycopy(abyte0, 0, abyte11, 0, field.getLength());
@@ -814,7 +795,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				} else if (null == abyte0 || abyte0.length == 0)
 					abyte0 = "0".getBytes();
 				else if (abyte0[0] == 46) {
-					byte abyte12[] = new byte[abyte0.length + 1];
+					byte[] abyte12 = new byte[abyte0.length + 1];
 					abyte12[0] = 48;
 					System.arraycopy(abyte0, 0, abyte12, 1, abyte0.length);
 					abyte0 = abyte12;
@@ -826,7 +807,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				int l1;
 				for (l1 = abyte0.length - 1; j1 != abyte0.length && 0 < abyte0.length && 0 <= abyte0[l1] && abyte0[l1] < 32; l1--)
 					;
-				byte abyte13[] = new byte[(l1 - j1) + 1];
+				byte[] abyte13 = new byte[(l1 - j1) + 1];
 				System.arraycopy(abyte0, j1, abyte13, 0, abyte13.length);
 				abyte0 = new byte[abyte13.length];
 				System.arraycopy(abyte13, 0, abyte0, 0, abyte13.length);
@@ -855,51 +836,51 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				j = field.getLength();
 			if (j > field.getLength())
 				j = field.getLength();
-			byte abyte1[] = new byte[j];
+			byte[] abyte1 = new byte[j];
 			System.arraycopy(messageData, i, abyte1, 0, abyte1.length);
 			aobj[0] = abyte1;
 			break;
 
 		case 3003:
 			j = field.getLength();
-			byte abyte2[] = new byte[j];
+			byte[] abyte2 = new byte[j];
 			System.arraycopy(messageData, i, abyte2, 0, abyte2.length);
-			aobj[0] = Integer.valueOf(CodeUtil.BytesToInt(abyte2));
+			aobj[0] = Integer.valueOf(CodeUtil.bytesToInt(abyte2));
 			break;
 
 		case 3004:
 			j = field.getLength();
-			byte abyte3[] = new byte[j];
+			byte[] abyte3 = new byte[j];
 			System.arraycopy(messageData, i, abyte3, 0, abyte3.length);
 			aobj[0] = Byte.valueOf(abyte3[0]);
 			break;
 
 		case 3005:
 			j = field.getLength();
-			byte abyte4[] = new byte[j];
+			byte[] abyte4 = new byte[j];
 			System.arraycopy(messageData, i, abyte4, 0, abyte4.length);
-			aobj[0] = Short.valueOf(CodeUtil.BytesToShort(abyte4));
+			aobj[0] = Short.valueOf(CodeUtil.bytesToShort(abyte4));
 			break;
 
 		case 3007:
 			j = field.getLength();
-			byte abyte5[] = new byte[j];
+			byte[] abyte5 = new byte[j];
 			System.arraycopy(messageData, i, abyte5, 0, abyte5.length);
 			aobj[0] = Integer.valueOf(CodeUtil.ntohi(abyte5));
 			break;
 
 		case 3008:
 			j = field.getLength();
-			byte abyte6[] = new byte[j];
+			byte[] abyte6 = new byte[j];
 			System.arraycopy(messageData, i, abyte6, 0, abyte6.length);
 			aobj[0] = Short.valueOf((short) CodeUtil.ntohs(abyte6));
 			break;
 
 		case 3009:
 			j = field.getLength();
-			byte abyte7[] = new byte[j];
+			byte[] abyte7 = new byte[j];
 			System.arraycopy(messageData, i, abyte7, 0, abyte7.length);
-			aobj[0] = Long.valueOf(CodeUtil.BytesToLong(abyte7));
+			aobj[0] = Long.valueOf(CodeUtil.bytesToLong(abyte7));
 			break;
 
 		default:
@@ -909,13 +890,13 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected byte[] B(Field field, byte abyte0[]) {
+	protected byte[] B(Field field, byte[] abyte0) {
 		if (5000 == field.getPaddingDirection())
 			return abyte0;
 		String s = field.getExtendAttribute("remove_start");
 		if (null != s) {
-			int i = CodeUtil.byteArrayIndexOf(abyte0, CodeUtil.HextoByte(s), 0);
-			byte abyte1[] = abyte0;
+			int i = CodeUtil.byteArrayIndexOf(abyte0, CodeUtil.hextoByte(s), 0);
+			byte[] abyte1 = abyte0;
 			if (-1 != i) {
 				abyte0 = new byte[i];
 				System.arraycopy(abyte1, 0, abyte0, 0, i);
@@ -930,7 +911,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			if (abyte0.length == j) {
 				return new byte[0];
 			} else {
-				byte abyte2[] = new byte[abyte0.length - j];
+				byte[] abyte2 = new byte[abyte0.length - j];
 				System.arraycopy(abyte0, j, abyte2, 0, abyte2.length);
 				return abyte2;
 			}

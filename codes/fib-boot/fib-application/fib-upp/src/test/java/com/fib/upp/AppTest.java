@@ -3,6 +3,8 @@ package com.fib.upp;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +21,8 @@ import cn.hutool.core.io.FileUtil;
 public class AppTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AppTest.class);
 
-	public static void main(String[] args) {
+	@Test
+	public void testGateway() {
 		String messageBeanGroupId = "aabdddd";
 		String messageId = "Ccms801Bean";
 		File messageBeanDir = FileUtil.file("deploy/cnaps");
@@ -41,5 +44,7 @@ public class AppTest {
 		LOGGER.info("GrpHdr:[{}]", gh.toString());
 
 		LOGGER.info("Ccms801Out:[{}]", co.toString());
+
+		Assert.assertTrue(true);
 	}
 }

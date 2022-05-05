@@ -4,6 +4,8 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.fib.commons.exception.CommonException;
+
 import bsh.BshClassManager;
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -28,14 +30,14 @@ public class BeanShellEngine {
 				new NameSpace(parentInterpreter.getNameSpace(), localBshClassManager, "global"), null, null);
 	}
 
-	public static BeanShellEngine createBeanShellEngine(Map paramMap) {
+	public static BeanShellEngine createBeanShellEngine(Map<String, Object> paramMap) {
 		BeanShellEngine localBeanShellEngine = new BeanShellEngine();
 		if (paramMap != null) {
-			Map.Entry localEntry = null;
-			Iterator localIterator = paramMap.entrySet().iterator();
-			while (localIterator.hasNext()) {
-				localEntry = (Map.Entry) localIterator.next();
-				localBeanShellEngine.set((String) localEntry.getKey(), localEntry.getValue());
+			Map.Entry<String, Object> localEntry = null;
+			Iterator<Map.Entry<String, Object>> iter = paramMap.entrySet().iterator();
+			while (iter.hasNext()) {
+				localEntry = iter.next();
+				localBeanShellEngine.set(localEntry.getKey(), localEntry.getValue());
 			}
 		}
 		return localBeanShellEngine;
@@ -69,18 +71,17 @@ public class BeanShellEngine {
 		try {
 			localObject = this.interpreter.eval(paramString);
 		} catch (TargetError localTargetError) {
-			if ((localTargetError.getTarget() instanceof CustomerException)) {
-				CustomerException localCustomerException = (CustomerException) localTargetError.getTarget();
+			if ((localTargetError.getTarget() instanceof CustomerException localCustomerException)) {
 				localCustomerException.setErrorLineNumber(localTargetError.getErrorLineNumber());
 				localCustomerException.setErrorText(localTargetError.getErrorText());
 				localCustomerException.setScript(paramString);
 				throw localCustomerException;
 			}
-			throw new RuntimeException("BeanShell.eval.TargetError");
+			throw new CommonException("BeanShell.eval.TargetError");
 		} catch (ParseException localParseException) {
-			throw new RuntimeException("BeanShell.eval.ParseException");
+			throw new CommonException("BeanShell.eval.ParseException");
 		} catch (EvalError localEvalError) {
-			throw new RuntimeException("BeanShell.eval.EvalError");
+			throw new CommonException("BeanShell.eval.EvalError");
 		}
 		return localObject;
 	}

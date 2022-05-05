@@ -256,10 +256,8 @@ public class Ccms801Out extends MessageBean {
 
 	@Override
 	public boolean isNull() {
-		if (null != grpHdr) {
-			if (!grpHdr.isNull()) {
-				return false;
-			}
+		if (null != grpHdr && !grpHdr.isNull()) {
+			return false;
 		}
 		if (null != originalSystemDate) {
 			return false;

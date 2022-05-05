@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.fib.commons.exception.CommonException;
 import com.fib.commons.util.SortHashMap;
 import com.fib.upp.message.bean.MessageBean;
 import com.fib.upp.message.metadata.Field;
@@ -24,33 +25,31 @@ import com.fib.upp.util.StringUtil;
  */
 public class SwiftMessageParser extends DefaultMessageParser {
 
-	private Map K;
-	public static final byte J[] = { 13, 10 };
+	private Map<String, Field> K;
+	public static final byte[] J = { 13, 10 };
 
 	public SwiftMessageParser() {
 		K = null;
 	}
 
+	@Override
 	protected int parse(int i) {
-		byte abyte0[] = message.getPrefix();
+		byte[] abyte0 = message.getPrefix();
 		int j = CodeUtil.byteArrayIndexOf(messageData, abyte0, i);
 		if (-1 == j)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed",
-					new String[] { new String(CodeUtil.BytetoHex(message.getPrefix())),
-							(new StringBuilder()).append("").append(i).toString(), "-1" }));
+			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed", new String[] {
+					new String(CodeUtil.bytetoHex(message.getPrefix())), (new StringBuilder()).append("").append(i).toString(), "-1" }));
 		if (j != i)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed",
-					new String[] { new String(CodeUtil.BytetoHex(message.getPrefix())),
-							(new StringBuilder()).append("").append(i).toString(),
+			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed",
+					new String[] { new String(CodeUtil.bytetoHex(message.getPrefix())), (new StringBuilder()).append("").append(i).toString(),
 							(new StringBuilder()).append("").append(j).toString() }));
-		byte abyte1[] = message.getSuffix();
+		byte[] abyte1 = message.getSuffix();
 		int k = CodeUtil.byteArrayIndexOf(messageData, abyte1, j + abyte0.length);
 		if (-1 == k)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parse.locateSuffix.failed",
-					new String[] { new String(CodeUtil.BytetoHex(message.getSuffix())),
-							(new StringBuilder()).append("").append(i).toString(),
+			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locateSuffix.failed",
+					new String[] { new String(CodeUtil.bytetoHex(message.getSuffix())), (new StringBuilder()).append("").append(i).toString(),
 							(new StringBuilder()).append("").append(j).toString() }));
-		byte abyte2[] = new byte[k - j - abyte0.length];
+		byte[] abyte2 = new byte[k - j - abyte0.length];
 		System.arraycopy(messageData, j + abyte0.length, abyte2, 0, abyte2.length);
 		B();
 		String s = null;
@@ -59,15 +58,12 @@ public class SwiftMessageParser extends DefaultMessageParser {
 				s = new String(abyte2, message.getMsgCharset());
 			} catch (UnsupportedEncodingException unsupportedencodingexception) {
 				unsupportedencodingexception.printStackTrace();
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
-						"message.encoding.unsupport", new String[] { message.getId(), message.getMsgCharset() }));
+				throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("message.encoding.unsupport",
+						new String[] { message.getId(), message.getMsgCharset() }));
 			}
 		else
 			s = new String(abyte2);
-		String as[] = s.split(":");
-		Object obj = null;
-		Object obj1 = null;
-		Object obj2 = null;
+		String[] as = s.split(":");
 		for (int l = 1; l < as.length; l++) {
 			String s1 = as[l];
 			String s2;
@@ -77,8 +73,7 @@ public class SwiftMessageParser extends DefaultMessageParser {
 				s2 = "";
 			Field field = (Field) K.get(s1);
 			if (null == field)
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
-						.getString("parse.tag.field.isNotExist", new String[] { s1 }));
+				throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.tag.field.isNotExist", new String[] { s1 }));
 			if (2000 == field.getFieldType()) {
 				ClassUtil.setBeanAttributeValue(messageBean, field.getName(), B(field, s2));
 				continue;
@@ -86,16 +81,14 @@ public class SwiftMessageParser extends DefaultMessageParser {
 			if (2002 == field.getFieldType())
 				ClassUtil.setBeanAttributeValue(messageBean, field.getName(), A(field, s2));
 			else
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
-						.getString("SwiftMessageParser.parse.field.illegalType"));
+				throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("SwiftMessageParser.parse.field.illegalType"));
 		}
 
 		return k + abyte1.length;
 	}
 
 	protected String B(Field field, String s) {
-		if (null == field.getExtendAttribute("remove_crlf")
-				|| !field.getExtendAttribute("remove_crlf").equalsIgnoreCase("NO"))
+		if (null == field.getExtendAttribute("remove_crlf") || !field.getExtendAttribute("remove_crlf").equalsIgnoreCase("NO"))
 			s = C(s);
 		if (5000 != field.getPaddingDirection())
 			s = new String(B(field, s.getBytes()));
@@ -111,7 +104,7 @@ public class SwiftMessageParser extends DefaultMessageParser {
 	protected String C(String s) {
 		if (null == s)
 			return null;
-		byte abyte0[] = s.getBytes();
+		byte[] abyte0 = s.getBytes();
 		ByteBuffer bytebuffer = new ByteBuffer(abyte0.length);
 		for (int i = 0; i < abyte0.length; i++)
 			if (i < abyte0.length - 1 && abyte0[i] == J[0] && abyte0[i + 1] == J[1])
@@ -124,32 +117,30 @@ public class SwiftMessageParser extends DefaultMessageParser {
 
 	protected MessageBean A(Field field, String s) {
 		MessageBean messagebean = A(field);
-		Object obj = null;
-		Object obj1 = null;
 		int i = 0;
 		int j = 0;
-		SortHashMap sorthashmap = null;
+		SortHashMap<String, Field> sorthashmap = null;
 		Message message = field.getReference();
 		if (null != message)
-			sorthashmap = (SortHashMap) message.getFields();
+			sorthashmap = message.getFields();
 		else
-			sorthashmap = (SortHashMap) field.getSubFields();
+			sorthashmap = field.getSubFields();
 		int k = sorthashmap.size();
 		for (int l = 0; l < k; l++) {
-			Field field1 = (Field) sorthashmap.get(l);
+			Field field1 = sorthashmap.get(l);
 			Field field2 = null;
 			do {
 				if (null != field2 || l >= k - 1)
 					break;
 				l++;
-				field2 = (Field) sorthashmap.get(l);
+				field2 = sorthashmap.get(l);
 				j = s.indexOf(field2.getTag(), i);
 				if (field2.getTag().equals(field1.getTag()))
 					j = s.indexOf(field2.getTag(), j + field2.getTag().length());
 				if (-1 != j)
 					break;
 				if (field2.isRequired())
-					throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
+					throw new CommonException(MultiLanguageResourceBundle.getInstance().getString(
 							"SwiftMessageParser.parseSubFields.subField.notOptional.and.valueNotInContent",
 							new String[] { field2.getName(), field2.getTag(), field.getName(), field.getTag(), s }));
 				field2 = null;
@@ -169,12 +160,12 @@ public class SwiftMessageParser extends DefaultMessageParser {
 				else if (2004 == field1.getFieldType())
 					A(messagebean, field1, B(s1));
 				else
-					throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
-							.getString("SwiftMessageParser.parse.field.subField.illegalType"));
+					throw new CommonException(
+							MultiLanguageResourceBundle.getInstance().getString("SwiftMessageParser.parse.field.subField.illegalType"));
 			} else if (field1.isRequired())
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
-						"SwiftMessageParser.parse.subField.notOptional.and.canNotBeMatched",
-						new String[] { field1.getName(), field1.getTag(), field.getName(), field.getTag(), s }));
+				throw new CommonException(
+						MultiLanguageResourceBundle.getInstance().getString("SwiftMessageParser.parse.subField.notOptional.and.canNotBeMatched",
+								new String[] { field1.getName(), field1.getTag(), field.getName(), field.getTag(), s }));
 			if (field2 != null)
 				l--;
 		}
@@ -182,32 +173,27 @@ public class SwiftMessageParser extends DefaultMessageParser {
 		return messagebean;
 	}
 
-	protected void A(MessageBean messagebean, Field field, LinkedList linkedlist) {
+	protected void A(MessageBean messagebean, Field field, LinkedList<String> linkedlist) {
 		String s = (String) ClassUtil.getBeanValueByPath(messagebean, field.getRowNumFieldName());
 		int i = Integer.parseInt(s);
-		Object obj = null;
-		Object obj1 = null;
-		SortHashMap<String,Field> sorthashmap = null;
+		SortHashMap<String, Field> sorthashmap = null;
 		Message message = field.getReference();
 		if (null != message)
 			sorthashmap = (SortHashMap<String, Field>) message.getFields();
 		else
 			sorthashmap = (SortHashMap<String, Field>) field.getSubFields();
 		int j = sorthashmap.size();
-		Object obj2 = null;
-		Object obj3 = null;
-		String s2 = (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(field.getName()))
-				.toString();
+		String s2 = (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 		for (int k = 0; k < i; k++) {
 			if (null != field.getPreRowParseEvent())
 				exeShell(field, "row-pre-parse", field.getPreRowParseEvent(), null, null, i, k);
-			String s1 = (String) linkedlist.removeFirst();
-			String as[] = s1.split("/");
+			String s1 = linkedlist.removeFirst();
+			String[] as = s1.split("/");
 			if (as.length < j)
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
-						"SwiftMessageParser.parseTable.fieldNum.greatThan.columnNumber",
-						new String[] { field.getName(), (new StringBuilder()).append("").append(j).toString(),
-								(new StringBuilder()).append("").append(as.length).toString(), s1 }));
+				throw new CommonException(
+						MultiLanguageResourceBundle.getInstance().getString("SwiftMessageParser.parseTable.fieldNum.greatThan.columnNumber",
+								new String[] { field.getName(), (new StringBuilder()).append("").append(j).toString(),
+										(new StringBuilder()).append("").append(as.length).toString(), s1 }));
 			MessageBean messagebean1 = (MessageBean) ClassUtil.invoke(messagebean, s2, null, null);
 			for (int l = 0; l < j; l++) {
 				Field field1 = (Field) sorthashmap.get(l);
@@ -217,7 +203,7 @@ public class SwiftMessageParser extends DefaultMessageParser {
 						continue;
 					}
 					if (field1.isRequired())
-						throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString(
+						throw new CommonException(MultiLanguageResourceBundle.getInstance().getString(
 								"SwiftMessageParser.parseTable.field.isNotOptional.and.valueIsNull",
 								new String[] { field.getName(), field1.getName(), s1 }));
 					continue;
@@ -225,8 +211,8 @@ public class SwiftMessageParser extends DefaultMessageParser {
 				if (2004 == field1.getFieldType())
 					A(messagebean1, field1, linkedlist);
 				else
-					throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
-							.getString("SwiftMessageParser.parseTable.field.tableField.illegalType"));
+					throw new CommonException(
+							MultiLanguageResourceBundle.getInstance().getString("SwiftMessageParser.parseTable.field.tableField.illegalType"));
 			}
 
 			if (null != field.getPostRowParseEvent())
@@ -235,63 +221,41 @@ public class SwiftMessageParser extends DefaultMessageParser {
 
 	}
 
-	protected LinkedList B(String s) {
-		LinkedList linkedlist;
-		String as[];
-		String s1;
-		int i;
-		linkedlist = new LinkedList();
-		s = s.trim();
-		as = s.split("\r\n");
-		s1 = null;
-		i = as.length - 1;
-//_L5:
-//		if (i < 0) goto _L2; else goto _L1
-//_L1:
-//		if (s1 == null) goto _L4; else goto _L3
-//_L3:
-//		new StringBuilder();
-//		as;
-//		i;
-//		JVM INSTR dup2_x1 ;
-//		JVM INSTR aaload ;
-//		append();
-//		s1;
-//		append();
-//		toString();
-//		JVM INSTR aastore ;
-//_L4:
-//		if (as[i].startsWith("//"))
-//		{
-//			s1 = as[i].substring(2);
-//		} else
-//		{
-//			s1 = null;
-//			linkedlist.addFirst(as[i]);
-//		}
-//		i--;
-//		  goto _L5
-//_L2:
-		return linkedlist;
+	protected LinkedList<String> B(String paramString) {
+		LinkedList<String> localLinkedList = new LinkedList<>();
+		paramString = paramString.trim();
+		String[] arrayOfString = paramString.split("\r\n");
+		String str = null;
+		for (int i = arrayOfString.length - 1; i >= 0; i--) {
+			if (str != null) {
+				int tmp50_48 = i;
+				String[] tmp50_47 = arrayOfString;
+				tmp50_47[tmp50_48] = (tmp50_47[tmp50_48] + str);
+			}
+			if (arrayOfString[i].startsWith("//")) {
+				str = arrayOfString[i].substring(2);
+			} else {
+				str = null;
+				localLinkedList.addFirst(arrayOfString[i]);
+			}
+		}
+		return localLinkedList;
 	}
 
 	protected MessageBean A(Field field) {
 		String s = field.getCombineOrTableFieldClassName();
 		if (null == s)
-			s = (new StringBuilder()).append(messageBean.getClass().getName())
-					.append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
+			s = (new StringBuilder()).append(messageBean.getClass().getName()).append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 		MessageBean messagebean = (MessageBean) ClassUtil.createClassInstance(s);
 		messagebean.setParent(messageBean);
 		return messagebean;
 	}
 
 	protected void B() {
-		K = new HashMap(message.getFields().size());
-		Object obj = null;
+		K = new HashMap<>(message.getFields().size());
 		Field field;
-		for (Iterator iterator = message.getFields().values().iterator(); iterator.hasNext(); K.put(field.getTag(),
-				field))
-			field = (Field) iterator.next();
+		for (Iterator<Field> iterator = message.getFields().values().iterator(); iterator.hasNext(); K.put(field.getTag(), field))
+			field = iterator.next();
 
 	}
 

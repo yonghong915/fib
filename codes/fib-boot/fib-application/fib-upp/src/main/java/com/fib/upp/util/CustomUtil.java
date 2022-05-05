@@ -1,6 +1,5 @@
 package com.fib.upp.util;
 
-
 public class CustomUtil {
 
 	/**
@@ -13,14 +12,14 @@ public class CustomUtil {
 //		if (StrUtil.isBlank(cnapsSystemDate)) {
 //			cnapsSystemDate = DateUtil.format(LocalDateTime.now(), "yyyyMMdd");
 //		}
-		// TODO 或取序号//可以取数据库自增序列-Seq_MessageId
-		
+		// 或取序号//可以取数据库自增序列-Seq_MessageId
+
 //		Snowflake snowflake = IdUtil.createSnowflake(workerId, 2);
 //		String id = snowflake.nextIdStr();
 //		if (id.length() > 8) {
 //			id = StrUtil.sub(id, id.length() - 8, id.length());
 //		}
-		//return cnapsSystemDate + id;
+		// return cnapsSystemDate + id;
 		return cnapsSystemDate;
 	}
 

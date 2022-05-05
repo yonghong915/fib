@@ -14,34 +14,33 @@ import com.fib.upp.message.metadata.Message;
  * @date 2021-08-29
  */
 public abstract class AbstractMessageParser {
-
 	protected Message message;
 	protected Map<String, Object> variableCache;
-	protected byte messageData[];
+	protected byte[] messageData;
 	protected MessageBean messageBean;
 	protected MessageBean parentBean;
-	private String A;
+	private String fileEncoding;
 
-	public AbstractMessageParser() {
+	protected AbstractMessageParser() {
 		message = null;
 		variableCache = new HashMap<>(5);
 		messageData = null;
 		messageBean = null;
 		parentBean = null;
-		A = System.getProperty("file.encoding");
+		fileEncoding = System.getProperty("file.encoding");
 	}
 
 	public String getDefaultCharset() {
-		return A;
+		return fileEncoding;
 	}
 
 	public void setDefaultCharset(String s) {
-		A = s;
+		fileEncoding = s;
 	}
 
 	public abstract MessageBean parse();
 
-	protected int parse(int i) {
+	protected int parse(int idx) {
 		return 0;
 	}
 
@@ -57,7 +56,7 @@ public abstract class AbstractMessageParser {
 		return messageData;
 	}
 
-	public void setMessageData(byte abyte0[]) {
+	public void setMessageData(byte[] abyte0) {
 		messageData = abyte0;
 	}
 

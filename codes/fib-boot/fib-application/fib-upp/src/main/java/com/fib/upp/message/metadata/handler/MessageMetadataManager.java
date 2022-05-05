@@ -44,7 +44,7 @@ public class MessageMetadataManager {
 	}
 
 	public static Message getMessageByClass(String messageBeanClassName) {
-		Assert.notBlank(messageBeanClassName, () -> new BusinessException("aaaaa", "parameter.null.messageBeanClassName"));
+		Assert.notBlank(messageBeanClassName, () -> new CommonException("parameter.null.messageBeanClassName"));
 		return cacheByClass.get(messageBeanClassName);
 	}
 
@@ -53,29 +53,29 @@ public class MessageMetadataManager {
 	}
 
 	public static boolean isMessageExist(String groupId, String messageId) {
-		Assert.notBlank(groupId, () -> new BusinessException("aaaaa", "parameter.null.groupId"));
-		Assert.notBlank(messageId, () -> new BusinessException("aaaaa", "parameter.null.messageId"));
+		Assert.notBlank(groupId, () -> new CommonException("parameter.null.groupId"));
+		Assert.notBlank(messageId, () -> new CommonException("parameter.null.messageId"));
 
 		Map<String, Message> map = cache.get(groupId);
-		Assert.notNull(map, () -> new BusinessException("aaaaa", "MessageMetadataManager.getMessage.group.null " + groupId));
+		Assert.notNull(map, () -> new CommonException("MessageMetadataManager.getMessage.group.null " + groupId));
 
 		Message message = map.get(messageId);
 		return null != message;
 	}
 
-	public static void reload(String groupId, String messageId, String s2) {
-		Assert.notBlank(groupId, () -> new BusinessException("aaaaa", "parameter.null.groupId"));
-		Assert.notBlank(messageId, () -> new BusinessException("aaaaa", "parameter.null.messageId"));
+	public static void reload(String groupId, String messageId, String messageBeanClassName) {
+		Assert.notBlank(groupId, () -> new CommonException("parameter.null.groupId"));
+		Assert.notBlank(messageId, () -> new CommonException("parameter.null.messageId"));
 
 		Map<String, Message> map = cache.get(groupId);
-		Assert.notNull(map, () -> new BusinessException("aaaaa", "MessageMetadataManager.getMessage.group.null " + groupId));
+		Assert.notNull(map, () -> new CommonException("MessageMetadataManager.getMessage.group.null " + groupId));
 
 		File file = groupPathCache.get(groupId);
 		File file1 = new File((new StringBuilder()).append(file.toString()).append(System.getProperty("file.separator")).append(messageId)
 				.append(".xml").toString());
 		Message message = null;
 		try {
-			message = cacheByClass.remove(s2);
+			message = cacheByClass.remove(messageBeanClassName);
 			Message message1 = load(groupId, file1);
 			Assert.notNull(message1, () -> new CommonException("MessageMetadataManager.getMessage.file.isNotExist " + messageId));
 
@@ -84,8 +84,8 @@ public class MessageMetadataManager {
 			map.put(messageId, message1);
 			cacheByClass.put(message1.getClassName(), message1);
 		} catch (Exception exception) {
-			if (null != s2)
-				cacheByClass.put(s2, message);
+			if (null != messageBeanClassName)
+				cacheByClass.put(messageBeanClassName, message);
 			ExceptionUtil.throwActualException(exception);
 		}
 	}
@@ -164,9 +164,9 @@ public class MessageMetadataManager {
 		//
 	}
 
-	private static Message load(String s, File file) {
+	private static Message load(String groupId, File file) {
 		MessageHandler mh = new MessageHandler();
-		return mh.parseMessage(s, file);
+		return mh.parseMessage(groupId, file);
 	}
 
 	static {
