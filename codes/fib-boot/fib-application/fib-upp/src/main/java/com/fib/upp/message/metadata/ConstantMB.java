@@ -3,6 +3,56 @@ package com.fib.upp.message.metadata;
 import com.fib.commons.exception.CommonException;
 
 public interface ConstantMB {
+
+	public enum MessageBeanAttr {
+
+		/** 2000 id */
+		ID(2000, "id", ""),
+
+		/** 2001 short-text */
+		SHORT_TEXT(2001, "short-text", ""),
+
+		/** 2002 message-charset */
+		MESSAGE_CHARSET(2002, "message-charset", ""),
+
+		/** 2003 class */
+		CLASS(2003, "class", ""),
+
+		/** 2004 type */
+		TYPE(2004, "type", ""),
+
+		/** 2005 xpath */
+		XPATH(2005, "xpath", ""),
+
+		/** 2006 pack-mode */
+		PACK_MODE(2006, "pack-mode", ""),
+		
+		/** 2006 prefix */
+		PREFIX(2006, "prefix", "");
+
+		private int code;
+		private String name;
+		private String text;
+
+		MessageBeanAttr(int code, String name, String text) {
+			this.code = code;
+			this.name = name;
+			this.text = text;
+		}
+
+		public int getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getText() {
+			return text;
+		}
+	}
+
 	public enum FieldType {
 
 		/** 2000 fixed-field */
@@ -46,6 +96,73 @@ public interface ConstantMB {
 		private String text;
 
 		FieldType(int code, String name, String text) {
+			this.code = code;
+			this.name = name;
+			this.text = text;
+		}
+
+		public int getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getText() {
+			return text;
+		}
+	}
+
+	public enum FieldAttr {
+
+		/** 2000 name */
+		NAME(2000, "name", ""),
+
+		/** 2001 short-text */
+		SHORT_TEXT(2001, "short-text", ""),
+
+		/** 2002 field-type */
+		FIELD_TYPE(2002, "field-type", ""),
+
+		/** 2003 reference */
+		REFERENCE(2003, "reference", ""),
+
+		/** 2004 required */
+		REQUIRED(2004, "required", ""),
+
+		/** 2005 shield */
+		SHIELD(2005, "shield", ""),
+
+		/** 2006 bitmap-field */
+		BITMAP_FIELD(2006, "bitmap-field", ""),
+
+		/** 2007 xpath */
+		XPATH(2007, "xpath", ""),
+
+		/** 2008 data-type */
+		DATA_TYPE(2008, "data-type", ""),
+
+		/** 2009 length */
+		LENGTH(2009, "length", ""),
+
+		/** 2010 editable */
+		EDITABLE(2010, "editable", ""),
+
+		/** 2011 padding */
+		PADDING(2011, "padding", ""),
+
+		/** 2011 padding-direction */
+		PADDING_DIRECTION(2011, "padding-direction", ""),
+
+		/** 2011 padding */
+		VALUE(2011, "value", "");
+
+		private int code;
+		private String name;
+		private String text;
+
+		FieldAttr(int code, String name, String text) {
 			this.code = code;
 			this.name = name;
 			this.text = text;
@@ -126,6 +243,52 @@ public interface ConstantMB {
 
 		public static DataType getDataTypeByCode(int code) {
 			for (DataType mt : values()) {
+				if (code == mt.getCode()) {
+					return mt;
+				}
+			}
+			throw new CommonException("not support message type " + code);
+		}
+	}
+
+	public enum MessageTag {
+
+		/** 3000 message-bean */
+		MESSAGE_BEAN(3000, "message-bean", ""),
+
+		/** 3001 num */
+		FIELD(3001, "field", ""),
+
+		/** 3002 bin */
+		VALUE_RANGE(3002, "value-range", ""),
+
+		/** 3003 int */
+		VALUE(3003, "value", "");
+
+		private int code;
+		private String name;
+		private String text;
+
+		MessageTag(int code, String name, String text) {
+			this.code = code;
+			this.name = name;
+			this.text = text;
+		}
+
+		public int getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public static MessageTag getMessageTagByCode(int code) {
+			for (MessageTag mt : values()) {
 				if (code == mt.getCode()) {
 					return mt;
 				}

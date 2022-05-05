@@ -1,68 +1,54 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
-
 package com.fib.upp.util;
 
-
-public class CustomerException extends RuntimeException
-{
-
+public class CustomerException extends RuntimeException {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int errorLineNumber;
 	private String errorText;
 	private String script;
 
-	public CustomerException()
-	{
+	public CustomerException() {
 	}
 
-	public CustomerException(String s, Throwable throwable)
-	{
+	public CustomerException(String s, Throwable throwable) {
 		super(s, throwable);
 	}
 
-	public CustomerException(String s)
-	{
+	public CustomerException(String s) {
 		super(s);
 	}
 
-	public CustomerException(Throwable throwable)
-	{
+	public CustomerException(Throwable throwable) {
 		super(throwable);
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		return "BeanShell.eval.TargetError";
 	}
 
-	public int getErrorLineNumber()
-	{
+	public int getErrorLineNumber() {
 		return errorLineNumber;
 	}
 
-	public void setErrorLineNumber(int i)
-	{
+	public void setErrorLineNumber(int i) {
 		errorLineNumber = i;
 	}
 
-	public String getErrorText()
-	{
+	public String getErrorText() {
 		return errorText;
 	}
 
-	public void setErrorText(String s)
-	{
+	public void setErrorText(String s) {
 		errorText = s;
 	}
 
-	public String getScript()
-	{
+	public String getScript() {
 		return script;
 	}
 
-	public void setScript(String s)
-	{
+	public void setScript(String s) {
 		script = s;
 	}
 }

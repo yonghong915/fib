@@ -1,80 +1,65 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
 
 package com.fib.upp.util;
 
-import java.io.*;
-import java.util.Calendar;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.GregorianCalendar;
+
 import org.dom4j.DocumentException;
-import org.dom4j.io.*;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
-// Referenced classes of package com.giantstone.common.util:
-//			ExceptionUtil
+import com.fib.commons.exception.CommonException;
 
-public class StringUtil
-{
+public class StringUtil {
 
-	public StringUtil()
-	{
+	private StringUtil() {
 	}
 
-	public static String formatXmlString(String s)
-	{
+	public static String formatXmlString(String s) {
 		SAXReader saxreader = new SAXReader();
 		StringReader stringreader = new StringReader(s);
 		org.dom4j.Document document = null;
-		try
-		{
+		try {
 			document = saxreader.read(stringreader);
-		}
-		catch (DocumentException documentexception)
-		{
+		} catch (DocumentException documentexception) {
 			ExceptionUtil.throwActualException(documentexception);
 		}
 		OutputFormat outputformat = OutputFormat.createPrettyPrint();
 		outputformat.setSuppressDeclaration(true);
 		StringWriter stringwriter = new StringWriter();
 		XMLWriter xmlwriter = new XMLWriter(stringwriter, outputformat);
-		try
-		{
+		try {
 			xmlwriter.write(document);
-		}
-		catch (IOException ioexception)
-		{
+		} catch (IOException ioexception) {
 			ExceptionUtil.throwActualException(ioexception);
 		}
 		return stringwriter.toString();
 	}
 
-	public static String formatXmlValue(String s)
-	{
+	public static String formatXmlValue(String s) {
 		if (s == null)
 			return s;
 		if (!isValidXmlString(s))
-			throw new RuntimeException("StringUtil.formatXmlValue.isInvalidXmlString");
+			throw new CommonException("StringUtil.formatXmlValue.isInvalidXmlString");
 		StringBuffer stringbuffer = new StringBuffer(s.length() <= 16 ? 32 : s.length() * 2);
-		for (int i = 0; i < s.length(); i++)
-		{
+		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
-			if ('&' == c)
-			{
+			if ('&' == c) {
 				stringbuffer.append("&amp;");
 				continue;
 			}
-			if ('<' == c)
-			{
+			if ('<' == c) {
 				stringbuffer.append("&lt;");
 				continue;
 			}
-			if ('>' == c)
-			{
+			if ('>' == c) {
 				stringbuffer.append("&gt;");
 				continue;
 			}
-			if ('\'' == c)
-			{
+			if ('\'' == c) {
 				stringbuffer.append("&apos;");
 				continue;
 			}
@@ -87,8 +72,7 @@ public class StringUtil
 		return stringbuffer.toString();
 	}
 
-	public static String getDateString()
-	{
+	public static String getDateString() {
 		StringBuffer stringbuffer = new StringBuffer();
 		GregorianCalendar gregoriancalendar = new GregorianCalendar();
 		int i = gregoriancalendar.get(1);
@@ -104,8 +88,7 @@ public class StringUtil
 		return stringbuffer.toString();
 	}
 
-	public static String getDateTimeMillisString()
-	{
+	public static String getDateTimeMillisString() {
 		StringBuffer stringbuffer = new StringBuffer();
 		GregorianCalendar gregoriancalendar = new GregorianCalendar();
 		int i = gregoriancalendar.get(1);
@@ -135,8 +118,7 @@ public class StringUtil
 		return stringbuffer.toString();
 	}
 
-	public static String getDateTimeString()
-	{
+	public static String getDateTimeString() {
 		StringBuffer stringbuffer = new StringBuffer();
 		GregorianCalendar gregoriancalendar = new GregorianCalendar();
 		int i = gregoriancalendar.get(1);
@@ -164,8 +146,7 @@ public class StringUtil
 		return stringbuffer.toString();
 	}
 
-	public static String getTimeString()
-	{
+	public static String getTimeString() {
 		StringBuffer stringbuffer = new StringBuffer();
 		GregorianCalendar gregoriancalendar = new GregorianCalendar();
 		int i = gregoriancalendar.get(11);
@@ -183,35 +164,30 @@ public class StringUtil
 		return stringbuffer.toString();
 	}
 
-	public static String toLowerCaseFirstOne(String s)
-	{
+	public static String toLowerCaseFirstOne(String s) {
 		if (Character.isLowerCase(s.charAt(0)))
 			return s;
 		else
 			return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
 	}
 
-	public static String toUpperCaseFirstOne(String s)
-	{
+	public static String toUpperCaseFirstOne(String s) {
 		if (Character.isUpperCase(s.charAt(0)))
 			return s;
 		else
 			return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
 	}
 
-	public static String leftString(String s, int i)
-	{
+	public static String leftString(String s, int i) {
 		byte abyte0[] = s.getBytes();
 		if (abyte0.length <= i)
 			return s;
 		int j = 0;
 		for (int k = 0; k < i; k++)
-			if (abyte0[k] < 0 || abyte0[k] > 255)
-			{
+			if (abyte0[k] < 0 || abyte0[k] > 255) {
 				j += 2;
 				k++;
-			} else
-			{
+			} else {
 				j++;
 			}
 
@@ -220,10 +196,9 @@ public class StringUtil
 		return new String(abyte0, 0, j);
 	}
 
-	public static boolean isValidXmlString(String s)
-	{
+	public static boolean isValidXmlString(String s) {
 		if (null == s)
-			throw new RuntimeException("parameter.null");
+			throw new CommonException("parameter.null");
 		for (int i = 0; i < s.length(); i++)
 			if (!isWatchableChar4XML(s.charAt(i)))
 				return false;
@@ -231,8 +206,7 @@ public class StringUtil
 		return true;
 	}
 
-	public static boolean isWatchableChar4XML(char c)
-	{
+	public static boolean isWatchableChar4XML(char c) {
 		return c < 0 || c >= ' ' || c == '\n' || c == '\r' || c == '\t';
 	}
 }

@@ -1,11 +1,6 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
-
 package com.fib.upp.util;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -17,26 +12,19 @@ import java.util.List;
 
 import com.fib.commons.exception.CommonException;
 
-// Referenced classes of package com.giantstone.common.util:
-//			ExceptionUtil, StringUtil
-
 public class ClassUtil {
 
 	private static ClassLoader classLoader;
 
-	public ClassUtil() {
+	private ClassUtil() {
 	}
-
-	/**
-	 * @deprecated Method setClassLoader is deprecated
-	 */
 
 	public static void setClassLoader(ClassLoader classloader) {
 		classLoader = classloader;
 	}
 
-	public static Object newInstance(String s, Object aobj[]) {
-		Class class1;
+	public static Object newInstance(String s, Object[] aobj) {
+		Class<?> class1;
 		try {
 			class1 = Class.forName(s);
 			return newInstance(class1, aobj);
@@ -46,37 +34,21 @@ public class ClassUtil {
 		return null;
 	}
 
-	public static Object newInstance(Class class1, Object aobj[]) {
-		Constructor constructor;
-		Class aclass[] = getClassArrayByArgumentsArray(aobj);
+	public static Object newInstance(Class<?> clazz, Object[] aobj) {
+		Constructor<?> constructor;
+		Class<?>[] aclass = getClassArrayByArgumentsArray(aobj);
 		try {
-			constructor = class1.getConstructor(aclass);
+			constructor = clazz.getConstructor(aclass);
 			return constructor.newInstance(aobj);
-		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			ExceptionUtil.throwActualException(e);
 		}
-
-//		Exception exception;
-//		exception;
-//		ExceptionUtil.throwActualException(exception);
 		return null;
 	}
 
-	private static Class[] getClassArrayByArgumentsArray(Object aobj[]) {
-		Class aclass[] = new Class[aobj.length];
+	private static Class<?>[] getClassArrayByArgumentsArray(Object[] aobj) {
+		Class<?>[] aclass = new Class[aobj.length];
 		int i = 0;
 		for (int j = aobj.length; i < j; i++)
 			aclass[i] = aobj[i].getClass();
@@ -85,38 +57,36 @@ public class ClassUtil {
 	}
 
 	public static Object createClassInstance(String s) {
-		Class class1 = null;
+		Class<?> class1 = null;
 		try {
 			if (null == classLoader)
 				class1 = Class.forName(s);
 			else
 				class1 = classLoader.loadClass(s);
 		} catch (Exception exception) {
-			exception.printStackTrace(System.err);
 			ExceptionUtil.throwActualException(exception);
 		}
 		return createClassInstance(class1);
 	}
 
-	public static Object createClassInstance(Class class1) {
+	public static Object createClassInstance(Class<?> class1) {
 		if (null == class1)
-			throw new IllegalArgumentException("parameter.null");
+			throw new IllegalArgumentException("parameter.null.class");
 		Object obj = null;
 		try {
-			obj = class1.newInstance();
+			obj = class1.getDeclaredConstructor().newInstance();
 		} catch (Exception exception) {
-			exception.printStackTrace(System.err);
 			ExceptionUtil.throwActualException(exception);
 		}
 		return obj;
 	}
 
-	public static Object invoke(Object obj, String s, Class aclass[], Object aobj[]) {
+	public static Object invoke(Object obj, String s, Class<?>[] aclass, Object[] aobj) {
 		if (null == obj)
-			throw new IllegalArgumentException("parameter.null");
+			throw new IllegalArgumentException("parameter.null.obj");
 		if (null == s || 0 == s.length())
-			throw new IllegalArgumentException("parameter.null");
-		Class class1 = obj.getClass();
+			throw new IllegalArgumentException("parameter.null.value");
+		Class<?> class1 = obj.getClass();
 		Method method = null;
 		try {
 			method = class1.getMethod(s, aclass);
@@ -150,10 +120,10 @@ public class ClassUtil {
 	}
 
 	public static void setBeanAttributeValue(Object obj, String s, Object obj1) {
-		setBeanAttributeValue(obj, s, ((String) (null)), obj1);
+		setBeanAttributeValue(obj, s, null, obj1);
 	}
 
-	public static void setBeanAttributeValue(Object obj, String s, Object obj1, Class class1) {
+	public static void setBeanAttributeValue(Object obj, String s, Object obj1, Class<?> class1) {
 		setBeanAttributeValue(obj, s, null, obj1, class1);
 	}
 
@@ -161,7 +131,7 @@ public class ClassUtil {
 		setBeanAttributeValue(obj, s, s1, obj1, null);
 	}
 
-	public static void setBeanAttributeValue(Object obj, String s, String s1, Object obj1, Class class1) {
+	public static void setBeanAttributeValue(Object obj, String s, String s1, Object obj1, Class<?> class1) {
 		if (null == obj)
 			throw new IllegalArgumentException("parameter.null");
 		if (null == s || 0 == s.length())
@@ -176,13 +146,14 @@ public class ClassUtil {
 		invoke(obj, s2, new Class[] { class1 }, new Object[] { obj1 });
 	}
 
-	public static void setBeanValueByPath(Object obj, String s, Object obj1, Class class1) {
+	public static void setBeanValueByPath(Object obj, String s, Object obj1, Class<?> class1) {
 		int i = s.indexOf('.');
 		if (-1 == i) {
 			int j = s.indexOf('[');
 			int k = s.indexOf(']');
 			if (0 < j && 0 < k) {
-				List list = (List) getBeanAttributeValue(obj, s.substring(0, j));
+				@SuppressWarnings("unchecked")
+				List<Class<?>> list = (List<Class<?>>) getBeanAttributeValue(obj, s.substring(0, j));
 				int i1 = Integer.parseInt(s.substring(j + 1, k));
 				if (i1 >= list.size()) {
 					for (int k1 = list.size(); k1 < i1 + 1; k1++)
@@ -201,7 +172,7 @@ public class ClassUtil {
 			if (0 < l && 0 < j1) {
 				int l1 = Integer.parseInt(s1.substring(l + 1, j1));
 				String s2 = s1.substring(0, l);
-				List list1 = (List) getBeanAttributeValue(obj, s2);
+				List<?> list1 = (List<?>) getBeanAttributeValue(obj, s2);
 				if (l1 >= list1.size()) {
 					for (int i2 = list1.size(); i2 < l1 + 1; i2++)
 						invoke(obj, (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(s2)).toString(), null, null);
@@ -212,7 +183,7 @@ public class ClassUtil {
 				obj2 = getBeanAttributeValue(obj, s1);
 			}
 			if (null == obj2)
-				throw new RuntimeException("ClassUtil.attribute.null");
+				throw new CommonException("ClassUtil.attribute.null");
 			setBeanValueByPath(obj2, s.substring(i + 1), obj1, class1);
 		}
 	}
@@ -222,7 +193,6 @@ public class ClassUtil {
 	}
 
 	public static Object getBeanValueByPath(Object obj, String s) {
-		Object obj1 = null;
 		int i = s.indexOf('.');
 		if (-1 == i) {
 			int j = s.indexOf('[');
@@ -230,7 +200,7 @@ public class ClassUtil {
 			if (0 < j && 0 < k) {
 				int l = Integer.parseInt(s.substring(j + 1, k));
 				String s2 = s.substring(0, j);
-				List list = (List) getBeanAttributeValue(obj, s2);
+				List<?> list = (List<?>) getBeanAttributeValue(obj, s2);
 				if (l >= list.size()) {
 					for (int l1 = list.size(); l1 < l + 1; l1++)
 						invoke(obj, (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(s2)).toString(), null, null);
@@ -248,7 +218,7 @@ public class ClassUtil {
 		if (0 < i1 && 0 < j1) {
 			int k1 = Integer.parseInt(s1.substring(i1 + 1, j1));
 			String s3 = s1.substring(0, i1);
-			List list1 = (List) getBeanAttributeValue(obj, s3);
+			List<?> list1 =  (List<?>) getBeanAttributeValue(obj, s3);
 			if (k1 >= list1.size()) {
 				for (int i2 = list1.size(); i2 < k1 + 1; i2++)
 					invoke(obj, (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(s3)).toString(), null, null);
@@ -259,12 +229,12 @@ public class ClassUtil {
 			obj2 = getBeanAttributeValue(obj, s1);
 		}
 		if (null == obj2)
-			throw new RuntimeException("ClassUtil.attribute.null");
+			throw new CommonException("ClassUtil.attribute.null");
 		else
 			return getBeanValueByPath(obj2, s.substring(i + 1));
 	}
 
-	public static Class getBeanFieldClass(Object obj, String s) {
+	public static Class<?> getBeanFieldClass(Object obj, String s) {
 		if (null == obj)
 			throw new IllegalArgumentException("parameter.null");
 		if (null == s || 0 == s.length())
@@ -299,13 +269,10 @@ public class ClassUtil {
 	}
 
 	private static void getAllJarUrl(List<URL> list, File file) {
-		String[] as = file.list(new FilenameFilter() {
-
-			public boolean accept(File file2, String s) {
-				return s.endsWith(".jar");
-			}
-
+		String[] as = file.list((file2, fileName) -> {
+			return fileName.endsWith(".jar");
 		});
+
 		int i = 0;
 		try {
 			for (i = 0; i < as.length; i++) {

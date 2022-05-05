@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.fib.commons.exception.CommonException;
 import com.fib.upp.message.bean.MessageBean;
 import com.fib.upp.message.metadata.Field;
 import com.fib.upp.message.metadata.Message;
@@ -14,7 +15,6 @@ import com.fib.upp.util.ClassUtil;
 import com.fib.upp.util.CodeUtil;
 import com.fib.upp.util.MultiLanguageResourceBundle;
 import com.fib.upp.util.StringUtil;
-
 
 /**
  * 
@@ -25,12 +25,12 @@ import com.fib.upp.util.StringUtil;
 public class TagMessageParser extends DefaultMessageParser {
 
 	public static final String M = ":";
-	private Map L;
-	protected Map variableCache;
+	private Map<String, Field> L;
+	//protected Map variableCache;
 
 	public TagMessageParser() {
 		L = null;
-		variableCache = new HashMap(5);
+		variableCache = new HashMap<>(5);
 	}
 
 	protected int parse(int i) {
@@ -40,20 +40,17 @@ public class TagMessageParser extends DefaultMessageParser {
 		byte abyte0[] = this.message.getPrefix();
 		int j = CodeUtil.byteArrayIndexOf(messageData, abyte0, i);
 		if (-1 == j)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed",
-					new String[] { new String(CodeUtil.BytetoHex(this.message.getPrefix())),
-							(new StringBuilder()).append("").append(i).toString(), "-1" }));
+			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed", new String[] {
+					new String(CodeUtil.BytetoHex(this.message.getPrefix())), (new StringBuilder()).append("").append(i).toString(), "-1" }));
 		if (j != i)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed",
-					new String[] { new String(CodeUtil.BytetoHex(this.message.getPrefix())),
-							(new StringBuilder()).append("").append(i).toString(),
+			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed",
+					new String[] { new String(CodeUtil.BytetoHex(this.message.getPrefix())), (new StringBuilder()).append("").append(i).toString(),
 							(new StringBuilder()).append("").append(j).toString() }));
 		byte abyte1[] = this.message.getSuffix();
 		int k = CodeUtil.byteArrayIndexOf(messageData, abyte1, j + abyte0.length);
 		if (-1 == k)
-			throw new RuntimeException(MultiLanguageResourceBundle.getInstance().getString("parse.locateSuffix.failed",
-					new String[] { new String(CodeUtil.BytetoHex(this.message.getSuffix())),
-							(new StringBuilder()).append("").append(i).toString(),
+			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locateSuffix.failed",
+					new String[] { new String(CodeUtil.BytetoHex(this.message.getSuffix())), (new StringBuilder()).append("").append(i).toString(),
 							(new StringBuilder()).append("").append(j).toString() }));
 		byte abyte2[] = new byte[k - j - abyte0.length];
 		System.arraycopy(messageData, j + abyte0.length, abyte2, 0, abyte2.length);
@@ -64,19 +61,12 @@ public class TagMessageParser extends DefaultMessageParser {
 				s = new String(abyte2, this.message.getMsgCharset());
 			} catch (UnsupportedEncodingException unsupportedencodingexception) {
 				unsupportedencodingexception.printStackTrace();
-				throw new RuntimeException(
-						MultiLanguageResourceBundle.getInstance().getString("message.encoding.unsupport",
-								new String[] { this.message.getId(), this.message.getMsgCharset() }));
+				throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("message.encoding.unsupport",
+						new String[] { this.message.getId(), this.message.getMsgCharset() }));
 			}
 		else
 			s = new String(abyte2);
-		String as[] = s.split(":");
-		Object obj = null;
-		Object obj1 = null;
-		Object obj2 = null;
-		Object obj3 = null;
-		Object obj4 = null;
-		boolean flag = false;
+		String[] as = s.split(":");
 		int l1 = 0;
 		for (int i2 = 1; i2 < as.length; i2++) {
 			String s1 = as[i2];
@@ -85,10 +75,9 @@ public class TagMessageParser extends DefaultMessageParser {
 				s2 = as[i2];
 			else
 				s2 = "";
-			Field field = (Field) L.get(s1);
+			Field field = L.get(s1);
 			if (null == field)
-				throw new RuntimeException(MultiLanguageResourceBundle.getInstance()
-						.getString("parse.tag.field.isNotExist", new String[] { s1 }));
+				throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.tag.field.isNotExist", new String[] { s1 }));
 			if (field.getPreParseEvent() != null)
 				exeShell(field, "pre-parse", field.getPreParseEvent());
 			if (2000 == field.getFieldType()) {
@@ -131,7 +120,6 @@ public class TagMessageParser extends DefaultMessageParser {
 								s2 = as[i2];
 						}
 					} while (true);
-					boolean flag1 = false;
 					l1 = 0;
 					ClassUtil.setBeanAttributeValue(messageBean, field.getName(), arraylist, List.class);
 				} else {
@@ -139,14 +127,11 @@ public class TagMessageParser extends DefaultMessageParser {
 					Message message3 = field.getReference();
 					if (null == message3) {
 						message3 = new Message();
-						message3.setId((new StringBuilder()).append(this.message.getId()).append("-")
-								.append(field.getName()).toString());
+						message3.setId((new StringBuilder()).append(this.message.getId()).append("-").append(field.getName()).toString());
 						message3.setShortText(field.getShortText());
 						message3.setFields(field.getSubFields());
 					}
-					Object obj6 = null;
-					String s8 = (new StringBuilder()).append("create")
-							.append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
+					String s8 = (new StringBuilder()).append("create").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 					int i3 = 0;
 					do {
 						if (i3 >= j2)
@@ -171,7 +156,6 @@ public class TagMessageParser extends DefaultMessageParser {
 						if (null != field.getPostRowParseEvent())
 							exeShell(field, "row-post-parse", field.getPostRowParseEvent(), messagebean1, null, j2, i3);
 					} while (true);
-					boolean flag2 = false;
 					l1 = 0;
 				}
 			} else if (2002 == field.getFieldType() || 2008 == field.getFieldType()) {
@@ -194,13 +178,11 @@ public class TagMessageParser extends DefaultMessageParser {
 					Message message2 = field.getReference();
 					if (null == message2) {
 						message2 = new Message();
-						message2.setId((new StringBuilder()).append(this.message.getId()).append("-")
-								.append(field.getName()).toString());
+						message2.setId((new StringBuilder()).append(this.message.getId()).append("-").append(field.getName()).toString());
 						message2.setShortText(field.getShortText());
 						message2.setFields(field.getSubFields());
 					}
-					String s7 = (new StringBuilder()).append("get")
-							.append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
+					String s7 = (new StringBuilder()).append("get").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 					MessageBean messagebean2 = (MessageBean) ClassUtil.invoke(messageBean, s7, null, null);
 					String s6 = (new StringBuilder()).append(":").append(s1).append(":").toString();
 					int k1 = CodeUtil.byteArrayIndexOf(abyte2, s6.getBytes(), l1);
@@ -227,8 +209,7 @@ public class TagMessageParser extends DefaultMessageParser {
 	private int B(Field field) {
 		int i = 0;
 		if (null != field.getRowNumField()) {
-			i = parseIntValue(field.getRowNumField(),
-					ClassUtil.getBeanAttributeValue(messageBean, field.getRowNumField().getName()));
+			i = parseIntValue(field.getRowNumField(), ClassUtil.getBeanAttributeValue(messageBean, field.getRowNumField().getName()));
 		} else {
 			Message message = this.message;
 			Field field1 = null;
@@ -252,12 +233,9 @@ public class TagMessageParser extends DefaultMessageParser {
 	}
 
 	private void C() {
-		L = new HashMap(message.getFields().size());
-		Object obj = null;
+		L = new HashMap<>(message.getFields().size());
 		Field field;
-		for (Iterator iterator = message.getFields().values().iterator(); iterator.hasNext(); L.put(field.getTag(),
-				field))
-			field = (Field) iterator.next();
-
+		for (Iterator<Field> iterator = message.getFields().values().iterator(); iterator.hasNext(); L.put(field.getTag(), field))
+			field = iterator.next();
 	}
 }

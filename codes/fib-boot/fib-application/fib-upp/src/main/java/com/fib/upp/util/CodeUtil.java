@@ -240,7 +240,6 @@ public class CodeUtil
 	public static byte[] BytetoHex(byte abyte0[], int i, int j)
 	{
 		byte abyte1[] = new byte[j * 2];
-		boolean flag = false;
 		for (int k = 0; k < j; k++)
 		{
 			byte byte0 = (byte)(abyte0[i + k] >>> 4 & 0xf);
@@ -280,7 +279,6 @@ public class CodeUtil
 			abyte1 = abyte0;
 		}
 		byte abyte2[] = new byte[abyte1.length / 2];
-		boolean flag = false;
 		for (int k = 0; k < abyte2.length; k++)
 		{
 			byte byte0 = (byte)(abyte1[2 * k] < 65 ? abyte1[2 * k] - 48 : (abyte1[2 * k] - 65) + 10);
@@ -675,7 +673,6 @@ public class CodeUtil
 	public static byte[] BCDtoASC(byte abyte0[])
 	{
 		byte abyte1[] = new byte[abyte0.length * 2];
-		boolean flag = false;
 		for (int i = 0; i < abyte0.length; i++)
 		{
 			byte byte0 = (byte)(abyte0[i] >>> 4 & 0xf);
@@ -695,7 +692,6 @@ public class CodeUtil
 	public static byte[] BCDtoASCUpperCase(byte abyte0[])
 	{
 		byte abyte1[] = new byte[abyte0.length * 2];
-		boolean flag = false;
 		for (int i = 0; i < abyte0.length; i++)
 		{
 			byte byte0 = (byte)(abyte0[i] >>> 4 & 0xf);
@@ -709,8 +705,7 @@ public class CodeUtil
 
 	public static byte[] BCDtoASC(byte abyte0[], int i, int j)
 	{
-		byte abyte1[] = new byte[j * 2];
-		boolean flag = false;
+		byte[] abyte1 = new byte[j * 2];
 		for (int k = 0; k < j; k++)
 		{
 			byte byte0 = (byte)(abyte0[k + i] >>> 4 & 0xf);
@@ -902,7 +897,6 @@ public class CodeUtil
 			return abyte0;
 		if (j > abyte0.length)
 			return abyte0;
-		boolean flag = false;
 		int i1 = abyte1.length;
 		ByteBuffer bytebuffer = new ByteBuffer(abyte0.length + 16);
 		for (int j1 = i; j1 < j;)

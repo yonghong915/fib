@@ -53,7 +53,7 @@ public class Field {
 	private boolean rowCut;
 	private byte padding;
 	private int paddingDirection;
-	private Map<String, Field> subFields;
+	private SortHashMap<String, Field> subFields;
 	private String combineOrTableFieldClassName;
 	private Map<String, ValueRange> valueRange;
 	private String rowNumFieldName;
@@ -278,11 +278,11 @@ public class Field {
 		paddingDirection = i;
 	}
 
-	public Map<String, Field> getSubFields() {
+	public SortHashMap<String, Field> getSubFields() {
 		return subFields;
 	}
 
-	public void setSubFields(Map<String, Field> sorthashmap) {
+	public void setSubFields(SortHashMap<String, Field> sorthashmap) {
 		subFields = sorthashmap;
 	}
 
@@ -607,7 +607,7 @@ public class Field {
 		return tabSuffix;
 	}
 
-	public void setTabSuffix(byte abyte0[]) {
+	public void setTabSuffix(byte[] abyte0) {
 		tabSuffix = abyte0;
 	}
 

@@ -164,9 +164,9 @@ public class MessageMetadataManager {
 		//
 	}
 
-	private static Message load(String s, File file) {
+	private static Message load(String groupId, File file) {
 		MessageHandler mh = new MessageHandler();
-		return mh.parseMessage(s, file);
+		return mh.parseMessage(groupId, file);
 	}
 
 	static {

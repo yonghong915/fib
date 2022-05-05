@@ -11,8 +11,7 @@ package com.fib.upp.util;
 public class ByteBuffer
 {
 
-	private static final float DEFAULT_FACTOR = 0.75F;
-	private byte buf[];
+	private byte[] buf;
 	private int size;
 	private float factor;
 
