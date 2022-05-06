@@ -458,13 +458,13 @@ public interface ConstantMB {
 
 	public enum PaddingDirection {
 
-		/** 5000 none */
+		/** 3000 none */
 		NONE(5000, "none", ""),
 
-		/** 5001 left */
+		/** 3001 left */
 		LEFT(5001, "left", ""),
 
-		/** 5002 right */
+		/** 3002 right */
 		RIGHT(5002, "right", "");
 
 		private int code;

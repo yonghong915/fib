@@ -33,7 +33,6 @@ public class TagMessageParser extends DefaultMessageParser {
 		variableCache = new HashMap<>(5);
 	}
 
-	@Override
 	protected int parse(int i) {
 		messageBean.setMetadata(this.message);
 		if (null != getParentBean())

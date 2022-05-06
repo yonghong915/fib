@@ -111,9 +111,9 @@ public class ClassUtil {
 
 	public static Object getBeanAttributeValue(Object obj, String s, String s1) {
 		if (null == obj)
-			throw new IllegalArgumentException("parameter.null.obj");
+			throw new IllegalArgumentException("parameter.null");
 		if (null == s || 0 == s.length())
-			throw new IllegalArgumentException("parameter.null.s");
+			throw new IllegalArgumentException("parameter.null");
 		String s2 = (new StringBuilder()).append("get").append(s.substring(0, 1).toUpperCase()).toString();
 		if (s.length() > 1)
 			s2 = (new StringBuilder()).append(s2).append(s.substring(1)).toString();

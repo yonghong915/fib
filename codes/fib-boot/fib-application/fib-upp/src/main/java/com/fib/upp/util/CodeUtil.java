@@ -531,7 +531,7 @@ public class CodeUtil {
 		}
 		int k = s.indexOf(".");
 		int l = s.length();
-		StringBuilder stringbuffer = new StringBuilder();
+		StringBuffer stringbuffer = new StringBuffer();
 		stringbuffer.append(s.substring(0, k));
 		stringbuffer.append(s.substring(k + 1));
 		for (int i1 = l - k - 1; i1 < j; i1++)

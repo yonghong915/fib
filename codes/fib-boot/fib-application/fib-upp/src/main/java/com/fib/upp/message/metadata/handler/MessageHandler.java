@@ -460,7 +460,7 @@ public class MessageHandler extends DefaultHandler {
 
 		notNullExce(str, a -> System.out.println(a));
 
-		notNullExce(StrUtil.isNotBlank(str), a -> System.out.println(a));
+		notNullExce(StrUtil.isBlank(str), a -> System.out.println(a));
 	}
 
 	public static void defaultIfEmpty(String str, Consumer<String> handle, Consumer<String> other) {

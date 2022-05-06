@@ -176,7 +176,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			do {
 				if (k >= as.length)
 					break;
-				field1 = message1.getField(as[k].trim());
+				field1 =  message1.getField(as[k].trim());
 				if (++k < as.length)
 					if (null != field1.getReference())
 						message1 = field1.getReference();
