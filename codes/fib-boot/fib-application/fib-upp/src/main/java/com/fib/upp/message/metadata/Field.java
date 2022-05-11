@@ -11,7 +11,7 @@ public class Field {
 
 	private String name;
 	private int fieldType;
-	private int iso8583_no;
+	private int iso8583No;
 	private Message reference;
 	private String referenceId;
 	private String referenceType;
@@ -79,7 +79,7 @@ public class Field {
 	private boolean shield;
 
 	public Field() {
-		iso8583_no = -1;
+		iso8583No = -1;
 		editable = true;
 		isRemoveUnwatchable = true;
 		strictDataLength = false;
@@ -286,12 +286,12 @@ public class Field {
 		subFields = sorthashmap;
 	}
 
-	public int getIso8583_no() {
-		return iso8583_no;
+	public int getIso8583No() {
+		return iso8583No;
 	}
 
-	public void setIso8583_no(int i) {
-		iso8583_no = i;
+	public void setIso8583No(int i) {
+		iso8583No = i;
 	}
 
 	public String getXpath() {
@@ -570,7 +570,7 @@ public class Field {
 		if (null == extendedAttributes)
 			return null;
 		else
-			return (String) extendedAttributes.get(s);
+			return extendedAttributes.get(s);
 	}
 
 	public void setExtendAttribute(String s, String s1) {
@@ -688,7 +688,7 @@ public class Field {
 					return false;
 				if (null != xpath && null != field.getXpath() && !xpath.equalsIgnoreCase(field.getXpath()))
 					return false;
-				if (iso8583_no != field.getIso8583_no())
+				if (iso8583No != field.getIso8583No())
 					return false;
 				if ((null == prefix) ^ (null == field.getPrefix()))
 					return false;
@@ -819,7 +819,7 @@ public class Field {
 					if (!iterator.hasNext())
 						break label1;
 					s = iterator.next();
-				} while (s.equalsIgnoreCase((String) macFldDataCache.get(s)));
+				} while (s.equalsIgnoreCase(macFldDataCache.get(s)));
 				return false;
 			}
 			if (2005 == fieldType) {
@@ -911,7 +911,7 @@ public class Field {
 		Field field = new Field();
 		field.setName(name);
 		field.setFieldType(fieldType);
-		field.setIso8583_no(iso8583_no);
+		field.setIso8583No(iso8583No);
 		field.setReference(reference);
 		field.setReferenceId(referenceId);
 		field.setReferenceType(referenceType);

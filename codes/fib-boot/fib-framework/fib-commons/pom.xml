@@ -37,7 +37,6 @@
 		<saxpath.version>1.0-FCS</saxpath.version>
 		<jackson.version>2.13.2.2</jackson.version>
 		<slf4j.version>1.7.30</slf4j.version>
-		<minio.version>8.3.4</minio.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -158,11 +157,7 @@
 			<version>${logback.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>io.minio</groupId>
-			<artifactId>minio</artifactId>
-			<version>${minio.version}</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.lmax</groupId>
 			<artifactId>disruptor</artifactId>

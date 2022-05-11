@@ -121,11 +121,78 @@ public interface ConstantMB {
 					return mt;
 				}
 			}
-			throw new CommonException("not support messagePackModeText " + code);
+			throw new CommonException("not support FieldType " + code);
 		}
 
 		public static FieldType getFieldTypeByName(String name) {
 			for (FieldType mt : values()) {
+				if (mt.getName().equals(name)) {
+					return mt;
+				}
+			}
+			throw new CommonException("FieldType.notExist ");
+		}
+	}
+
+	public enum EventType {
+
+		/** 2000 pre-pack */
+		PRE_PACK(2000, "pre-pack", ""),
+
+		/** 2001 post-pack */
+		POST_PACK(2001, "post-pack", ""),
+
+		/** 2002 pre-parse */
+		PRE_PARSE(2002, "pre-parse", ""),
+
+		/** 2003 post-parse */
+		POST_PARSE(2003, "post-parse", ""),
+
+		/** 2004 row-pre-pack */
+		ROW_PRE_PACK(2004, "row-pre-pack", ""),
+
+		/** 2005 row-post-pack */
+		ROW_POST_PACK(2005, "row-post-pack", ""),
+
+		/** 2006 row-pre-parse */
+		ROW_PRE_PARSE(2007, "row-pre-parse", ""),
+
+		/** 2007 row-post-parse */
+		ROW_POST_PARSE(2008, "row-post-parse", "");
+
+		private int code;
+		private String name;
+		private String text;
+
+		EventType(int code, String name, String text) {
+			this.code = code;
+			this.name = name;
+			this.text = text;
+		}
+
+		public int getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public static EventType getFieldTypeByCode(int code) {
+			for (EventType mt : values()) {
+				if (code == mt.getCode()) {
+					return mt;
+				}
+			}
+			throw new CommonException("not support messagePackModeText " + code);
+		}
+
+		public static EventType getFieldTypeByName(String name) {
+			for (EventType mt : values()) {
 				if (mt.getName().equals(name)) {
 					return mt;
 				}
@@ -505,6 +572,55 @@ public interface ConstantMB {
 				}
 			}
 			throw new CommonException("Constant.PaddingDirection.notExist" + name);
+		}
+	}
+
+	public enum DataEncTypc {
+
+		/** 4000 none */
+		ASC(4000, "asc", ""),
+
+		/** 4001 left */
+		BCD(4001, "bcd", "");
+
+		private int code;
+		private String name;
+		private String text;
+
+		DataEncTypc(int code, String name, String text) {
+			this.code = code;
+			this.name = name;
+			this.text = text;
+		}
+
+		public int getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public static DataEncTypc getDataTypeByCode(int code) {
+			for (DataEncTypc mt : values()) {
+				if (code == mt.getCode()) {
+					return mt;
+				}
+			}
+			throw new CommonException("Constant.DataEncTypc.notExist" + code);
+		}
+
+		public static DataEncTypc getDataTypeByName(String name) {
+			for (DataEncTypc mt : values()) {
+				if (mt.getName().equals(name)) {
+					return mt;
+				}
+			}
+			throw new CommonException("Constant.DataEncTypc.notExist" + name);
 		}
 	}
 

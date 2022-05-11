@@ -24,6 +24,7 @@
 		<module>fib-retry-spring-boot-starter</module>
 		<module>fib-ruleengine-spring-boot-starter</module>
 		<module>fib-netty-spring-boot-starter</module>
+		<module>fib-minio-spring-boot-starter</module>
 	</modules>
 
 	<dependencies>

@@ -26,18 +26,19 @@ public class TagMessageParser extends DefaultMessageParser {
 
 	public static final String M = ":";
 	private Map<String, Field> L;
-	//protected Map variableCache;
+	// protected Map variableCache;
 
 	public TagMessageParser() {
 		L = null;
 		variableCache = new HashMap<>(5);
 	}
 
+	@Override
 	protected int parse(int i) {
 		messageBean.setMetadata(this.message);
 		if (null != getParentBean())
 			messageBean.setParent(getParentBean());
-		byte abyte0[] = this.message.getPrefix();
+		byte[] abyte0 = this.message.getPrefix();
 		int j = CodeUtil.byteArrayIndexOf(messageData, abyte0, i);
 		if (-1 == j)
 			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed", new String[] {
@@ -46,13 +47,13 @@ public class TagMessageParser extends DefaultMessageParser {
 			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locatePrefix.failed",
 					new String[] { new String(CodeUtil.bytetoHex(this.message.getPrefix())), (new StringBuilder()).append("").append(i).toString(),
 							(new StringBuilder()).append("").append(j).toString() }));
-		byte abyte1[] = this.message.getSuffix();
+		byte[] abyte1 = this.message.getSuffix();
 		int k = CodeUtil.byteArrayIndexOf(messageData, abyte1, j + abyte0.length);
 		if (-1 == k)
 			throw new CommonException(MultiLanguageResourceBundle.getInstance().getString("parse.locateSuffix.failed",
 					new String[] { new String(CodeUtil.bytetoHex(this.message.getSuffix())), (new StringBuilder()).append("").append(i).toString(),
 							(new StringBuilder()).append("").append(j).toString() }));
-		byte abyte2[] = new byte[k - j - abyte0.length];
+		byte[] abyte2 = new byte[k - j - abyte0.length];
 		System.arraycopy(messageData, j + abyte0.length, abyte2, 0, abyte2.length);
 		C();
 		String s = null;
@@ -82,17 +83,18 @@ public class TagMessageParser extends DefaultMessageParser {
 				exeShell(field, "pre-parse", field.getPreParseEvent());
 			if (2000 == field.getFieldType()) {
 				s2 = new String(B(field, s2.getBytes()));
-				if (3010 == field.getDataType())
+				if (3010 == field.getDataType()) {
 					if (null == s2 || s2.length() == 0)
 						s2 = "0";
 					else if (field.getPattern().indexOf(",") != -1 && s2.charAt(0) == '.')
 						s2 = (new StringBuilder()).append("0").append(s2).toString();
+				}
 			}
 			if (2004 == field.getFieldType()) {
 				if (null == s2 || 0 == s2.length())
 					continue;
 				if ("dynamic".equalsIgnoreCase(field.getReferenceType())) {
-					Message message = B(field, this.message, messageBean);
+					Message message = getRefMessage(field, this.message, messageBean);
 					int k2 = B(field);
 					List<MessageBean> arraylist = new ArrayList<>(k2);
 					int l2 = 0;
@@ -108,9 +110,9 @@ public class TagMessageParser extends DefaultMessageParser {
 						l1 = CodeUtil.byteArrayIndexOf(abyte2, ":".getBytes(), l);
 						if (-1 == l1)
 							l1 = abyte2.length;
-						byte abyte3[] = new byte[l1 - l];
+						byte[] abyte3 = new byte[l1 - l];
 						System.arraycopy(abyte2, l, abyte3, 0, abyte3.length);
-						i = B(field, message, messagebean, 0, abyte3);
+						i = parseMessage(message, messagebean, 0, abyte3);
 						arraylist.add(messagebean);
 						if (null != field.getPostRowParseEvent())
 							exeShell(field, "row-post-parse", field.getPostRowParseEvent(), messagebean, arraylist, k2, l2);
@@ -145,9 +147,9 @@ public class TagMessageParser extends DefaultMessageParser {
 						l1 = CodeUtil.byteArrayIndexOf(abyte2, ":".getBytes(), i1);
 						if (-1 == l1)
 							l1 = abyte2.length;
-						byte abyte4[] = new byte[l1 - i1];
+						byte[] abyte4 = new byte[l1 - i1];
 						System.arraycopy(abyte2, i1, abyte4, 0, abyte4.length);
-						i = B(field, message3, messagebean1, 0, abyte4);
+						i = parseMessage(message3, messagebean1, 0, abyte4);
 						if (++i3 < j2) {
 							i2 += 2;
 							if (i2 < as.length)
@@ -162,14 +164,14 @@ public class TagMessageParser extends DefaultMessageParser {
 				if (null == s2 || 0 == s2.length())
 					continue;
 				if ("dynamic".equalsIgnoreCase(field.getReferenceType())) {
-					Message message1 = B(field, this.message, messageBean);
+					Message message1 = getRefMessage(field, this.message, messageBean);
 					String s5 = (new StringBuilder()).append(":").append(s1).append(":").toString();
 					int j1 = CodeUtil.byteArrayIndexOf(abyte2, s5.getBytes(), l1);
 					j1 += s5.getBytes().length;
 					l1 = CodeUtil.byteArrayIndexOf(abyte2, ":".getBytes(), j1);
 					if (-1 == l1)
 						l1 = abyte2.length;
-					byte abyte5[] = new byte[l1 - j1];
+					byte[] abyte5 = new byte[l1 - j1];
 					System.arraycopy(abyte2, j1, abyte5, 0, abyte5.length);
 					i = B(field, messageBean, message1, 0, abyte5);
 					j1 = 0;
@@ -190,9 +192,9 @@ public class TagMessageParser extends DefaultMessageParser {
 					l1 = CodeUtil.byteArrayIndexOf(abyte2, ":".getBytes(), k1);
 					if (-1 == l1)
 						l1 = abyte2.length;
-					byte abyte6[] = new byte[l1 - k1];
+					byte[] abyte6 = new byte[l1 - k1];
 					System.arraycopy(abyte2, k1, abyte6, 0, abyte6.length);
-					i = B(field, message2, messagebean2, 0, abyte6);
+					i = parseMessage(message2, messagebean2, 0, abyte6);
 					k1 = 0;
 					l1 = 0;
 				}
@@ -213,19 +215,20 @@ public class TagMessageParser extends DefaultMessageParser {
 		} else {
 			Message message = this.message;
 			Field field1 = null;
-			String as[] = field.getRowNumFieldName().split("\\.");
+			String[] as = field.getRowNumFieldName().split("\\.");
 			int j = 0;
 			do {
 				if (j >= as.length)
 					break;
-				field1 = ((Message) message).getField(as[j].trim());
-				if (++j < as.length)
-					if (null != field1.getReference())
+				field1 = message.getField(as[j].trim());
+				if (++j < as.length) {
+					if (null != field1.getReference()) {
 						message = field1.getReference();
-					else if (0 != field1.getSubFields().size()) {
+					} else if (0 != field1.getSubFields().size()) {
 						message = new Message();
-						((Message) message).setFields(field1.getSubFields());
+						message.setFields(field1.getSubFields());
 					}
+				}
 			} while (true);
 			i = parseIntValue(field1, ClassUtil.getBeanValueByPath(messageBean, field.getRowNumFieldName()));
 		}

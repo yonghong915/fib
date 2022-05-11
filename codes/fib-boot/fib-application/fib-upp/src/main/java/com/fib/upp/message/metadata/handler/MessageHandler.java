@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +38,7 @@ import cn.hutool.core.util.XmlUtil;
 
 public class MessageHandler extends DefaultHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageHandler.class);
+	private String separator = System.getProperty("file.separator");
 
 	private static class FieldList {
 		private List<Field> fieldLst;
@@ -150,7 +150,7 @@ public class MessageHandler extends DefaultHandler {
 			do {
 				if (!iterator1.hasNext())
 					break label0;
-				field1 = (Field) iterator1.next();
+				field1 = iterator1.next();
 			} while (2001 != field1.getFieldType() && 2003 != field1.getFieldType() && 2009 != field1.getFieldType());
 			throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(" :")
 					.append(MultiLanguageResourceBundle.getInstance().getString("MessageMetadataManager.check.xml.illegalFieldType")).toString());
@@ -321,9 +321,9 @@ public class MessageHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if ("field".equals(qName)) {
-			Field field = (Field) fieldList.remove();
+			Field field = fieldList.remove();
 			if (field.getFieldType() == 2002 && field.getReference() == null && !"dynamic".equalsIgnoreCase(field.getReferenceType())
-					&& !"expression".equalsIgnoreCase(field.getReferenceType())) {
+					&& !ConstantMB.ReferenceType.EXPRESSION.getCode().equalsIgnoreCase(field.getReferenceType())) {
 				if (field.getReference() == null)
 					postParse(field.getSubFields());
 				if (1002 == this.message.getType() && field.getFieldType() == 2002 && field.getReference() == null)
@@ -390,7 +390,7 @@ public class MessageHandler extends DefaultHandler {
 				s4 = null;
 			boolean flag = false;
 			if (null == this.field) {
-				this.field = (Field) fieldList.remove();
+				this.field = fieldList.remove();
 				flag = true;
 			}
 			if ("row-post-pack".equalsIgnoreCase(tmpFieldAttr)) {
@@ -448,38 +448,6 @@ public class MessageHandler extends DefaultHandler {
 			this.message.setVariable(new HashMap<>());
 			this.message.getVariable().putAll(variableMap);
 			variableMap.clear();
-		}
-	}
-
-	public static void main(String[] args) {
-		String str = "abcd";
-		Map<String, String> map = new HashMap<>();
-		defaultIfEmpty(str, a -> map.put(str, a + "edfg"), b -> map.put(str, b + "123445"));
-
-		System.out.println(map);
-
-		notNullExce(str, a -> System.out.println(a));
-
-		notNullExce(StrUtil.isBlank(str), a -> System.out.println(a));
-	}
-
-	public static void defaultIfEmpty(String str, Consumer<String> handle, Consumer<String> other) {
-		if (StrUtil.isEmptyIfStr(str)) {
-			handle.accept(str);
-		} else {
-			other.accept(str);
-		}
-	}
-
-	public static void notNullExce(String str, Consumer<String> handle) {
-		if (StrUtil.isNotBlank(str)) {
-			handle.accept(str);
-		}
-	}
-	
-	public static void notNullExce(boolean expression, Consumer<Boolean> handle) {
-		if (expression) {
-			handle.accept(expression);
 		}
 	}
 
@@ -650,7 +618,7 @@ public class MessageHandler extends DefaultHandler {
 		attrVal = attributes.getValue("iso8583-no");
 		if (CharSequenceUtil.isNotBlank(attrVal)) {
 			try {
-				field1.setIso8583_no(Integer.parseInt(attrVal));
+				field1.setIso8583No(Integer.parseInt(attrVal));
 			} catch (Exception e) {
 				throw new CommonException("field[@/@iso8583-no .wrong", e);
 			}
@@ -714,24 +682,18 @@ public class MessageHandler extends DefaultHandler {
 		}
 
 		attrVal = attributes.getValue("shield");
-
-		notNullExce(attrVal, a -> field1.setRowCut(false));
-
-		// TODO
-		String s11 = attributes.getValue("shield");
-		if (null != s11) {
-			s11 = s11.trim();
-			if ("true".equals(s11))
-				field1.setShield(true);
+		if (CharSequenceUtil.isNotBlank(attrVal)) {
+			field1.setShield("true".equals(attrVal));
 		}
-		if (2011 == field1.getFieldType()) {
-			s11 = attributes.getValue("row-cut");
-			if (null != s11) {
-				s11 = s11.trim();
-				if ("false".equalsIgnoreCase(s11))
-					field1.setRowCut(false);
+
+		if (ConstantMB.FieldType.VAR_TABLE.getCode() == field1.getFieldType()) {
+			attrVal = attributes.getValue("row-cut");
+			if (CharSequenceUtil.isNotBlank(attrVal)) {
+				field1.setShield(!"false".equals(attrVal));
 			}
 		}
+
+		String s11 = "";
 		if (2001 == field1.getFieldType() || 2003 == field1.getFieldType() || 2009 == field1.getFieldType() || 2011 == field1.getFieldType()) {
 			s11 = attributes.getValue("ref-length-field");
 			if (null != s11) {
@@ -754,7 +716,7 @@ public class MessageHandler extends DefaultHandler {
 				s11 = attributes.getValue("tab-prefix");
 				if (null != s11) {
 					s11 = s11.trim();
-					if (0 != s11.length())
+					if (0 != s11.length()) {
 						if (s11.length() > 2 && s11.startsWith("0x")) {
 							String s14 = s11.substring(2);
 							if (!CodeUtil.isHexString(s14))
@@ -768,11 +730,12 @@ public class MessageHandler extends DefaultHandler {
 							field1.setTabPrefixString(new String(CodeUtil.bCDtoASC(s11.getBytes())));
 							field1.setTabPrefix(s11.getBytes());
 						}
+					}
 				}
 				s11 = attributes.getValue("tab-suffix");
 				if (null != s11) {
 					s11 = s11.trim();
-					if (0 != s11.length())
+					if (0 != s11.length()) {
 						if (s11.length() > 2 && s11.startsWith("0x")) {
 							String s15 = s11.substring(2);
 							if (!CodeUtil.isHexString(s15))
@@ -786,23 +749,13 @@ public class MessageHandler extends DefaultHandler {
 							field1.setTabSuffixString(new String(CodeUtil.bCDtoASC(s11.getBytes())));
 							field1.setTabSuffix(s11.getBytes());
 						}
+					}
 				}
 			} else {
-				s11 = attributes.getValue("length-field-data-type");
-				if (null == s11)
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@length-field-data-type ").append(MultiLanguageResourceBundle.getInstance().getString("null")).toString());
-				s11 = s11.trim();
-				if (0 == s11.length())
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@length-field-data-type ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
-				try {
-					field1.setLengthFieldDataType(ConstantMB.DataType.getDataTypeByName(s11).getCode());
-				} catch (Exception exception5) {
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@length-field-data-type ")
-							.append(MultiLanguageResourceBundle.getInstance().getString("MessageMetadataManager.startElement.wrong")).toString());
-				}
+				attrVal = attributes.getValue("length-field-data-type");
+				Assert.isTrue(CharSequenceUtil.isNotBlank(attrVal), () -> new CommonException("field@length-field-data-type must not be null"));
+				field1.setLengthFieldDataType(ConstantMB.DataType.getDataTypeByName(s11).getCode());
+
 				s11 = attributes.getValue("length-field-data-encoding");
 				if (null != s11) {
 					s11 = s11.trim();
@@ -825,56 +778,32 @@ public class MessageHandler extends DefaultHandler {
 							.append(MultiLanguageResourceBundle.getInstance().getString("MessageMetadataManager.startElement.wrong")).toString());
 				}
 			}
-			s11 = attributes.getValue("max-length");
-			if (null != s11) {
-				s11 = s11.trim();
-				if (0 == s11.length())
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@max-length ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
-				try {
-					field1.setMaxLength(Integer.parseInt(s11));
-				} catch (Exception exception7) {
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@max-length ")
-							.append(MultiLanguageResourceBundle.getInstance().getString("MessageMetadataManager.startElement.wrong")).toString());
-				}
+
+			attrVal = attributes.getValue("max-length");
+			if (CharSequenceUtil.isNotBlank(attrVal)) {
+				field1.setMaxLength(Integer.parseInt(attrVal));
 			}
-			s11 = attributes.getValue("min-length");
-			if (null != s11) {
-				s11 = s11.trim();
-				if (0 == s11.length())
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@min-length ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
-				try {
-					field1.setMinLength(Integer.parseInt(s11));
-				} catch (Exception exception8) {
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@min-length ")
-							.append(MultiLanguageResourceBundle.getInstance().getString("MessageMetadataManager.startElement.wrong"))
-							.append(exception8.getMessage()).toString(), exception8);
-				}
+
+			attrVal = attributes.getValue("min-length");
+			if (CharSequenceUtil.isNotBlank(attrVal)) {
+				field1.setMinLength(Integer.parseInt(attrVal));
 			}
 		}
-		if (1002 == this.message.getType() || 1003 == this.message.getType()) {
-			s11 = attributes.getValue("tag");
-			if (null != s11) {
-				s11 = s11.trim();
-				if (0 == s11.length())
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@tag ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
-				field1.setTag(s11);
+
+		if (ConstantMB.MessageType.TAG.getCode() == this.message.getType() || ConstantMB.MessageType.SWIFT.getCode() == this.message.getType()) {
+			attrVal = attributes.getValue("tag");
+			if (CharSequenceUtil.isNotBlank(attrVal)) {
+				field1.setTag(attrVal);
 			}
 		}
+
 		if (2002 == field1.getFieldType() || 2003 == field1.getFieldType() || 2004 == field1.getFieldType() || 2011 == field1.getFieldType()
 				|| 2008 == field1.getFieldType() || 2009 == field1.getFieldType()) {
-			s11 = attributes.getValue("reference-type");
-			if (null != s11) {
-				s11 = s11.trim();
-				if (0 == s11.length())
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@reference-type ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
-				field1.setReferenceType(s11);
+			attrVal = attributes.getValue("reference-type");
+			if (CharSequenceUtil.isNotBlank(attrVal)) {
+				field1.setReferenceType(attrVal);
 			}
+
 			s11 = attributes.getValue("reference");
 			if (null == s11 && (2008 == field1.getFieldType() || 2009 == field1.getFieldType()))
 				throw new CommonException(
@@ -911,107 +840,69 @@ public class MessageHandler extends DefaultHandler {
 					field1.setRowXpath(s11);
 				}
 			}
-			s11 = attributes.getValue("data-encoding");
-			if (null != s11) {
-				s11 = s11.trim();
-				if ("bcd".equalsIgnoreCase(s11))
-					field1.setDataEncoding(4001);
+
+			attrVal = attributes.getValue("data-encoding");
+			if (CharSequenceUtil.isNotBlank(attrVal) && ConstantMB.DataEncTypc.BCD.getName().equalsIgnoreCase(attrVal)) {
+				field1.setDataEncoding(ConstantMB.DataEncTypc.BCD.getCode());
 			}
 		} else {
-			if (2007 == field1.getFieldType()) {
-				s11 = attributes.getValue("start-field");
-				if (null == s11)
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append("'] ").append(
-							MultiLanguageResourceBundle.getInstance().getString("MessageMetadataManager.startElement.lengthField.startField.null"))
-							.toString());
-				s11 = s11.trim();
-				if (0 == s11.length())
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("'] ").append(MultiLanguageResourceBundle.getInstance()
-									.getString("MessageMetadataManager.startElement.lengthField.startField.blank"))
-							.toString());
-				field1.setStartFieldName(s11);
-				s11 = attributes.getValue("end-field");
-				if (null == s11 || 0 == s11.trim().length())
-					field1.setEndFieldName(field1.getStartFieldName());
-				else
-					field1.setEndFieldName(s11.trim());
-			}
-			if (2010 == field1.getFieldType()) {
-				s11 = attributes.getValue("start-field");
-				if (null != s11) {
-					s11 = s11.trim();
-					if (0 == s11.length())
-						throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-								.append("'] ").append(MultiLanguageResourceBundle.getInstance()
-										.getString("MessageMetadataManager.startElement.lengthField.startField.blank"))
-								.toString());
-					field1.setStartFieldName(s11);
-					s11 = attributes.getValue("end-field");
-					if (null == s11 || 0 == s11.trim().length())
-						field1.setEndFieldName(field1.getStartFieldName());
-					else
-						field1.setEndFieldName(s11.trim());
-				}
-				s11 = attributes.getValue("data");
-				if (null != s11) {
-					s11 = s11.trim();
-					if (0 != s11.length()) {
-						String[] as1 = s11.split(";");
-						HashMap<String, String> hashmap = new HashMap<>();
-						for (int l = 0; l < as1.length; l++)
-							hashmap.put(as1[l], as1[l]);
+			if (ConstantMB.FieldType.LENGTH_FIELD.getCode() == field1.getFieldType()) {
+				attrVal = attributes.getValue("start-field");
+				Assert.isFalse(StrUtil.isEmptyIfStr(attrVal), () -> new CommonException("lengthField.startField must not be null"));
+				field1.setStartFieldName(attrVal);
 
-						field1.setMacFldDataCache(hashmap);
-					}
+				attrVal = attributes.getValue("end-field");
+				if (StrUtil.isEmptyIfStr(attrVal)) {
+					field1.setEndFieldName(field1.getStartFieldName());
+				} else {
+					field1.setEndFieldName(attrVal.trim());
 				}
+			} else if (ConstantMB.FieldType.MAC_FIELD.getCode() == field1.getFieldType()) {
+				attrVal = attributes.getValue("start-field");
+				Assert.isFalse(StrUtil.isEmptyIfStr(attrVal), () -> new CommonException("macField.startField must not be null"));
+				field1.setStartFieldName(attrVal);
+
+				attrVal = attributes.getValue("end-field");
+				if (StrUtil.isEmptyIfStr(attrVal)) {
+					field1.setEndFieldName(field1.getStartFieldName());
+				} else {
+					field1.setEndFieldName(attrVal.trim());
+				}
+
+				attrVal = attributes.getValue("data");
+				if (CharSequenceUtil.isNotBlank(attrVal)) {
+					String[] as1 = attrVal.split(";");
+					HashMap<String, String> hashmap = new HashMap<>();
+					for (int l = 0; l < as1.length; l++) {
+						hashmap.put(as1[l], as1[l]);
+					}
+					field1.setMacFldDataCache(hashmap);
+				}
+			} else if (ConstantMB.FieldType.TABLE_ROW_NUM_FIELD.getCode() == field1.getFieldType()) {
+				attrVal = attributes.getValue("table");
+				Assert.isFalse(StrUtil.isEmptyIfStr(attrVal), () -> new CommonException("field@table must not be null"));
+				field1.setTableName(attrVal);
 			}
-			if (2005 == field1.getFieldType()) {
-				s11 = attributes.getValue("table");
-				if (null == s11)
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@table ").append(MultiLanguageResourceBundle.getInstance().getString("null")).toString());
-				s11 = s11.trim();
-				if (0 == s11.length())
-					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-							.append("']/@table ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
-				field1.setTableName(s11);
+
+			attrVal = attributes.getValue("data-type");
+			Assert.isFalse(StrUtil.isEmptyIfStr(attrVal), () -> new CommonException("field@@data-type must not be null"));
+			field1.setDataType(ConstantMB.DataType.getDataTypeByName(attrVal).getCode());
+
+			attrVal = attributes.getValue("data-encoding");
+			if (CharSequenceUtil.isNotBlank(attrVal) && ConstantMB.DataEncTypc.BCD.getName().equalsIgnoreCase(attrVal)) {
+				field1.setDataEncoding(ConstantMB.DataEncTypc.BCD.getCode());
 			}
-			s11 = attributes.getValue("data-type");
-			if (null == s11)
-				throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-						.append("']/@data-type ").append(MultiLanguageResourceBundle.getInstance().getString("null")).toString());
-			s11 = s11.trim();
-			if (0 == s11.length())
-				throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
-						.append("']/@data-type ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
-			try {
-				field1.setDataType(ConstantMB.DataType.getDataTypeByName(s11).getCode());
-			} catch (Exception exception9) {
-				throw new CommonException(
-						(new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName()).append("']/@data-type ")
-								.append(MultiLanguageResourceBundle.getInstance().getString("MessageMetadataManager.startElement.wrong"))
-								.append(exception9.getMessage()).toString(),
-						exception9);
+
+			attrVal = attributes.getValue("pattern");
+			if (CharSequenceUtil.isNotBlank(attrVal)) {
+				field1.setPattern(attrVal);
 			}
-			s11 = attributes.getValue("data-encoding");
-			if (null != s11) {
-				s11 = s11.trim();
-				if ("bcd".equalsIgnoreCase(s11))
-					field1.setDataEncoding(4001);
+
+			attrVal = attributes.getValue("length-script");
+			if (CharSequenceUtil.isNotBlank(attrVal)) {
+				field1.setLengthScript(attrVal);
 			}
-			s11 = attributes.getValue("pattern");
-			if (null != s11) {
-				s11 = s11.trim();
-				if (0 != s11.length())
-					field1.setPattern(s11);
-			}
-			s11 = attributes.getValue("length-script");
-			if (null != s11) {
-				s11 = s11.trim();
-				if (0 != s11.length())
-					field1.setLengthScript(s11);
-			}
+
 			if (2001 != field1.getFieldType())
 				if (3000 == field1.getDataType() || 3001 == field1.getDataType() || 3002 == field1.getDataType() || 3010 == field1.getDataType()) {
 					s11 = attributes.getValue("length");
@@ -1031,11 +922,12 @@ public class MessageHandler extends DefaultHandler {
 								.toString());
 					}
 				} else if (3006 == field1.getDataType()) {
-					if (null == field1.getPattern())
+					if (null == field1.getPattern()) {
 						throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
 								.append("'] ").append(MultiLanguageResourceBundle.getInstance()
 										.getString("MessageMetadataManager.startElement.datatime.pattern.null"))
 								.toString());
+					}
 					try {
 						new SimpleDateFormat(field1.getPattern());
 					} catch (Exception exception11) {
@@ -1174,13 +1066,14 @@ public class MessageHandler extends DefaultHandler {
 							if (0 != s11.length()) {
 								byte[] abyte2 = s11.getBytes();
 								if (1 != abyte2.length)
-									if (4 == abyte2.length && s11.startsWith("0x"))
+									if (4 == abyte2.length && s11.startsWith("0x")) {
 										abyte2 = CodeUtil.hextoByte(s11.substring(2));
-									else
+									} else {
 										throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='")
 												.append(field1.getName()).append("']/@padding ").append(MultiLanguageResourceBundle.getInstance()
 														.getString("MessageMetadataManager.startElement.padding.format.wrong"))
 												.toString());
+									}
 							}
 						} catch (Exception exception16) {
 							throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": ")
@@ -1259,12 +1152,11 @@ public class MessageHandler extends DefaultHandler {
 					throw new CommonException((new StringBuilder()).append(fileAbsolutePath).append(": field[@name='").append(field1.getName())
 							.append("']/@ref-value-range ").append(MultiLanguageResourceBundle.getInstance().getString("blank")).toString());
 				field1.setRefValueRange(s11);
-				File file = (File) MessageMetadataManager.groupPathCache.get(this.groupId);
+				File file = MessageMetadataManager.groupPathCache.get(this.groupId);
 				String s17 = file.getAbsolutePath();
-				if (!s17.endsWith(System.getProperty("file.separator")))
-					s17 = (new StringBuilder()).append(s17).append(System.getProperty("file.separator")).toString();
-				String s18 = (new StringBuilder()).append(s17).append("value-range").append(System.getProperty("file.separator")).append(s11)
-						.append(".xml").toString();
+				if (!s17.endsWith(separator))
+					s17 = (new StringBuilder()).append(s17).append(separator).toString();
+				String s18 = (new StringBuilder()).append(s17).append("value-range").append(separator).append(s11).append(".xml").toString();
 				File file1 = new File(s18);
 				ValueRangeHandler vrHandler = new ValueRangeHandler();
 				valueRangeMap = vrHandler.parseValueRange(this.groupId, file1);

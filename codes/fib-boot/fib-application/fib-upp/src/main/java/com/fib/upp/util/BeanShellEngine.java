@@ -64,17 +64,17 @@ public class BeanShellEngine {
 		return null;
 	}
 
-	public Object eval(String paramString) {
-		if ((null == paramString) || (0 == paramString.length()))
+	public Object eval(String script) {
+		if ((null == script) || (0 == script.length()))
 			throw new IllegalArgumentException("source is null");
 		Object localObject = null;
 		try {
-			localObject = this.interpreter.eval(paramString);
+			localObject = this.interpreter.eval(script);
 		} catch (TargetError localTargetError) {
 			if ((localTargetError.getTarget() instanceof CustomerException localCustomerException)) {
 				localCustomerException.setErrorLineNumber(localTargetError.getErrorLineNumber());
 				localCustomerException.setErrorText(localTargetError.getErrorText());
-				localCustomerException.setScript(paramString);
+				localCustomerException.setScript(script);
 				throw localCustomerException;
 			}
 			throw new CommonException("BeanShell.eval.TargetError");

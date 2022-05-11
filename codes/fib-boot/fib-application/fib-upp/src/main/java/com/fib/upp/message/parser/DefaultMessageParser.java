@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.fib.commons.exception.CommonException;
 import com.fib.upp.message.bean.MessageBean;
+import com.fib.upp.message.metadata.ConstantMB;
 import com.fib.upp.message.metadata.Field;
 import com.fib.upp.message.metadata.Message;
 import com.fib.upp.message.metadata.ValueRange;
@@ -31,9 +32,9 @@ import cn.hutool.core.lang.Assert;
  */
 public class DefaultMessageParser extends AbstractMessageParser {
 
-	public static boolean C = false;
+	public static final boolean C = false;
 	protected static final Map<String, String> mbMap;
-	public static boolean G = false;
+	public static final boolean G = false;
 	protected byte[] F;
 	protected Set<String> fieldNameSet;
 	protected int E;
@@ -80,12 +81,18 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return messageBean;
 	}
 
-	protected void exeShell(String s, String s1) {
+	private static final String MESSAGE_PARSER_KEY = "messageParser";
+	private static final String MESSAGE_KEY = "message";
+	private static final String MESSAGE_BEAN_KEY = "messageBean";
+	private static final String MESSAGE_DATA_KEY = "messageData";
+	private static final String FIELD_KEY = "field";
+
+	protected void exeShell(String eventType, String script) {
 		BeanShellEngine beanshellengine = new BeanShellEngine();
-		beanshellengine.set("messageParser", this);
-		beanshellengine.set("message", message);
-		beanshellengine.set("messageBean", messageBean);
-		beanshellengine.set("messageData", messageData);
+		beanshellengine.set(MESSAGE_PARSER_KEY, this);
+		beanshellengine.set(MESSAGE_KEY, message);
+		beanshellengine.set(MESSAGE_BEAN_KEY, messageBean);
+		beanshellengine.set(MESSAGE_DATA_KEY, messageData);
 		if (0 != variableCache.size()) {
 			Iterator<String> iterator = variableCache.keySet().iterator();
 			String s2;
@@ -93,8 +100,8 @@ public class DefaultMessageParser extends AbstractMessageParser {
 				s2 = iterator.next();
 
 		}
-		beanshellengine.eval(s1);
-		messageData = (byte[]) beanshellengine.get("messageData");
+		beanshellengine.eval(script);
+		messageData = (byte[]) beanshellengine.get(MESSAGE_DATA_KEY);
 		if (0 != variableCache.size()) {
 			Iterator<String> iterator1 = variableCache.keySet().iterator();
 			String s3;
@@ -105,11 +112,11 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 	protected void exeShell(Field field, String s, String s1) {
 		BeanShellEngine beanshellengine = new BeanShellEngine();
-		beanshellengine.set("messageParser", this);
-		beanshellengine.set("message", message);
-		beanshellengine.set("messageBean", messageBean);
-		beanshellengine.set("messageData", messageData);
-		beanshellengine.set("field", field);
+		beanshellengine.set(MESSAGE_PARSER_KEY, this);
+		beanshellengine.set(MESSAGE_KEY, message);
+		beanshellengine.set(MESSAGE_BEAN_KEY, messageBean);
+		beanshellengine.set(MESSAGE_DATA_KEY, messageData);
+		beanshellengine.set(FIELD_KEY, field);
 		if (0 != variableCache.size()) {
 			Iterator<String> iterator = variableCache.keySet().iterator();
 			String s2;
@@ -129,11 +136,11 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 	protected void exeShell(Field field, String s, String s1, MessageBean messagebean, List<?> list, int i, int j) {
 		BeanShellEngine beanshellengine = new BeanShellEngine();
-		beanshellengine.set("messageParser", this);
-		beanshellengine.set("message", message);
-		beanshellengine.set("messageBean", messageBean);
-		beanshellengine.set("messageData", messageData);
-		beanshellengine.set("field", field);
+		beanshellengine.set(MESSAGE_PARSER_KEY, this);
+		beanshellengine.set(MESSAGE_KEY, message);
+		beanshellengine.set(MESSAGE_BEAN_KEY, messageBean);
+		beanshellengine.set(MESSAGE_DATA_KEY, messageData);
+		beanshellengine.set(FIELD_KEY, field);
 		beanshellengine.set("list", list);
 		beanshellengine.set("rowNum", Integer.valueOf(i));
 		beanshellengine.set("currRow", Integer.valueOf(j));
@@ -176,14 +183,15 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			do {
 				if (k >= as.length)
 					break;
-				field1 =  message1.getField(as[k].trim());
-				if (++k < as.length)
+				field1 = message1.getField(as[k].trim());
+				if (++k < as.length) {
 					if (null != field1.getReference())
 						message1 = field1.getReference();
 					else if (0 != field1.getSubFields().size()) {
 						message1 = new Message();
 						message1.setFields(field1.getSubFields());
 					}
+				}
 			} while (true);
 		} else {
 			field1 = field.getRowNumField();
@@ -192,12 +200,12 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		List<MessageBean> arraylist = new ArrayList<>(j);
 		for (int l = 0; l < j; l++) {
 			if (null != field.getPreRowParseEvent())
-				exeShell(field, "row-pre-parse", field.getPreRowParseEvent(), null, arraylist, j, l);
+				exeShell(field, ConstantMB.EventType.ROW_PRE_PARSE.getName(), field.getPreRowParseEvent(), null, arraylist, j, l);
 			MessageBean messagebean1 = (MessageBean) ClassUtil.createClassInstance(message.getClassName());
-			i = B(field, message, messagebean1, i, abyte0);
+			i = parseMessage(message, messagebean1, i, abyte0);
 			arraylist.add(messagebean1);
 			if (null != field.getPostRowParseEvent())
-				exeShell(field, "row-post-parse", field.getPostRowParseEvent(), messagebean1, arraylist, j, l);
+				exeShell(field, ConstantMB.EventType.ROW_POST_PARSE.getName(), field.getPostRowParseEvent(), messagebean1, arraylist, j, l);
 		}
 
 		ClassUtil.setBeanAttributeValue(messagebean, field.getName(), arraylist, List.class);
@@ -206,7 +214,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 	protected int B(Field field, MessageBean messagebean, Message message, int i, byte[] abyte0) {
 		MessageBean messagebean1 = (MessageBean) ClassUtil.createClassInstance(message.getClassName());
-		i = B(field, message, messagebean1, i, abyte0);
+		i = parseMessage(message, messagebean1, i, abyte0);
 		String s = (new StringBuilder()).append("set").append(StringUtil.toUpperCaseFirstOne(field.getName())).toString();
 		try {
 			ClassUtil.invoke(messagebean, s, new Class[] { MessageBean.class }, new Object[] { messagebean1 });
@@ -217,7 +225,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected Message B(Field field, Message message, MessageBean messagebean) {
+	protected Message getRefMessage(Field field, Message message, MessageBean messagebean) {
 		String[] as = field.getReferenceId().split("\\.");
 		Message message1 = message;
 		if (as.length > 1) {
@@ -235,11 +243,11 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return valuerange.getReference();
 	}
 
-	protected Message exeShell(Field field, Message message, MessageBean messagebean) {
+	protected Message exeShell(Field field, MessageBean messagebean) {
 		BeanShellEngine beanshellengine = new BeanShellEngine();
 		BeanShellEngine beanshellengine1 = new BeanShellEngine();
 		String s = null;
-		beanshellengine1.set("messageBean", messagebean);
+		beanshellengine1.set(MESSAGE_BEAN_KEY, messagebean);
 		if (0 != variableCache.size()) {
 			Iterator<String> iterator = variableCache.keySet().iterator();
 			String s1;
@@ -269,89 +277,91 @@ public class DefaultMessageParser extends AbstractMessageParser {
 	}
 
 	protected int B(Field field, int i) {
+		ConstantMB.FieldType fieldType = ConstantMB.FieldType.getFieldTypeByCode(field.getFieldType());
+
 		if (fieldNameSet != null && fieldNameSet.contains(field.getName()))
 			return i;
-		if (field.getIso8583_no() > 0 && F != null) {
-			if (8 == F.length && field.getIso8583_no() > 64)
+		if (field.getIso8583No() > 0 && F != null) {
+			if (8 == F.length && field.getIso8583No() > 64)
 				return i;
 			E++;
-			if (0 == CodeUtil.getBit(F, field.getIso8583_no()))
+			if (0 == CodeUtil.getBit(F, field.getIso8583No()))
 				return i;
 		}
 		if (field.getPreParseEvent() != null)
 			exeShell(field, "pre-parse", field.getPreParseEvent());
 		if ("dynamic".equalsIgnoreCase(field.getReferenceType())) {
-			Message message = B(field, this.message, messageBean);
-			if (2004 == field.getFieldType())
+			Message message = getRefMessage(field, this.message, messageBean);
+			if (ConstantMB.FieldType.TABLE.getCode() == field.getFieldType())
 				i = A(field, messageBean, message, i, messageData);
 			else
 				i = B(field, messageBean, message, i, messageData);
 		} else if ("expression".equalsIgnoreCase(field.getReferenceType())) {
-			Message message1 = exeShell(field, this.message, messageBean);
-			if (2004 == field.getFieldType())
+			Message message1 = exeShell(field, messageBean);
+			if (ConstantMB.FieldType.TABLE.getCode() == field.getFieldType())
 				i = A(field, messageBean, message1, i, messageData);
 			else
 				i = B(field, messageBean, message1, i, messageData);
 		} else {
-			switch (field.getFieldType()) {
-			case 2000:
-				i = J(field, i);
+			switch (fieldType) {
+			case FIXED_FIELD:
+				i = parseFixedFieldValue(field, i);
 				break;
 
-			case 2006:
+			case BITMAP_FIELD:
 				Object[] aobj = new Object[1];
 				i = parseFixedFieldValue(field, i, aobj);
 				ClassUtil.setBeanAttributeValue(messageBean, field.getName(), aobj[0]);
 				if (F == null) {
-					if (aobj[0] instanceof String)
-						F = CodeUtil.hextoByte(((String) aobj[0]).getBytes());
+					if (aobj[0] instanceof String str)
+						F = CodeUtil.hextoByte(str.getBytes());
 					else
 						F = (byte[]) aobj[0];
 					break;
 				}
 				ByteBuffer bytebuffer = new ByteBuffer(F.length * 2);
 				bytebuffer.append(F);
-				if (aobj[0] instanceof String)
-					bytebuffer.append(CodeUtil.hextoByte(((String) aobj[0]).getBytes()));
+				if (aobj[0] instanceof String str)
+					bytebuffer.append(CodeUtil.hextoByte(str.getBytes()));
 				else
 					bytebuffer.append((byte[]) aobj[0]);
 				F = bytebuffer.toBytes();
 				break;
 
-			case 2007:
-				i = G(field, i);
+			case LENGTH_FIELD:
+				i = parseLengthFieldValue(field, i);
 				break;
 
-			case 2005:
-				i = K(field, i);
+			case TABLE_ROW_NUM_FIELD:
+				i = parseTableRowNumFieldValue(field, i);
 				break;
 
-			case 2001:
-				i = L(field, i);
+			case VAR_FIELD:
+				i = parseVarFieldValue(field, i);
 				break;
 
-			case 2002, 2008:
-				i = E(field, i);
+			case COMBINE_FIELD, REFERENCE_FIELD:
+				i = setMessageBeanAttrVal(field, i);
 				break;
 
-			case 2003:
+			case VAR_COMBINE_FIELD:
 				i = parseVarCombineField(field, i);
 				break;
 
-			case 2009:
-				i = D(field, i);
+			case VAR_REFERENCE_FIELD:
+				i = parseVarReferencFieldValue(field, i);
 				break;
 
-			case 2011:
-				i = A(field, i);
+			case VAR_TABLE:
+				i = parseVarTableValue(field, i);
 				break;
 
-			case 2004:
-				i = F(field, i);
+			case TABLE:
+				i = parseTableValue(field, i);
 				break;
 
-			case 2010:
-				i = I(field, i);
+			case MAC_FIELD:
+				i = parseMacFieldValue(field, i);
 				break;
 
 			default:
@@ -359,11 +369,11 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			}
 		}
 		if (field.getPostParseEvent() != null)
-			exeShell(field, "post-parse", field.getPostParseEvent());
+			exeShell(field, ConstantMB.EventType.POST_PARSE.getName(), field.getPostParseEvent());
 		return i;
 	}
 
-	protected int I(Field field, int i) {
+	protected int parseMacFieldValue(Field field, int i) {
 		Object[] aobj = new Object[1];
 		byte[] abyte0 = new byte[field.getLength()];
 		System.arraycopy(messageData, i, abyte0, 0, abyte0.length);
@@ -373,7 +383,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected int A(Field field, int i) {
+	protected int parseVarTableValue(Field field, int i) {
 		int j = 0;
 		int k = 0;
 		if (null != field.getTabPrefix())
@@ -421,7 +431,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			if (null != field.getPrefix() && (j == 0 && field.isFirRowPrefix() || j > 0))
 				j1 += field.getPrefix().length;
 			if (null != field.getPreRowParseEvent())
-				exeShell(field, "row-pre-parse", field.getPreRowParseEvent(), null, null, j, j);
+				exeShell(field, ConstantMB.EventType.ROW_PRE_PARSE.getName(), field.getPreRowParseEvent(), null, null, j, j);
 			MessageBean messagebean1 = (MessageBean) ClassUtil.invoke(messageBean, s, null, null);
 			if (field.isRowCut()) {
 				int k1 = CodeUtil.byteArrayIndexOf(abyte0, field.getSuffix(), j1);
@@ -429,15 +439,15 @@ public class DefaultMessageParser extends AbstractMessageParser {
 					k1 = abyte0.length;
 				byte[] abyte1 = new byte[k1 - j1];
 				System.arraycopy(abyte0, j1, abyte1, 0, abyte1.length);
-				B(field, message1, messagebean1, 0, abyte1);
+				parseMessage(message1, messagebean1, 0, abyte1);
 				j1 = k1;
 			} else {
-				j1 = B(field, message1, messagebean1, j1, abyte0);
+				j1 = parseMessage(message1, messagebean1, j1, abyte0);
 			}
 			if (null != field.getSuffix())
 				j1 += field.getSuffix().length;
 			if (null != field.getPostRowParseEvent())
-				exeShell(field, "row-post-parse", field.getPostRowParseEvent(), messagebean1, null, j, j);
+				exeShell(field, ConstantMB.EventType.ROW_POST_PARSE.getName(), field.getPostRowParseEvent(), messagebean1, null, j, j);
 			j++;
 		}
 		i += abyte0.length;
@@ -473,7 +483,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			if (null != field.getPreRowParseEvent())
 				exeShell(field, "row-pre-parse", field.getPreRowParseEvent(), null, null, j, j);
 			MessageBean messagebean = (MessageBean) ClassUtil.invoke(messageBean, s, null, null);
-			B(field, message, messagebean, 0, abyte0);
+			parseMessage(message, messagebean, 0, abyte0);
 			i += l;
 			if (null != field.getSuffix())
 				i += field.getSuffix().length;
@@ -484,7 +494,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected int F(Field field, int i) {
+	protected int parseTableValue(Field field, int i) {
 		int j = 0;
 		if (null != field.getRowNumField()) {
 			j = parseIntValue(field.getRowNumField(), ClassUtil.getBeanAttributeValue(messageBean, field.getRowNumField().getName()));
@@ -507,7 +517,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			MessageBean messagebean = (MessageBean) ClassUtil.invoke(messageBean, s, null, null);
 			if (null != field.getPrefix() && (k == 0 && field.isFirRowPrefix() || k > 0))
 				i += field.getPrefix().length;
-			i = B(field, message, messagebean, i, messageData);
+			i = parseMessage(message, messagebean, i, messageData);
 			if (null != field.getSuffix() && (k + 1 == j && field.isLastRowSuffix() || k < j - 1))
 				i += field.getSuffix().length;
 			if (null != field.getPostRowParseEvent())
@@ -517,8 +527,8 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected int D(Field field, int i) {
-		if (1001 == field.getReference().getType()) {
+	protected int parseVarReferencFieldValue(Field field, int i) {
+		if (ConstantMB.MessageType.XML.getCode() == field.getReference().getType()) {
 			int[] ai = new int[1];
 			i = A(field, i, ai);
 			byte[] abyte0 = new byte[ai[0]];
@@ -549,14 +559,14 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			ClassUtil.setBeanAttributeValue(messageBean, field.getName(), b.parse());
 			j += abyte0.length;
 		} else {
-			j = E(field, i);
+			j = setMessageBeanAttrVal(field, i);
 			if (j - i != ai[0])
 				throw new CommonException("DefaultMessageParser.parseVarCombineField.varCombineField.dataRealLength.wrong");
 		}
 		return j;
 	}
 
-	protected int E(Field field, int i) {
+	protected int setMessageBeanAttrVal(Field field, int i) {
 		Message message = field.getReference();
 		if (null == message) {
 			message = new Message();
@@ -565,10 +575,10 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			message.setFields(field.getSubFields());
 		}
 		MessageBean messagebean = (MessageBean) ClassUtil.getBeanAttributeValue(messageBean, field.getName());
-		return B(field, message, messagebean, i, messageData);
+		return parseMessage(message, messagebean, i, messageData);
 	}
 
-	protected int B(Field field, Message message, MessageBean messagebean, int i, byte[] abyte0) {
+	protected int parseMessage(Message message, MessageBean messagebean, int i, byte[] abyte0) {
 		AbstractMessageParser b = MessageParserFactory.getMessageParser(message);
 		b.setVariableCache(variableCache);
 		b.setMessage(message);
@@ -578,7 +588,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return b.parse(i);
 	}
 
-	protected int L(Field field, int i) {
+	protected int parseVarFieldValue(Field field, int i) {
 		int[] ai = new int[1];
 		i = A(field, i, ai);
 		Field field1 = new Field();
@@ -598,7 +608,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		field1.setRefLengthField(field.getRefLengthField());
 		field1.setExtendedAttributeText(field.getExtendedAttributeText());
 		field1.setExtendedAttributes(field.getExtendedAttributes());
-		i = J(field1, i);
+		i = parseFixedFieldValue(field1, i);
 		return i;
 	}
 
@@ -660,15 +670,15 @@ public class DefaultMessageParser extends AbstractMessageParser {
 		return i;
 	}
 
-	protected int K(Field field, int i) {
-		return J(field, i);
+	protected int parseTableRowNumFieldValue(Field field, int i) {
+		return parseFixedFieldValue(field, i);
 	}
 
-	protected int G(Field field, int i) {
-		return J(field, i);
+	protected int parseLengthFieldValue(Field field, int i) {
+		return parseFixedFieldValue(field, i);
 	}
 
-	protected int J(Field field, int i) {
+	protected int parseFixedFieldValue(Field field, int i) {
 		Object[] aobj = new Object[1];
 		if (-1 == field.getLength()) {
 			Object obj = ClassUtil.getBeanValueByPath(messageBean, field.getLengthScript());
@@ -730,11 +740,12 @@ public class DefaultMessageParser extends AbstractMessageParser {
 					throw new CommonException("DefaultMessageParser.parseFixedFieldValue.field.mustHaveSuffix");
 				if (field.getSuffix() != null) {
 					int l = CodeUtil.byteArrayIndexOf(messageData, field.getSuffix(), i);
-					if (-1 == l)
+					if (-1 == l) {
 						if (field == message.getFields().get(message.getFields().size() - 1))
 							l = messageData.length;
 						else
 							throw new CommonException("DefaultMessageParser.parseFixedFieldValue.field.noSuffixInMessage");
+					}
 					j = l - i;
 				} else {
 					j = messageData.length - i;
@@ -742,11 +753,12 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			} else if (null != field.getSuffix()) {
 				int i1 = i;
 				i1 = CodeUtil.byteArrayIndexOf(messageData, field.getSuffix(), i);
-				if (-1 == i1)
+				if (-1 == i1) {
 					if (field == message.getFields().get(message.getFields().size() - 1))
 						i1 = messageData.length;
 					else
 						throw new CommonException("DefaultMessageParser.parseFixedFieldValue.field.noSuffixInMessage");
+				}
 				j = i1 - i;
 			} else {
 				j = field.getLength();
@@ -769,7 +781,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 			if (4001 == field.getDataEncoding())
 				abyte0 = CodeUtil.bCDtoASC(abyte0);
 			abyte0 = B(field, abyte0);
-			if (4001 == field.getDataEncoding() || C)
+			if (4001 == field.getDataEncoding() || C) {
 				if (2001 == field.getFieldType() && field.getRefLengthField() == null) {
 					if (field.getLengthFieldLength() < abyte0.length) {
 						byte[] abyte10 = new byte[field.getLengthFieldLength()];
@@ -788,7 +800,8 @@ public class DefaultMessageParser extends AbstractMessageParser {
 						System.arraycopy(abyte0, 0, abyte11, 0, field.getLength());
 					abyte0 = abyte11;
 				}
-			if (3010 == field.getDataType())
+			}
+			if (3010 == field.getDataType()) {
 				if (field.getPattern().indexOf(",") == -1) {
 					if (null == abyte0 || abyte0.length == 0)
 						abyte0 = "0".getBytes();
@@ -800,6 +813,7 @@ public class DefaultMessageParser extends AbstractMessageParser {
 					System.arraycopy(abyte0, 0, abyte12, 1, abyte0.length);
 					abyte0 = abyte12;
 				}
+			}
 			if (field.isRemoveUnwatchable()) {
 				int j1;
 				for (j1 = 0; j1 < abyte0.length && 0 <= abyte0[j1] && abyte0[j1] < 32; j1++)
@@ -936,8 +950,9 @@ public class DefaultMessageParser extends AbstractMessageParser {
 
 	@Override
 	public void ignore(String fieldName) {
-		if (null == fieldNameSet)
+		if (null == fieldNameSet) {
 			fieldNameSet = new HashSet<>(32);
+		}
 		fieldNameSet.add(fieldName);
 	}
 

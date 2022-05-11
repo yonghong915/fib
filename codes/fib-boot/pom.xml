@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fib</groupId>
@@ -9,20 +8,17 @@
 	<url>http://maven.apache.org</url>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.12</version>
 		<relativePath />
 	</parent>
-
 	<modules>
 		<module>fib-application</module>
 		<module>fib-framework</module>
 		<module>fib-boot-starter</module>
 	</modules>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -34,7 +30,6 @@
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 		<lombok.version>1.18.20</lombok.version>
 		<slf4j.version>1.7.25</slf4j.version>
-
 		<commons-lang3.version>3.7</commons-lang3.version>
 		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-codec.version>1.11</commons-codec.version>
@@ -45,41 +40,34 @@
 		<protostuff.version>1.7.2</protostuff.version>
 		<xstream.version>1.4.19</xstream.version>
 		<disruptor.version>3.4.2</disruptor.version>
-
-
 		<springboot.version>2.5.12</springboot.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 		<powermock.version>1.7.4</powermock.version>
 		<junit.version>4.13.1</junit.version>
 		<cglib.version>3.3.0</cglib.version>
 		<jsr305.version>3.0.2</jsr305.version>
-
 		<mybatis-plus.version>3.3.0</mybatis-plus.version>
 		<mybatis.version>3.5.7</mybatis.version>
 		<mybatis-spring-boot.version>2.1.3</mybatis-spring-boot.version>
-
 		<guava.version>30.1.1-jre</guava.version>
 		<mysql.version>8.0.21</mysql.version>
 		<dom4j.version>2.1.3</dom4j.version>
 		<jasypt.version>1.9.3</jasypt.version>
-
-
 		<poi.version>4.1.2</poi.version>
 		<springfox-swagger.version>2.9.2</springfox-swagger.version>
 		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
 		<javassist.version>3.27.0-GA</javassist.version>
 		<saxpath.version>1.0-FCS</saxpath.version>
-
 		<zxing.version>3.4.1</zxing.version>
 		<ibmmq.version>9.2.1.0</ibmmq.version>
 		<rocketmq.version>4.8.0</rocketmq.version>
-
+		<minio.version>8.4.0</minio.version>
+		<okhttp.version>4.9.3</okhttp.version>
 		<dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 		<docker.image.prefix>fib</docker.image.prefix>
 		<docker.repostory>192.168.56.11:5000</docker.repostory>
 		<skipTests>true</skipTests>
 	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -87,13 +75,11 @@
 				<artifactId>fib-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.fib</groupId>
 				<artifactId>fib-commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -101,13 +87,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-thymeleaf</artifactId>
 				<version>${springboot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-devtools</artifactId>
@@ -115,7 +99,6 @@
 				<optional>true</optional>
 				<scope>runtime</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -123,122 +106,102 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
 			<!-- ????spring-boot ????web?????? -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
 				<version>${springboot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-aop</artifactId>
 				<version>${springboot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-data-redis</artifactId>
 				<version>${springboot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.mybatis.spring.boot</groupId>
 				<artifactId>mybatis-spring-boot-starter</artifactId>
 				<version>${mybatis-spring-boot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.mybatis</groupId>
 				<artifactId>mybatis</artifactId>
 				<version>${mybatis.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus</artifactId>
 				<version>${mybatis-plus.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>${mybatis-plus.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib</artifactId>
 				<version>${cglib.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>${commons-lang3.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>${commons-codec.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
 				<version>${commons-beanutils.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-text</artifactId>
 				<version>${commons-text.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>commons-net</groupId>
 				<artifactId>commons-net</artifactId>
 				<version>${commons-net.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>cn.hutool</groupId>
 				<artifactId>hutool-all</artifactId>
 				<version>${hutool.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>io.protostuff</groupId>
 				<artifactId>protostuff-core</artifactId>
 				<version>${protostuff.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>io.protostuff</groupId>
 				<artifactId>protostuff-runtime</artifactId>
 				<version>${protostuff.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
 				<version>${xstream.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.jasypt</groupId>
 				<artifactId>jasypt</artifactId>
 				<version>${jasypt.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
@@ -249,46 +212,39 @@
 				<artifactId>poi-ooxml</artifactId>
 				<version>${poi.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 				<version>${lombok.version}</version>
 				<scope>provided</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>org.dom4j</groupId>
 				<artifactId>dom4j</artifactId>
 				<version>${dom4j.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-autoconfigure</artifactId>
 				<version>${springboot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-module-junit4</artifactId>
 				<version>${powermock.version}</version>
 				<scope>test</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>org.powermock</groupId>
 				<artifactId>powermock-api-mockito</artifactId>
 				<version>${powermock.version}</version>
 				<scope>test</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
@@ -299,52 +255,64 @@
 				<artifactId>springfox-swagger-ui</artifactId>
 				<version>${springfox-swagger.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.github.ulisesbocchio</groupId>
 				<artifactId>jasypt-spring-boot-starter</artifactId>
 				<version>${jasypt-spring-boot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.google.zxing</groupId>
 				<artifactId>core</artifactId>
 				<version>${zxing.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.lmax</groupId>
 				<artifactId>disruptor</artifactId>
 				<version>${disruptor.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
 				<version>${javassist.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>saxpath</groupId>
 				<artifactId>saxpath</artifactId>
 				<version>${saxpath.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.ibm.mq</groupId>
 				<artifactId>com.ibm.mq.allclient</artifactId>
 				<version>${ibmmq.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.apache.rocketmq</groupId>
 				<artifactId>rocketmq-client</artifactId>
 				<version>${rocketmq.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>io.minio</groupId>
+				<artifactId>minio</artifactId>
+				<version>${minio.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.squareup.okhttp3</groupId>
+						<artifactId>okhttp</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+				<version>${okhttp.version}</version>
+				<optional>true</optional>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -358,7 +326,6 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
 	<profiles>
 		<!-- development environment??default active -->
 		<profile>
@@ -370,7 +337,6 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 		</profile>
-
 		<!-- sit environment -->
 		<profile>
 			<id>sit</id>
@@ -378,7 +344,6 @@
 				<profile.active>sit</profile.active>
 			</properties>
 		</profile>
-
 		<!-- uat environment -->
 		<profile>
 			<id>uat</id>
@@ -386,7 +351,6 @@
 				<profile.active>uat</profile.active>
 			</properties>
 		</profile>
-
 		<!-- simulation environment -->
 		<profile>
 			<id>sim</id>
@@ -394,7 +358,6 @@
 				<profile.active>sim</profile.active>
 			</properties>
 		</profile>
-
 		<!-- production environment -->
 		<profile>
 			<id>prd</id>
@@ -403,12 +366,10 @@
 			</properties>
 		</profile>
 	</profiles>
-
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<directory>${basedir}/target</directory>
 		<finalName>${project.artifactId}-${project.version}</finalName>
-
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -429,7 +390,6 @@
 				</includes>
 			</resource>
 		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -438,12 +398,10 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -453,7 +411,6 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>

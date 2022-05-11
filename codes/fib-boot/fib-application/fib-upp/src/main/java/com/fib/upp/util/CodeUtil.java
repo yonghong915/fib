@@ -479,11 +479,13 @@ public class CodeUtil {
 		int i = s.length();
 		if (0 == i)
 			return "0.00";
-		if (1 == i)
-			if ("-".equals(s) || "+".equals(s))
+		if (1 == i) {
+			if ("-".equals(s) || "+".equals(s)) {
 				return "0.00";
-			else
+			} else {
 				return (new StringBuilder()).append("0.0").append(s).toString();
+			}
+		}
 		if (2 == i) {
 			if ("-".equals(s.substring(0, 1)))
 				return (new StringBuilder()).append("-0.0").append(s.substring(i - 1)).toString();
@@ -503,11 +505,12 @@ public class CodeUtil {
 		int j;
 		for (j = 0; j < i && s.charAt(j) == '0'; j++)
 			;
-		if (j < i - 2)
+		if (j < i - 2) {
 			if (flag)
 				return (new StringBuilder()).append(s1).append(s.substring(j, i - 2)).append(".").append(s.substring(i - 2)).toString();
 			else
 				return (new StringBuilder()).append(s.substring(j, i - 2)).append(".").append(s.substring(i - 2)).toString();
+		}
 		if (flag)
 			return (new StringBuilder()).append(s1).append("0.").append(s.substring(i - 2)).toString();
 		else
@@ -531,7 +534,7 @@ public class CodeUtil {
 		}
 		int k = s.indexOf(".");
 		int l = s.length();
-		StringBuffer stringbuffer = new StringBuffer();
+		StringBuilder stringbuffer = new StringBuilder();
 		stringbuffer.append(s.substring(0, k));
 		stringbuffer.append(s.substring(k + 1));
 		for (int i1 = l - k - 1; i1 < j; i1++)
