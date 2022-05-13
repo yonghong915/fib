@@ -11,6 +11,7 @@
 	<name>fib-spring-boot-autoconfigure</name>
 	<description>A simple fib-spring-boot-autoconfigure.</description>
 	<url>http://www.example.com</url>
+	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>17</maven.compiler.source>

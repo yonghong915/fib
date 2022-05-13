@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fib.upp.modules.beps.entity.BepsQueue;
-import com.fib.upp.modules.beps.mapper.BepsQueueMapper;
+import com.fib.upp.modules.cnaps.beps.entity.BepsQueue;
+import com.fib.upp.modules.cnaps.beps.mapper.BepsQueueMapper;
 import com.fib.upp.modules.common.service.ICommonService;
 
 import cn.hutool.core.map.MapUtil;

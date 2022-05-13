@@ -39,7 +39,7 @@
 		<guava.version>30.0-jre</guava.version>
 		<protostuff.version>1.7.2</protostuff.version>
 		<xstream.version>1.4.19</xstream.version>
-		<disruptor.version>3.4.2</disruptor.version>
+		<disruptor.version>3.4.4</disruptor.version>
 		<springboot.version>2.5.12</springboot.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 		<powermock.version>1.7.4</powermock.version>

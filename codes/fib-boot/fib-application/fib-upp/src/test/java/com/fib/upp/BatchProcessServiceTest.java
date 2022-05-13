@@ -13,8 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fib.commons.util.CommUtils;
-import com.fib.upp.modules.beps.entity.BatchProcessGroup;
-import com.fib.upp.modules.beps.service.IBatchProcessService;
+import com.fib.upp.modules.cnaps.beps.entity.BatchProcessGroup;
+import com.fib.upp.modules.cnaps.beps.service.IBatchProcessService;
 import com.fib.upp.util.Constant;
 
 import cn.hutool.core.date.LocalDateTimeUtil;

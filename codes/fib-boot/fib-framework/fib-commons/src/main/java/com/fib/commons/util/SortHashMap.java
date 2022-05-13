@@ -14,7 +14,7 @@ public class SortHashMap<K, V> extends HashMap<K, V> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private transient List<Object> sortList;
+	private transient List<K> sortList;
 
 	public SortHashMap(int initialCapacity) {
 		super(initialCapacity);
@@ -29,7 +29,7 @@ public class SortHashMap<K, V> extends HashMap<K, V> {
 	public SortHashMap(Map<? extends K, ? extends V> m) {
 		super(m);
 		this.sortList = new ArrayList<>(m.size());
-		this.sortList.addAll(m.values());
+		this.sortList.addAll(m.keySet());
 	}
 
 	@Override
@@ -54,6 +54,10 @@ public class SortHashMap<K, V> extends HashMap<K, V> {
 
 	public V get(int index) {
 		return super.get(this.sortList.get(index));
+	}
+
+	public K getKey(int index) {
+		return this.sortList.get(index);
 	}
 
 	@Override
