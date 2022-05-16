@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-	namespace="com.fib.upp.modules.beps.mapper.BepsQueueMapper">
+	namespace="com.fib.upp.modules.cnaps.beps.mapper.BepsQueueMapper">
 	<sql id="BASE_COLUMN_LIST">
 		message_type,transaction_type,send_clearing_bank,receive_clearing_bank,return_limited,original_message_id,batch_id
 	</sql>
 
 	<!-- -->
 	<select id="getQueueItemsByQueueId"
-		parameterType="com.fib.upp.modules.beps.entity.BepsQueueItem"
-		resultType="com.fib.upp.modules.beps.entity.BepsQueueItem">
+		parameterType="com.fib.upp.modules.cnaps.beps.entity.BepsQueueItem"
+		resultType="com.fib.upp.modules.cnaps.beps.entity.BepsQueueItem">
 		SELECT * FROM beps_queue_item
 		<where>
 			<if test="queueId != null">
@@ -20,7 +20,7 @@
 	</select>
 
 	<update id="updateQueueHeaderStatus"
-		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
+		parameterType="com.fib.upp.modules.cnaps.beps.entity.BepsQueueHeader">
 		UPDATE beps_queue_header
 		SET status=#{status}
 		WHERE
@@ -28,8 +28,8 @@
 	</update>
 
 	<select id="getQueueHeader"
-		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader"
-		resultType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
+		parameterType="com.fib.upp.modules.cnaps.beps.entity.BepsQueueHeader"
+		resultType="com.fib.upp.modules.cnaps.beps.entity.BepsQueueHeader">
 		SELECT *
 		FROM beps_queue_header
 		<where>
@@ -48,7 +48,7 @@
 	</select>
 
 	<update id="updateQueueItemStatus"
-		parameterType="com.fib.upp.modules.beps.entity.BepsQueueItem">
+		parameterType="com.fib.upp.modules.cnaps.beps.entity.BepsQueueItem">
 		UPDATE beps_queue_item
 		SET status=#{status}
 		WHERE queue_id=#{queueId}
@@ -60,7 +60,7 @@
 	</update>
 
 	<select id="getQueueByQueueType" parameterType="string"
-		resultType="com.fib.upp.modules.beps.entity.BepsQueue">
+		resultType="com.fib.upp.modules.cnaps.beps.entity.BepsQueue">
 		SELECT queue_type,queue_status
 		FROM beps_queue
 		WHERE
@@ -68,7 +68,7 @@
 	</select>
 
 	<insert id="createQueueHeader"
-		parameterType="com.fib.upp.modules.beps.entity.BepsQueueHeader">
+		parameterType="com.fib.upp.modules.cnaps.beps.entity.BepsQueueHeader">
 		INSERT INTO
 		beps_queue_header(queue_id,queue_type,status)
 		VALUES(#{queueId},#{queueType},#{status})

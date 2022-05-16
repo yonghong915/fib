@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 
 @EnableTransactionManagement
 @Configuration
-@MapperScan({ "com.fib.upp.*.*.mapper","com.fib.upp.mapper", "com.fib.core.base.mapper" })
+@MapperScan({ "com.fib.upp.**.mapper","com.fib.upp.mapper", "com.fib.core.base.mapper" })
 public class MybatisPlusConfig {
 	@Bean
 	public PaginationInterceptor paginationInterceptor() {

@@ -18,6 +18,8 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<drools.version>7.67.0.Final</drools.version>
 		<protostuff.version>1.7.2</protostuff.version>
+		<easy-rules.version>4.1.0</easy-rules.version>
+		<rulebook.version>0.12</rulebook.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -106,13 +108,13 @@
 		<dependency>
 			<groupId>org.jeasy</groupId>
 			<artifactId>easy-rules-core</artifactId>
-			<version>4.1.0</version>
+			<version>${easy-rules.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.deliveredtechnologies</groupId>
 			<artifactId>rulebook-core</artifactId>
-			<version>0.12</version>
+			<version>${rulebook.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -139,6 +141,11 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>

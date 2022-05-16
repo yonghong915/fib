@@ -117,7 +117,15 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-disruptor-spring-boot-starter</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -4,9 +4,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import com.fib.autoconfigure.util.PrefixUtil;
+
 @Configuration
-@ConfigurationProperties(prefix = "fib.rule")
-@ConditionalOnProperty(prefix = "fib.rule", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConfigurationProperties(prefix = PrefixUtil.RULE_PREFIX)
+@ConditionalOnProperty(prefix = PrefixUtil.RULE_PREFIX, name = "enable", havingValue = "true", matchIfMissing = true)
 public class RuleEngineProperties {
 	private RuleEngineType type;
 

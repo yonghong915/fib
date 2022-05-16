@@ -4,9 +4,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import com.fib.autoconfigure.util.PrefixUtil;
+
 @Configuration
-@ConfigurationProperties(prefix = "fib.retry")
-@ConditionalOnProperty(prefix = "fib.retry", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConfigurationProperties(prefix = PrefixUtil.RETRY_PREFIX)
+@ConditionalOnProperty(prefix = PrefixUtil.RETRY_PREFIX, name = "enable", havingValue = "true", matchIfMissing = true)
 public class RetryProperties {
 	/** 是否可用 */
 	private boolean enable;

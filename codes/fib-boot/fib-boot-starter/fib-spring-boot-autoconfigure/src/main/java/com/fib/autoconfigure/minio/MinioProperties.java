@@ -3,7 +3,9 @@ package com.fib.autoconfigure.minio;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@ConfigurationProperties(prefix = "minio")
+import com.fib.autoconfigure.util.PrefixUtil;
+
+@ConfigurationProperties(prefix = PrefixUtil.MINIO_PREFIX)
 @Component
 public class MinioProperties {
 	private String url;
