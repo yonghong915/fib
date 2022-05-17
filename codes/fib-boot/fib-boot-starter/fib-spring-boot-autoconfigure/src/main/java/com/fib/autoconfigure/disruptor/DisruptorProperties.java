@@ -27,6 +27,9 @@ public class DisruptorProperties {
 	/** 消息出来责任链 */
 	private List<EventHandlerDefinition> handlerDefinitions = new ArrayList<>();
 
+	/** 消费模式,P2P点对点，PS发布订阅模式 */
+	private String consumeMode;
+
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -73,5 +76,13 @@ public class DisruptorProperties {
 
 	public void setHandlerDefinitions(List<EventHandlerDefinition> handlerDefinitions) {
 		this.handlerDefinitions = handlerDefinitions;
+	}
+
+	public String getConsumeMode() {
+		return consumeMode;
+	}
+
+	public void setConsumeMode(String consumeMode) {
+		this.consumeMode = consumeMode;
 	}
 }

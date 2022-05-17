@@ -10,7 +10,7 @@ public class DisruptorEventOneArgTranslator implements EventTranslatorOneArg<Dis
 
 	@Override
 	public void translateTo(DisruptorEvent event, long sequence, DisruptorEvent bind) {
-		event.setSource(bind.getSource());
+		event.setBody(bind.getBody());
 		event.setEvent(bind.getEvent());
 		event.setTag(bind.getTag());
 		event.setKey(StringUtils.hasText(bind.getKey()) ? bind.getKey() : String.valueOf(sequence));

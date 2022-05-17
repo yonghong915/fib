@@ -27,7 +27,7 @@ public class DisruptorTest {
 		AtomicInteger counter = new AtomicInteger(0);
 		int threadCnt = 10;
 		ExecutorService executor = Executors.newFixedThreadPool(threadCnt);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10; i++) {
 			executor.execute(new Runnable() {
 				@Override
 				public void run() {
@@ -38,7 +38,10 @@ public class DisruptorTest {
 					event.setEvent("Event-Output");
 					event.setTag(tags[Integer.parseInt(random)]);
 					event.setKey("id-" + Math.random() + "-" + Thread.currentThread().getName() + " counter=" + counter.incrementAndGet());
-
+                    event.setBody("body=12323444");
+                    
+                   // Session session = new DefaultSession(null);
+                    //event.bind(session);
 					disruptorTemplate.publishEvent(event);
 				}
 			});

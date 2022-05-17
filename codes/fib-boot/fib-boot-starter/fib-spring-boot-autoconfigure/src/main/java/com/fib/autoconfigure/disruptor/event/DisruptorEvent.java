@@ -1,26 +1,30 @@
 package com.fib.autoconfigure.disruptor.event;
 
-import java.util.EventObject;
+import java.io.Serializable;
 
-public abstract class DisruptorEvent extends EventObject {
+public abstract class DisruptorEvent implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/** System time when the event happened */
 	private final long timestamp;
+
 	/** Event Name */
 	private String event;
+
 	/** Event Tag */
 	private String tag;
+
 	/** Event Keys */
 	private String key;
+
 	/** Event body */
 	private transient Object body;
 
 	protected DisruptorEvent(Object source) {
-		super(source);
 		this.timestamp = System.currentTimeMillis();
+		this.body = source;
 	}
 
 	public final long getTimestamp() {
@@ -30,10 +34,6 @@ public abstract class DisruptorEvent extends EventObject {
 	public String getRouteExpression() {
 		return new StringBuilder("/").append(getEvent()).append("/").append(getTag()).append("/").append(getKey()).toString();
 
-	}
-
-	public void setSource(Object source) {
-		this.source = source;
 	}
 
 	public String getEvent() {

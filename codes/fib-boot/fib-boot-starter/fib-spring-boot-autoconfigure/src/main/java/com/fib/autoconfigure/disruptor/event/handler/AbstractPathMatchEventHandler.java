@@ -3,16 +3,12 @@ package com.fib.autoconfigure.disruptor.event.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 import com.fib.autoconfigure.disruptor.event.DisruptorEvent;
 
 public abstract class AbstractPathMatchEventHandler<T extends DisruptorEvent> extends AbstractAdviceEventHandler<T> implements PathProcessor<T> {
-
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractPathMatchEventHandler.class);
 
 	protected PathMatcher pathMatcher = new AntPathMatcher();
 
@@ -39,8 +35,8 @@ public abstract class AbstractPathMatchEventHandler<T extends DisruptorEvent> ex
 		return pathMatcher.match(pattern, path);
 	}
 
+	@Override
 	protected boolean preHandle(T event) throws Exception {
-
 		if (this.appliedPaths == null || this.appliedPaths.isEmpty()) {
 			if (LOG.isTraceEnabled()) {
 				LOG.trace("appliedPaths property is null or empty.  This Handler will passthrough immediately.");
@@ -107,5 +103,4 @@ public abstract class AbstractPathMatchEventHandler<T extends DisruptorEvent> ex
 	public List<String> getAppliedPaths() {
 		return appliedPaths;
 	}
-
 }

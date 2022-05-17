@@ -13,7 +13,7 @@ public class EventHandlerDefinition {
 	 * 处理器链定义
 	 */
 	private String definitions = null;
-	private Map<String /* ruleExpress */, String /* handler names */> definitionMap = new LinkedHashMap<String, String>();
+	private Map<String /* ruleExpress */, String /* handler names */> definitionMap = new LinkedHashMap<>();
 
 	public int getOrder() {
 		return order;

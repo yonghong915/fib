@@ -33,6 +33,7 @@ import com.fib.autoconfigure.disruptor.config.Ini;
 import com.fib.autoconfigure.disruptor.event.DisruptorEvent;
 import com.fib.autoconfigure.disruptor.event.factory.DisruptorBindEventFactory;
 import com.fib.autoconfigure.disruptor.event.factory.DisruptorEventThreadFactory;
+import com.fib.autoconfigure.disruptor.event.handler.ClearEventHandler;
 import com.fib.autoconfigure.disruptor.event.handler.DisruptorEventDispatcher;
 import com.fib.autoconfigure.disruptor.event.handler.DisruptorHandler;
 import com.fib.autoconfigure.disruptor.event.handler.Nameable;
@@ -47,7 +48,6 @@ import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.lmax.disruptor.dsl.ProducerType;
 
 @Configuration(proxyBeanMethods = false)
@@ -106,18 +106,13 @@ public class DisruptorAutoConfiguration implements ApplicationContextAware {
 
 				EventRule annotationType = getApplicationContext().findAnnotationOnBean(entry.getKey(), EventRule.class);
 				if (annotationType == null) {
-					// 注解为空，则打印错误信息
 					LOG.error("Not Found AnnotationType {} on Bean {} Whith Name {}", EventRule.class, entry.getValue().getClass(), entry.getKey());
 				} else {
 					handlerChainDefinitionMap.put(annotationType.value(), entry.getKey());
 				}
-
 				disruptorPreHandlers.put(entry.getKey(), entry.getValue());
 			}
 		}
-		// BeanFactoryUtils.beansOfTypeIncludingAncestors(getApplicationContext(),
-		// EventHandler.class);
-
 		return disruptorPreHandlers;
 	}
 
@@ -133,19 +128,15 @@ public class DisruptorAutoConfiguration implements ApplicationContextAware {
 		List<DisruptorEventDispatcher> disruptorEventHandlers = new ArrayList<>();
 		// 未定义，则使用默认规则
 		if (CollectionUtils.isEmpty(handlerDefinitions)) {
-
 			EventHandlerDefinition definition = new EventHandlerDefinition();
-
 			definition.setOrder(0);
 			definition.setDefinitionMap(handlerChainDefinitionMap);
 
 			// 构造DisruptorEventHandler
 			disruptorEventHandlers.add(this.createDisruptorEventHandler(definition, eventHandlers));
-
 		} else {
 			// 迭代拦截器规则
 			for (EventHandlerDefinition handlerDefinition : handlerDefinitions) {
-
 				// 构造DisruptorEventHandler
 				disruptorEventHandlers.add(this.createDisruptorEventHandler(handlerDefinition, eventHandlers));
 
@@ -153,7 +144,6 @@ public class DisruptorAutoConfiguration implements ApplicationContextAware {
 		}
 		// 进行排序
 		Collections.sort(disruptorEventHandlers, new OrderComparator());
-
 		return disruptorEventHandlers;
 	}
 
@@ -217,38 +207,27 @@ public class DisruptorAutoConfiguration implements ApplicationContextAware {
 	public Disruptor<DisruptorEvent> disruptor(DisruptorProperties properties, WaitStrategy waitStrategy, ThreadFactory threadFactory,
 			EventFactory<DisruptorEvent> eventFactory, @Qualifier("disruptorEventHandlers") List<DisruptorEventDispatcher> disruptorEventHandlers) {
 		Disruptor<DisruptorEvent> disruptor = null;
-		if (properties.isMultiProducer()) {
-			disruptor = new Disruptor<>(eventFactory, properties.getRingBufferSize(), threadFactory, ProducerType.MULTI, waitStrategy);
-		} else {
-			disruptor = new Disruptor<>(eventFactory, properties.getRingBufferSize(), threadFactory, ProducerType.SINGLE, waitStrategy);
-		}
+		ProducerType producerType = properties.isMultiProducer() ? ProducerType.MULTI : ProducerType.SINGLE;
+		disruptor = new Disruptor<>(eventFactory, properties.getRingBufferSize(), threadFactory, producerType, waitStrategy);
 
 		if (!ObjectUtils.isEmpty(disruptorEventHandlers)) {
-
 			// 进行排序
 			Collections.sort(disruptorEventHandlers, new OrderComparator());
-
-			// 使用disruptor创建消费者组
-			EventHandlerGroup<DisruptorEvent> handlerGroup = null;
-
 			DisruptorEventDispatcher[] eventHandlers = new DisruptorEventDispatcher[disruptorEventHandlers.size()];
 			for (int i = 0; i < disruptorEventHandlers.size(); i++) {
 				// 连接消费事件方法，其中EventHandler的是为消费者消费消息的实现类
 				DisruptorEventDispatcher eventHandler = disruptorEventHandlers.get(i);
-//				if (i < 1) {
-//					handlerGroup = disruptor.handleEventsWith(eventHandler);
-//				} else {
-//					// 完成前置事件处理之后执行后置事件处理
-//					handlerGroup.then(eventHandler);
-//				}
-
 				eventHandlers[i] = eventHandler;
 			}
-			disruptor.handleEventsWithWorkerPool(eventHandlers);
-
+			String consumeMode = properties.getConsumeMode();
+			if ("P2P".equals(consumeMode)) {// 点对点模式
+				disruptor.handleEventsWithWorkerPool(eventHandlers).then(new ClearEventHandler());
+			} else {// 发布订阅模式
+				disruptor.handleEventsWith(eventHandlers).then(new ClearEventHandler());
+			}
 		}
 
-		// 启动
+		// 启动disruptor线程
 		disruptor.start();
 
 		/**
@@ -256,7 +235,6 @@ public class DisruptorAutoConfiguration implements ApplicationContextAware {
 		 * 注意：我们建议应用在JBOSS、Tomcat等容器的退出钩子里调用shutdown方法
 		 */
 		// Runtime.getRuntime().addShutdownHook(new DisruptorShutdownHook(disruptor));
-
 		return disruptor;
 	}
 
