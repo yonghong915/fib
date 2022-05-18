@@ -1,4 +1,4 @@
-package com.fib.commons.disruptor.base;
+package com.fib.netty.util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +26,6 @@ public class DefaultSession implements Session {
 		return ctx != null && ctx.channel().isActive();
 	}
 
-
 	@Override
 	public void writeAndFlush(Object msg) {
 		writeAndFlush(msg, null);
@@ -44,9 +43,7 @@ public class DefaultSession implements Session {
 				ctx.writeAndFlush(message).addListener(listener);
 			}
 		} else {
-			ctx.channel().eventLoop().schedule(() -> {
-				writeAndFlush(message, listener);
-			}, 1L, TimeUnit.SECONDS);
+			ctx.channel().eventLoop().schedule(() -> writeAndFlush(message, listener), 1L, TimeUnit.SECONDS);
 		}
 	}
 

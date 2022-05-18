@@ -1,4 +1,4 @@
-package com.fib.commons.disruptor.base;
+package com.fib.netty.util;
 
 public interface Releasable {
 

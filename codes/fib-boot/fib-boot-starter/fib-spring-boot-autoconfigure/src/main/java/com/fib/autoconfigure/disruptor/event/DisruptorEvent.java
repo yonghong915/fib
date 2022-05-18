@@ -2,6 +2,15 @@ package com.fib.autoconfigure.disruptor.event;
 
 import java.io.Serializable;
 
+import com.fib.autoconfigure.disruptor.executor.Executor;
+
+/**
+ * Disruptor事件
+ * 
+ * @author fangyh
+ * @version 1.0
+ * @date 2022-05-18 10:38:06
+ */
 public abstract class DisruptorEvent implements Serializable {
 	/**
 	 * 
@@ -10,67 +19,39 @@ public abstract class DisruptorEvent implements Serializable {
 	/** System time when the event happened */
 	private final long timestamp;
 
-	/** Event Name */
-	private String event;
-
-	/** Event Tag */
-	private String tag;
-
-	/** Event Keys */
-	private String key;
-
 	/** Event body */
-	private transient Object body;
+	private transient Object msg;
+
+	private transient Executor executor;
 
 	protected DisruptorEvent(Object source) {
 		this.timestamp = System.currentTimeMillis();
-		this.body = source;
+		this.msg = source;
 	}
 
 	public final long getTimestamp() {
 		return this.timestamp;
 	}
 
-	public String getRouteExpression() {
-		return new StringBuilder("/").append(getEvent()).append("/").append(getTag()).append("/").append(getKey()).toString();
-
+	public Object getMsg() {
+		return msg;
 	}
 
-	public String getEvent() {
-		return event;
+	public void setMsg(Object msg) {
+		this.msg = msg;
 	}
 
-	public void setEvent(String event) {
-		this.event = event;
+	public Executor getExecutor() {
+		return executor;
 	}
 
-	public String getTag() {
-		return tag;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public Object getBody() {
-		return body;
-	}
-
-	public void setBody(Object body) {
-		this.body = body;
+	public void setExecutor(Executor executor) {
+		this.executor = executor;
 	}
 
 	@Override
 	public String toString() {
-		return new StringBuilder("DisruptorEvent [event :").append(getEvent()).append(",tag :").append(getTag()).append(", key :").append(getKey())
-				.append("]").toString();
+		return new StringBuilder("DisruptorEvent [Executor :").append(executor.getClass().getName()).append(" msg:").append(msg).append(" timestamp:")
+				.append(timestamp).append("]").toString();
 	}
 }

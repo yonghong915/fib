@@ -2,8 +2,8 @@ package com.fib.netty.server;
 
 import org.springframework.stereotype.Component;
 
-import com.fib.commons.disruptor.base.Executor;
-import com.fib.commons.disruptor.base.Session;
+import com.fib.autoconfigure.disruptor.executor.Executor;
+import com.fib.netty.util.Session;
 import com.fib.netty.vo.Request;
 import com.fib.netty.vo.Response;
 
@@ -16,27 +16,17 @@ public class NettyServerHandler extends AbstractNettyServerHandler {
 
 	@Override
 	Executor newExecutor(Session session, Object msg) {
-		return new Executor() {
-			@Override
-			public void onExecute(Object msg) {
-				if (null == msg) {
-					throw new NullPointerException("request");
-				}
-				if (msg instanceof Request request) {
-					long id = request.getId();
-					Response response = new Response();
-					response.setId(id);
-					response.setResult("Server Response Ok."
-							+ LocalDateTimeUtil.format(LocalDateTimeUtil.now(), "yyyy-MM-dd HH:mm:ss,SSS"));
-					session.writeAndFlush(response);
-				}
+		return x -> {
+			if (null == msg) {
+				throw new NullPointerException("request");
 			}
-
-			@Override
-			public void release() {
-				//
+			if (msg instanceof Request request) {
+				long id = request.getId();
+				Response response = new Response();
+				response.setId(id);
+				response.setResult("Server Response Ok." + LocalDateTimeUtil.format(LocalDateTimeUtil.now(), "yyyy-MM-dd HH:mm:ss,SSS"));
+				session.writeAndFlush(response);
 			}
 		};
 	}
-
 }

@@ -4,9 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fib.autoconfigure.disruptor.event.DisruptorBindEvent;
 import com.fib.autoconfigure.disruptor.event.DisruptorEvent;
+import com.fib.autoconfigure.disruptor.executor.Executor;
 import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.dsl.Disruptor;
 
+/**
+ * Disruptor调用模板
+ * 
+ * @author fangyh
+ * @version 1.0
+ * @date 2022-05-18 10:32:06
+ */
 public class DisruptorTemplate {
 
 	@Autowired
@@ -19,20 +27,10 @@ public class DisruptorTemplate {
 		disruptor.publishEvent(oneArgEventTranslator, event);
 	}
 
-	public void publishEvent(String event, String tag, Object body) {
+	public void publishEvent(Executor executor, Object msg) {
 		DisruptorBindEvent bindEvent = new DisruptorBindEvent();
-		bindEvent.setEvent(event);
-		bindEvent.setTag(tag);
-		bindEvent.setBody(body);
-		disruptor.publishEvent(oneArgEventTranslator, bindEvent);
-	}
-
-	public void publishEvent(String event, String tag, String key, Object body) {
-		DisruptorBindEvent bindEvent = new DisruptorBindEvent();
-		bindEvent.setEvent(event);
-		bindEvent.setTag(tag);
-		bindEvent.setKey(key);
-		bindEvent.setBody(body);
+		bindEvent.setExecutor(executor);
+		bindEvent.setMsg(msg);
 		disruptor.publishEvent(oneArgEventTranslator, bindEvent);
 	}
 }

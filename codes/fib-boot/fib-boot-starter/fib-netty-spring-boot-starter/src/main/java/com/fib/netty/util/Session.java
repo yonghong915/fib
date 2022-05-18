@@ -1,4 +1,4 @@
-package com.fib.commons.disruptor.base;
+package com.fib.netty.util;
 
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;

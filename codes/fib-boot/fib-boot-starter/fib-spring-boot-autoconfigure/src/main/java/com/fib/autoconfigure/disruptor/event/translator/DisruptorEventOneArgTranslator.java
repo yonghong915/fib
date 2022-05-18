@@ -1,7 +1,5 @@
 package com.fib.autoconfigure.disruptor.event.translator;
 
-import org.springframework.util.StringUtils;
-
 import com.fib.autoconfigure.disruptor.event.DisruptorBindEvent;
 import com.fib.autoconfigure.disruptor.event.DisruptorEvent;
 import com.lmax.disruptor.EventTranslatorOneArg;
@@ -10,10 +8,8 @@ public class DisruptorEventOneArgTranslator implements EventTranslatorOneArg<Dis
 
 	@Override
 	public void translateTo(DisruptorEvent event, long sequence, DisruptorEvent bind) {
-		event.setBody(bind.getBody());
-		event.setEvent(bind.getEvent());
-		event.setTag(bind.getTag());
-		event.setKey(StringUtils.hasText(bind.getKey()) ? bind.getKey() : String.valueOf(sequence));
+		event.setMsg(bind.getMsg());
+		event.setExecutor(bind.getExecutor());
 		if (event instanceof DisruptorBindEvent bindEvent) {
 			bindEvent.bind(bind);
 		}
