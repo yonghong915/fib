@@ -4,6 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fib.commons.util.SortHashMap;
 
 import cn.hutool.core.util.HexUtil;
@@ -15,20 +18,21 @@ import cn.hutool.core.util.HexUtil;
  * @version 1.0
  * @date 2022-05-13 10:45:09
  */
-public class CCBCMsgRcvServlet {
+public class CCBCMsgCtrler {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CCBCMsgCtrler.class);
 
 	public static void main(String[] args) {
 		String msgHead = "01313600000001323500000004202204131234321234567801111111111111111120220513SET00101066666666666666666666666666666666666666666600000000000000000000000000000000";
 		String msgBody = "20022123136986709562003212313698670957";
 		// 发起行行号 313698670956
-		System.out.println("313698670956".getBytes().length);
+		LOGGER.info("{}", "313698670956".getBytes().length);
 
-		System.out.println(msgHead.getBytes().length);
+		LOGGER.info("{}", msgHead.getBytes().length);
 		String msgContent = msgHead + msgBody;
-		System.out.println("msgContent=" + msgContent);
+		LOGGER.info("{}", "msgContent=" + msgContent);
 
 		String srcHex = HexUtil.encodeHexStr(msgContent, StandardCharsets.UTF_8);
-		System.out.println("srcHex=" + srcHex);
+		LOGGER.info("{}", "srcHex=" + srcHex);
 
 		SortHashMap<String, Integer> headDef = new SortHashMap<>(32);
 		headDef.put("bizType", 2);
@@ -61,7 +65,7 @@ public class CCBCMsgRcvServlet {
 			headField.put(key, HexUtil.decodeHexStr(val, StandardCharsets.UTF_8));
 			startIdx += len;
 		}
-		System.out.println("headField=" + headField);
+		LOGGER.info("{}", "headField=" + headField);
 		Map<String, String> bodyField = new HashMap<>();
 		srcHex = srcHex.substring(endIdx);
 
@@ -73,30 +77,30 @@ public class CCBCMsgRcvServlet {
 			endIdx += fieldCdLen;
 			String fieldCd = HexUtil.decodeHexStr(srcHex.substring(startIdx, endIdx), StandardCharsets.UTF_8);
 
-			System.out.println("fieldCd=" + fieldCd);
+			LOGGER.info("{}", "fieldCd=" + fieldCd);
 			startIdx += fieldCdLen;
 
 			endIdx += lenFlgLen;
 			String lenFlg = HexUtil.decodeHexStr(srcHex.substring(startIdx, endIdx), StandardCharsets.UTF_8);
 
-			System.out.println("lenFlg=" + lenFlg);
+			LOGGER.info("{}", "lenFlg=" + lenFlg);
 			startIdx += lenFlgLen;
 
 			endIdx += Integer.parseInt(lenFlg) * 2;
 			String dataLen = HexUtil.decodeHexStr(srcHex.substring(startIdx, endIdx), StandardCharsets.UTF_8);
-			System.out.println("dataLen=" + dataLen);
+			LOGGER.info("{}", "dataLen=" + dataLen);
 			startIdx += Integer.parseInt(lenFlg) * 2;
 
 			endIdx += Integer.parseInt(dataLen) * 2;
 			String data = HexUtil.decodeHexStr(srcHex.substring(startIdx, endIdx), StandardCharsets.UTF_8);
-			System.out.println("data=" + data);
+			LOGGER.info("{}", "data=" + data);
 			bodyField.put(fieldCd, data);
 
 			startIdx += Integer.parseInt(dataLen) * 2;
 		} while (srcHex.length() != endIdx);
 
-		System.out.println("bodyField=" + bodyField);
-		System.out.println("aaaaa= " + "12".substring(2));
+		LOGGER.info("{}", "bodyField=" + bodyField);
+		LOGGER.info("{}", "aaaaa= " + "12".substring(2));
 	}
 
 }

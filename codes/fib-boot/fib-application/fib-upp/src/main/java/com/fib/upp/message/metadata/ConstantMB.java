@@ -3,6 +3,8 @@ package com.fib.upp.message.metadata;
 import com.fib.commons.exception.CommonException;
 
 public interface ConstantMB {
+	
+	
 
 	public enum MessageBeanAttr {
 
