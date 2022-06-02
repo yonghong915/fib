@@ -43,6 +43,29 @@ public class CustomClassLoader extends URLClassLoader {
 		}
 	}
 
+	public void append(String libPath) {
+		// 1. lib directory
+		File libDir = new File(libPath);
+		if (!libDir.exists()) {
+			throw new IllegalArgumentException("libPath.notExist");
+		}
+		if (!libDir.isDirectory()) {
+			throw new IllegalArgumentException("libPath.notDirectory");
+		}
+		if (!libDir.canRead()) {
+			throw new IllegalArgumentException("libPath.canNotRead");
+		}
+
+		List<URL> jarUrlList = new ArrayList<>(64);
+
+		getAllJarUrl(jarUrlList, libDir);
+
+		// 5. URLClassLoader
+		URL[] urls = new URL[jarUrlList.size()];
+		jarUrlList.toArray(urls);
+		append(urls);
+	}
+
 	public void appendJars(String libPath) {
 		if (null == libPath || libPath.isEmpty()) {
 			throw new IllegalArgumentException("libPath must be not null!");
@@ -64,7 +87,7 @@ public class CustomClassLoader extends URLClassLoader {
 
 		URL[] urls = new URL[jarUrlList.size()];
 		jarUrlList.toArray(urls);
-		
+
 		append(urls);
 	}
 

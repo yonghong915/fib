@@ -1,11 +1,11 @@
-package com.fib.upp.mq.rocketmq.producer;
+package com.fib.autoconfigure.msgconverter.channel.mq;
 
 /**
  * MQ消息服务
  * 
  * @author fangyh
  * @version 1.0
- * @date 2022-05-19 09:46:44
+ * @date 2022-05-20 15:35:00
  */
 public interface IMQMessageService {
 	/**
@@ -38,4 +38,12 @@ public interface IMQMessageService {
 	 * @param message
 	 */
 	void sendOnewayMessage(String destination, String id, String message);
+
+	/**
+	 * 接收消息
+	 * 
+	 * @return
+	 */
+	byte[] receiveMessage();
+
 }

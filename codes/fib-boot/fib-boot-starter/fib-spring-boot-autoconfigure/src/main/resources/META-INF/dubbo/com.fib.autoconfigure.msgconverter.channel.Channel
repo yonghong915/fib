@@ -1,0 +1,6 @@
+SOCKET_CLIENT = com.giantstone.commgateway.channel.nio.SocketClientChannel
+SOCKET_SERVER = com.fib.autoconfigure.msgconverter.channel.channel.http.impl.SocketServerChannel
+LONG_SOCKET = com.giantstone.commgateway.channel.longconnection.LongConnectionSocketChannel
+MQ = com.fib.autoconfigure.msgconverter.channel.mq.MQChannel
+HTTP_CLIENT = com.giantstone.commgateway.channel.http.impl.MessageBeanServletClientChannel
+HTTP_SERVER = com.giantstone.commgateway.channel.http.HTTPServerChannel

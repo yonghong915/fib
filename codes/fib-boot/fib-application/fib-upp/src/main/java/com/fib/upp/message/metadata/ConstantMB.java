@@ -3,8 +3,6 @@ package com.fib.upp.message.metadata;
 import com.fib.commons.exception.CommonException;
 
 public interface ConstantMB {
-	
-	
 
 	public enum MessageBeanAttr {
 
@@ -625,6 +623,128 @@ public interface ConstantMB {
 			throw new CommonException("Constant.DataEncTypc.notExist" + name);
 		}
 	}
+
+	public enum ChannelType {
+
+		/** 4000 MQ */
+		MQ(4000, "MQ", "MQ"),
+
+		/** 4001 HTTP_CLIENT */
+		HTTP_CLIENT(4001, "HTTP_CLIENT", "HTTP客户端"),
+
+		/** 4001 HTTP_SERVER */
+		HTTP_SERVER(4001, "HTTP_SERVER", "HTTP服务端"),
+
+		/** 4001 SOCKET_CLIENT */
+		SOCKET_CLIENT(4001, "SOCKET_CLIENT", "SOCKET短连接客户端"),
+
+		/** 4001 SOCKET_SERVER */
+		SOCKET_SERVER(4001, "SOCKET_SERVER", "SOCKET短连接服务端"),
+
+		/** 4001 LONG_SOCKET */
+		LONG_SOCKET(4001, "LONG_SOCKET", "长连接");
+
+		private int code;
+		private String name;
+		private String text;
+
+		ChannelType(int code, String name, String text) {
+			this.code = code;
+			this.name = name;
+			this.text = text;
+		}
+
+		public int getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public static ChannelType getChannelTypeByCode(int code) {
+			for (ChannelType mt : values()) {
+				if (code == mt.getCode()) {
+					return mt;
+				}
+			}
+			throw new CommonException("Constant.DataEncTypc.notExist" + code);
+		}
+
+		public static ChannelType getChannelTypeByName(String name) {
+			for (ChannelType mt : values()) {
+				if (mt.getName().equals(name)) {
+					return mt;
+				}
+			}
+			throw new CommonException("Constant.DataEncTypc.notExist" + name);
+		}
+	}
+
+	/**
+	 * 服务模式
+	 * 
+	 * @author fangyh
+	 * @version 1.0
+	 * @date 2022-05-19 16:23:03
+	 */
+	public enum ChannelMode {
+
+		/** 1000 SERVER 服务端 */
+		SERVER(1000, "SERVER", "服务端"),
+
+		/** 1001 CLIENT 客户端 */
+		CLIENT(1001, "CLIENT", "客户端"),
+
+		/** 1002 DOUBLE 双向 */
+		DOUBLE(1002, "DOUBLE", "双向");
+
+		private int code;
+		private String name;
+		private String text;
+
+		ChannelMode(int code, String name, String text) {
+			this.code = code;
+			this.name = name;
+			this.text = text;
+		}
+
+		public int getCode() {
+			return code;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public static ChannelMode getChannelModeByCode(int code) {
+			for (ChannelMode mt : values()) {
+				if (code == mt.getCode()) {
+					return mt;
+				}
+			}
+			throw new CommonException("Constant.DataEncTypc.notExist" + code);
+		}
+
+		public static ChannelMode getChannelModeByName(String name) {
+			for (ChannelMode mt : values()) {
+				if (mt.getName().equals(name)) {
+					return mt;
+				}
+			}
+			throw new CommonException("Constant.DataEncTypc.notExist" + name);
+		}
+	}
+
+	
 
 	public static String getJavaTypeByDataType(int dataType) {
 		switch (dataType) {

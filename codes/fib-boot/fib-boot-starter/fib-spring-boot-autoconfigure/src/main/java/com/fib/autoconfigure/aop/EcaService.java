@@ -21,7 +21,7 @@ public enum EcaService {
 		return serviceName;
 	}
 
-	public void setServiceName(String serviceName) {
+	void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
 
@@ -29,7 +29,7 @@ public enum EcaService {
 		return event;
 	}
 
-	public void setEvent(EcaEvent event) {
+	void setEvent(EcaEvent event) {
 		this.event = event;
 	}
 }

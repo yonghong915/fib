@@ -11,4 +11,6 @@ public final class PrefixUtil {
 	public static final String MINIO_PREFIX = "fib.minio";
 
 	public static final String DISRUPTOR_PREFIX = "fib.disruptor";
+
+	public static final String MSG_CONVERTER_PREFIX = "fib.msg.converter";
 }

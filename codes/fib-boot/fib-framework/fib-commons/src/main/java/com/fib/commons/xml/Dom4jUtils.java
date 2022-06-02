@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
@@ -72,9 +73,7 @@ public class Dom4jUtils {
 		String namespace = rootElement.getNamespaceURI();
 
 		if (namespace != null) {
-			Map<String, String> namespaces = new TreeMap<>();
-			namespaces.put(DEFAULT_NAMESPACE_NAME, namespace);
-			DocumentFactory.getInstance().setXPathNamespaceURIs(namespaces);
+			setXPathNamespaceURIs(namespace);
 		}
 		return doc;
 	}
@@ -82,8 +81,9 @@ public class Dom4jUtils {
 	public static List<Node> selectNodes(Document doc, String xpathExpression) {
 		Element rootElement = doc.getRootElement();
 		String namespace = rootElement.getNamespaceURI();
-		if (namespace != null) {
+		if (namespace != null && !"".equals(namespace)) {
 			xpathExpression = xpathExpression.replace("/", EXPRESSION_WITH_NS);
+			xpathExpression = xpathExpression.replace(EXPRESSION_WITH_NS + "@", "/@");
 		}
 		return doc.selectNodes(xpathExpression);
 	}
@@ -91,8 +91,9 @@ public class Dom4jUtils {
 	public static Node selectSingleNode(Document doc, String xpathExpression) {
 		Element rootElement = doc.getRootElement();
 		String namespace = rootElement.getNamespaceURI();
-		if (namespace != null) {
+		if (namespace != null && !"".equals(namespace)) {
 			xpathExpression = xpathExpression.replace("/", EXPRESSION_WITH_NS);
+			xpathExpression = xpathExpression.replace(EXPRESSION_WITH_NS + "@", "/@");
 		}
 		return doc.selectSingleNode(xpathExpression);
 	}
@@ -105,49 +106,93 @@ public class Dom4jUtils {
 
 	public static Node getSingleNode(String xpathExpression, Element rootEle) {
 		String namespace = rootEle.getNamespaceURI();
-		if (namespace != null) {
-			setXPathNamespaceURIs(namespace);
+		if (namespace != null && !"".equals(namespace)) {
 			xpathExpression = xpathExpression.replace("/", EXPRESSION_WITH_NS);
+			xpathExpression = xpathExpression.replace(EXPRESSION_WITH_NS + "@", "/@");
 		}
 		XPath xpath = rootEle.createXPath(xpathExpression);
 		return xpath.selectSingleNode(rootEle);
 	}
 
-	public static String getSingleNodeText(String xpathExpression, Element rootEle) {
-		Element element = (Element) getSingleNode(xpathExpression, rootEle);
-		String returnstr = "";
-		if (element != null) {
-			returnstr = element.getText();
+	public static String getSingleNodeText(String xpathExpression, Document doc) {
+		Node node = getSingleNode(xpathExpression, doc.getRootElement());
+		if (null == node) {
+			return "";
 		}
-		return returnstr;
+		if (node instanceof Attribute attr) {
+			return attr.getText();
+		} else if (node instanceof Element ele) {
+			return ele.getText();
+		}
+		return "";
 	}
 
-	public static Document getDocument(String filePath) {
-		SAXReader reader = new SAXReader();
-		Document doc = null;
-		try {
-			reader.setFeature(DEFAULT_SAX_FEATURE, true);
-			doc = reader.read(filePath);
-		} catch (DocumentException | SAXException e) {
-			e.printStackTrace();
+	public static String getSingleNodeText(String xpathExpression, Node node) {
+		Document doc = node.getDocument();
+		Element rootEle = doc.getRootElement();
+		xpathExpression = converterXpathExpression(xpathExpression, rootEle);
+
+		node = node.selectSingleNode(xpathExpression);
+
+		if (null == node) {
+			return "";
 		}
-		return doc;
+		if (node instanceof Attribute attr) {
+			return attr.getText();
+		} else if (node instanceof Element ele) {
+			return ele.getText();
+		}
+		return "";
 	}
 
-	public static Document getDocument(InputStream is) {
-		SAXReader reader = new SAXReader();
-		Document doc = null;
-		try {
-			reader.setFeature(DEFAULT_SAX_FEATURE, true);
-			doc = reader.read(is);
-		} catch (DocumentException | SAXException e) {
-			e.printStackTrace();
-		}
-		return doc;
+	public static Node getSingleNode(String xpathExpression, Node node) {
+		Document doc = node.getDocument();
+		Element rootEle = doc.getRootElement();
+		xpathExpression = converterXpathExpression(xpathExpression, rootEle);
+		return node.selectSingleNode(xpathExpression);
 	}
 
-	public static Document getXPathDocument(InputStream is, String... namespaces)
-			throws DocumentException, SAXException {
+	public static List<Node> selectNodes(String xpathExpression, Node node) {
+		Document doc = node.getDocument();
+		Element rootEle = doc.getRootElement();
+		xpathExpression = converterXpathExpression(xpathExpression, rootEle);
+		return node.selectNodes(xpathExpression);
+	}
+
+	private static String converterXpathExpression(String xpathExpression, Element rootEle) {
+		String namespace = rootEle.getNamespaceURI();
+		if (namespace != null && !"".equals(namespace)) {
+			xpathExpression = xpathExpression.replace("/", EXPRESSION_WITH_NS);
+			xpathExpression = xpathExpression.replace(EXPRESSION_WITH_NS + "@", "/@");
+		}
+		return xpathExpression;
+	}
+
+//	public static Document getDocument(String filePath) {
+//		SAXReader reader = new SAXReader();
+//		Document doc = null;
+//		try {
+//			reader.setFeature(DEFAULT_SAX_FEATURE, true);
+//			doc = reader.read(filePath);
+//		} catch (DocumentException | SAXException e) {
+//			e.printStackTrace();
+//		}
+//		return doc;
+//	}
+//
+//	public static Document getDocument(InputStream is) {
+//		SAXReader reader = new SAXReader();
+//		Document doc = null;
+//		try {
+//			reader.setFeature(DEFAULT_SAX_FEATURE, true);
+//			doc = reader.read(is);
+//		} catch (DocumentException | SAXException e) {
+//			e.printStackTrace();
+//		}
+//		return doc;
+//	}
+
+	public static Document getXPathDocument(InputStream is, String... namespaces) throws DocumentException, SAXException {
 		Map<String, String> map = new HashMap<>();
 		map.put("ns", (ArrayUtil.isEmpty(namespaces)) ? DEFAULT_NAMESPACE : namespaces[0]);
 		DocumentFactory factory = new DocumentFactory();

@@ -1,4 +1,6 @@
-package com.fib.upp.mq.rocketmq.producer;
+package com.fib.autoconfigure.msgconverter.channel.mq.rocketmq;
+
+import java.nio.charset.StandardCharsets;
 
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -10,18 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Service;
 
-/**
- * MQ消息服务
- * 
- * @author fangyh
- * @version 1.0
- * @date 2022-05-19 09:46:59
- */
-@Service("mqMessageService")
-public class MQMessageServiceImpl implements IMQMessageService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MQMessageServiceImpl.class);
+import com.fib.autoconfigure.msgconverter.channel.mq.IMQMessageService;
+
+import cn.hutool.core.io.FileUtil;
+
+public class RocketMQMessageService implements IMQMessageService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(RocketMQMessageService.class);
 
 	@Autowired
 	private RocketMQTemplate rocketMQTemplate;
@@ -59,5 +56,11 @@ public class MQMessageServiceImpl implements IMQMessageService {
 	public void sendOnewayMessage(String destination, String id, String msg) {
 		Message<String> message = MessageBuilder.withPayload(msg).setHeader(RocketMQHeaders.KEYS, id).build();
 		rocketMQTemplate.sendOneWay(destination, message);
+	}
+
+	@Override
+	public byte[] receiveMessage() {
+		String data = FileUtil.readString("data/cnaps/ccms.801.001.02.txt", StandardCharsets.UTF_8);
+		return data.getBytes();
 	}
 }

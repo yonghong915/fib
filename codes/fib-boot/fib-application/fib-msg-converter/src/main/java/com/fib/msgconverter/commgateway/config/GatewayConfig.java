@@ -1,7 +1,3 @@
-/**
- * 北京长信通信息技术有限公司
- * 2008-8-27 上午09:14:08
- */
 package com.fib.msgconverter.commgateway.config;
 
 import java.util.ArrayList;
@@ -14,8 +10,6 @@ import com.fib.msgconverter.commgateway.session.config.SessionConfig;
 
 /**
  * 网关配置
- * 
- * @author 刘恭亮
  * 
  */
 public class GatewayConfig {
@@ -142,7 +136,7 @@ public class GatewayConfig {
 	}
 
 	public ChannelMainConfig getChannel(String id) {
-		return (ChannelMainConfig) channels.get(id);
+		return channels.get(id);
 	}
 
 	public void setChannel(String id, ChannelMainConfig channelConfig) {
@@ -224,5 +218,4 @@ public class GatewayConfig {
 		}
 		return null;
 	}
-
 }

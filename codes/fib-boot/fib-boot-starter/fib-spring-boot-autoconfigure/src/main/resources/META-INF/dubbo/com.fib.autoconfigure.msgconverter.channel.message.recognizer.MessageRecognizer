@@ -1,0 +1,7 @@
+INDEX = com.fib.autoconfigure.msgconverter.channel.message.recognizer.impl.IndexRecognizer
+SEPARATOR = com.giantstone.commgateway.channel.message.recognizer.impl.SeparatorRecognizer
+SEPARATOR_MESSAGE= com.giantstone.commgateway.channel.message.recognizer.impl.SeparatorMessageRecognizer
+XPATH = com.fib.autoconfigure.msgconverter.channel.message.recognizer.impl.XPathRecognizer
+SCRIPT = com.giantstone.commgateway.channel.message.recognizer.impl.ScriptRecognizer
+COMPOSITE = com.fib.autoconfigure.msgconverter.channel.message.recognizer.impl.CompositeRecognizer
+8583 = com.giantstone.commgateway.channel.message.recognizer.impl.ISO8583MessageRecognizer
