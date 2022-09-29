@@ -1,13 +1,14 @@
 package com.fib.core.util;
 
-import org.springframework.util.ClassUtils;
-
+import com.alibaba.ttl.TransmittableThreadLocal;
 import com.fib.commons.util.CommUtils;
+
+import cn.hutool.core.convert.Convert;
 
 public enum ThreadLocalMessageContext {
 	INSTANCE;
 
-	private static final ThreadLocal<MessageContext> THREAD_CONTEXT = new ThreadLocal<>();
+	private static final ThreadLocal<MessageContext> THREAD_CONTEXT = new TransmittableThreadLocal<>();
 
 	/**
 	 * 设置本线程上下文环境
@@ -39,16 +40,12 @@ public enum ThreadLocalMessageContext {
 		CommUtils.isNull(value, k -> ThreadLocalMessageContext.INSTANCE.getMessageContext().setProperty(key, value));
 	}
 
-	public Object get(String key) {
-		return ThreadLocalMessageContext.INSTANCE.getMessageContext().getProperty(key);
+	public String get(String key) {
+		return get(key, String.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T get(String key, Class<T> clazz) {
 		Object obj = ThreadLocalMessageContext.INSTANCE.getMessageContext().getProperty(key);
-		if (ClassUtils.isAssignable(clazz, obj.getClass())) {
-			return (T) obj;
-		}
-		return null;
+		return Convert.convert(clazz, obj);
 	}
 }

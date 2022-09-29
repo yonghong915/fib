@@ -22,5 +22,6 @@
 		<module>fib-upp</module>
     <module>fib-oms</module>
     <module>fib-msg-converter</module>
+    <module>fib-test</module>
   </modules>
 </project>

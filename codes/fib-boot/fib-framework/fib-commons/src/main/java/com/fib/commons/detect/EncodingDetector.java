@@ -24,7 +24,7 @@ public interface EncodingDetector {
 //	}
 //
 //	private static class SingletonHolder {
-//		private static final EncodingDetector instance = new EncodingDetector();
+//		private static final EncodingDetector instance =  new EncodingDetector();
 //	}
 //
 //	public static EncodingDetector getInstance() {

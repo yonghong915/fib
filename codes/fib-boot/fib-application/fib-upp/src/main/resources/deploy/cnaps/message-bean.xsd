@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.fib.com/schema/fib-config" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.fib.com/schema/fib-config" elementFormDefault="qualified">
+	<xs:element name="message-bean" type="message-bean" />
+	<xs:complexType name="message-bean">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="unbounded" name="field" type="field" />
+		</xs:sequence>
+		<xs:attribute name="id" use="required" type="xs:string" />
+		<xs:attribute name="short-text" use="required" type="xs:string" />
+		<xs:attribute name="message-charset" type="charset" default="UTF-8" />
+		<xs:attribute name="class" use="required" type="xs:string" />
+		<xs:attribute name="xpath" type="xs:string" />
+		<xs:attribute name="type" type="type" default="xml" />
+		<xs:attribute name="pack-mode" default="template" type="packMode" />
+		<xs:attribute name="name-space" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="field">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="value-range" type="valueRange" />
+		</xs:sequence>
+		<xs:attribute name="name" use="required" type="xs:string" />
+		<xs:attribute name="short-text" use="required" type="xs:string" />
+		<xs:attribute name="length" type="Max6NumericText" />
+		<xs:attribute name="value" type="xs:string" />
+		<xs:attribute name="editable" type="xs:boolean" default="true" />
+		<xs:attribute name="pattern" type="xs:string" />
+		<xs:attribute name="required" type="xs:boolean" default="false" />
+		<xs:attribute name="suffix" type="xs:string" />
+		<xs:attribute name="shiled" type="xs:boolean" default="false" />
+		<xs:attribute name="field-type" use="required" type="fieldType" />
+		<xs:attribute name="data-type" type="dataType" />
+		<xs:attribute name="reference" type="xs:string" />
+		<xs:attribute name="prefix" type="xs:string" />
+		<xs:attribute name="padding-direction" type="paddingDirection" />
+	</xs:complexType>
+	<xs:complexType name="valueRange">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="unbounded" name="value" type="value" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="value">
+		<xs:attribute name="short-text" type="xs:string" />
+		<xs:attribute name="value" type="xs:string" />
+	</xs:complexType>
+	<xs:simpleType name="charset">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UTF-8" />
+			<xs:enumeration value="GBK" />
+			<xs:enumeration value="GB2312" />
+			<xs:enumeration value="GB18080" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="paddingDirection">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="none" />
+			<xs:enumeration value="left" />
+			<xs:enumeration value="right" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="xml" />
+			<xs:enumeration value="table" />
+			<xs:enumeration value="combine-field" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="packMode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="template" />
+			<xs:enumeration value="table" />
+			<xs:enumeration value="combine-field" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="fieldType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="fixed-field" />
+			<xs:enumeration value="table" />
+			<xs:enumeration value="combine-field" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="dataType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="str" />
+			<xs:enumeration value="num" />
+			<xs:enumeration value="datetime" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max6NumericText">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="6" />
+			<xs:pattern value="[0-9]{1,6}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="positive">
+		<xs:union memberTypes="xs:positiveInteger" />
+	</xs:simpleType>
+</xs:schema>

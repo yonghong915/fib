@@ -3,7 +3,6 @@ package com.fib.commons.exception;
 import com.fib.commons.web.RestStatus;
 
 import cn.hutool.core.text.StrFormatter;
-import lombok.Getter;
 
 /**
  * Business exception of all business exception
@@ -15,10 +14,8 @@ import lombok.Getter;
 public class BusinessException extends BaseException {
 	private static final long serialVersionUID = -2314396437259053562L;
 
-	@Getter
 	private final String code;
 
-	@Getter
 	private final String msg;
 
 	public BusinessException(String errCode, String errMsg, Object... args) {

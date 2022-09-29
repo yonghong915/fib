@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<message-bean message-charset="GBK" id="MsgHeader" short-text="报文头" class="com.fib.upp.message.bean.impl.MsgHeader">
+<message-bean message-charset="GBK" id="msgHeader" short-text="报文头" class="com.fib.upp.message.bean.impl.MsgHeader">
 	<field name="BeginFlag" short-text="起始标识" field-type="fixed-field" data-type="str" length="3" value="{H:" editable="false" />
 	<field name="VersionID" short-text="版本号" field-type="fixed-field" data-type="num" length="2" value="02" />
 	<field name="OrigSender" short-text="报文发起人" field-type="fixed-field" data-type="str" length="14" />

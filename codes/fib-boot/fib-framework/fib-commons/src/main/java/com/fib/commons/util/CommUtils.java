@@ -1,16 +1,24 @@
 package com.fib.commons.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
-import com.fib.commons.config.Configuration;
-import com.fib.commons.config.parser.ConfigurationManager;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
+
 import com.fib.commons.exception.CommonException;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
 
 /**
  * 公共工具类
@@ -54,31 +62,6 @@ public class CommUtils {
 		return rs.toString();
 	}
 
-	public static String getRealValue(String configName, String value) {
-		return getRealValue(configName, value.trim(), null);
-	}
-
-	public static String getRealValue(String configName, String value, String categoryName) {
-		if (null == value) {
-			return value;
-		}
-
-		int startIndex = value.indexOf("${");
-		if (-1 == startIndex) {
-			return value;
-		}
-
-		startIndex += 2;
-		int endIndex = value.indexOf("}", startIndex);
-		if (-1 == endIndex) {
-			return value;
-		}
-
-		value = value.substring(startIndex, endIndex);
-		Configuration configuration = ConfigurationManager.getInstance().getConfiguration(configName);
-		return configuration.getProperty(value, categoryName);
-	}
-
 	/**
 	 * 是否为空
 	 * 
@@ -107,21 +90,6 @@ public class CommUtils {
 	 */
 	public static boolean isNotEmpty(Object obj) {
 		return !isEmpty(obj);
-	}
-
-	public static void notEmpty(Object obj, String message, Object... args) {
-		if (isEmpty(obj)) {
-			throw new CommonException(I18nUtils.getMessage(message, args));
-		}
-	}
-
-	public static String getCanonicalPath(String path) {
-		try {
-			path = new File(path).getCanonicalPath() + File.separatorChar;
-			return path;
-		} catch (IOException e) {
-			throw new CommonException(I18nUtils.getMessage("CommGateway.loadChannel.getCanonicalPath.failed"), e);
-		}
 	}
 
 	public static final class NullObject {
@@ -153,6 +121,27 @@ public class CommUtils {
 	public static void isNull(Object value, Consumer<Object> action) {
 		if (null != value) {
 			action.accept(value);
+		}
+	}
+
+	public static void compile(String javaVersion, String encoding, String classRootPath, List<String> javaSrcFiles, String clPath) {
+		if (CollUtil.isEmpty(javaSrcFiles)) {
+			return;
+		}
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		List<String> options = Arrays.asList("-source", javaVersion, "-target", javaVersion, "-encoding", encoding, "-d", classRootPath, "-cp",
+				clPath);
+		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+
+		List<File> files = new ArrayList<>();
+		for (String srcFile : javaSrcFiles) {
+			files.add(FileUtil.file(srcFile));
+		}
+
+		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(files);
+		Boolean result = compiler.getTask(null, fileManager, null, options, null, compilationUnits).call();
+		if (result == null || !result) {
+			throw new CommonException("Compilation failed.");
 		}
 	}
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="PKGGrpHdr" type="xml" pack-mode="template" short-text="批量包组头组件" message-charset="UTF-8" class="com.fib.cnaps.messagebean.send.req.PKGGrpHdr">
+
+	<!--是小额批量包报文的公共部分-->
+	<field name="MessageIdentification" short-text="报文标识号" field-type="fixed-field" data-type="str" length="35" xpath="MsgId/text()"/>
+	<field name="CreationDateTime" short-text="报文发送时间" field-type="fixed-field" data-type="datetime" length="19" pattern="yyyy-MM-dd'T'HH:mm:ss" xpath="CreDtTm/text()"/>
+	<field name="InstructingDirectParty" short-text="发起直接参与机构" field-type="fixed-field" data-type="str" length="14" xpath="InstgPty/InstgDrctPty/text()"/>
+	<field name="InstructedDirectParty" short-text="接收直接参与机构" field-type="fixed-field" data-type="str" length="14" xpath="InstdPty/InstdDrctPty/text()"/>
+	<field name="NumberOfTransactions" short-text="明细业务总笔数" field-type="fixed-field" data-type="str" length="15" xpath="NbOfTxs/text()"/>
+	<field name="CurrencyType" short-text="币种" field-type="fixed-field" data-type="str" length="5" xpath="CtrlSum/@Ccy"/>
+	<field name="ControlSum" short-text="明细业务总金额" field-type="fixed-field" data-type="str" length="18" xpath="CtrlSum/text()" required="false"/>
+	<field name="SystemCode" short-text="系统编号" field-type="fixed-field" data-type="str" length="15" xpath="SysCd/text()"/>
+	<field name="Remark" short-text="备注" field-type="fixed-field" data-type="str" length="256" xpath="Rmk/text()" required="false"/>
+
+</message-bean>

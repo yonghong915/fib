@@ -1,0 +1,34 @@
+{H:020000          HVPS313684093748  HVPS20191219173343XMLccms.801.001.02     HVPD5DD96B7F19269652HVPD5DD96B7F192696523D         }
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Document xmlns="urn:cnaps:std:ccms:2010:tech:xsd:ccms.801.001.02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <SysStsNtfctn>
+    <GrpHdr>
+      <MsgId>2019121951015194</MsgId>
+      <CreDtTm>2019-12-19T17:33:43</CreDtTm>
+      <InstgPty>
+        <InstgDrctPty>0000</InstgDrctPty>
+        <InstgPty>0000</InstgPty>
+      </InstgPty>
+      <InstdPty>
+        <InstdDrctPty>000000000000</InstdDrctPty>
+        <InstdPty>000000000000</InstdPty>
+      </InstdPty>
+      <SysCd>HVPS</SysCd>
+      <Rmk>HVPS进入营业准备</Rmk>
+    </GrpHdr>
+    <SysStsInf>
+      <OrgnlSysDt>2019-12-19</OrgnlSysDt>
+      <OrgnlSysSts>40</OrgnlSysSts>
+      <CurSysDt>2019-12-20</CurSysDt>
+      <CurSysSts>00</CurSysSts>
+      <HldayFlg>HF01</HldayFlg>
+      <NxtSysDt>2019-12-21</NxtSysDt>
+      <BkChngNb>20130432</BkChngNb>
+      <BaseDataChngNb>00000023</BaseDataChngNb>
+      <CISChngNb>00000001</CISChngNb>
+      <ParamChngNb>00000042</ParamChngNb>
+    </SysStsInf>
+  </SysStsNtfctn>
+
+</Document>

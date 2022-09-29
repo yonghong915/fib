@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel type="SOCKET_SERVER" mode="SERVER">
+	<description>人行二代接收Bosent通道</description>
+
+	<!-- 连接器：通讯设置 -->
+	<connector type="SERVER" config="connector.xml"/>
+
+	<!-- 报文类型识别器 -->
+	<message-type-recognizer recognizer-id="r01">
+	  
+		<!--小额-->
+		<message message-type="beps.121.001.01" processor="beps.121.001.01" /><!--客户发起普通贷记业务报文-->
+	</message-type-recognizer>
+
+	<!-- 识别器表 -->
+	<recognizer-table>
+		<recognizer id="r01" type="XPATH">
+			<parameter name="xpathExpression">map-message/M/e[@k='gatewayTransactionId']/text()</parameter>
+			<parameter name="xmlStartAt">0</parameter>
+			<parameter name="xmlMessageCharset">utf-8</parameter>
+		</recognizer>
+	</recognizer-table>
+
+	<!-- 报文处理器表 -->
+	<processor-table>
+		
+        <!--小额 -->
+		<processor id="beps.121.001.01" type="TRANSFORM" route-rule="001" source-channel-message-object-type="MAP" dest-channel-message-object-type="MESSAGE-BEAN"  source-map-charset="UTF-8" timeout="60000" source-async="false" dest-async="true">
+			<request-message-transformer  bean-mapping="BEPS_121MappingOut" dest-message-id="BEPS_121_bean" />
+			<response-message-transformer  bean-mapping="0000Mapping"/>
+			<error-mapping bean-mapping="BeijingInternalError"/>
+		</processor>
+		
+</processor-table>
+	<!-- 路由表 -->
+	<route-table>
+		<route-rule id="001" type="STATIC" dest-channel-symbol="dest1"/>
+	</route-table>
+	<!-- 目的通道符号表 -->
+	<channel-symbol-table>
+		<channel-symbol symbol="dest1" name="往账目的通道" channel-id="npc_cnaps2_recv"/>
+	</channel-symbol-table>
+</channel>

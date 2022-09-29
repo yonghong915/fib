@@ -1,0 +1,205 @@
+{H:02313684093748  HVPS403100000004  HVPS20191219154615XMLhvps.111.001.01     00000000000003329480201912190000240845771U       X }
+{S:MEUCIAheTZBTgHWjQvmaZd7s7peYqlxvIlvDlUCn6ywkFmfzAiEA3VS8fAKjmmTyvO/0Zoj0Fi+/S1Hy7aUq63OSS3V3qnc=}<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.02">
+		
+   <FIToFICstmrCdtTrf>
+			
+      <GrpHdr>
+				
+         <MsgId>2019121900084576</MsgId>
+				
+         <CreDtTm>2019-12-19T15:46:15</CreDtTm>
+				
+         <NbOfTxs>1</NbOfTxs>
+				
+         <SttlmInf>
+					
+            <SttlmMtd>CLRG</SttlmMtd>
+				
+         </SttlmInf>
+			
+      </GrpHdr>
+
+			
+      <CdtTrfTxInf>
+				
+         <PmtId>
+					
+            <EndToEndId>00000000179995952019121501084565</EndToEndId>
+					
+            <TxId>2019121900084576</TxId>
+				
+         </PmtId>
+
+				
+         <PmtTpInf>
+					
+            <CtgyPurp>
+						
+               <Prtry>A100</Prtry>
+					
+            </CtgyPurp>
+				
+         </PmtTpInf>
+
+				
+         <IntrBkSttlmAmt Ccy="CNY">885.00</IntrBkSttlmAmt>
+
+				
+         <SttlmPrty>URGT</SttlmPrty>
+
+				
+         <ChrgBr>DEBT</ChrgBr>
+
+				
+         <InstgAgt>
+					
+            <FinInstnId>
+						
+               <ClrSysMmbId>
+							
+                  <MmbId>313684093748</MmbId>
+						
+               </ClrSysMmbId>
+					
+            </FinInstnId>
+					
+            <BrnchId>
+						
+               <Id>313684002066</Id>
+					
+            </BrnchId>
+				
+         </InstgAgt>
+
+				
+         <InstdAgt>
+					
+            <FinInstnId>
+						
+               <ClrSysMmbId>
+							
+                  <MmbId>403100000004</MmbId>
+						
+               </ClrSysMmbId>
+					
+            </FinInstnId>
+					
+            <BrnchId>
+						
+               <Id>403684000135</Id>
+					
+            </BrnchId>
+				
+         </InstdAgt>
+
+				
+
+
+				
+
+
+				
+         <Dbtr>
+					
+            <Nm>核工业西南建设集团有限公司凉山分公司</Nm>
+					
+				
+         </Dbtr>
+
+				
+         <DbtrAcct>
+					
+            <Id>
+						
+               <Othr>
+							
+                  <Id>02060303000000282</Id>
+						
+               </Othr>
+					
+            </Id>
+				
+         </DbtrAcct>
+
+				
+         <DbtrAgt>
+					
+            <FinInstnId>
+						
+               <ClrSysMmbId>
+							
+                  <MmbId>313684002066</MmbId>
+						
+               </ClrSysMmbId>
+						
+               <Nm>凉山州商业银行</Nm>
+					
+            </FinInstnId>
+				
+         </DbtrAgt>
+
+				
+         <CdtrAgt>
+					
+            <FinInstnId>
+						
+               <ClrSysMmbId>
+							
+                  <MmbId>403684000135</MmbId>
+						
+               </ClrSysMmbId>
+						
+               <Nm>中国邮政储蓄银行有限责任公司西昌市胜利路支行</Nm>
+					
+            </FinInstnId>
+				
+         </CdtrAgt>
+
+				
+         <Cdtr>
+					
+            <Nm>唐祖权</Nm>
+					
+				
+         </Cdtr>
+
+				
+         <CdtrAcct>
+					
+            <Id>
+						
+               <Othr>
+							
+                  <Id>6217996840006633886</Id>
+						
+               </Othr>
+					
+            </Id>
+				
+         </CdtrAcct>
+
+				
+         <Purp>
+					
+            <Prtry>02102</Prtry>
+				
+         </Purp>
+				
+         <RmtInf>
+					
+					
+					
+            <Ustrd>/H03/报账款</Ustrd>
+			<Ustrd>/H02/报账款2</Ustrd>		
+					
+					
+					
+				
+         </RmtInf>
+			
+      </CdtTrfTxInf>
+		
+   </FIToFICstmrCdtTrf>
+	
+</Document>

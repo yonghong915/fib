@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mq-channel type="double" ccsid="1208" timeout="5000">
+<!--人行二代网关mq配置-->
+	<queue type="send" server-address="10.2.1.225" port="1530" queue-manager="QMU313684093748A" name="QMUMBFEA_2" channel="SYSTEM.DEF.SVRCONN">
+		<message-key-recognizer recognizer-id="testReq"/>
+	</queue>
+	<queue type="receive" server-address="10.2.1.225" port="1530" queue-manager="QMU313684093748A" name="MSGMBFE_2" channel="SYSTEM.DEF.SVRCONN">
+		<message-key-recognizer recognizer-id="testRec"/>
+	</queue>
+
+	<code-recognizer recognizer-id="r01">
+		<request-code-set>
+			
+			<code>beps.121.001.01</code>
+			
+		</request-code-set>
+	</code-recognizer>
+</mq-channel>

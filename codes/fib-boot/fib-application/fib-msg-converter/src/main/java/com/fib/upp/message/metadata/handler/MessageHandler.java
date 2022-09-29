@@ -40,14 +40,14 @@ public class MessageHandler extends DefaultHandler {
 	private static class _AField {
 		private List<Field> A;
 
-		public Object A() {
+		public Object removeLast() {
 			if (!A.isEmpty())
 				return A.remove(A.size() - 1);
 			else
 				return null;
 		}
 
-		public void A(Field obj) {
+		public void add(Field obj) {
 			A.add(obj);
 		}
 
@@ -354,7 +354,7 @@ public class MessageHandler extends DefaultHandler {
 	@Override
 	public void endElement(String s, String s1, String s2) throws SAXException {
 		if ("field".equals(s2)) {
-			Field field = (Field) I.A();
+			Field field = (Field) I.removeLast();
 			if (field.getFieldType() == 2002 && field.getReference() == null && !"dynamic".equalsIgnoreCase(field.getReferenceType())
 					&& !"expression".equalsIgnoreCase(field.getReferenceType())) {
 				if (field.getReference() == null)
@@ -423,7 +423,7 @@ public class MessageHandler extends DefaultHandler {
 				s4 = null;
 			boolean flag = false;
 			if (null == J) {
-				J = (Field) I.A();
+				J = (Field) I.removeLast();
 				flag = true;
 			}
 			if ("row-post-pack".equalsIgnoreCase(F)) {
@@ -463,7 +463,7 @@ public class MessageHandler extends DefaultHandler {
 						(new StringBuilder()).append(fileAbsolutePath).append(": Unsupport Event Type[").append(F).append("]!").toString());
 			}
 			if (flag && null != J)
-				I.A(J);
+				I.add(J);
 			E = null;
 		} else if ("template".equals(s2)) {
 			String s5 = E;
@@ -587,7 +587,7 @@ public class MessageHandler extends DefaultHandler {
 				}
 			}
 		} else if ("field".equals(s2)) {
-			Field field = (Field) I.A();
+			Field field = (Field) I.removeLast();
 			if (field != null && field.getFieldType() != 2002 && field.getFieldType() != 2003 && field.getFieldType() != 2004
 					&& field.getFieldType() != 2011)
 				throw new CommonException(
@@ -1378,11 +1378,11 @@ public class MessageHandler extends DefaultHandler {
 			}
 			if (field != null) {
 				field.setSubField(field1.getName(), field1);
-				I.A(field);
+				I.add(field);
 			} else {
 				messge.setField(field1.getName(), field1);
 			}
-			I.A(field1);
+			I.add(field1);
 			J = field1;
 		} else if ("value-range".equals(s2)) {
 			G.clear();

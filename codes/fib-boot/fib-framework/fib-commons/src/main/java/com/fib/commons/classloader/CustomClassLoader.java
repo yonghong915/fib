@@ -9,6 +9,8 @@ import java.util.List;
 
 import com.fib.commons.exception.CommonException;
 
+import cn.hutool.core.text.StrFormatter;
+
 /**
  * 自定义类加载器
  * 
@@ -68,17 +70,17 @@ public class CustomClassLoader extends URLClassLoader {
 
 	public void appendJars(String libPath) {
 		if (null == libPath || libPath.isEmpty()) {
-			throw new IllegalArgumentException("libPath must be not null!");
+			throw new IllegalArgumentException("libPath must not be null!");
 		}
 		File libDir = new File(libPath);
 		if (!libDir.exists()) {
-			throw new IllegalArgumentException("libPath[" + libPath + "] doesn't exist!");
+			throw new IllegalArgumentException(StrFormatter.format("libPath {} doesn't exist!", libPath));
 		}
 		if (!libDir.isDirectory()) {
-			throw new IllegalArgumentException("libPath[" + libPath + "] is not a directory!");
+			throw new IllegalArgumentException(StrFormatter.format("libPath {} is not a directory", libPath));
 		}
 		if (!libDir.canRead()) {
-			throw new IllegalArgumentException("libPath[" + libPath + "] can not be read!");
+			throw new IllegalArgumentException(StrFormatter.format("libPath {} can not be read!", libPath));
 		}
 
 		List<URL> jarUrlList = new ArrayList<>(64);

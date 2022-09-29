@@ -10,22 +10,21 @@
 	<packaging>pom</packaging>
 	<name>fib-boot-starter</name>
 	<url>http://www.example.com</url>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
-
 	<modules>
 		<module>fib-spring-boot-autoconfigure</module>
 		<module>fib-retry-spring-boot-starter</module>
 		<module>fib-ruleengine-spring-boot-starter</module>
 		<module>fib-netty-spring-boot-starter</module>
 		<module>fib-minio-spring-boot-starter</module>
-    <module>fib-disruptor-spring-boot-starter</module>
+		<module>fib-disruptor-spring-boot-starter</module>
+		<module>fib-msgconverter-spring-boot-starter</module>
+    <module>fib-dom4j-spring-boot-starter</module>
   </modules>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,7 +36,6 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

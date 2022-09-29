@@ -27,7 +27,7 @@ public abstract class AbstractMessagePacker {
 	protected Map<String, Object> variableCache;
 	private String defaultCharset;
 
-	public AbstractMessagePacker() {
+	protected AbstractMessagePacker() {
 		message = null;
 		messageBean = null;
 		parentBean = null;

@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Data;
-
 /**
  * 
  * @author fangyh
@@ -16,7 +14,6 @@ import lombok.Data;
  * @version 1.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Data
 public class ResultRsp<T> implements Serializable {
 	/**
 	* 

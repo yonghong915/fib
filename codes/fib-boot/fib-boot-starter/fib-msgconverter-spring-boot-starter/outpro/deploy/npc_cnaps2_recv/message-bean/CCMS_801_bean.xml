@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean message-charset="UTF-8" id="CCMS_801_bean" short-text="CCMS_801_bean" class="com.fib.cnaps.messagebean.recv.req.CCMS_801_bean">
+	
+	<field name="MsgHeader" short-text="报文头" field-type="combine-field" reference="MsgHeader"/>
+	
+ 	<field name="CCMS_801_Out" short-text="报文体" field-type="combine-field" reference="CCMS_801_Out"/>
+		
+</message-bean>

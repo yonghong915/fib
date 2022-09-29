@@ -1,7 +1,5 @@
 package com.fib.commons.util.constant;
 
-import lombok.Getter;
-
 public interface EnumConstants {
 	/**
 	 * 
@@ -19,7 +17,6 @@ public interface EnumConstants {
 		/** */
 		JSON("json");
 
-		@Getter
 		private String name;
 
 		public String getName() {
@@ -34,7 +31,6 @@ public interface EnumConstants {
 	public enum LogicType {
 		TRUE(true), FALSE(false);
 
-		@Getter
 		private boolean logicFlag;
 
 		public boolean isLogicFlag() {

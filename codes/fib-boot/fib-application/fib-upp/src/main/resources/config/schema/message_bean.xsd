@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://fib.com.cn" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fib.com.cn"
+	elementFormDefault="qualified">
+	<xs:element name="message-bean">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="field" type="field" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="field">
+		<xs:sequence>
+			<xs:element name="MsgHeader" type="Max35Text" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Max35Text">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:maxLength value="35" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
