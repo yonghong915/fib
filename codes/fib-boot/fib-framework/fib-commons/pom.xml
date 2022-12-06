@@ -26,7 +26,7 @@
 		<cpdetector.version>1.0.10</cpdetector.version>
 		<zxing.version>3.4.1</zxing.version>
 		<jsch.version>0.1.55</jsch.version>
-		<commons-net.version>3.8.0</commons-net.version>
+		<commons-net.version>3.9.0</commons-net.version>
 		<guava.version>30.1.1-jre</guava.version>
 		<protostuff.version>1.7.2</protostuff.version>
 		<xstream.version>1.4.19</xstream.version>
