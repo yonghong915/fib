@@ -46,13 +46,20 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 		}
 
 		this.headers = inputMessage.getHeaders();
+
+		/* 数据密文 */
 		String content = new BufferedReader(new InputStreamReader(inputMessage.getBody())).lines()
 				.collect(Collectors.joining(System.lineSeparator()));
+
+		/* 原文数字摘要签名 */
 		String authentication = headers.getFirst("authentication");
+
+		/* 对称密钥的密文 */
 		String securityKey = headers.getFirst("securityKey");
+
+		/* 系统编码 */
 		String systemCode = headers.getFirst("systemCode");
-		if (StrUtil.isEmptyIfStr(authentication) || StrUtil.isEmptyIfStr(securityKey)
-				|| StrUtil.isEmptyIfStr(systemCode)) {
+		if (StrUtil.isEmptyIfStr(authentication) || StrUtil.isEmptyIfStr(securityKey) || StrUtil.isEmptyIfStr(systemCode)) {
 			//
 		}
 
@@ -74,7 +81,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 		log.info("securityKey={}", StrUtil.str(encryptedKey, CharsetUtil.CHARSET_UTF_8));
 
 		/* 2.用对称加密算法对报文内容解密-SM4 */
-		if (!JSONUtil.isJson(content)) {
+		if (!JSONUtil.isTypeJSON(content)) {
 			//
 		}
 
@@ -101,9 +108,8 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
 		log.info("bodyHash={}", bodyHash);
 
 		/* 4.用对方公钥对摘要验签-SM2 */
-		boolean verifyFlag = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2")
-				.verify(CharSequenceUtil.bytes(bodyHash, CharsetUtil.CHARSET_UTF_8), HexUtil.decodeHex(authentication),
-						SecureUtil.decode(otherpublicKey));
+		boolean verifyFlag = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2").verify(
+				CharSequenceUtil.bytes(bodyHash, CharsetUtil.CHARSET_UTF_8), HexUtil.decodeHex(authentication), SecureUtil.decode(otherpublicKey));
 		log.info("verifyFlag={}", verifyFlag);
 		if (!verifyFlag) {
 			//

@@ -18,7 +18,6 @@
 		<dependency>
 			<groupId>org.apache.dubbo</groupId>
 			<artifactId>dubbo</artifactId>
-			<version>3.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fib</groupId>
@@ -104,40 +103,22 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-message-bean.jar</systemPath>
 		</dependency>
+		<!-- <dependency> <groupId>com.giantstone.dao</groupId> <artifactId>giantstone-dao</artifactId> <version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/giantstone-dao.jar</systemPath> 
+			</dependency> -->
+		<!-- <dependency> <groupId>cmbc.corebank.exception.util</groupId> <artifactId>cmbc-util</artifactId> <version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/cmbc.corebank.exception.util-20101026-2539.jar</systemPath> 
+			</dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId> <artifactId>sapjco3</artifactId> <version>1.0</version> <scope>system</scope> 
+			<systemPath>${project.basedir}/src/main/resources/lib/sapjco3.jar</systemPath> </dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId> 
+			<artifactId>giantstone-httpservicecallclient</artifactId> <version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/giantstone-httpservicecallclient.jar</systemPath> 
+			</dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId> <artifactId>giantstone-security-control-service</artifactId> <version>1.0</version> 
+			<scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/giantstone-security-control-service.jar</systemPath> </dependency> -->
 		<dependency>
-			<groupId>com.giantstone.dao</groupId>
-			<artifactId>giantstone-dao</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-dao.jar</systemPath>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>cmbc.corebank.exception.util</groupId>
-			<artifactId>cmbc-util</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/cmbc.corebank.exception.util-20101026-2539.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>cmbc.corebank.exception.util</groupId>
-			<artifactId>sapjco3</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/sapjco3.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>cmbc.corebank.exception.util</groupId>
-			<artifactId>giantstone-httpservicecallclient</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-httpservicecallclient.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>cmbc.corebank.exception.util</groupId>
-			<artifactId>giantstone-security-control-service</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-security-control-service.jar</systemPath>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
 </project>

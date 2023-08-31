@@ -1,3 +1,48 @@
+DROP TABLE IF EXISTS sys_user;
+CREATE TABLE sys_user
+(
+   id VARCHAR (20) NOT NULL,
+   name VARCHAR (20) NOT NULL,
+   age VARCHAR (20) NOT NULL,
+   sex VARCHAR (20),
+   del_flag SMALLINT DEFAULT 0,
+   create_by BIGINT (20) DEFAULT 0,
+   create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   update_by BIGINT (0) DEFAULT 0,
+   update_dt TIMESTAMP (0),
+   PRIMARY KEY (id)
+);
+--DROP TABLE IF EXISTS communication_event;
+CREATE TABLE if not exists communication_event
+(
+   comm_event_id VARCHAR (20) NOT NULL,
+   comm_event_type_id VARCHAR (20) NOT NULL,
+   content_id VARCHAR (20) NOT NULL,
+   del_flag SMALLINT DEFAULT 0,
+   create_by BIGINT (20) DEFAULT 0,
+   create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   update_by BIGINT (0) DEFAULT 0,
+   update_dt TIMESTAMP (0),
+   PRIMARY KEY (comm_event_id)
+);
+
+--CREATE tablespace upp_clob_tbspace;
+--DROP TABLE IF EXISTS biz_tb_clob;
+CREATE TABLE if not exists biz_tb_clob
+(
+   id VARCHAR (20) NOT NULL,
+   content CLOB NOT NULL,
+   del_flag SMALLINT DEFAULT 0,
+   create_by BIGINT (20) DEFAULT 0,
+   create_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   update_by BIGINT (0) DEFAULT 0,
+   update_dt TIMESTAMP (0),
+   PRIMARY KEY (id)
+) ;
+--comment on table uppdb.biz_tb_clob is '业务大字段表';
+--comment on column uppdb.biz_tb_clob.id is '主键ID';
+--comment on column uppdb.biz_tb_clob.content is '内容';
+
 DROP TABLE IF EXISTS communication_event;
 CREATE TABLE communication_event  (
   pk_id BIGINT(20) NOT NULL COMMENT '主键编码',

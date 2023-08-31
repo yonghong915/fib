@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<channel class="com.fib.autoconfigure.msgconverter.channel.channel.http.impl.BosentServletClientChannel" mode="CLIENT">
-	<content-charset>UTF-8</content-charset>
-	<description>人行二代发送bosent通道</description>
-
-	<!-- 连接器：通讯设置 -->
-	<connector config="connector.xml" />
-
-</channel>

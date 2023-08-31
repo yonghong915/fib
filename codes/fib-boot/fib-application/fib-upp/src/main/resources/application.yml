@@ -1,15 +1,3 @@
-server:  port: 8080  servlet:    context-path: /upp
-spring:  application:    name: fib-app
-  datasource:    dynamic:      p6spy: true
-      primary: master
-      datasource:        master:
-          username: uppapp
-          password: uppapp1234
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://192.168.56.11:3306/uppdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&nullCatalogMeansCurrent=true&allowMultiQueries=true
-        uppdb:
-          username: uppapp
-          password: uppapp1234
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://192.168.56.11:3306/uppdb?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&nullCatalogMeansCurrent=true&allowMultiQueries=true        sqlitedb:          username:           password:           driver-class-name:           url: jdbc:sqlite::resource:db/sqlite/uppdb.db  main:    banner-mode: off  messages:    basename: i18n.message
-    logging:  pattern:    level: debug  mybatis-plus:  global-config:    banner: false  configuration:    map-underscore-to-camel-case: true    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  mapper-locations:  - classpath*:config/mapper/*Mapper.xml fib:  retry:    enable: true    retryCount: 5    timeout: 10000      disruptor:    enabled: true    ring-buffer: false    ring-buffer-size: 1024    ring-thread-numbers: 4    multi-producer: true    consume-mode: P2P    consumers: 3         minio:    url: http://192.168.56.11:9000/    name: upp    password: upp123456    url-proxy: http://192.168.56.11:9000/    rocketmq:  name-server: 192.168.56.11:9876  producer:    group: boot_producer_group    send-message-timeout: 3000    retry-times-when-send-failed: 2  consumer:    topic: mytopic    
+server:  port: 8080  undertow:    threads:      worker: 256      io: 8      
+spring:  application:    name: fib-app  profiles:    active: dev  datasource:    driver-class-name: org.sqlite.JDBC    url: jdbc:sqlite:D:/software/database/sqlite/3.39.2/uppdb.db     sql:    init:      mode: always      encoding: UTF-8      schema-locations:      - classpath:sql/schema-mysql.sql      data-locations:      - classpath:sql/data-mysql.sqllogging:  config: classpath:config/log/logback.xml
+mybatis-plus:  configuration:    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  mapper-locations: classpath:**/mapper/*.xml

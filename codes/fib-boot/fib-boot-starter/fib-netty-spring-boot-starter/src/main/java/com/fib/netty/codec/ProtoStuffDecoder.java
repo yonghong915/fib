@@ -31,6 +31,11 @@ public class ProtoStuffDecoder extends ByteToMessageDecoder {
 		}
 		in.markReaderIndex();
 		int dataLength = in.readInt();
+		
+		if(dataLength == 0) {
+			return;
+		}
+		
 		if (in.readableBytes() < dataLength) {
 			in.resetReaderIndex();
 			return;
@@ -40,6 +45,6 @@ public class ProtoStuffDecoder extends ByteToMessageDecoder {
 
 		Serializer serializer = ApplicationModel.defaultModel().getDefaultModule().getExtension(Serializer.class,
 				"protoStuff");
-		out.add(serializer.deserialize(data, genericClass));
+		out.add(serializer.deserialize(data, this.genericClass));
 	}
 }

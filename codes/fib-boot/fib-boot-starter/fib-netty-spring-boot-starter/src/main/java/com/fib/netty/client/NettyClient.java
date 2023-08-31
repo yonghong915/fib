@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.fib.netty.DefaultFuture;
 import com.fib.netty.vo.Request;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -41,12 +42,14 @@ public class NettyClient {
 		return channelFuture;
 	}
 
+	private ExecutorService executor = Executors.newFixedThreadPool(10);
+
 	public Object send(Object msg) throws InterruptedException {
 		Request request = new Request();
 		request.setRequestMsg(msg);
-		ExecutorService executor = Executors.newFixedThreadPool(5);
-		CompletableFuture<Object> defaultFuture = DefaultFuture.newFuture(channelFuture.channel(), request, 30000,
-				executor);
+		LOGGER.info("Request:[{}],now is={}", request, LocalDateTimeUtil.format(LocalDateTimeUtil.now(), "yyyy-MM-dd HH:mm:ss,SSS"));
+
+		CompletableFuture<Object> defaultFuture = DefaultFuture.newFuture(channelFuture.channel(), request, 30000, executor);
 		channelFuture.channel().writeAndFlush(request);
 		Object result = null;
 		try {
@@ -55,7 +58,8 @@ public class NettyClient {
 			Thread.currentThread().interrupt();
 			e.printStackTrace();
 		}
-		LOGGER.info("Request:[{}],Response:[{}]", request, result);
+		LOGGER.info("Request:[{}],Response:[{}],now is = {}", request, result,
+				LocalDateTimeUtil.format(LocalDateTimeUtil.now(), "yyyy-MM-dd HH:mm:ss,SSS"));
 		return result;
 	}
 }

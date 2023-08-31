@@ -1,5 +1,8 @@
 package com.fib.autoconfigure.xml.dom4j;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +19,10 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXValidator;
+import org.dom4j.io.XMLWriter;
 import org.dom4j.util.XMLErrorHandler;
 import org.xml.sax.SAXException;
 
@@ -141,5 +146,32 @@ public class Dom4jService implements IXmlService {
 		Map<String, String> namespaces = new TreeMap<>();
 		namespaces.put(DEFAULT_NAMESPACE_NAME, namespaceURI);
 		DocumentFactory.getInstance().setXPathNamespaceURIs(namespaces);
+	}
+
+	@Override
+	public Document createDocument(String fileName) {
+		Document doc = DocumentHelper.createDocument();
+		doc.setXMLEncoding("UTF-8");
+		File file = new File("test.xml");
+
+		Element rootEle = doc.addElement("root");
+		rootEle.addAttribute("name", "abdd");
+
+		OutputFormat format = OutputFormat.createPrettyPrint();
+		XMLWriter writer;
+		try {
+			writer = new XMLWriter(new FileOutputStream(file), format);
+			writer.write(doc);
+			writer.close();
+		} catch (IOException e) {
+			throw new CommonException("Failed to create document by dom4j.", e);
+		}
+		System.out.println(doc.asXML());
+		return doc;
+	}
+
+	public static void main(String[] args) {
+		Dom4jService svr = new Dom4jService();
+		svr.createDocument("");
 	}
 }

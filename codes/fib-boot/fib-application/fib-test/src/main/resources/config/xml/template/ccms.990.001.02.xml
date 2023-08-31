@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:cnaps:std:ccms:2010:tech:xsd:ccms.990.001.02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ComConf>
+		<ConfInf>
+			<OrigSndr>${OrigSender}</OrigSndr>
+			<OrigSndDt>${OrigSendDate}</OrigSndDt>
+			<MT>${MesgType2}</MT>
+			<MsgId>${MessageIdentification}</MsgId>
+			<MsgRefId>${MessageReferenceIdentification}</MsgRefId>
+			<MsgPrcCd>${MessageProcessCode}</MsgPrcCd>
+		</ConfInf>
+	</ComConf>
+</Document>

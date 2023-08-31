@@ -17,8 +17,10 @@ import javax.tools.ToolProvider;
 
 import com.fib.commons.exception.CommonException;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ZipUtil;
 
 /**
  * 公共工具类
@@ -143,5 +145,15 @@ public class CommUtils {
 		if (result == null || !result) {
 			throw new CommonException("Compilation failed.");
 		}
+	}
+
+	public static String gzip(String source, String charset) {
+		byte[] rts = ZipUtil.gzip(source, charset);
+		return Base64.encode(rts);
+	}
+
+	public static String unzip(String value, String charset) {
+		byte[] ret = Base64.decode(value);
+		return ZipUtil.unGzip(ret, charset);
 	}
 }

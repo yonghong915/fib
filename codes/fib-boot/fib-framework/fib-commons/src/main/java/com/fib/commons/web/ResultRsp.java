@@ -33,7 +33,7 @@ public class ResultRsp<T> implements Serializable {
 	 * 返回对象
 	 */
 	@JsonProperty("data")
-	private T rspObj;
+	private transient T rspObj;
 
 	/**
 	 * 时间戳
@@ -52,6 +52,13 @@ public class ResultRsp<T> implements Serializable {
 		if (null != data) {
 			this.setRspObj(data);
 		}
+		return this;
+	}
+
+	public ResultRsp<T> success(String message) {
+		this.rspMsg = message;
+		// this.rspCode = CommonConstant.SC_OK_200;
+		// this.success = true;
 		return this;
 	}
 

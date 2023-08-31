@@ -172,5 +172,11 @@
 			<artifactId>dom4j</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-msg-converter</artifactId>
+			<version>1.0.0</version>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>

@@ -7,4 +7,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.fib.autoconfigure.retry.RetryAutoConfiguration,\
   com.fib.autoconfigure.minio.MinioAutoConfiguration,\
   com.fib.autoconfigure.disruptor.DisruptorAutoConfiguration,\
-  com.fib.autoconfigure.xml.dom4j.Dom4jAutoConfiguration
+  com.fib.autoconfigure.xml.dom4j.Dom4jAutoConfiguration,\
+  com.fib.autoconfigure.msgconverte.MsgconverterAutoConfiguration

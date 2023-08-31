@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>fib-boot</artifactId>
@@ -10,11 +11,6 @@
 	<packaging>pom</packaging>
 	<name>fib-boot-starter</name>
 	<url>http://www.example.com</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
-	</properties>
 	<modules>
 		<module>fib-spring-boot-autoconfigure</module>
 		<module>fib-retry-spring-boot-starter</module>
@@ -23,8 +19,8 @@
 		<module>fib-minio-spring-boot-starter</module>
 		<module>fib-disruptor-spring-boot-starter</module>
 		<module>fib-msgconverter-spring-boot-starter</module>
-    <module>fib-dom4j-spring-boot-starter</module>
-  </modules>
+		<module>fib-dom4j-spring-boot-starter</module>
+	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -36,16 +32,4 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>17</source>
-					<target>17</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>

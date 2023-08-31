@@ -66,8 +66,7 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
 	@Override
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
-			Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
-			ServerHttpResponse response) {
+			Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 		Assert.notNull(returnType, () -> new BusinessException(StatusCode.PARAMS_CHECK_NULL));
 		Boolean status = encryptLocal.get();
 		if (null != status && !status) {
@@ -107,23 +106,20 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 			}
 
 			byte[] signedContext = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2")
-					.sign(CharSequenceUtil.bytes(contentHash, CharsetUtil.CHARSET_UTF_8),
-							SecureUtil.decode(ownPrivateKey));
+					.sign(CharSequenceUtil.bytes(contentHash, CharsetUtil.CHARSET_UTF_8), SecureUtil.decode(ownPrivateKey));
 			logger.info("authentication={}", HexUtil.encodeHexStr(signedContext));
 
-			/* 3.用对方公钥对非对称密钥加密-SM2 */
+			/* 3.用对方公钥对对称密钥加密-SM2 */
 			String securityKeySource = CommUtils.getRandom(16);
 			logger.info("securityKeySource={}", securityKeySource);
 
 			byte[] cipherTxt = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM2")
-					.encrypt(CharSequenceUtil.bytes(securityKeySource, CharsetUtil.CHARSET_UTF_8),
-							SecureUtil.decode(otherPublicKey));
+					.encrypt(CharSequenceUtil.bytes(securityKeySource, CharsetUtil.CHARSET_UTF_8), SecureUtil.decode(otherPublicKey));
 			logger.info("securityKey={}", HexUtil.encodeHexStr(cipherTxt));
 
 			/* 4.用对称加密算法对报文内容加密-SM4 */
-			byte[] encryptedBodyContent = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null)
-					.getExtension("SM4").encrypt(CharSequenceUtil.bytes(content, CharsetUtil.CHARSET_UTF_8),
-							securityKeySource.getBytes(CharsetUtil.CHARSET_UTF_8));
+			byte[] encryptedBodyContent = ScopeModelUtil.getExtensionLoader(SecurityEncryptor.class, null).getExtension("SM4")
+					.encrypt(CharSequenceUtil.bytes(content, CharsetUtil.CHARSET_UTF_8), securityKeySource.getBytes(CharsetUtil.CHARSET_UTF_8));
 
 			String bodyHash = HexUtil.encodeHexStr(encryptedBodyContent);
 			logger.info("encryptedBodyContent={}", bodyHash);

@@ -1,13 +1,14 @@
 package com.fib.core.threadpool;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
@@ -18,23 +19,26 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  * @date 2021-06-04
  */
 @Configuration
+@EnableAsync
 public class ASyncExecutorConfig {
 	private static final Logger logger = LoggerFactory.getLogger(ASyncExecutorConfig.class);
 
-	@Autowired
-	private CustomThreadPoolProperties customThreadPoolConfigProperties;
-
 	@Bean("customAsyncExcecutor")
-	public Executor customAsyncExcecutor() {
+	public Executor customAsyncExcecutor(CustomThreadPoolProperties customThreadPoolConfigProperties) {
 		logger.info("start customAsyncExcecutor");
-		ThreadPoolTaskExecutor executor = new ThreadPoolExecutorMdcWrapper();
-		executor.setCorePoolSize(customThreadPoolConfigProperties.getCorePoolSize());
-		executor.setMaxPoolSize(customThreadPoolConfigProperties.getMaxPoolSize());
-		executor.setQueueCapacity(customThreadPoolConfigProperties.getQueueCapacity());
-		executor.setThreadNamePrefix(customThreadPoolConfigProperties.getNamePrefix());
-		executor.setKeepAliveSeconds(customThreadPoolConfigProperties.getKeepAliveTime());
-		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-		executor.initialize();
-		return executor;
+		ThreadPoolExecutor.CallerRunsPolicy callerRunsPolicy = new ThreadPoolExecutor.CallerRunsPolicy();
+		return initExcutor(customThreadPoolConfigProperties, callerRunsPolicy);
+	}
+
+	private Executor initExcutor(AbstractExecutorPool abstractExecutorPool, RejectedExecutionHandler rejectedExecutionHandler) {
+		ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
+		threadPool.setCorePoolSize(abstractExecutorPool.getCorePoolSize());
+		threadPool.setMaxPoolSize(abstractExecutorPool.getMaxPoolSize());
+		threadPool.setKeepAliveSeconds(abstractExecutorPool.getKeepAliveTime());
+		threadPool.setQueueCapacity(abstractExecutorPool.getQueueCapacity());
+		threadPool.setThreadNamePrefix(abstractExecutorPool.getNamePrefix());
+		threadPool.setRejectedExecutionHandler(rejectedExecutionHandler);
+		threadPool.initialize();
+		return threadPool;
 	}
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service-eca>
+	<eca service="PssService" event="return" run-on-error="true" run-on-failure="true">
+		<condition map-name="extendmap" field-name="SRFalg" operator="equals" values="response" />
+		<action service="RejectReturnService" mode="sync" />
+	</eca>
+</service-eca>

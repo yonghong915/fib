@@ -20,7 +20,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		LOGGER.info("Client received: msg is : [{}]", msg);
 		if (msg instanceof Response rsp) {
-			DefaultFuture.received(ctx.channel(), rsp);
+			DefaultFuture.received(rsp);
 		}
 	}
 

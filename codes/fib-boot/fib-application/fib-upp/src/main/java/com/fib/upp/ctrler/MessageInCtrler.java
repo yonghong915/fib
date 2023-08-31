@@ -9,14 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 来账公共处理
- * 
- * @author fangyh
- * @version 1.0
- * @since 1.0
- * @date 2021-02-24
- */
 @RestController
 @RequestMapping("/message")
 public class MessageInCtrler {
@@ -26,11 +18,11 @@ public class MessageInCtrler {
 	 * 往账处理入口
 	 */
 	@PostMapping(value = "/handleOut")
-	public Map<String,String> handleOut() {
+	public Map<String, String> handleOut() {
 		LOGGER.info("");
-		Map<String,String> rtnMap = new HashMap<>();
-	    rtnMap.put("name", "pig");
-	    rtnMap.put("type", "5");
+		Map<String, String> rtnMap = new HashMap<>();
+		rtnMap.put("name", "pig");
+		rtnMap.put("type", "5");
 		return rtnMap;
 	}
 
@@ -41,5 +33,4 @@ public class MessageInCtrler {
 	public void handleIn() {
 		LOGGER.info("");
 	}
-
 }

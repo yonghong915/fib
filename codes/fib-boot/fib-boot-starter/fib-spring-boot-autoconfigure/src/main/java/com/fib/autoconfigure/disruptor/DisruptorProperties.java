@@ -14,7 +14,7 @@ import com.fib.autoconfigure.util.PrefixUtil;
 @ConfigurationProperties(PrefixUtil.DISRUPTOR_PREFIX)
 public class DisruptorProperties {
 
-	/** Enable Disruptor. */
+	/** Enable Disruptor */
 	private boolean enabled = false;
 	/** 是否自动创建RingBuffer对象 */
 	private boolean ringBuffer = false;

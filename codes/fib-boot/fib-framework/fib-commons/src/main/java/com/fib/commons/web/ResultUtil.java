@@ -1,12 +1,19 @@
 package com.fib.commons.web;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author fangyh
  * @since 2020-12-14
  * @version 1.0
  */
-public class ResultUtil {
+public class ResultUtil<T> implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private ResultUtil() {
 		// do nothing
 	}

@@ -437,8 +437,7 @@ public class Constant {
 	}
 
 	public enum BatchStatus {
-		REGISTER("00", "已登记"), INPROCESS("03", "处理中"), DUE("01", "已到期"), COMPLETE("02", "已完成"), CANCEL("04", "取消"),
-		ERROR("05", "异常待处理");
+		REGISTER("00", "已登记"), INPROCESS("03", "处理中"), DUE("01", "已到期"), COMPLETE("02", "已完成"), CANCEL("04", "取消"), ERROR("05", "异常待处理");
 
 		private String code;
 
@@ -459,8 +458,7 @@ public class Constant {
 	}
 
 	public enum JavaDataType {
-		STRING("String", "大额"), BYTE_ARRAY("byte[]", "小额"), INT("int", "大额"), BYTE("byte", "大额"), LONG("long", "大额"),
-		SHORT("short", "大额");
+		STRING("String", "大额"), BYTE_ARRAY("byte[]", "小额"), INT("int", "大额"), BYTE("byte", "大额"), LONG("long", "大额"), SHORT("short", "大额");
 
 		private String code;
 

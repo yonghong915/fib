@@ -16,6 +16,10 @@ public class SortHashMap<K, V> extends HashMap<K, V> {
 	private static final long serialVersionUID = 1L;
 	private transient List<K> sortList;
 
+	public SortHashMap() {
+		this.sortList = new ArrayList<>();
+	}
+
 	public SortHashMap(int initialCapacity) {
 		super(initialCapacity);
 		this.sortList = new ArrayList<>(initialCapacity);
@@ -50,6 +54,11 @@ public class SortHashMap<K, V> extends HashMap<K, V> {
 			this.sortList.add(index, key);
 		}
 		return super.put(key, value);
+	}
+
+	@Override
+	public V get(Object obj) {
+		return super.get(obj);
 	}
 
 	public V get(int index) {

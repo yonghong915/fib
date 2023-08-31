@@ -11,9 +11,12 @@ public interface IXmlService {
 
 	Document getDocument(String xmlText);
 
+	Document createDocument(String fileName);
+
 	List<Node> selectNodes(Node node, String xpathExpression);
 
 	String getXPathValue(Node node, String xpathExpression);
 
 	boolean validate(String schemaURI);
+
 }

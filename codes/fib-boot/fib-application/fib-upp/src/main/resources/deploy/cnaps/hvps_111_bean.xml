@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<message-bean xmlns="http://www.fib.com/schema/fib-config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.fib.com/schema/fib-config" id="hvps_111_bean" message-charset="UTF-8" short-text="hvps_111_bean"
-	class="com.fib.cnaps.messagebean.recv.req.Hvps111Bean">
-	<field name="msgHeader" short-text="报文头" field-type="combine-field" reference="msgHeader" />
-	<field name="digitalSignature" short-text="数字签名" field-type="fixed-field" data-type="str" length="2048" prefix="{S:" suffix="0x7D0D0A"
-		padding-direction="none" />
-	<field name="hvps_111_out" short-text="报文体" field-type="combine-field" reference="hvps_111_out" />
-</message-bean>

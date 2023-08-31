@@ -26,13 +26,11 @@ public class DefaultFuture extends CompletableFuture<Object> {
 	private static final Map<Long, DefaultFuture> FUTURES = new ConcurrentHashMap<>();
 
 	private final Long id;
-	private final Channel channel;
 	private final Request request;
 	private final int timeout;
 	private Timeout timeoutCheckTask;
 	private ExecutorService executor;
-	public static final Timer TIME_OUT_TIMER = new HashedWheelTimer(
-			new NamedThreadFactory("dubbo-future-timeout", true), 30, TimeUnit.MILLISECONDS);
+	public static final Timer TIME_OUT_TIMER = new HashedWheelTimer(new NamedThreadFactory("dubbo-future-timeout", true), 30, TimeUnit.MILLISECONDS);
 
 	public ExecutorService getExecutor() {
 		return executor;
@@ -43,7 +41,6 @@ public class DefaultFuture extends CompletableFuture<Object> {
 	}
 
 	private DefaultFuture(Channel channel, Request request, int timeout) {
-		this.channel = channel;
 		this.request = request;
 		this.id = request.getId();
 		this.timeout = timeout > 0 ? timeout : 5000;
@@ -78,11 +75,11 @@ public class DefaultFuture extends CompletableFuture<Object> {
 		future.timeoutCheckTask = TIME_OUT_TIMER.newTimeout(task, future.getTimeout(), TimeUnit.MILLISECONDS);
 	}
 
-	public static void received(Channel channel, Response response) {
-		received(channel, response, false);
+	public static void received(Response response) {
+		received(response, false);
 	}
 
-	public static void received(Channel channel, Response response, boolean timeout) {
+	public static void received(Response response, boolean timeout) {
 		try {
 			DefaultFuture future = FUTURES.remove(response.getId());
 			if (future != null) {
@@ -108,19 +105,14 @@ public class DefaultFuture extends CompletableFuture<Object> {
 
 		if (executor != null && executor instanceof ThreadlessExecutor threadlessExecutor) {
 			if (threadlessExecutor.isWaiting()) {
-				threadlessExecutor.notifyReturn(
-						new IllegalStateException("The result has returned, but the biz thread is still waiting"
-								+ " which is not an expected state, interrupt the thread manually by returning an exception."));
+				threadlessExecutor.notifyReturn(new IllegalStateException("The result has returned, but the biz thread is still waiting"
+						+ " which is not an expected state, interrupt the thread manually by returning an exception."));
 			}
 		}
 	}
 
 	private long getId() {
 		return id;
-	}
-
-	private Channel getChannel() {
-		return channel;
 	}
 
 	public Request getRequest() {
@@ -155,7 +147,7 @@ public class DefaultFuture extends CompletableFuture<Object> {
 
 		private void notifyTimeout(DefaultFuture future) {
 			Response timeoutResponse = new Response(future.getId());
-			DefaultFuture.received(future.getChannel(), timeoutResponse, true);
+			DefaultFuture.received(timeoutResponse, true);
 		}
 	}
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<message-bean-mapping id="CCMS_801MappingOut" source-type="message-bean" target-type="map">
+<message-bean-mapping  id="CCMS_801MappingOut" source-type="message-bean" target-type="map">
 	<mapping type="value" to="serviceId">processCommunicationEvent</mapping>
 	<mapping type="value" to="productId">X021cm801</mapping>
 	<mapping type="value" to="communicationEventTypeId">MESSAGE_IN_COMM</mapping>

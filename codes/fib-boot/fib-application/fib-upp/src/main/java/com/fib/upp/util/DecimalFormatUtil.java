@@ -3,7 +3,6 @@ package com.fib.upp.util;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-
 /**
  * 数字格式化工具类，保留两位小数
  * 

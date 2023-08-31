@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <message-bean id="Ccms801Out" type="xml" xpath="." pack-mode="template" short-text="业务退回应答报文"
-	class="com.fib.upp.message.bean.impl.Ccms801Out" message-charset="UTF-8"
+	class="com.fib.msgconverter.message.bean.impl.Ccms801Out" message-charset="UTF-8"
 	name-space="default=urn:cnaps:std:ccms:2010:tech:xsd:ccms.801.001.02|xsi=http://www.w3.org/2001/XMLSchema-instance" schema-valid="true"
 	schema-valid-type="W3C" schema-valid-path="xsd/ccms.801.001.02.xsd">
+	<field name="GrpHdr" short-text="业务头组件" field-type="combine-field" reference="GrpHdr" required="true" shield="false"
+		xpath="default:Document/default:SysStsNtfctn/default:GrpHdr" />
 	<field name="OriginalSystemDate" short-text="原系统日期" field-type="fixed-field" data-type="datetime" length="10" required="true" shield="false"
 		pattern="yyyy-MM-dd" xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:OrgnlSysDt/text()" />
-	
-	
-	<field name="ccti" short-text="CustomerCreditTransferInformation" field-type="table" xpath="default:Document/default:CstmrCdtTrf" row-xpath="default:CstmrCdtTrfInf">
-		<field name="TransactionIdentification" short-text="明细标识号" field-type="fixed-field" data-type="str" length="16" required="true" shield="true" xpath="default:TxId/text()"/>	
-		<field name="Name" short-text="付款人名称" field-type="fixed-field" data-type="str" length="60" required="true" shiled="true" xpath="default:Dbtr/default:Nm/text()"/>	
-		<field name="AddressLine" short-text="付款人地址" field-type="fixed-field" data-type="str" length="70" required="false" shiled="true" xpath="default:Dbtr/default:PstlAdr/default:AdrLine/text()"/>	
-	</field>
-	
-	
 	<field name="OriginalSystemStatus" short-text="原系统状态" field-type="fixed-field" data-type="str" length="2" required="true" shield="false"
 		xpath="default:Document/default:SysStsNtfctn/default:SysStsInf/default:OrgnlSysSts/text()">
 		<value-range>

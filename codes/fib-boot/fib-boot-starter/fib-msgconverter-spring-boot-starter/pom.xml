@@ -16,28 +16,14 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.rocketmq</groupId>
-			<artifactId>rocketmq-spring-boot-starter</artifactId>
-			<version>2.2.2</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>com.fib</groupId>
-			<artifactId>fib-commons</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fib</groupId>
-			<artifactId>fib-disruptor-spring-boot-starter</artifactId>
+			<artifactId>fib-spring-boot-autoconfigure</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lmax</groupId>
-			<artifactId>disruptor</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-core</artifactId>
-			<version>1.15.1</version>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-msg-converter</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>
