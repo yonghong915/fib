@@ -17,15 +17,10 @@ import org.xml.sax.SAXException;
 import com.fib.commons.exception.CommonException;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 
 public class Dom4jParser {
 	private static final String DEFAULT_SAX_FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
 	private static final String DEFAULT_NAMESPACE_NAME = "default";
-	private static final String SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
-	private static final String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
-	private static final String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
-	private static final String ATTRIBUTE_LINE = "line";
 	private String namespaceURI;
 
 	public Dom4jParser() {
@@ -44,17 +39,17 @@ public class Dom4jParser {
 	}
 
 	public Document getDocument(InputStream in) {
-		SAXReader reader = new SAXReader();
+		SAXReader saxReader = new SAXReader();
 		Document doc = null;
 		try {
-			reader.setFeature(DEFAULT_SAX_FEATURE, true);
-			doc = reader.read(in);
+			saxReader.setFeature(DEFAULT_SAX_FEATURE, true);
+			doc = saxReader.read(in);
 		} catch (DocumentException | SAXException e) {
 			throw new CommonException(e);
 		}
-		String namespaceURI = doc.getRootElement().getNamespaceURI();
-		if (StrUtil.isEmptyIfStr(namespaceURI)) {
-			setXPathNamespaceURIs(namespaceURI);
+		String namespaceUri = doc.getRootElement().getNamespaceURI();
+		if (CharSequenceUtil.isNotEmpty(namespaceUri)) {
+			setXPathNamespaceURIs(namespaceUri);
 		}
 		return doc;
 	}
@@ -62,9 +57,9 @@ public class Dom4jParser {
 	public Document getDocument(String xmlText) {
 		try {
 			Document doc = DocumentHelper.parseText(xmlText);
-			String namespaceURI = doc.getRootElement().getNamespaceURI();
-			if (StrUtil.isEmptyIfStr(namespaceURI)) {
-				setXPathNamespaceURIs(namespaceURI);
+			String namespaceUri = doc.getRootElement().getNamespaceURI();
+			if (CharSequenceUtil.isNotEmpty(namespaceUri)) {
+				setXPathNamespaceURIs(namespaceUri);
 			}
 			return doc;
 		} catch (DocumentException e) {
@@ -73,6 +68,9 @@ public class Dom4jParser {
 	}
 
 	public List<Node> selectNodes(Node node, String xpathExpression) {
+		if (CharSequenceUtil.isNotEmpty(namespaceURI)) {
+
+		}
 		return node.selectNodes(xpathExpression);
 	}
 
@@ -88,16 +86,11 @@ public class Dom4jParser {
 		private String namespaceURI;
 
 		public Builder() {
-			//
+			// nothing to do
 		}
 
 		public Builder(Dom4jParser validator) {
 			this.namespaceURI = validator.namespaceURI;
-		}
-
-		public Builder setNamespaceURI(String namespaceURI) {
-			this.namespaceURI = namespaceURI;
-			return this;
 		}
 
 		public Dom4jParser build() {
@@ -106,6 +99,7 @@ public class Dom4jParser {
 	}
 
 	private void setXPathNamespaceURIs(String namespaceURI) {
+		this.namespaceURI = namespaceURI;
 		Map<String, String> namespaces = new TreeMap<>();
 		namespaces.put(DEFAULT_NAMESPACE_NAME, namespaceURI);
 		DocumentFactory.getInstance().setXPathNamespaceURIs(namespaces);

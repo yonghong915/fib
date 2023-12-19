@@ -15,6 +15,7 @@ import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 import org.xml.sax.InputSource;
 
+import com.fib.commons.util.SortHashMap;
 import com.fib.msgconverter.message.bean.MessageBean;
 import com.fib.msgconverter.message.metadata.Field;
 import com.fib.msgconverter.message.metadata.Message;

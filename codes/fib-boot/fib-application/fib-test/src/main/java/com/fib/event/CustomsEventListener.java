@@ -18,6 +18,7 @@ public class CustomsEventListener implements ApplicationListener<ApplicationEven
 		LOGGER.info("Received to event is [{}],source={}", event.getClass(), event.getSource());
 		if ((event instanceof CustomsEvent evt) && (evt.getSource() instanceof CustomEntity entity)) {
 			String serviceName = entity.getServiceName();
+			Object data = entity.getData();
 			LOGGER.info("serviceName={}", serviceName);
 		}
 		/*

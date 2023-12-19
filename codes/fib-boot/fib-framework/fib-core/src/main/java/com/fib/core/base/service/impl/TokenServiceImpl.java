@@ -1,11 +1,11 @@
 package com.fib.core.base.service.impl;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import com.fib.core.base.service.ITokenService;
 
 import cn.hutool.core.util.StrUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service("tokenService")
 public class TokenServiceImpl implements ITokenService {

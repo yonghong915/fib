@@ -21,7 +21,6 @@ import cn.hutool.core.text.StrFormatter;
 public class CustomClassLoader extends URLClassLoader {
 	public CustomClassLoader(ClassLoader classLoader) {
 		super(new URL[] {}, classLoader);
-
 	}
 
 	public CustomClassLoader(URL[] urls, ClassLoader parent, URLStreamHandlerFactory factory) {

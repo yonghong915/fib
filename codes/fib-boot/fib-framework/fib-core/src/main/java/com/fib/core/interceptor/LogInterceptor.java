@@ -1,8 +1,5 @@
 package com.fib.core.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,6 +7,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.fib.core.util.ConstantUtil;
 
 import cn.hutool.core.util.IdUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * MDC（Mapped Diagnostic Context，映射调试上下文）拦截器,实现全链路调用日志跟踪

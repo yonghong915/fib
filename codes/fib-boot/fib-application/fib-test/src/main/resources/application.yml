@@ -1,6 +1,12 @@
 spring:
   application:
-    name: springdataredis
+    name: fibtest
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:D:/software/database/sqlite/3.39.2/uppdb.db
+server:
+  servlet:
+    context-path: /fibtest
   #Redis相关配置
 #  redis:
 #    host: localhost

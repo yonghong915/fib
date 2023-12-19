@@ -20,6 +20,7 @@ import com.fib.commons.exception.CommonException;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ZipUtil;
 
 /**
@@ -62,6 +63,12 @@ public class CommUtils {
 			rs.append(source.charAt(a));
 		}
 		return rs.toString();
+	}
+
+	public static byte[] randomBytes(final int length) {
+		final byte[] bytes = new byte[length];
+		RandomUtil.getRandom(true).nextBytes(bytes);
+		return bytes;
 	}
 
 	/**

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fib.upp.MoneySerializer;
 import com.fib.upp.entity.UserEntity;
 import com.fib.upp.service.IUserService;
 
@@ -17,6 +19,9 @@ import com.fib.upp.service.IUserService;
 public class AppCtrler {
 	@Resource
 	private IUserService userService;
+
+	@JsonSerialize(using = MoneySerializer.class)
+	private Long acctAmt;
 
 	@GetMapping("/getStr")
 	public String getStr() {

@@ -23,15 +23,15 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class ASyncExecutorConfig {
 	private static final Logger logger = LoggerFactory.getLogger(ASyncExecutorConfig.class);
 
-	@Bean("customAsyncExcecutor")
-	public Executor customAsyncExcecutor(CustomThreadPoolProperties customThreadPoolConfigProperties) {
+    @Bean("customAsyncExcecutor")
+    public Executor customAsyncExcecutor(CustomThreadPoolProperties customThreadPoolConfigProperties) {
 		logger.info("start customAsyncExcecutor");
 		ThreadPoolExecutor.CallerRunsPolicy callerRunsPolicy = new ThreadPoolExecutor.CallerRunsPolicy();
 		return initExcutor(customThreadPoolConfigProperties, callerRunsPolicy);
 	}
 
 	private Executor initExcutor(AbstractExecutorPool abstractExecutorPool, RejectedExecutionHandler rejectedExecutionHandler) {
-		ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
+		ThreadPoolTaskExecutor threadPool = new ThreadPoolExecutorMdcWrapper();
 		threadPool.setCorePoolSize(abstractExecutorPool.getCorePoolSize());
 		threadPool.setMaxPoolSize(abstractExecutorPool.getMaxPoolSize());
 		threadPool.setKeepAliveSeconds(abstractExecutorPool.getKeepAliveTime());

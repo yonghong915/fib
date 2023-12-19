@@ -18,6 +18,10 @@ public class ThreadMdcUtil {
 			MDC.put(ConstantUtil.TRACE_ID, IdUtil.simpleUUID());
 		}
 	}
+	
+	public static void remove() {
+		MDC.remove(ConstantUtil.TRACE_ID);
+	}
 
 	public static <T> Callable<T> wrap(final Callable<T> callable, final Map<String, String> context) {
 		return () -> {

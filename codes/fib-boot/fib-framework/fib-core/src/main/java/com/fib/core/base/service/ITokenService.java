@@ -1,6 +1,6 @@
 package com.fib.core.base.service;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface ITokenService {
 

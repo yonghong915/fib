@@ -1,7 +1,6 @@
 package com.fib.mq;
 
 import java.io.IOException;
-
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQEnvironment;
 import com.ibm.mq.MQException;
@@ -12,53 +11,31 @@ import com.ibm.mq.MQQueue;
 import com.ibm.mq.MQQueueManager;
 
 public class MQ4Ibm {
-
 	// 定义队列管理器和队列的名称
-
 	private static String qmName;
-
 	private static String qName;
-
 	private static MQQueueManager qMgr;
-
 	static {
-
 		// 设置环境:
-
 		// MQEnvironment中包含控制MQQueueManager对象中的环境的构成的静态变量，MQEnvironment的值的设定会在MQQueueManager的构造函数加载的时候起作用，
-
 		// 因此必须在建立MQQueueManager对象之前设定MQEnvironment中的值.
-
-		MQEnvironment.hostname = "192.168.56.11"; // MQ服务器的IP地址
-
-		MQEnvironment.channel = "CLIENT.QM_APPLE"; // 服务器连接的通道
-
+		MQEnvironment.hostname = "192.168.56.12"; // MQ服务器的IP地址
+		MQEnvironment.channel = "DEV.ADMIN.SVRCONN"; // 服务器连接的通道
 		MQEnvironment.CCSID = 1381; // 服务器MQ服务使用的编码1381代表GBK、1208代表UTF(Coded Character Set Identifier:CCSID)
-
-		MQEnvironment.port = 1415; // MQ端口
-
+		MQEnvironment.port = 1414; // MQ端口
+		MQEnvironment.userID = "admin";
+		MQEnvironment.password = "passw0rd";
 		qmName = "QM1"; // MQ的队列管理器名称
-
-		qName = "Q1"; // MQ远程队列的名称
-
+		qName = "DEV.QUEUE.1"; // MQ远程队列的名称
 		try {
-
 			// 定义并初始化队列管理器对象并连接
-
 			// MQQueueManager可以被多线程共享，但是从MQ获取信息的时候是同步的，任何时候只有一个线程可以和MQ通信。
-
 			qMgr = new MQQueueManager(qmName);
-
 		} catch (MQException e) {
-
 			// TODO Auto-generated catch block
-
 			System.out.println("初使化MQ出错");
-
 			e.printStackTrace();
-
 		}
-
 	}
 
 	/**
@@ -107,9 +84,7 @@ public class MQ4Ibm {
 			/* 关闭了就重新打开 */
 
 			if (qMgr == null || !qMgr.isConnected()) {
-
 				qMgr = new MQQueueManager(qmName);
-
 			}
 
 			MQQueue queue = qMgr.accessQueue(qName, openOptions);
@@ -117,13 +92,11 @@ public class MQ4Ibm {
 			// 定义一个简单的消息
 			MQMessage putMessage = new MQMessage();
 			// 将数据放入消息缓冲区
-
 			putMessage.writeUTF(message);
 
 			// 设置写入消息的属性(默认属性)
 
 			MQPutMessageOptions pmo = new MQPutMessageOptions();
-
 			// 将消息写入队列
 
 			queue.put(putMessage, pmo);
@@ -268,13 +241,13 @@ public class MQ4Ibm {
 
 	}
 
+//
 	public static void main(String args[]) {
-
-		/* 下面两个方法可同时使用，也可以单独使用 */
-
+//
+//		/* 下面两个方法可同时使用，也可以单独使用 */
+//
 		sendMessage("this is a test by MQ API Client model");
-
-		// getMessage();
-
+		getMessage();
+//
 	}
 }

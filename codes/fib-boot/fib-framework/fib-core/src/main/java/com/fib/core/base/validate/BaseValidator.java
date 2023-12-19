@@ -1,6 +1,6 @@
 package com.fib.core.base.validate;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 校验器

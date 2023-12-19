@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh_CN" id="htmlRoot">
+
+<head>
+
+	   
+	<meta charset="utf-8" />
+
+	    <title>大屏幕设计器</title>
+	<script src="./static/js/vue.global.prod.min-3.3.8.js"></script>
+	<script src="static/js/react.production.min.js"></script>
+	<script src="static/js/react-dom.production.min.js"></script>
+	<script src="static/js/babel.min.js"></script>
+	<script src="static/js/moment.min.js"></script>
+	<script src="static/BaseModal.js"></script>
+	<script type="module" src="static/file.js"></script>
+	<link rel="stylesheet" href="static/css/antd.min.css" />
+	<script src="static/js/antd.min-4.24.14.js"></script>
+	<script src="./static/js/axios.min-1.6.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ant-design-icons/5.2.6/index.umd.min.js"></script>
+</head>
+
+<body>
+	<div id="demo-app"></div>
+	<script type="text/babel">
+		class App extends React.Component {
+			//构造方法
+			constructor() {
+				super()
+				this.state = {
+					visible: false,
+					arr: [],
+					dataSource: [],
+					columns: [
+						{
+							title: '编号',
+							dataIndex: 'id'
+						},
+						{
+							title: '姓名',
+							dataIndex: 'name',
+							//render: text => <a href="javascript:;">{text}</a>
+							slots: {customRender: "id"}
+						},
+						{
+							title: '性味',
+							dataIndex: 'age'
+						},
+						{
+							title: '归经',
+							dataIndex: 'addr'
+						}, {
+							title: '功效',
+							dataIndex: 'addr'
+						}, {
+							title: '药性',
+							dataIndex: 'addr'
+						}, {
+							title: '临床应用',
+							dataIndex: 'addr'
+						}, {
+							title: '图片',
+							dataIndex: 'imgUrl',
+							key: 'imgUrl',
+							render: text => <img width="40px" src={"http://localhost:8080/cmms/" + text} />,
+						}, {
+							title: '操作',
+							key: 'operation',
+							dataIndex: 'operation',
+							//ellipsis: true,
+							align: 'center',
+							render: (text, record) => {
+								return (
+									<div>
+										<antd.Button htmlType="button" onClick={() => {this.onDel(record.id)}}>删除</antd.Button>
+										<antd.Modal
+											title="Basic Modal"
+											visible={this.state.visible}
+											onOk={this.handleOk}
+											onCancel={this.handleCancel}
+										></antd.Modal>
+										<antd.Button htmlType="button" onClick={() => {onUpdate(record.id)}}>修改</antd.Button>
+									</div>
+								)
+							}
+						}
+					]
+				}
+			}
+
+			componentWillMount() {
+				//调用get接口 then表示请求成功 里面的方法表示回调
+				axios.get("http://localhost:8080/cmms/chineseMedicine/list").then((res) => {
+					console.log(res)
+					//拿到我们想要渲染的数据(res)
+					this.state.arr = res.data
+					//更新state，让视图刷新
+					this.setState({
+						arr: this.state.arr
+					})
+				})
+			}
+			render() {
+				return (
+					<div className="App">
+						<antd.Table dataSource={this.state.arr} columns={this.state.columns} pagination={{pageSize: 5}} rowKey={record => record.id} scroll={{y: 500, x: 1000}} defaultExpandAllRows bordered />;
+					</div>)
+			}
+
+			showModal = () => {
+				console.log("showModal");
+				this.setState({
+					visible: true
+				})
+			}
+
+			handleOk = e => {
+				console.log(e);
+				this.setState({
+					visible: false,
+				});
+			};
+
+			handleCancel = e => {
+				console.log(e);
+				this.setState({
+					visible: false,
+				});
+			};
+
+			onDel = (id) => {
+				console.log(id);
+				this.showModal();
+			};
+		}
+
+		const onUpdate = (id) => {
+			console.log(id);
+			<antd.Modal
+				width={600}
+				destroyOnClose
+				title="修改状态"
+				visible="true"
+				onOk={handleOk}
+				onCancel={() => handleCancel()}
+			>
+				<antd.Form layout="inline" labelAlign='right'>
+					<antd.Row gutter={{md: 12, lg: 24, xl: 48}}>
+						<antd.Col md={12} sm={24}>
+							<antd.FormItem label="资&nbsp;&nbsp;产&nbsp;&nbsp;ID">
+
+							</antd.FormItem>
+						</antd.Col>
+
+						<antd.Col md={12} sm={24}>
+							<antd.FormItem label="资产编号">
+
+							</antd.FormItem>
+						</antd.Col>
+
+					</antd.Row>
+				</antd.Form>
+			</antd.Modal >
+		}
+
+		ReactDOM.render(<App />, document.getElementById('demo-app'));
+	</script>
+
+	<script type="module">
+		import {getUsefulContents} from './static/file.js'
+		getUsefulContents('http://localhost:8080/cmms/chineseMedicine/list',
+			data => {
+				console.log(data);
+			});
+	</script>
+
+
+</body>
+
+</html>
