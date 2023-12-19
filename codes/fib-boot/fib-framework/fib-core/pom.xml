@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-framework</artifactId>
-		<version>1.0.0</version>
+		<version>0.0.1</version>
 	</parent>
 	<artifactId>fib-core</artifactId>
 	<name>fib-core</name>
@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>transmittable-thread-local</artifactId>
-			<version>2.14.3</version>
+			<version>2.14.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.dubbo</groupId>

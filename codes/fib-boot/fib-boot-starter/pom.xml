@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>fib-boot</artifactId>
 		<groupId>com.fib</groupId>
-		<version>1.0.0</version>
+		<version>0.0.1</version>
 	</parent>
 	<artifactId>fib-boot-starter</artifactId>
 	<packaging>pom</packaging>

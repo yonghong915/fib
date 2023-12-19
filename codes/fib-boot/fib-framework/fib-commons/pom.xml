@@ -4,10 +4,13 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.fib</groupId>
+	<parent>
+		<groupId>com.fib</groupId>
+		<artifactId>fib-framework</artifactId>
+		<version>0.0.1</version>
+	</parent>
 	<artifactId>fib-commons</artifactId>
 	<name>fib-commons</name>
-	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -17,8 +20,6 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
-		<dubbo.version>3.1.7</dubbo.version>
-		<hutool.version>5.8.12</hutool.version>
 		<any23.version>2.4</any23.version>
 		<javassist.version>3.27.0-GA</javassist.version>
 		<antlr.version>2.7.7</antlr.version>
@@ -39,86 +40,62 @@
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>${hutool.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
-			<version>${zxing.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
-			<version>${jsch.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-core</artifactId>
-			<version>${protostuff.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-runtime</artifactId>
-			<version>${protostuff.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>${xstream.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.jasypt</groupId>
 			<artifactId>jasypt</artifactId>
-			<version>${jasypt.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>saxpath</groupId>
 			<artifactId>saxpath</artifactId>
-			<version>${saxpath.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>${javassist.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.dubbo</groupId>
 			<artifactId>dubbo</artifactId>
-			<version>${dubbo.version}</version>
 			<optional>true</optional>
 		</dependency>
-		<!-- 	<dependency>
-			<groupId>info.monitorenter</groupId>
-			<artifactId>cpdetector</artifactId>
-			<version>${cpdetector.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.mozilla.intl</groupId>
-			<artifactId>chardet</artifactId>
-			<version>${chardet.version}</version>
-			<optional>true</optional>
-		</dependency> -->
+
 		<dependency>
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
@@ -156,7 +133,6 @@
 		<dependency>
 			<groupId>org.dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<version>2.1.4</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -164,7 +140,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -174,7 +149,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
 				<configuration>
 					<skipTests>true</skipTests>
 				</configuration>

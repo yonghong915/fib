@@ -24,7 +24,7 @@ public class ASyncExecutorConfig {
 	private static final Logger logger = LoggerFactory.getLogger(ASyncExecutorConfig.class);
 
     @Bean("customAsyncExcecutor")
-    public Executor customAsyncExcecutor(CustomThreadPoolProperties customThreadPoolConfigProperties) {
+    Executor customAsyncExcecutor(CustomThreadPoolProperties customThreadPoolConfigProperties) {
 		logger.info("start customAsyncExcecutor");
 		ThreadPoolExecutor.CallerRunsPolicy callerRunsPolicy = new ThreadPoolExecutor.CallerRunsPolicy();
 		return initExcutor(customThreadPoolConfigProperties, callerRunsPolicy);

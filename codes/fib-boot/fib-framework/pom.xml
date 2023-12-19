@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-boot</artifactId>
-		<version>1.0.0</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<modules>
