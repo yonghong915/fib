@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>fib-boot-starter</artifactId>
 		<groupId>com.fib</groupId>
-		<version>1.0.0</version>
+		<version>0.0.1</version>
 	</parent>
 	<artifactId>fib-netty-spring-boot-starter</artifactId>
 	<name>fib-netty-spring-boot-starter</name>

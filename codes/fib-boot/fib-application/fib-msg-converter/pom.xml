@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-application</artifactId>
-		<version>1.0.0</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>fib-msg-converter</artifactId>
 	<name>fib-msg-converter</name>
@@ -49,7 +51,7 @@
 		<dependency>
 			<groupId>org.jgroups</groupId>
 			<artifactId>jgroups</artifactId>
-			<version>2.10.0.GA</version>
+			<version>5.3.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.mq</groupId>
@@ -83,11 +85,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-quartz</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
 		<!-- 本地jar包 -->
 		<dependency>
 			<groupId>com.giantstone.common.util</groupId>
@@ -103,14 +100,30 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/giantstone-message-bean.jar</systemPath>
 		</dependency>
-		<!-- <dependency> <groupId>com.giantstone.dao</groupId> <artifactId>giantstone-dao</artifactId> <version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/giantstone-dao.jar</systemPath> 
+		<!-- <dependency> <groupId>com.giantstone.dao</groupId>
+		<artifactId>giantstone-dao</artifactId> <version>1.0</version>
+		<scope>system</scope>
+		<systemPath>${project.basedir}/src/main/resources/lib/giantstone-dao.jar</systemPath> 
 			</dependency> -->
-		<!-- <dependency> <groupId>cmbc.corebank.exception.util</groupId> <artifactId>cmbc-util</artifactId> <version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/cmbc.corebank.exception.util-20101026-2539.jar</systemPath> 
-			</dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId> <artifactId>sapjco3</artifactId> <version>1.0</version> <scope>system</scope> 
-			<systemPath>${project.basedir}/src/main/resources/lib/sapjco3.jar</systemPath> </dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId> 
-			<artifactId>giantstone-httpservicecallclient</artifactId> <version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/giantstone-httpservicecallclient.jar</systemPath> 
-			</dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId> <artifactId>giantstone-security-control-service</artifactId> <version>1.0</version> 
-			<scope>system</scope> <systemPath>${project.basedir}/src/main/resources/lib/giantstone-security-control-service.jar</systemPath> </dependency> -->
+		<!-- <dependency> <groupId>cmbc.corebank.exception.util</groupId>
+		<artifactId>cmbc-util</artifactId> <version>1.0</version>
+		<scope>system</scope>
+		<systemPath>${project.basedir}/src/main/resources/lib/cmbc.corebank.exception.util-20101026-2539.jar</systemPath> 
+			</dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId>
+		<artifactId>sapjco3</artifactId> <version>1.0</version>
+		<scope>system</scope> 
+			<systemPath>${project.basedir}/src/main/resources/lib/sapjco3.jar</systemPath>
+		</dependency> <dependency>
+		<groupId>cmbc.corebank.exception.util</groupId> 
+			<artifactId>giantstone-httpservicecallclient</artifactId>
+		<version>1.0</version> <scope>system</scope>
+		<systemPath>${project.basedir}/src/main/resources/lib/giantstone-httpservicecallclient.jar</systemPath> 
+			</dependency> <dependency> <groupId>cmbc.corebank.exception.util</groupId>
+		<artifactId>giantstone-security-control-service</artifactId>
+		<version>1.0</version> 
+			<scope>system</scope>
+		<systemPath>${project.basedir}/src/main/resources/lib/giantstone-security-control-service.jar</systemPath>
+		</dependency> -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -118,7 +131,6 @@
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
-			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
 </project>

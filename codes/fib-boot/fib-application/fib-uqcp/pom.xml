@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-application</artifactId>
-		<version>0.0.1</version>
+		<version>${revision}</version>
 	</parent>
 
 	<artifactId>fib-uqcp</artifactId>
@@ -19,8 +19,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
 	</properties>
 
 	<dependencies>

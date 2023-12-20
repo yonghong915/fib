@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-framework</artifactId>
-		<version>0.0.1</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>fib-commons</artifactId>
 	<name>fib-commons</name>
@@ -125,9 +125,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>bsh</groupId>
+			<groupId>org.beanshell</groupId>
 			<artifactId>bsh</artifactId>
-			<version>2.0b4</version>
+			<version>2.0b5</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

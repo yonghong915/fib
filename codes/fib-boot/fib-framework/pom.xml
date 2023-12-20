@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-boot</artifactId>
-		<version>0.0.1</version>
+		<version>${revision}</version>
 	</parent>
 
 	<modules>
@@ -19,6 +19,5 @@
 		<module>fib-gateway</module>
 		<module>fib-commons</module>
 		<module>fib-core</module>
-		<module>fib-mq</module>
 	</modules>
 </project>

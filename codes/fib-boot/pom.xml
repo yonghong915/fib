@@ -3,24 +3,26 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.fib</groupId>
-	<artifactId>fib-boot</artifactId>
-	<name>fib-boot</name>
-	<url>http://maven.apache.org</url>
-	<version>0.0.1</version>
-	<packaging>pom</packaging>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.0</version>
 		<relativePath />
 	</parent>
+	<groupId>com.fib</groupId>
+	<artifactId>fib-boot</artifactId>
+	<name>fib-boot</name>
+	<url>http://maven.apache.org</url>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+
 	<modules>
 		<module>fib-application</module>
 		<module>fib-framework</module>
 		<module>fib-boot-starter</module>
 	</modules>
 	<properties>
+		<revision>0.0.1</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>21</java.version>
@@ -64,7 +66,7 @@
 		<rocketmq.version>4.8.0</rocketmq.version>
 		<minio.version>8.5.7</minio.version>
 		<okhttp.version>4.9.3</okhttp.version>
-		<dubbo.version>3.1.7</dubbo.version>
+		<dubbo.version>3.2.9</dubbo.version>
 		<dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
 		<docker.image.prefix>fib</docker.image.prefix>
 		<docker.repostory>192.168.56.11:5000</docker.repostory>
@@ -341,6 +343,13 @@
 				<version>${dubbo.version}</version>
 				<optional>true</optional>
 			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>4.0.1</version>
+				<optional>true</optional>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -438,6 +447,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.12.0</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>

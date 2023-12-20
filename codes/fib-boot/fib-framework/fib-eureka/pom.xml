@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-framework</artifactId>
-		<version>1.0.0</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>fib-eureka</artifactId>
 	<name>fib-eureka</name>
@@ -25,7 +25,8 @@
 	<build>
 		<finalName>fib-eureka</finalName>
 		<filters>
-			<filter>${basedir}/src/main/resources/filters/application-${profile.active}.properties</filter>
+			<filter>
+				${basedir}/src/main/resources/filters/application-${profile.active}.properties</filter>
 		</filters>
 		<resources>
 			<resource>

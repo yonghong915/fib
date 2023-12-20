@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fib.autoconfigure.minio.service.IMinioService;
@@ -46,7 +45,6 @@ public class MinioServiceImpl implements IMinioService {
 
 	private MinioClient minioClient;
 
-	@Autowired
 	public MinioServiceImpl(MinioClient minioClient) {
 		this.minioClient = minioClient;
 	}
