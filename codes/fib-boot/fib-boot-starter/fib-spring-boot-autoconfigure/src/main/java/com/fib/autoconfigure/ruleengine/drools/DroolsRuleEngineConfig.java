@@ -26,7 +26,7 @@ public class DroolsRuleEngineConfig {
 	private final KieServices kieServices = KieServices.Factory.get();
 
 	@Bean
-	public KieFileSystem kieFileSystem() throws IOException {
+	KieFileSystem kieFileSystem() throws IOException {
 		KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
 		ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 		Resource[] files = resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "*.*");
@@ -40,7 +40,7 @@ public class DroolsRuleEngineConfig {
 	}
 
 	@Bean
-	public KieContainer kieContainer() throws IOException {
+	KieContainer kieContainer() throws IOException {
 		KieRepository kieRepository = kieServices.getRepository();
 		kieRepository.addKieModule(kieRepository::getDefaultReleaseId);
 		KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem());
@@ -49,17 +49,17 @@ public class DroolsRuleEngineConfig {
 	}
 
 	@Bean
-	public KieBase kieBase() throws IOException {
+	KieBase kieBase() throws IOException {
 		return kieContainer().getKieBase();
 	}
 
 	@Bean
-	public KieSession kieSession() throws IOException {
+	KieSession kieSession() throws IOException {
 		return kieContainer().newKieSession();
 	}
 
 	@Bean
-	public KModuleBeanFactoryPostProcessor kiePostProcessor() {
+	KModuleBeanFactoryPostProcessor kiePostProcessor() {
 		return new KModuleBeanFactoryPostProcessor();
 	}
 }

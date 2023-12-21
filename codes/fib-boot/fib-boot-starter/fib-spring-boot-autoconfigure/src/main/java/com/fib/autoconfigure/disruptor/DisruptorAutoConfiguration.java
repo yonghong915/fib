@@ -43,32 +43,32 @@ public class DisruptorAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public WaitStrategy waitStrategy() {
+	WaitStrategy waitStrategy() {
 		return WaitStrategys.YIELDING_WAIT;
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ThreadFactory threadFactory() {
+	ThreadFactory threadFactory() {
 		return new DisruptorEventThreadFactory();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public EventFactory<DisruptorEvent> eventFactory() {
+	EventFactory<DisruptorEvent> eventFactory() {
 		return new DisruptorBindEventFactory();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public EventTranslatorOneArg<DisruptorEvent, DisruptorEvent> oneArgEventTranslator() {
+	EventTranslatorOneArg<DisruptorEvent, DisruptorEvent> oneArgEventTranslator() {
 		return new DisruptorEventOneArgTranslator();
 	}
 
 	@Bean
 	@ConditionalOnClass({ Disruptor.class })
 	@ConditionalOnProperty(prefix = PrefixUtil.DISRUPTOR_PREFIX, value = "enabled", havingValue = "true")
-	public Disruptor<DisruptorEvent> disruptor(DisruptorProperties properties, WaitStrategy waitStrategy, ThreadFactory threadFactory,
+	Disruptor<DisruptorEvent> disruptor(DisruptorProperties properties, WaitStrategy waitStrategy, ThreadFactory threadFactory,
 			EventFactory<DisruptorEvent> eventFactory) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("build and start disruptor.");
@@ -97,7 +97,7 @@ public class DisruptorAutoConfiguration {
 	}
 
 	@Bean
-	public DisruptorTemplate disruptorTemplate() {
+	DisruptorTemplate disruptorTemplate() {
 		return new DisruptorTemplate();
 	}
 }

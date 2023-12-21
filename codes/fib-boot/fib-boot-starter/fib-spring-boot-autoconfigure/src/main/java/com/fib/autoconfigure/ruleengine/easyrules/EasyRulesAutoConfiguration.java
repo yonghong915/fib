@@ -11,10 +11,10 @@ import com.fib.autoconfigure.ruleengine.IRuleService;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(Rule.class)
 public class EasyRulesAutoConfiguration {
-	
+
 	@Bean("ruleService")
 	@ConditionalOnMissingBean(IRuleService.class)
-	public IRuleService getRuleService() {
+	IRuleService getRuleService() {
 		return new EasyRulesRuleService();
 	}
 }

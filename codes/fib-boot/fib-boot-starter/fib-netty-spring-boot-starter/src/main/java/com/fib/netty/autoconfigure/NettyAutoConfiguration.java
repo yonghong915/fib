@@ -18,7 +18,7 @@ public class NettyAutoConfiguration {
 	@ConditionalOnMissingBean(NettyServer.class)
 	// @ConditionalOnProperty(prefix = "sms", value = "enabled", havingValue =
 	// "true")
-	public NettyServer nettyServer() {
+	NettyServer nettyServer() {
 		return new NettyServer();
 	}
 
@@ -26,7 +26,7 @@ public class NettyAutoConfiguration {
 	@ConditionalOnMissingBean(NettyClient.class)
 	// @ConditionalOnProperty(prefix = "sms", value = "enabled", havingValue =
 	// "true")
-	public NettyClient nettyClient() {
+	NettyClient nettyClient() {
 		return new NettyClient();
 	}
 }

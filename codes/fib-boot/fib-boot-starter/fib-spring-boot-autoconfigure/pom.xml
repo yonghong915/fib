@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<drools.version>7.67.0.Final</drools.version>
+		<drools.version>9.44.0.Final</drools.version>
 		<protostuff.version>1.7.2</protostuff.version>
 		<easy-rules.version>4.1.0</easy-rules.version>
 		<rulebook.version>0.12</rulebook.version>
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>org.kie</groupId>
 			<artifactId>kie-spring</artifactId>
-			<version>${drools.version}</version>
+			<version>7.74.1.Final</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>

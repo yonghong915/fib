@@ -14,7 +14,7 @@ public class DroolsAutoConfiguration {
 
 	@Bean("ruleService")
 	@ConditionalOnMissingBean(IRuleService.class)
-	public IRuleService getRuleService() {
+	IRuleService getRuleService() {
 		return new DroolsRuleService();
 	}
 }

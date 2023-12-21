@@ -12,9 +12,9 @@ import com.fib.autoconfigure.ruleengine.IRuleService;
 @ConditionalOnClass(Rule.class)
 public class RuleBookAutoConfiguration {
 
-	@Bean("ruleService")
-	@ConditionalOnMissingBean(IRuleService.class)
-	public IRuleService getRuleService() {
+    @Bean("ruleService")
+    @ConditionalOnMissingBean(IRuleService.class)
+    IRuleService getRuleService() {
 		return new RuleBookRuleService();
 	}
 }

@@ -14,7 +14,7 @@ public class Dom4jAutoConfiguration {
 
 	@Bean("dom4jService")
 	@ConditionalOnMissingBean(IXmlService.class)
-	public IXmlService dom4jParseService() {
+	IXmlService dom4jParseService() {
 		return new Dom4jService();
 	}
 }

@@ -14,7 +14,7 @@ import io.minio.MinioClient;
 public class MinioAutoConfiguration {
 
 	@Bean
-	public MinioClient minioClient(MinioProperties properties) {
+	MinioClient minioClient(MinioProperties properties) {
 		MinioClient.Builder builder = MinioClient.builder();
 		builder.endpoint(properties.getUrl());
 		if (StringUtils.hasLength(properties.getName()) && StringUtils.hasLength(properties.getPassword())) {

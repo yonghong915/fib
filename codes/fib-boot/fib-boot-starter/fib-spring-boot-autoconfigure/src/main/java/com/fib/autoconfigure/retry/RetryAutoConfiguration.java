@@ -28,7 +28,7 @@ public class RetryAutoConfiguration {
 
 	@Bean("retryTemplate")
 	@ConditionalOnExpression("${fib.retry.retryCount} > 0 && ${fib.retry.timeout} > 0")
-	public RetryTemplate retryTemplate() {
+	RetryTemplate retryTemplate() {
 		LOGGER.info("重试机制：重试次数且重试时间");
 		RetryTemplate retryTemplate = new RetryTemplate();
 
@@ -55,14 +55,14 @@ public class RetryAutoConfiguration {
 
 	@Bean("retryTemplate")
 	@ConditionalOnExpression("${fib.retry.retryCount} > 0")
-	public RetryTemplate retryTemplate4RetryCount() {
+	RetryTemplate retryTemplate4RetryCount() {
 		LOGGER.info("重试机制：重试次数");
 		return RetryTemplate.builder().maxAttempts(retryProperties.getRetryCount()).build();
 	}
 
 	@Bean("retryTemplate")
 	@ConditionalOnExpression("${fib.retry.timeout} > 0")
-	public RetryTemplate retryTemplate4Timeout() {
+	RetryTemplate retryTemplate4Timeout() {
 		LOGGER.info("重试机制：重试时间");
 		// 在指定的一段时间内重试
 		TimeoutRetryPolicy timeOutretryPolicy = new TimeoutRetryPolicy();
