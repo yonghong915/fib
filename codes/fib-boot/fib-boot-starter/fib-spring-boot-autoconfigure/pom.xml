@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>fib-boot-starter</artifactId>
 		<groupId>com.fib</groupId>
-		<version>0.0.1</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>fib-spring-boot-autoconfigure</artifactId>
 	<name>fib-spring-boot-autoconfigure</name>
@@ -15,8 +15,6 @@
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
 		<drools.version>7.67.0.Final</drools.version>
 		<protostuff.version>1.7.2</protostuff.version>
 		<easy-rules.version>4.1.0</easy-rules.version>

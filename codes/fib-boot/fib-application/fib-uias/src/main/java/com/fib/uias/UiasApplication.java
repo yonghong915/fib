@@ -25,7 +25,7 @@ import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServl
 @EnableRetry
 @EnableHystrix
 @EnableHystrixDashboard
-@ComponentScan({"com.fib.core","com.fib.uias"})
+@ComponentScan({ "com.fib.core", "com.fib.uias" })
 public class UiasApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UiasApplication.class, args);
@@ -37,13 +37,13 @@ public class UiasApplication {
 		return new RestTemplate();
 	}
 
-	@Bean(name = "hystrixRegistrationBean")
-	public ServletRegistrationBean<HystrixMetricsStreamServlet> servletRegistrationBean() {
-		ServletRegistrationBean<HystrixMetricsStreamServlet> registration = new ServletRegistrationBean<>(new HystrixMetricsStreamServlet(),
-				"/actuator/hystrix.stream");
-		registration.setName("HystrixMetricsStreamServlet");
-		registration.setLoadOnStartup(1);
-		return registration;
-	}
+//	@Bean(name = "hystrixRegistrationBean")
+//	ServletRegistrationBean<HystrixMetricsStreamServlet> servletRegistrationBean() {
+//		ServletRegistrationBean<HystrixMetricsStreamServlet> registration = new ServletRegistrationBean<>(new HystrixMetricsStreamServlet(),
+//				"/actuator/hystrix.stream");
+//		registration.setName("HystrixMetricsStreamServlet");
+//		registration.setLoadOnStartup(1);
+//		return registration;
+//	}
 
 }

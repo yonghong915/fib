@@ -20,6 +20,8 @@ public class BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private Long pkId;
+
 	/** 创建人 */
 	private Integer createBy;
 
@@ -79,5 +81,13 @@ public class BaseEntity implements Serializable {
 
 	public void setDelFlag(Integer delFlag) {
 		this.delFlag = delFlag;
+	}
+
+	public Long getPkId() {
+		return pkId;
+	}
+
+	public void setPkId(Long pkId) {
+		this.pkId = pkId;
 	}
 }

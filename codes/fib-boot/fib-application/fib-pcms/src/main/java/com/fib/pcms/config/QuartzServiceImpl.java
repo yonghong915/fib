@@ -2,14 +2,14 @@ package com.fib.pcms.config;
 
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
-
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * 调度任务实现类
@@ -39,8 +39,7 @@ public class QuartzServiceImpl implements IQuartzService {
 
 	@Override
 	public void addJob(String jobName, String jobGroupName, int jobTime, int runCount) throws Exception {
-		logger.info(" 新增一个任务 jobName=" + jobName + ",jobGroupName" + jobGroupName + ",jobTime=" + jobTime + ","
-				+ "runCount=" + runCount);
+		logger.info(" 新增一个任务 jobName=" + jobName + ",jobGroupName" + jobGroupName + ",jobTime=" + jobTime + "," + "runCount=" + runCount);
 		Date date = JobUtils.addJob(scheduler, DefaultQuartzJobBean.class, jobName, jobGroupName, jobTime, runCount);
 		logger.info(" job任务 jobName=" + jobName + ",jobGroupName" + jobGroupName + " 执行完成 . " + date);
 	}

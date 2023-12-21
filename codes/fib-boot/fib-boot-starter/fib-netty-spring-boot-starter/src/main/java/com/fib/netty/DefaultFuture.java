@@ -54,9 +54,9 @@ public class DefaultFuture extends CompletableFuture<Object> {
 		future.setExecutor(executor);
 		// ThreadlessExecutor needs to hold the waiting future in case of circuit
 		// return.
-		if (executor instanceof ThreadlessExecutor exe) {
-			exe.setWaitingFuture(future);
-		}
+//		if (executor instanceof ThreadlessExecutor exe) {
+//			exe.setWaitingFuture(future);
+//		}
 		// timeout check
 		timeoutCheck(future);
 		return future;
@@ -103,12 +103,12 @@ public class DefaultFuture extends CompletableFuture<Object> {
 		}
 		this.complete(res);
 
-		if (executor != null && executor instanceof ThreadlessExecutor threadlessExecutor) {
-			if (threadlessExecutor.isWaiting()) {
-				threadlessExecutor.notifyReturn(new IllegalStateException("The result has returned, but the biz thread is still waiting"
-						+ " which is not an expected state, interrupt the thread manually by returning an exception."));
-			}
-		}
+//		if (executor != null && executor instanceof ThreadlessExecutor threadlessExecutor) {
+//			if (threadlessExecutor.isWaiting()) {
+//				threadlessExecutor.notifyReturn(new IllegalStateException("The result has returned, but the biz thread is still waiting"
+//						+ " which is not an expected state, interrupt the thread manually by returning an exception."));
+//			}
+//		}
 	}
 
 	private long getId() {

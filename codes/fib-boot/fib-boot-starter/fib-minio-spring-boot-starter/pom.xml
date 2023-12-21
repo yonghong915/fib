@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>fib-boot-starter</artifactId>
 		<groupId>com.fib</groupId>
-		<version>0.0.1</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>fib-minio-spring-boot-starter</artifactId>
 	<name>fib-minio-spring-boot-starter</name>
@@ -14,14 +14,12 @@
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.fib</groupId>
 			<artifactId>fib-spring-boot-autoconfigure</artifactId>
-			<version>0.0.1</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.minio</groupId>

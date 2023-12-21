@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.Resource;
 
 @Service
 public class DroolsRuleServiceImpl {
