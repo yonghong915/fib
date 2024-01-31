@@ -104,7 +104,6 @@ public class TtlMDCAdapter implements MDCAdapter {
      *
      * The returned map is unmodifiable (since version 1.3.2/1.4.2).
      */
-    @SuppressWarnings("unchecked")
     public Map<String, String> getPropertyMap() {
         Map<String, String> readOnlyMap = readOnlyThreadLocalMap.get();
         if (readOnlyMap == null) {

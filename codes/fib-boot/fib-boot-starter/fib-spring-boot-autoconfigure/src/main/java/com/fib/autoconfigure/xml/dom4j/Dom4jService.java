@@ -27,7 +27,7 @@ import org.dom4j.util.XMLErrorHandler;
 import org.xml.sax.SAXException;
 
 import com.fib.autoconfigure.xml.IXmlService;
-import com.fib.commons.exception.CommonException;
+import com.fib.core.exception.CommonException;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;

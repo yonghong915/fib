@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="appConfig" class="com.fib.uqcp.topcheer.meta.bo.AppConfig">
+		<property name="seperator" value="!^" />
+		<property name="version" value="" />
+
+		<property name="jdbcUrl" value="" />
+		<property name="username" value="" />
+		<property name="password" value="" />
+
+		<property name="sysName" value="" />
+		<property name="dataBaseType" value="" />
+		<property name="filePath" value="" />
+	</bean>
+	<import resource="classpath:db/oracle.xml" />
+</beans>

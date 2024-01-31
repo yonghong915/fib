@@ -11,7 +11,7 @@ import org.springframework.retry.RetryContext;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 
-import com.fib.commons.exception.BusinessException;
+import com.fib.core.exception.BusinessException;
 
 @Component("retryService")
 public class RetryService {

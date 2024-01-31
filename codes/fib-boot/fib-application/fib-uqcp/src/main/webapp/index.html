@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh_CN" id="htmlRoot">
 
-<head>
-
-	   
+<head>   
 	<meta charset="utf-8" />
-
-	    <title>大屏幕设计器</title>
+	<title>大屏幕设计器</title>
 	<script src="./static/js/vue.global.prod.min-3.3.8.js"></script>
 	<script src="static/js/react.production.min.js"></script>
 	<script src="static/js/react-dom.production.min.js"></script>
@@ -62,7 +59,7 @@
 							title: '图片',
 							dataIndex: 'imgUrl',
 							key: 'imgUrl',
-							render: text => <img width="40px" src={"http://localhost:8080/cmms/" + text} />,
+							render: text => <img width="40px" src={"http://localhost:8080/uqcp/" + text} />,
 						}, {
 							title: '操作',
 							key: 'operation',
@@ -90,7 +87,7 @@
 
 			componentWillMount() {
 				//调用get接口 then表示请求成功 里面的方法表示回调
-				axios.get("http://localhost:8080/cmms/chineseMedicine/list").then((res) => {
+				axios.get("http://localhost:8080/uqcp/chineseMedicine/list").then((res) => {
 					console.log(res)
 					//拿到我们想要渲染的数据(res)
 					this.state.arr = res.data
@@ -168,7 +165,7 @@
 
 	<script type="module">
 		import {getUsefulContents} from './static/file.js'
-		getUsefulContents('http://localhost:8080/cmms/chineseMedicine/list',
+		getUsefulContents('http://localhost:8080/uqcp/chineseMedicine/list',
 			data => {
 				console.log(data);
 			});

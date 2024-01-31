@@ -1,26 +1,34 @@
 spring:
   application:
-    name: fibcmms
+    name: fibuqcp
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cmmsdb?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
     username: fibapp
     password: fibapp1234
+  threads:
+    virtual:
+      enabled: true
   web:
     resources:
       static-locations:
       - classpath:/
+  
 server:
   servlet:
-    context-path: /cmms
+    context-path: /uqcp
  
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
     map-underscore-to-camel-case: true
-  mapper-locations: classpath:**/mapper/*.xml
+  mapper-locations: classpath:**/mapper/*Mapper.xml
   global-config:
     db-config:
       logic-delete-field: del_flg
       logic-delete-value: 1
       logic-not-delete-value: 0
+fib:
+  crypto:
+    enable: true
+    charset: UTF-8

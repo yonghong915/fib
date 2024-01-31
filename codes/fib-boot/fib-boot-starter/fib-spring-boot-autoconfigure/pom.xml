@@ -21,11 +21,11 @@
 		<rulebook.version>0.12</rulebook.version>
 	</properties>
 	<dependencies>
-		<dependency>
+		<!--<dependency>
 			<groupId>com.fib</groupId>
 			<artifactId>fib-commons</artifactId>
 			<optional>true</optional>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -153,14 +153,14 @@
 			<version>2.2.2</version>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>com.hynnet</groupId>
 			<artifactId>jacob</artifactId>
@@ -176,6 +176,17 @@
 			<artifactId>fib-msg-converter</artifactId>
 			<version>${project.version}</version>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.dubbo</groupId>
+			<artifactId>dubbo</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 	</dependencies>
 </project>

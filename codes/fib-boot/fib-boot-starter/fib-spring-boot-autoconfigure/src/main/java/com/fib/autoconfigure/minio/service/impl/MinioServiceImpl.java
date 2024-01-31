@@ -10,7 +10,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.fib.autoconfigure.minio.service.IMinioService;
-import com.fib.commons.exception.CommonException;
+import com.fib.core.exception.CommonException;
 
 import io.minio.BucketExistsArgs;
 import io.minio.GetBucketPolicyArgs;

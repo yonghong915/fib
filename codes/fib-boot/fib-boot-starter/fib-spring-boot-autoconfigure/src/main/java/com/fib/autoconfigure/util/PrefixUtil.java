@@ -15,4 +15,6 @@ public final class PrefixUtil {
 	public static final String MSG_CONVERTER_PREFIX = "fib.msg.converter";
 
 	public static final String GATEWAY_PREFIX = "fib.gateway";
+
+	public static final String CRYPTO_PREFIX = "fib.crypto";
 }

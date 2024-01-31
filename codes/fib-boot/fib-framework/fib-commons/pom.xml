@@ -134,6 +134,10 @@
 			<groupId>org.dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 		</dependency>
+		<!--<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-core</artifactId>
+		</dependency>-->
 	</dependencies>
 	<build>
 		<plugins>

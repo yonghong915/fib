@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.fib.autoconfigure.aop.EcaEvent;
 import com.fib.autoconfigure.aop.aspect.annotation.EcaAnnotation;
-import com.fib.commons.exception.BusinessException;
+import com.fib.core.exception.BusinessException;
 import com.fib.core.util.SpringContextUtils;
 
 @Aspect

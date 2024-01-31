@@ -1,6 +1,6 @@
 package com.fib.core.util;
 
-import com.fib.commons.web.RestStatus;
+import com.fib.core.web.RestStatus;
 import com.google.common.collect.ImmutableMap;
 
 /**
