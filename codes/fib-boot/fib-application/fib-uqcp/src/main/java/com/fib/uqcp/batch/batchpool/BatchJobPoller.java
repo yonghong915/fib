@@ -2,6 +2,7 @@ package com.fib.uqcp.batch.batchpool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +77,7 @@ public class BatchJobPoller implements Runnable {
 			} catch (Throwable t) {
 				logger.error("", t);
 				try {
-					pollerThread.sleep(60000 * 10);
+					TimeUnit.MILLISECONDS.sleep(60000 * 10);
 				} catch (InterruptedException e) {
 					stop();
 				}

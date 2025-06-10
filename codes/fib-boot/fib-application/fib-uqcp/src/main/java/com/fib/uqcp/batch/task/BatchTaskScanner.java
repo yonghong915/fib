@@ -1,5 +1,6 @@
 package com.fib.uqcp.batch.task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class BatchTaskScanner implements IScanner<BatchJob> {
 
 	@Override
 	public List<BatchJob> scan() throws BatchGenericException {
-		List<BatchJob> returnTaskList = null;
+		List<BatchJob> returnTaskList = new ArrayList<>();
 		//1. 加载待处理任务
 		// BatchJobInstance status=TaskStateConstatns.RUNNING_STATUS
 

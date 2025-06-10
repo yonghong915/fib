@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 import com.fib.autoconfigure.crypto.annotation.EnableSecurity;
 
@@ -22,6 +21,5 @@ public class UqcpApplication {
 	public static void main(String[] args) {
 		LOGGER.info("Hello World!");
 		SpringApplication.run(UqcpApplication.class, args);
-		
 	}
 }

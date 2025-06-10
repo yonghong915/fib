@@ -1,13 +1,13 @@
 package com.fib.uqcp.config;
 
-import javax.sql.DataSource;
-
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+//import javax.sql.DataSource;
+//
+//import org.mybatis.spring.SqlSessionFactoryBean;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.fib.uqcp.MybatisInterceptor;
+//import com.fib.uqcp.MybatisInterceptor;
 
 @Configuration
 public class MyBatisConfig {

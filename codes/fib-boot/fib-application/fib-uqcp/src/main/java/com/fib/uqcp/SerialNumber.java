@@ -3,7 +3,6 @@ package com.fib.uqcp;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.IdUtil;
-import jakarta.annotation.PostConstruct;
 
 public class SerialNumber {
 	private long workerId = 0;

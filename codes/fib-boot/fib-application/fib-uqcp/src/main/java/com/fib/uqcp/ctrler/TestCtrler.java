@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fib.autoconfigure.crypto.annotation.AlgorithmType;
 import com.fib.autoconfigure.crypto.annotation.Decrypt;
 import com.fib.autoconfigure.crypto.annotation.Encrypt;
+import com.fib.uqcp.api.msg.RequestHeader;
 
 @RestController
 @RequestMapping(value = "/test")
@@ -20,7 +21,7 @@ public class TestCtrler {
 	@PostMapping(value = "/list")
 	@Encrypt(symmetricAlgorithm = AlgorithmType.SymmetricAlgorithm.SM4, asymmetricAlgorithm = AlgorithmType.AsymmetricAlgorithm.SM2, digestAlgorithm = AlgorithmType.DigestAlgorithm.SM3)
 	@Decrypt(symmetricAlgorithm = AlgorithmType.SymmetricAlgorithm.SM4, asymmetricAlgorithm = AlgorithmType.AsymmetricAlgorithm.SM2, digestAlgorithm = AlgorithmType.DigestAlgorithm.SM3)
-	public List<String> findList(@Validated @RequestBody TestVO vo) {
+	public List<String> findList(@Validated RequestHeader reqHeader, @Validated @RequestBody TestVO vo) {
 		System.out.println("查询所有数据:");
 		List<String> rtnList = new ArrayList<>();
 		rtnList.add("ok");

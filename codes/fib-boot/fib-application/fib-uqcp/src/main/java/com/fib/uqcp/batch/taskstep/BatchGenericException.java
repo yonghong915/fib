@@ -4,6 +4,11 @@ import java.util.Map;
 
 public class BatchGenericException extends RuntimeException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public BatchGenericException(String string, String stepName) {
 		// TODO Auto-generated constructor stub
 	}

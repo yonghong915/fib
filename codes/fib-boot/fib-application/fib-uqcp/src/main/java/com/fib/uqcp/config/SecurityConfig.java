@@ -53,7 +53,7 @@ public class SecurityConfig {
 //				// 加我们自定义的过滤器，替代UsernamePasswordAuthenticationFilter
 //				.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //
-		return http.csrf().disable().build();
+		return http.csrf(csrf -> csrf.disable()).build();
 	}
 
 //	@Bean

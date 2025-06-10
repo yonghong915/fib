@@ -20,7 +20,7 @@ public class SignUtil {
 	 */
 	public static boolean verifySign(String params, RequestHeader requestHeader) {
 		//log.debug("客户端签名: {}", requestHeader.getSign());
-		if (StringUtils.isEmpty(params)) {
+		if (StringUtils.hasText(params)) {
 			return false;
 		}
 		//log.info("客户端上传内容: {}", params);
