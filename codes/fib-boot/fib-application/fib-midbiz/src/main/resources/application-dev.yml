@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: midbiz
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:D:\software\database\sqlite\db\midbiz.db
+    master:
+        url: jdbc:sqlite:D:\software\database\sqlite\db\midbiz.db
+        driver-class-name: org.sqlite.JDBC
+    slave:
+       url: jdbc:sqlite:D:\software\database\sqlite\db\midbiz.db
+       driver-class-name: org.sqlite.JDBC
+  threads:
+    virtual:
+      enabled: true
+  web:
+    resources:
+      static-locations:
+      - classpath:/
+  
+server:
+  servlet:
+    context-path: /midbiz
+ 
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:**/mapper/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: del_flg
+      logic-delete-value: 1
+      logic-not-delete-value: 0

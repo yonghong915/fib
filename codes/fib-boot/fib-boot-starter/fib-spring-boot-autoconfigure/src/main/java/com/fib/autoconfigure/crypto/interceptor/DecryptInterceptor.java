@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class DecryptInterceptor implements HandlerInterceptor {
-	private static final Logger logger = LoggerFactory.getLogger(DecryptInterceptor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DecryptInterceptor.class);
 	// @Autowired
 	// private EncryptProperties encryptProperties;
 
@@ -29,7 +29,7 @@ public class DecryptInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		System.out.println("preHandle.....");
+		LOGGER.info("preHandle.....");
 		try {
 			if (handler instanceof HandlerMethod) {
 				HandlerMethod handlerMethod = (HandlerMethod) handler;
