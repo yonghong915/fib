@@ -39,7 +39,7 @@ public class QuartzConfigure {
 	 * @throws IOException
 	 */
 	@Bean
-	public Properties quartzProperties() throws IOException {
+	Properties quartzProperties() throws IOException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("");
 		}
@@ -57,7 +57,7 @@ public class QuartzConfigure {
 	 * @return
 	 */
 	@Bean
-	public JobFactory buttonJobFactory(ApplicationContext applicationContext) {
+	JobFactory buttonJobFactory(ApplicationContext applicationContext) {
 		AutoWiredSpringBeanToJobFactory jobFactory = new AutoWiredSpringBeanToJobFactory();
 		jobFactory.setApplicationContext(applicationContext);
 		return jobFactory;
@@ -71,7 +71,7 @@ public class QuartzConfigure {
 	 * @throws IOException
 	 */
 	@Bean
-	public SchedulerFactoryBean schedulerFactoryBean(AutoWiredSpringBeanToJobFactory autoWiredSpringBeanToJobFactory,
+	SchedulerFactoryBean schedulerFactoryBean(AutoWiredSpringBeanToJobFactory autoWiredSpringBeanToJobFactory,
 			DataSource dataSource) throws IOException {
 		SchedulerFactoryBean factory = new SchedulerFactoryBean();
 		factory.setJobFactory(autoWiredSpringBeanToJobFactory);
@@ -90,7 +90,7 @@ public class QuartzConfigure {
 	 * @return
 	 */
 	@Bean
-	public JobDetailFactoryBean buttonobDetail() {
+	JobDetailFactoryBean buttonobDetail() {
 		// 集群模式下必须使用JobDetailFactoryBean，MethodInvokingJobDetailFactoryBean 类中的
 		// methodInvoking 方法，是不支持序列化的
 		JobDetailFactoryBean jobDetail = new JobDetailFactoryBean();
@@ -107,7 +107,7 @@ public class QuartzConfigure {
 	 * @return
 	 */
 	@Bean
-	public CronTriggerFactoryBean cronJobTrigger(JobDetail buttonobDetail) {
+	CronTriggerFactoryBean cronJobTrigger(JobDetail buttonobDetail) {
 		CronTriggerFactoryBean tigger = new CronTriggerFactoryBean();
 		tigger.setJobDetail(buttonobDetail);
 		tigger.setStartDelay(2000); // 延迟启动

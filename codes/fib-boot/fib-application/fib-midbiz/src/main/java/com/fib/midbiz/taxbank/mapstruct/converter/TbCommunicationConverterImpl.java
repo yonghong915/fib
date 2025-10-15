@@ -20,7 +20,7 @@ public class TbCommunicationConverterImpl implements TbCommunicationConverter {
 
 	@Override
 	public TbCommunicationEntity TbCommunicationVO2Entity(TbCommunicationVO vo) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

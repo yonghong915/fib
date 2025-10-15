@@ -172,7 +172,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
-			<version>4.1.1</version>
 		</dependency>
 
 		<dependency>
@@ -182,13 +181,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
-			<version>2.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -205,7 +199,7 @@
 					<artifactId>spring-boot-maven-plugin</artifactId>
 				</plugin>
 
-				<plugin>
+				<!--<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
 					<executions>
@@ -227,7 +221,7 @@
 							</configuration>
 						</execution>
 					</executions>
-				</plugin>
+				</plugin>-->
 			</plugins>
 		</pluginManagement>
 		<resources>

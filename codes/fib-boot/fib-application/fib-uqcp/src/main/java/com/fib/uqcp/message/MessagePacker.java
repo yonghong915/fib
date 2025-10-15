@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.dubbo.common.compiler.Compiler;
-import org.apache.dubbo.rpc.model.ApplicationModel;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;

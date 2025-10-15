@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.MDC;
 import org.slf4j.helpers.ThreadLocalMapOfStacks;
 import org.slf4j.spi.MDCAdapter;
 
@@ -121,7 +120,7 @@ public class TtlMDCAdapter implements MDCAdapter {
      * Return a copy of the current thread's context map. Returned value may be
      * null.
      */
-    public Map getCopyOfContextMap() {
+    public Map<String,String> getCopyOfContextMap() {
         Map<String, String> readOnlyMap = getPropertyMap();
         if (readOnlyMap == null) {
             return null;
@@ -144,8 +143,7 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void setContextMap(Map contextMap) {
+    public void setContextMap(Map<String,String> contextMap) {
         if (contextMap != null) {
             readWriteThreadLocalMap.set(new HashMap<String, String>(contextMap));
         } else {

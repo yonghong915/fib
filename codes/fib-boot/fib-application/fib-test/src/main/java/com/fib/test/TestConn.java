@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TestConn {
 	public static void main(String[] args) {
@@ -22,13 +21,11 @@ public class TestConn {
 		try {
 			connection = DriverManager.getConnection(url, user, psd);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// 执行SQL语句
 		String sql = "select * from resource_lock where id = ?";
 		// statement 用于执行静态 SQL 语句并返回其生成的结果的对象
-		Statement statement;
 		try {
 			PreparedStatement pst = connection.prepareStatement(sql);
 			pst.setInt(1, 1);
@@ -40,7 +37,6 @@ public class TestConn {
 			// 关闭资源
 			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

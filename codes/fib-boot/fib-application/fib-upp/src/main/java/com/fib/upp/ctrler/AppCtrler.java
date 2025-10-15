@@ -25,6 +25,7 @@ public class AppCtrler {
 	@GetMapping("/getStr")
 	public String getStr() {
 		List<UserEntity> userList = userService.list();
+		IO.print(userList.size());
 		return "hello";
 	}
 

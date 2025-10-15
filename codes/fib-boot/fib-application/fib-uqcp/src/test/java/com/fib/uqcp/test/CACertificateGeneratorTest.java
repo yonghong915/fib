@@ -32,9 +32,10 @@ public class CACertificateGeneratorTest {
 	@Test
 	public void testGenKey() {
 		com.fib.autoconfigure.crypto.security.util.CACertificateGenerator generator = new com.fib.autoconfigure.crypto.security.util.CACertificateGenerator();
+		generator.getClass();
 		try {
-			com.fib.autoconfigure.crypto.security.util.CACertificateGenerator.genCACertificate("SM2", "SM3WITHSM2", "d:/private_key.pem",
-					"d:/public_key.pem");
+			com.fib.autoconfigure.crypto.security.util.CACertificateGenerator.genCACertificate("SM2", "SM3WITHSM2",
+					"d:/private_key.pem", "d:/public_key.pem");
 
 			byte[] privateKey = null;
 			try (PemReader pemReader = new PemReader(new FileReader("D://private_key.pem"))) {
@@ -64,10 +65,11 @@ public class CACertificateGeneratorTest {
 					pemWriter.writeObject(priKey);
 				}
 
-				PKCS10CertificationRequest csr = com.fib.autoconfigure.crypto.security.util.CACertificateGenerator.generateCSR(priKey, pubKey);
+				PKCS10CertificationRequest csr = com.fib.autoconfigure.crypto.security.util.CACertificateGenerator
+						.generateCSR(priKey, pubKey);
 
-				X509Certificate certificate = com.fib.autoconfigure.crypto.security.util.CACertificateGenerator.generateCACertificate(csr,
-						"D://public_key.pem", priKey);
+				X509Certificate certificate = com.fib.autoconfigure.crypto.security.util.CACertificateGenerator
+						.generateCACertificate(csr, "D://public_key.pem", priKey);
 
 				try (JcaPEMWriter pemWriter = new JcaPEMWriter(new FileWriter("D:\\sub_public_key.pem"));) {
 					pemWriter.writeObject(certificate);
@@ -84,14 +86,14 @@ public class CACertificateGeneratorTest {
 
 //				X509Certificate cer = (X509Certificate) SecureUtil.readX509Certificate(FileUtil.getInputStream(new File("D:\\sub_public_key.pem")));
 //				byte[] publicKey = cer.getEncoded();
-				try (FileReader keyReader = new FileReader(new File("D:\\sub_public_key.pem"))) {
-			        PEMParser pemParser = new PEMParser(keyReader);
-			        JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
-			        SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(pemParser.readObject());
-			    	System.out.println(Base64.encode( publicKeyInfo.parsePublicKey().getEncoded()));
-			    }
-				
-			
+				try (FileReader keyReader = new FileReader(new File("D:\\sub_public_key.pem"));
+						PEMParser pemParser = new PEMParser(keyReader);) {
+					JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
+					converter.getClass();
+					SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(pemParser.readObject());
+					System.out.println(Base64.encode(publicKeyInfo.parsePublicKey().getEncoded()));
+				}
+
 				System.out.println(Base64.encode(pubKey.getEncoded()));
 			} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException | SignatureException e) {
 				// TODO Auto-generated catch block

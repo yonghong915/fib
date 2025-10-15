@@ -1,7 +1,6 @@
 package com.fib.mq;
 
 import java.io.IOException;
-import com.ibm.mq.MQC;
 import com.ibm.mq.MQEnvironment;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQGetMessageOptions;
@@ -9,6 +8,7 @@ import com.ibm.mq.MQMessage;
 import com.ibm.mq.MQPutMessageOptions;
 import com.ibm.mq.MQQueue;
 import com.ibm.mq.MQQueueManager;
+import com.ibm.mq.constants.CMQC;
 
 public class MQ4Ibm {
 	// 定义队列管理器和队列的名称
@@ -32,7 +32,6 @@ public class MQ4Ibm {
 			// MQQueueManager可以被多线程共享，但是从MQ获取信息的时候是同步的，任何时候只有一个线程可以和MQ通信。
 			qMgr = new MQQueueManager(qmName);
 		} catch (MQException e) {
-			// TODO Auto-generated catch block
 			System.out.println("初使化MQ出错");
 			e.printStackTrace();
 		}
@@ -72,7 +71,8 @@ public class MQ4Ibm {
 
 			/* 以下选项可适合远程队列与本地队列 */
 
-			int openOptions = MQC.MQOO_OUTPUT | MQC.MQOO_FAIL_IF_QUIESCING;
+			int openOptions = CMQC.MQOO_OUTPUT | CMQC.MQOO_FAIL_IF_QUIESCING;
+			
 
 			// 连接队列
 
@@ -165,7 +165,7 @@ public class MQ4Ibm {
 
 			// MQOO_OUTPUT:Open the queue to put messages.
 
-			int openOptions = MQC.MQOO_INPUT_AS_Q_DEF | MQC.MQOO_OUTPUT;
+			int openOptions = CMQC.MQOO_INPUT_AS_Q_DEF | CMQC.MQOO_OUTPUT;
 
 			MQMessage retrieve = new MQMessage();
 
@@ -175,11 +175,11 @@ public class MQ4Ibm {
 
 			MQGetMessageOptions gmo = new MQGetMessageOptions();
 
-			gmo.options = gmo.options + MQC.MQGMO_SYNCPOINT;// Get messages under sync point control(在同步点控制下获取消息)
+			gmo.options = gmo.options + CMQC.MQGMO_SYNCPOINT;// Get messages under sync point control(在同步点控制下获取消息)
 
-			gmo.options = gmo.options + MQC.MQGMO_WAIT; // Wait if no messages on the Queue(如果在队列上没有消息则等待)
+			gmo.options = gmo.options + CMQC.MQGMO_WAIT; // Wait if no messages on the Queue(如果在队列上没有消息则等待)
 
-			gmo.options = gmo.options + MQC.MQGMO_FAIL_IF_QUIESCING;// Fail if Qeue Manager Quiescing(如果队列管理器停顿则失败)
+			gmo.options = gmo.options + CMQC.MQGMO_FAIL_IF_QUIESCING;// Fail if Qeue Manager Quiescing(如果队列管理器停顿则失败)
 
 			gmo.waitInterval = 1000; // Sets the time limit for the wait.(设置等待的毫秒时间限制)
 

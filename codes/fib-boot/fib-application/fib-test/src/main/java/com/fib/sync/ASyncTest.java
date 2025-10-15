@@ -12,8 +12,6 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
 
 public class ASyncTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ASyncTest.class);

@@ -114,6 +114,5 @@
 			<groupId>com.ibm.mq</groupId>
 			<artifactId>com.ibm.mq.allclient</artifactId>
 		</dependency>
-
 	</dependencies>
 </project>

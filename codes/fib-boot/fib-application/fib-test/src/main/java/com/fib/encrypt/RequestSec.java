@@ -40,7 +40,6 @@
 //		String pubKey = HexUtil.encodeHexStr(publicKey);
 //		String ownPrivateKey = priKey;
 //		String otherPublicKey = pubKey;
-//		// TODO
 //		logger.info("priKey={}", priKey);
 //		logger.info("pubKey={}", pubKey);
 //

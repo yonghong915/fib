@@ -1,7 +1,5 @@
 package com.fib.tcp.socket;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,7 +49,7 @@ public class SocketServer {
 		@Override
 		public void start() {
 			if (m_isRuning) {
-				System.out.println(">>>线程" + this.getId() + "启动失败,该线程正在执行");
+				System.out.println(">>>线程" + this.threadId() + "启动失败,该线程正在执行");
 				return;
 			} else {
 				m_isRuning = true;
@@ -87,7 +85,7 @@ public class SocketServer {
 						info += tempStr;
 						// 已经读完
 						if (inputStream.available() == 0) {
-							System.out.println(">>>线程" + this.getId() + "收到:" + info);
+							System.out.println(">>>线程" + this.threadId() + "收到:" + info);
 							String responseStr = "Hello";
 							// 响应内容
 							String hexStr = StrToHexStr(responseStr);
@@ -97,7 +95,7 @@ public class SocketServer {
 							outputStream.flush();
 							// 重置,不然每次收到的数据都会累加起来
 							info = "";
-							System.out.println(">>>线程" + this.getId() + "回应:" + responseStr);
+							System.out.println(">>>线程" + this.threadId() + "回应:" + responseStr);
 						}
 					}
 				}
@@ -106,7 +104,7 @@ public class SocketServer {
 			}
 			// 关闭资源
 			finally {
-				System.out.println(">>>线程" + this.getId() + "的连接已断开\n");
+				System.out.println(">>>线程" + this. threadId() + "的连接已断开\n");
 				try {
 					if (outputStream != null)
 						outputStream.close();
@@ -188,8 +186,6 @@ public class SocketServer {
 
 	public static void main(String[] args) {
 		final int DEFAULT_PORT = 8000;
-		BufferedReader reader = null;
-		BufferedWriter writer = null;
 		try (ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);) {
 			LOGGER.info("Server socket port is [{}]", DEFAULT_PORT);
 			while (true) {
