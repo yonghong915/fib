@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -39,6 +41,12 @@ public abstract class AbstractFileService<T> implements IFileService<T> {
 	protected int queueSize = 1000;
 	protected int taskQueueSize = 20;
 
+	public static void main(String[] args) {
+		BigDecimal orig = new BigDecimal("12344570");
+		BigDecimal a = orig.divide(new BigDecimal("100")).setScale(2,RoundingMode.HALF_UP);
+		System.out.println(a);
+	}
+	
 	@Override
 	public T execute(String fileName) {
 		T rtnValue = null;
@@ -49,6 +57,7 @@ public abstract class AbstractFileService<T> implements IFileService<T> {
 				new ArrayBlockingQueue<>(queueSize), new ThreadFactoryBuilder().setNameFormat("FileThread-%d").build(),
 				handler);
 
+		
 		/* 预处理 */
 		rtnValue = prepare();
 
@@ -101,6 +110,7 @@ public abstract class AbstractFileService<T> implements IFileService<T> {
 		/* 执行后续处理 */
 		rtnValue = afterExecute(execRtnList);
 		executorService.shutdown();
+		executorService.close();
 
 		long endTime = System.currentTimeMillis();
 		LOGGER.info("duration={} ms", (endTime - startTime));

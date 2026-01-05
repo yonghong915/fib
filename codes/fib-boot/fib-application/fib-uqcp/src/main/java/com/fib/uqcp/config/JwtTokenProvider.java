@@ -1,7 +1,6 @@
 package com.fib.uqcp.config;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;

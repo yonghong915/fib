@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class TestVO implements Serializable {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * 签名
 	 */
 	private String authentication;
@@ -22,6 +27,8 @@ public class TestVO implements Serializable {
 	 * 对称加密密钥
 	 */
 	private String securityKey;
+	
+	private String data;
 
 	/**
 	 * 发起系统编码
@@ -67,4 +74,13 @@ public class TestVO implements Serializable {
 	public void setSystemCode(String systemCode) {
 		this.systemCode = systemCode;
 	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+	
 }

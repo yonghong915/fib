@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<message-bean id="MsgHeader" class="com.fib.messagebean.send.req.MsgHeader">
+	<field name="BeginFlag" />
+	<field name="StructType" />
+	<field name="MsgType" />
+	<field name="MsgPriority" />
+	<field name="MsgDirection" />
+	<field name="EndFlag" />
+</message-bean>

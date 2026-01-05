@@ -15,10 +15,8 @@ public class SocketClient {
 		final String DEFAULT_SERVER_HOST = "127.0.0.1";
 		final int DEFAULT_SERVER_PORT = 8000;
 
-		try {
-			// 创建socket
-			final Socket socket = new Socket(DEFAULT_SERVER_HOST, DEFAULT_SERVER_PORT);
-
+		try (// 创建socket
+				final Socket socket = new Socket(DEFAULT_SERVER_HOST, DEFAULT_SERVER_PORT);) {
 			// 创建IO流
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			ExecutorService es = Executors.newFixedThreadPool(10);
@@ -34,7 +32,6 @@ public class SocketClient {
 						String msg = reader.readLine();
 						System.out.println(msg);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 

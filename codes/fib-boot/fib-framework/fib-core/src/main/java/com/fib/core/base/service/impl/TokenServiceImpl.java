@@ -22,7 +22,6 @@ public class TokenServiceImpl implements ITokenService {
 			// throw new BusinessException(StatusCode.INVALID_TOKEN);
 		}
 
-		// TODO
 		// 校验token
 		boolean checkFlag = false;
 		if (!checkFlag) {

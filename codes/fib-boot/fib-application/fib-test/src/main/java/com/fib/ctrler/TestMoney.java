@@ -49,7 +49,7 @@ public class TestMoney {
 		}
 		DecimalFormat decimalFormat = new DecimalFormat("0.00"); // 创建DecimalFormat对象，并指定保留2位小数的格式
 		decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-		String formattedResult = decimalFormat.format(total / 100);
+		//String formattedResult = decimalFormat.format(total / 100);
 		//System.out.println("testLong=" + formattedResult);
 	}
 

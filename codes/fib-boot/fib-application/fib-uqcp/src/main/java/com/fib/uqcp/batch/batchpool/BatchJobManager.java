@@ -1,11 +1,5 @@
 package com.fib.uqcp.batch.batchpool;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fib.uqcp.batch.task.GenricDelegator;
 import com.fib.uqcp.service.IDispatcher;
@@ -19,10 +13,10 @@ import com.fib.uqcp.service.IDispatcher;
  * @date 2024-01-16 17:25:48
  */
 public class BatchJobManager {
-	private static final Logger LOGGER = LoggerFactory.getLogger(BatchJobManager.class);
-	private static final String dispatcherName = "JobDispatcher";
-	private static final String DEFAULT_JOB_POLLER_NAME = "DEFAULT_JOB_POLLER";
-	private Map<String, BatchJobPoller> registeredPollers = new HashMap<>();
+	//private static final Logger LOGGER = LoggerFactory.getLogger(BatchJobManager.class);
+	//private static final String dispatcherName = "JobDispatcher";
+	//private static final String DEFAULT_JOB_POLLER_NAME = "DEFAULT_JOB_POLLER";
+	//private Map<String, BatchJobPoller> registeredPollers = new HashMap<>();
 	private static BatchJobManager bjm = null;
 
 	private BatchJobManager() {

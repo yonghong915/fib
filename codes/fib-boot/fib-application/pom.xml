@@ -1,31 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>fib-application</artifactId>
-	<name>fib-application</name>
-	<url>http://maven.apache.org</url>
-	<packaging>pom</packaging>
-	<parent>
-		<groupId>com.fib</groupId>
-		<artifactId>fib-boot</artifactId>
-		<version>${revision}</version>
-	</parent>
-
-	<modules>
-		<module>fib-bip</module>
-		<module>fib-cmms</module>
-		<module>fib-crm</module>
-		<module>fib-ecif</module>
-		<module>fib-esb</module>
-		<module>fib-msg-converter</module>
-		<module>fib-oims</module>
-		<module>fib-oms</module>
-		<module>fib-pcms</module>
-		<module>fib-uias</module>
-		<module>fib-upp</module>
-		<module>fib-uqcp</module>
-		<module>fib-test</module>
-	</modules>
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>fib-application</artifactId>
+  <name>fib-application</name>
+  <url>http://maven.apache.org</url>
+  <packaging>pom</packaging>
+  <parent>
+    <groupId>com.fib</groupId>
+    <artifactId>fib-boot</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <modules>
+    <module>fib-bip</module>
+    <module>fib-cmms</module>
+    <module>fib-crm</module>
+    <module>fib-ecif</module>
+    <module>fib-esb</module>
+    <module>fib-msg-converter</module>
+    <module>fib-oims</module>
+    <module>fib-oms</module>
+    <module>fib-pcms</module>
+    <module>fib-uias</module>
+    <module>fib-upp</module>
+    <module>fib-uqcp</module>
+    <module>fib-test</module>
+    <module>fib-midbiz</module>
+  </modules>
 </project>

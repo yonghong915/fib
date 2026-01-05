@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity entity-name="bizChineseMedicine">
+	<field name="pkId" type="id-long"></field>
+	<field name="name" type="very-long"></field>
+	<field name="img_url" type="very-long"></field>
+	<prim-key field="pkId" />
+</entity>

@@ -18,6 +18,7 @@ public class HttpDataUtil {
 	 * 
 	 * @param request
 	 */
+	@SuppressWarnings("unchecked")
 	public SortedMap<String, String> getBodyParams(final HttpServletRequest request) throws IOException {
 		byte[] requestBody = StreamUtils.copyToByteArray(request.getInputStream());
 		String body = new String(requestBody);
@@ -30,7 +31,7 @@ public class HttpDataUtil {
 	public static SortedMap<String, String> getUrlParams(HttpServletRequest request) {
 		String param = "";
 		SortedMap<String, String> result = new TreeMap<>();
-		if (StringUtils.isEmpty(request.getQueryString())) {
+		if (StringUtils.hasText(request.getQueryString())) {
 			return result;
 		}
 		try {

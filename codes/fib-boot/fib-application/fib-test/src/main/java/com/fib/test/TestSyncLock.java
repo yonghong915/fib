@@ -19,12 +19,13 @@ public class TestSyncLock {
 
 	public static void main(String[] args) {
 		TestSyncLock t = new TestSyncLock();
-		ExecutorService es = new ThreadPoolExecutor(10, 10, 20, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
-		for (int i = 0; i < 10; i++) {
-			es.submit(t::doBusiness);
+		try (ExecutorService es = new ThreadPoolExecutor(10, 10, 20, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>());) {
+			for (int i = 0; i < 10; i++) {
+				es.submit(t::doBusiness);
+			}
+			es.shutdown();
 		}
-
-		es.shutdown();
 	}
 
 	public void insertData() {

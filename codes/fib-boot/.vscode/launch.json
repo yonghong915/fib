@@ -1,0 +1,448 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "org.fib.bip.App",
+            "projectName": "fib-bip"
+        },
+        {
+            "type": "java",
+            "name": "CmmsApplication",
+            "request": "launch",
+            "mainClass": "com.fib.cmms.CmmsApplication",
+            "projectName": "fib-cmms"
+        },
+        {
+            "type": "java",
+            "name": "AbstractFileService",
+            "request": "launch",
+            "mainClass": "com.fib.commons.file.AbstractFileService",
+            "projectName": "fib-commons"
+        },
+        {
+            "type": "java",
+            "name": "Dom4jUtil",
+            "request": "launch",
+            "mainClass": "com.fib.commons.xml.dom4j.Dom4jUtil",
+            "projectName": "fib-commons"
+        },
+        {
+            "type": "java",
+            "name": "ConfigApplication",
+            "request": "launch",
+            "mainClass": "com.fib.config.ConfigApplication",
+            "projectName": "fib-config"
+        },
+        {
+            "type": "java",
+            "name": "App(1)",
+            "request": "launch",
+            "mainClass": "org.fib.crm.App",
+            "projectName": "fib-crm"
+        },
+        {
+            "type": "java",
+            "name": "DisruptorApp",
+            "request": "launch",
+            "mainClass": "com.fib.disruptor.DisruptorApp",
+            "projectName": "fib-disruptor-spring-boot-starter"
+        },
+        {
+            "type": "java",
+            "name": "App(2)",
+            "request": "launch",
+            "mainClass": "org.fib.ecif.App",
+            "projectName": "fib-ecif"
+        },
+        {
+            "type": "java",
+            "name": "App(3)",
+            "request": "launch",
+            "mainClass": "org.fib.esb.App",
+            "projectName": "fib-esb"
+        },
+        {
+            "type": "java",
+            "name": "EurekaApplication",
+            "request": "launch",
+            "mainClass": "com.fib.eureka.EurekaApplication",
+            "projectName": "fib-eureka"
+        },
+        {
+            "type": "java",
+            "name": "GatewayApplication",
+            "request": "launch",
+            "mainClass": "com.fib.gateway.GatewayApplication",
+            "projectName": "fib-gateway"
+        },
+        {
+            "type": "java",
+            "name": "MidbizApplication",
+            "request": "launch",
+            "mainClass": "com.fib.midbiz.MidbizApplication",
+            "projectName": "fib-midbiz"
+        },
+        {
+            "type": "java",
+            "name": "SftpUtil",
+            "request": "launch",
+            "mainClass": "com.fib.midbiz.SftpUtil",
+            "projectName": "fib-midbiz"
+        },
+        {
+            "type": "java",
+            "name": "CXFClient",
+            "request": "launch",
+            "mainClass": "com.fib.midbiz.service.CXFClient",
+            "projectName": "fib-midbiz"
+        },
+        {
+            "type": "java",
+            "name": "Dom4jAnnotationParser",
+            "request": "launch",
+            "mainClass": "com.fib.midbiz.service.Dom4jAnnotationParser",
+            "projectName": "fib-midbiz"
+        },
+        {
+            "type": "java",
+            "name": "TestDemo",
+            "request": "launch",
+            "mainClass": "com.fib.midbiz.service.TestDemo",
+            "projectName": "fib-midbiz"
+        },
+        {
+            "type": "java",
+            "name": "TestJdk25",
+            "request": "launch",
+            "mainClass": "com.fib.midbiz.service.TestJdk25",
+            "projectName": "fib-midbiz"
+        },
+        {
+            "type": "java",
+            "name": "MinioApp",
+            "request": "launch",
+            "mainClass": "com.fib.minio.MinioApp",
+            "projectName": "fib-minio-spring-boot-starter"
+        },
+        {
+            "type": "java",
+            "name": "JmhTest",
+            "request": "launch",
+            "mainClass": "com.fib.netty.JmhTest",
+            "projectName": "fib-netty-spring-boot-starter"
+        },
+        {
+            "type": "java",
+            "name": "NettyApp",
+            "request": "launch",
+            "mainClass": "com.fib.netty.NettyApp",
+            "projectName": "fib-netty-spring-boot-starter"
+        },
+        {
+            "type": "java",
+            "name": "SocketClient",
+            "request": "launch",
+            "mainClass": "com.fib.netty.SocketClient",
+            "projectName": "fib-netty-spring-boot-starter"
+        },
+        {
+            "type": "java",
+            "name": "OimsApplication",
+            "request": "launch",
+            "mainClass": "com.fib.oims.OimsApplication",
+            "projectName": "fib-oims"
+        },
+        {
+            "type": "java",
+            "name": "OmsApplication",
+            "request": "launch",
+            "mainClass": "com.fib.oms.OmsApplication",
+            "projectName": "fib-oms"
+        },
+        {
+            "type": "java",
+            "name": "PcmsApplication",
+            "request": "launch",
+            "mainClass": "com.fib.pcms.PcmsApplication",
+            "projectName": "fib-pcms"
+        },
+        {
+            "type": "java",
+            "name": "Test",
+            "request": "launch",
+            "mainClass": "com.fib.pcms.constants.Test",
+            "projectName": "fib-pcms"
+        },
+        {
+            "type": "java",
+            "name": "RetryApp",
+            "request": "launch",
+            "mainClass": "com.fib.retry.RetryApp",
+            "projectName": "fib-retry-spring-boot-starter"
+        },
+        {
+            "type": "java",
+            "name": "RuleApp",
+            "request": "launch",
+            "mainClass": "com.fib.rule.RuleApp",
+            "projectName": "fib-ruleengine-spring-boot-starter"
+        },
+        {
+            "type": "java",
+            "name": "SpeakTools",
+            "request": "launch",
+            "mainClass": "com.fib.autoconfigure.SpeakTools",
+            "projectName": "fib-spring-boot-autoconfigure"
+        },
+        {
+            "type": "java",
+            "name": "TestSHA256",
+            "request": "launch",
+            "mainClass": "com.fib.autoconfigure.crypto.security.TestSHA256",
+            "projectName": "fib-spring-boot-autoconfigure"
+        },
+        {
+            "type": "java",
+            "name": "Dom4jService",
+            "request": "launch",
+            "mainClass": "com.fib.autoconfigure.xml.dom4j.Dom4jService",
+            "projectName": "fib-spring-boot-autoconfigure"
+        },
+        {
+            "type": "java",
+            "name": "App(4)",
+            "request": "launch",
+            "mainClass": "com.fib.App",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "TestCache",
+            "request": "launch",
+            "mainClass": "com.fib.cache.TestCache",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "Test(1)",
+            "request": "launch",
+            "mainClass": "com.fib.ctrler.Test",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "TestMoney",
+            "request": "launch",
+            "mainClass": "com.fib.ctrler.TestMoney",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "Dom4jTest",
+            "request": "launch",
+            "mainClass": "com.fib.dom4j.Dom4jTest",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "JVMTest",
+            "request": "launch",
+            "mainClass": "com.fib.jvm.JVMTest",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "SingleFactory",
+            "request": "launch",
+            "mainClass": "com.fib.jvm.SingleFactory",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "VirtualThreadTest",
+            "request": "launch",
+            "mainClass": "com.fib.jvm.VirtualThreadTest",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "MQ4Ibm",
+            "request": "launch",
+            "mainClass": "com.fib.mq.MQ4Ibm",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "Client",
+            "request": "launch",
+            "mainClass": "com.fib.socket.netty.Client",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "ASyncTest",
+            "request": "launch",
+            "mainClass": "com.fib.sync.ASyncTest",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "SocketClient(1)",
+            "request": "launch",
+            "mainClass": "com.fib.tcp.socket.SocketClient",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "SocketServer",
+            "request": "launch",
+            "mainClass": "com.fib.tcp.socket.SocketServer",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "Test(2)",
+            "request": "launch",
+            "mainClass": "com.fib.tcp.socket.Test",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "ForkJoinPoolTest",
+            "request": "launch",
+            "mainClass": "com.fib.test.ForkJoinPoolTest",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "SMTest",
+            "request": "launch",
+            "mainClass": "com.fib.test.SMTest",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "SchedulingTask",
+            "request": "launch",
+            "mainClass": "com.fib.test.SchedulingTask",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "TestApp",
+            "request": "launch",
+            "mainClass": "com.fib.test.TestApp",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "TestConn",
+            "request": "launch",
+            "mainClass": "com.fib.test.TestConn",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "TestEnv",
+            "request": "launch",
+            "mainClass": "com.fib.test.TestEnv",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "TestString",
+            "request": "launch",
+            "mainClass": "com.fib.test.TestString",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "TestSyncLock",
+            "request": "launch",
+            "mainClass": "com.fib.test.TestSyncLock",
+            "projectName": "fib-test"
+        },
+        {
+            "type": "java",
+            "name": "UppApplication",
+            "request": "launch",
+            "mainClass": "com.fib.upp.UppApplication",
+            "projectName": "fib-upp"
+        },
+        {
+            "type": "java",
+            "name": "SFTPTest",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.SFTPTest",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "SerialNumber",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.SerialNumber",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "TryCatchPerformanceTest",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.TryCatchPerformanceTest",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "UqcpApplication",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.UqcpApplication",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "MessagePacker",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.message.MessagePacker",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "SingletonTesst",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.service.SingletonTesst",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "CACertificateGenerator",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.test.CACertificateGenerator",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "TestEncry",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.test.TestEncry",
+            "projectName": "fib-uqcp"
+        },
+        {
+            "type": "java",
+            "name": "TestSecurity",
+            "request": "launch",
+            "mainClass": "com.fib.uqcp.test.TestSecurity",
+            "projectName": "fib-uqcp"
+        }
+    ]
+}

@@ -3,7 +3,6 @@ package com.fib.uqcp.batch.task;
 import java.util.Map;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fib.uqcp.batch.BatchJobType;
 import com.fib.uqcp.batch.BatchTaskContext;

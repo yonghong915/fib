@@ -1,6 +1,5 @@
 package com.fib.uqcp.topcheer.meta.bo;
 
-import org.springframework.stereotype.Component;
 
 /**
  * 应用程序配置

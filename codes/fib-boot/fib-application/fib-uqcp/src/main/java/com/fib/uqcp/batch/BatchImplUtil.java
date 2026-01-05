@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -83,7 +82,7 @@ public class BatchImplUtil {
 			}
 		});
 
-		int count = 0;
+		
 		try (BufferedReader bw = new BufferedReader(new InputStreamReader(new FileInputStream(dataFilePath), charsetName))) {
 			String fileLine = null;
 			while ((fileLine = bw.readLine()) != null) {

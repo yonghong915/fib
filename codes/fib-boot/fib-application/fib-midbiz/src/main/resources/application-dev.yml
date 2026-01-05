@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: midbiz
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/midbiz?serverTimezone=UTC&characterEncoding=utf-8&useSSL=true&allowPublicKeyRetrieval=true
+    username: midbiz
+    password: fangyh102034
+    master:
+        url: jdbc:mysql://localhost:3306/midbiz?serverTimezone=UTC&characterEncoding=utf-8&useSSL=true&allowPublicKeyRetrieval=true
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: midbiz
+        password: fangyh102034
+    slave:
+       url: jdbc:sqlite:D:\software\database\sqlite\db\midbiz.db
+       driver-class-name: com.mysql.cj.jdbc.Driver
+       username: midbiz
+       password: fangyh102034
+  threads:
+    virtual:
+      enabled: true
+  main:
+    banner-mode: off
+server:
+  servlet:
+    context-path: /midbiz
+ 
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:**/mapper/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: del_flg
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+    banner: false

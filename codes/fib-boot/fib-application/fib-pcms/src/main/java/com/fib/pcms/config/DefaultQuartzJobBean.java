@@ -17,7 +17,6 @@ public class DefaultQuartzJobBean extends QuartzJobBean {
 		try {
 			jobExecutionContext.getScheduler().getContext().get("applicationContext");
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		TriggerKey key = jobExecutionContext.getTrigger().getKey();

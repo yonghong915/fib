@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ public class SysUserLoginCtrler {
 	@Autowired
 	private Producer producer;
 
-	@RequestMapping("captcha.jpg")
+	@GetMapping("captcha.jpg")
 	public void captcha(HttpServletResponse response) {
 		response.setHeader("Cache-Control", "no-store,no-cache");
 		response.setContentType("image/ipeg");
