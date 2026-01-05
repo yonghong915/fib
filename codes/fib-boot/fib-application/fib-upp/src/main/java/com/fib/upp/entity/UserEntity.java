@@ -1,5 +1,6 @@
 package com.fib.upp.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -11,6 +12,7 @@ public class UserEntity implements Serializable {
 	/**
 	 * 
 	 */
+	@Serial
 	private static final long serialVersionUID = 7143220724468557658L;
 
 	@TableId("id")

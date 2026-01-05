@@ -1,5 +1,6 @@
 package com.fib.upp.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -8,9 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("communication_event")
 public class CommunicationEventEntity implements Serializable {
-	/**
-	 * 
-	 */
+	@Serial
 	private static final long serialVersionUID = 8599456880045657648L;
 
 	@TableId("comm_event_id")

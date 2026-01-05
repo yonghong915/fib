@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fib.upp.MoneySerializer;
 
-public class AccountVo {
+import java.io.Serializable;
+
+public class AccountVo implements Serializable {
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private Long accoutId;
+	private Long accountId;
 
 	@JsonSerialize(using = MoneySerializer.class)
 	private Long balance;

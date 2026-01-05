@@ -22,59 +22,59 @@ import cn.hutool.core.util.IdUtil;
 @RestController
 @RequestMapping("/user")
 public class UserCtrler {
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired
-	private IUserService userService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private IUserService userService;
 
-	@Autowired
-	private RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
-	@Autowired
-	@Value("${serviceName:fib-uias}")
-	private String serviceName;
+    @Autowired
+    @Value("${serviceName:fib-uias}")
+    private String serviceName;
 
-	@GetMapping(value = "/saveUser")
-	public UserEntity saveUser() {
-		UserEntity userEntity = new UserEntity();
-		Snowflake sf = IdUtil.getSnowflake(1, 1);
-		long pkId = sf.nextId();
-		userEntity.setPkId(pkId);
-		String userCode = "1234456";
-		userEntity.setUserCode(userCode);
-		userEntity.setRealName("真实姓名");
-		userEntity.setUserDesc("desc");
-		userEntity.setUserType(1);
-		userService.addUser(userEntity);
-		return userEntity;
-	}
+    @GetMapping(value = "/saveUser")
+    public UserEntity saveUser() {
+        UserEntity userEntity = new UserEntity();
+        Snowflake sf = IdUtil.getSnowflake(1, 1);
+        long pkId = sf.nextId();
+        userEntity.setPkId(pkId);
+        String userCode = "1234456";
+        userEntity.setUserCode(userCode);
+        userEntity.setRealName("真实姓名");
+        userEntity.setUserDesc("desc");
+        userEntity.setUserType(1);
+        userService.addUser(userEntity);
+        return userEntity;
+    }
 
-	@GetMapping(value = "/transfer")
-	public String transferAccounts() {
-		try {
-			userService.retryTransferAccounts(1, 2, 200);
-			return "ok";
-		} catch (Exception e) {
-			return "no";
-		}
-	}
+    @GetMapping(value = "/transfer")
+    public String transferAccounts() {
+        try {
+            userService.retryTransferAccounts(1, 2, 200);
+            return "ok";
+        } catch (Exception e) {
+            return "no";
+        }
+    }
 
-	@GetMapping(value = "/getUser")
-	public UserEntity get(String userCode) {
-		logger.info("userCode={}", userCode);
-		return userService.getUser(userCode);
-	}
+    @GetMapping(value = "/getUser")
+    public UserEntity get(String userCode) {
+        logger.info("userCode={}", userCode);
+        return userService.getUser(userCode);
+    }
 
-	@GetMapping("/add/{name}")
-	@HystrixCommand(fallbackMethod = "saveFallbackMethod", commandProperties = {
-			@HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
-			@HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests", value = "3") })
-	public String add(@PathVariable String name) {
-		String url = "http://" + serviceName + "/add/" + name;
-		ResponseEntity<String> respEntity = restTemplate.getForEntity(url, String.class);
-		return respEntity.getBody();
-	}
+    @GetMapping("/add/{name}")
+    @HystrixCommand(fallbackMethod = "saveFallbackMethod", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
+            @HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests", value = "3")})
+    public String add(@PathVariable String name) {
+        String url = "http://" + serviceName + "/add/" + name;
+        ResponseEntity<String> respEntity = restTemplate.getForEntity(url, String.class);
+        return respEntity.getBody();
+    }
 
-	public String saveFallbackMethod(@PathVariable String name) {
-		return name + "稍后再试";
-	}
+    public String saveFallbackMethod(@PathVariable String name) {
+        return name + "稍后再试";
+    }
 }

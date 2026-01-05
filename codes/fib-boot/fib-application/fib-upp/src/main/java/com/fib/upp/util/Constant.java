@@ -62,9 +62,9 @@ public class Constant {
 	public enum MsgType {
 		BEPS_121_001_01("beps.121.001.01", "小额单笔"), BEPS_125_001_01("beps.121.001.01", "小额");
 
-		private String code;
+		private final String code;
 
-		private String name;
+		private final String name;
 
 		MsgType(String code, String name) {
 			this.code = code;
@@ -83,9 +83,9 @@ public class Constant {
 	public enum MsgDirection {
 		IN("I", "大额"), OUT("O", "小额");
 
-		private String code;
+		private final String code;
 
-		private String name;
+		private final String name;
 
 		MsgDirection(String code, String name) {
 			this.code = code;

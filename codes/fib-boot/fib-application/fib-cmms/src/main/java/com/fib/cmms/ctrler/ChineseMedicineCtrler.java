@@ -12,7 +12,7 @@ import com.fib.cmms.service.ChineseMedicineService;
 @RestController
 @RequestMapping(value = "/chineseMedicine")
 public class ChineseMedicineCtrler {
-	private ChineseMedicineService chineseMedicineService;
+	private final ChineseMedicineService chineseMedicineService;
 
 	public ChineseMedicineCtrler(ChineseMedicineService chineseMedicineService) {
 		this.chineseMedicineService = chineseMedicineService;

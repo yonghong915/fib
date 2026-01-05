@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fib.core.base.entity.BaseEntity;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serial;
 
 /**
  * 用户实体
@@ -13,9 +17,12 @@ import lombok.EqualsAndHashCode;
  * @since 1.0
  * @date 2020-12-18
  */
+@Setter
+@Getter
 @EqualsAndHashCode(callSuper = false)
 @TableName("SYS_USER")
 public class UserEntity extends BaseEntity {
+	@Serial
 	private static final long serialVersionUID = -7657083983061154971L;
 	/** 用户编号 */
 	private String userCode;
@@ -32,43 +39,4 @@ public class UserEntity extends BaseEntity {
 	/** 用户状态 */
 	private Integer userStatus;
 
-	public String getUserCode() {
-		return userCode;
-	}
-
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
-	}
-
-	public String getRealName() {
-		return realName;
-	}
-
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
-
-	public String getUserDesc() {
-		return userDesc;
-	}
-
-	public void setUserDesc(String userDesc) {
-		this.userDesc = userDesc;
-	}
-
-	public Integer getUserType() {
-		return userType;
-	}
-
-	public void setUserType(Integer userType) {
-		this.userType = userType;
-	}
-
-	public Integer getUserStatus() {
-		return userStatus;
-	}
-
-	public void setUserStatus(Integer userStatus) {
-		this.userStatus = userStatus;
-	}
 }

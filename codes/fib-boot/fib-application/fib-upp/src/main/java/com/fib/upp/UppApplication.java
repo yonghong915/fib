@@ -21,6 +21,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UppApplication.class, args);
-		System.out.println("aaaa");
 	}
 }
