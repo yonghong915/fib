@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-application</artifactId>
 		<version>${revision}</version>
 	</parent>
-
 	<artifactId>fib-uqcp</artifactId>
-
 	<name>fib-uqcp</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
@@ -177,7 +173,7 @@
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
-			<version>0.1.54</version>
+			<version>0.1.55</version>
 		</dependency>
 
 		<dependency>
@@ -245,7 +241,6 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-
 		</resources>
 	</build>
 </project>

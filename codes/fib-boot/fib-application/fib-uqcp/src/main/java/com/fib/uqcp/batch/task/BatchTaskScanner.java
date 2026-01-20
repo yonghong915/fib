@@ -54,6 +54,7 @@ public class BatchTaskScanner implements IScanner<BatchJob> {
 		} catch (GenericServiceException e) {
 			throw new BatchGenericException("BTHAOD", null);
 		}
+		@SuppressWarnings("unchecked")
 		List<GenericValue> taskList = MapUtil.get(returnMap, "taskList", List.class);
 		
 		//2.将扫描到任务状态修改为“准备”
@@ -72,6 +73,10 @@ public class BatchTaskScanner implements IScanner<BatchJob> {
 				returnCreateTaskMap = dispatcher.runSync("changeTaskState", paramMap,0,true);
 			}catch(GenericServiceException e) {
 				throw new BatchGenericException("BTHAOD", null);
+			}
+			
+			if(CollUtil.isEmpty(returnCreateTaskMap)) {
+				
 			}
 		}
 		return returnTaskList;

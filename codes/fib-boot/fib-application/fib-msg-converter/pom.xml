@@ -80,6 +80,7 @@
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
+			<version>0.1.55</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,17 +91,11 @@
 			<groupId>com.giantstone.common.util</groupId>
 			<artifactId>giantstone-common-util</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>
-				${project.basedir}/src/main/resources/lib/giantstone-common-util.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.giantstone.message</groupId>
 			<artifactId>giantstone-message-bean</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>
-				${project.basedir}/src/main/resources/lib/giantstone-message-bean.jar</systemPath>
 		</dependency>
 		<!-- <dependency> <groupId>com.giantstone.dao</groupId>
 		<artifactId>giantstone-dao</artifactId> <version>1.0</version>

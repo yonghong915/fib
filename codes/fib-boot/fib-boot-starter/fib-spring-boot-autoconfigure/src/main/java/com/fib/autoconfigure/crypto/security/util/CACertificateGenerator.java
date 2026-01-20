@@ -136,7 +136,7 @@ public class CACertificateGenerator {
 
 		// 构建证书
 		X509v3CertificateBuilder certificateBuilder = new JcaX509v3CertificateBuilder(issuer, serial, from, to, csr.getSubject(),
-				csr.getSubjectPublicKeyInfo());
+				(PublicKey) csr.getSubjectPublicKeyInfo());
 
 		// ContentSigner signer = new BcRSAContentSignerBuilder(sigAlgId,
 		// digAlgId).build(PrivateKeyFactory.createKey(caPrivateKey.getEncoded()));

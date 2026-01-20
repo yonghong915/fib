@@ -37,7 +37,7 @@ public enum ThreadLocalMessageContext {
 	}
 
 	public void set(String key, Object value) {
-		CommUtils.isNull(value, k -> ThreadLocalMessageContext.INSTANCE.getMessageContext().setProperty(key, value));
+		CommUtils.isNull(value, _ -> ThreadLocalMessageContext.INSTANCE.getMessageContext().setProperty(key, value));
 	}
 
 	public String get(String key) {

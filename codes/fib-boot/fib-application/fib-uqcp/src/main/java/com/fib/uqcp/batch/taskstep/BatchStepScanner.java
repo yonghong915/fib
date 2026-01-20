@@ -20,13 +20,12 @@ public class BatchStepScanner implements IScanner<BatchJob> {
 
 	private BatchJobPoller jp;
 
-
 	@Override
 	public List<BatchJob> scan() throws BatchGenericException {
 		List<BatchJob> returnStepList = new ArrayList<>();
 		IDispatcher dispatcher = null;
 		Map<String, Object> returnLoadMap = null;
-		
+
 //		try {
 //			//returnLoadMap = dispatcher.runSync("loadTodoStep", MapBuilder.create().put("count", jp.getJobQueue().getExt()));
 //		} catch (GenericServiceException e) {
@@ -39,6 +38,7 @@ public class BatchStepScanner implements IScanner<BatchJob> {
 			throw new BatchGenericException(returnLoadMap);
 		}
 
+		@SuppressWarnings("unchecked")
 		List<GenericValue> stepList = MapUtil.get(returnLoadMap, "stepList", List.class);
 		if (CollUtil.isNotEmpty(stepList)) {
 			for (GenericValue step : stepList) {

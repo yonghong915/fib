@@ -135,9 +135,9 @@ public class MessageMetadataManager {
 		Assert.isTrue(file.isDirectory(), () -> new CommonException("MessageMetadataManager.loadMetadataGroup.dir.isNotDirectory"));
 		Assert.isTrue(file.canRead(), () -> new CommonException("MessageMetadataManager.loadMetadataGroup.dir.canNotRead"));
 
-		File[] afile = file.listFiles((subFile, fileName) -> fileName.endsWith(".xml"));
-
-		Map<String, Message> obj = cache.computeIfAbsent(groupId, key -> {
+		File[] afile = file.listFiles((_, fileName) -> fileName.endsWith(".xml"));
+       
+		Map<String, Message> obj = cache.computeIfAbsent(groupId, _ -> {
 			groupPathCache.put(groupId, file);
 			return new HashMap<>(1024);
 		});

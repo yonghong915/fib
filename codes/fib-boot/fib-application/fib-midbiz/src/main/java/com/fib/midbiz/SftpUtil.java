@@ -17,7 +17,7 @@ public class SftpUtil {
 					// sftp.mkDirs("data/bakckup/20250909");
 					// sftp.mkdir("data/20250909");
 					// sftp.download("data/" + l, new File(l));
-					sftp.rename("data/" + l, "data/20250909");
+					//sftp.rename("data/" + l, "data/20250909");
 					// sftp.upload("data", new File("fa.txt"));
 				}
 				System.out.println(ls.size());
