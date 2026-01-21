@@ -24,5 +24,6 @@
     <module>fib-uqcp</module>
     <module>fib-test</module>
     <module>fib-midbiz</module>
+    <module>fib-emall</module>
   </modules>
 </project>

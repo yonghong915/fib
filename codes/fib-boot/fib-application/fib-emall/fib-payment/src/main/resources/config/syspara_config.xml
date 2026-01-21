@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fib.com/schema/fib-config"
+	xsi:schemaLocation="http://www.fib.com/schema/fib-config xml/xsd/fib-config.xsd">
+
+	<variables>
+		<variable name="gatewayConfig" text="二代网关配置">
+			<property name="cnaps2_monitor-port" value="61342" text="端口" />
+			<property name="cnaps2_bosent_cnaps2_send_url"
+				value="http://127.0.0.1:7001/paymentPlatform_bosent_baseline_framework_web/control/PEMessageControl?port=50102" text="二代应用地址" />
+			<property name="cnaps2_bosent_cnaps2_recv_port" value="50102" text="网关端口" />
+		</variable>
+
+	</variables>
+
+	<category name="general" text="通用设置">
+		<property name="aaa" value="xxx" text="baa" />
+	</category>
+
+	<category name="sysVersion" text="系统版本">
+		<property name="sysVersion" value="1.0.0" text="abdd" />
+		<property name="appName" value="upp" text="ageeg" />
+	</category>
+
+	<category name="services" text="系统服务">
+		<property name="IbpsMQServiceA" value="IbpsMQServiceA" text="agegee" />
+	</category>
+</configuration>
