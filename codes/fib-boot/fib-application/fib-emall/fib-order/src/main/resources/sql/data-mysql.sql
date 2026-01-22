@@ -1,2 +1,2 @@
-INSERT INTO sys_user VALUES (1, 'wagnsan', '20','N', 0, 0, '2021-09-26 01:50:18', 0, '2021-09-26 01:50:18');
-INSERT INTO sys_user VALUES (2, 'wagnsan1', '20','N', 0, 0, '2021-09-26 01:50:18', 0, '2021-09-26 01:50:18');
+truncate table t_order;
+insert into t_order(pk_id,create_by,create_dt,update_by,update_dt) values(1,1,CURRENT_TIMESTAMP,1,CURRENT_TIMESTAMP);

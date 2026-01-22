@@ -12,5 +12,4 @@
 	<artifactId>fib-payment</artifactId>
 	<name>fib-payment</name>
 	<url>http://maven.apache.org</url>
-	
 </project>

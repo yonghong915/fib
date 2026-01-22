@@ -1,3 +1,36 @@
-server:  port: 8080  undertow:    threads:      worker: 256      io: 8      
-spring:  application:    name: fib-app  profiles:    active: dev  datasource:    driver-class-name: org.sqlite.JDBC    url: jdbc:sqlite:D:/software/database/sqlite/3.39.2/uppdb.db     sql:    init:      mode: always      encoding: UTF-8      schema-locations:      - classpath:sql/schema-mysql.sql      data-locations:      - classpath:sql/data-mysql.sqllogging:  config: classpath:config/log/logback.xml
-mybatis-plus:  configuration:    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  mapper-locations: classpath:**/mapper/*.xml
+server:
+  port: 8081
+  undertow:
+    threads:
+      worker: 256
+      io: 8
+      
+spring:
+  application:
+    name: fib-payment
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/fib_order?useUnicode=true&characterEncoding=utf8&connectTimeout=5000&socketTimeout=30000&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: fangyh102034
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+      config:
+        enabled: false
+    inetutils:
+      preferred-networks:
+      - 192.168
+
+logging:
+  config: classpath:config/log/logback.xml
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:**/mapper/*.xml

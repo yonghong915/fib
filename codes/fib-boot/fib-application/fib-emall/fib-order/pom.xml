@@ -12,5 +12,4 @@
 	<artifactId>fib-order</artifactId>
 	<name>fib-order</name>
 	<url>http://maven.apache.org</url>
-	
 </project>

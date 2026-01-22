@@ -5,7 +5,7 @@
 	<!-- 定义日志的根目录 -->
 	<property name="LOG_HOME" value="D:/applog" />
 	<!-- 定义日志文件名称 -->
-	<property name="appName" value="fibupp"></property>
+	<property name="appName" value="fibproduct"></property>
 	<!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- 日志输出格式： %d表示日期时间， %thread表示线程名， %-5level：级别从左显示5个字符宽度 %logger{50} 表示logger名字最长50个字符，否则按照句点分割。 %msg：日志消息， %n是换行符 -->
