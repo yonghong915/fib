@@ -15,10 +15,11 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/fib_order?useUnicode=true&characterEncoding=utf8&connectTimeout=5000&socketTimeout=30000&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: root
     password: fangyh102034
+    # type: com.alibaba.druid.pool.DruidDataSource
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 127.0.0.1:8843,127.0.0.1:8845,127.0.0.1:8847
         username: nacos
         password: nacos
       config:
@@ -34,7 +35,24 @@ spring:
       - classpath:sql/schema-mysql.sql
       data-locations:
       - classpath:sql/data-mysql.sql
-   
+ 
+seata:
+  enabled: true
+  tx-service-group: seata_tx_group
+  service:
+    vgroup-mapping:
+      seata_tx_group: default
+      grouplist:
+        default: 127.0.0.1:8091
+  data-source-proxy-mode: AT
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8843 #,127.0.0.1:8845,127.0.0.1:8847
+      group: SEATA_GROUP
+      username: nacos
+      password: nacos
+  enable-auto-data-source-proxy: true
 
 logging:
   config: classpath:config/log/logback.xml

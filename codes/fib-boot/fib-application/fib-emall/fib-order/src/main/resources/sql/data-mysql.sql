@@ -1,2 +1,2 @@
 truncate table t_order;
-insert into t_order(pk_id,create_by,create_dt,update_by,update_dt) values(1,1,CURRENT_TIMESTAMP,1,CURRENT_TIMESTAMP);
+insert into t_order(id,order_no,product_id,count,user_id,status) values(1,'123',1,1,1,1);

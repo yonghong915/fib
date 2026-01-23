@@ -107,4 +107,16 @@ public class ResultRsp<T> implements Serializable {
 	public String toString() {
 		return "ResultRsp [rspCode=" + rspCode + ", rspMsg=" + rspMsg + ", rspObj=" + rspObj + "]";
 	}
+
+	public boolean isSuccess() {
+		return false;
+	}
+
+	public boolean hasData() {
+		return rspObj != null;
+	}
+
+	public static ResultRsp<Boolean> success(boolean result) {
+		return new ResultRsp().setRsp("S0001", "message", result);
+	}
 }
