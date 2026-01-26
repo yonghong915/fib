@@ -1,11 +1,14 @@
 package com.fib.order.ctrller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fib.core.util.StatusCode;
 import com.fib.core.web.ResultRsp;
+import com.fib.core.web.ResultUtil;
+import com.fib.order.entity.OrderEntity;
 import com.fib.order.service.OrderService;
 
 @RestController
@@ -18,9 +21,9 @@ public class OrderCtrller {
 		this.orderService = orderService;
 	}
 
-	@GetMapping("/deduct/{productId}/{count}/{userId}")
-	public ResultRsp<Boolean> deductStock(@PathVariable Long productId, @PathVariable Integer count, Long userId) {
-		boolean result = orderService.createOrder(productId, count, userId);
-		return ResultRsp.success(result);
+	@PostMapping("createOrder")
+	public ResultRsp<Boolean> createOrder(@RequestBody OrderEntity orderEntity) {
+		boolean result = orderService.createOrder(orderEntity);
+		return ResultUtil.message(StatusCode.SUCCESS, result);
 	}
 }

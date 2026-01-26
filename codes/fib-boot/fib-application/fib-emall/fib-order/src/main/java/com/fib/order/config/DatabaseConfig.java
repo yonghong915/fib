@@ -17,42 +17,23 @@ import io.seata.rm.datasource.DataSourceProxy;
 
 @Configuration
 public class DatabaseConfig {
-//	@Primary
-//	@Bean
-//	public DataSourceProxy dataSource() {
-//		DruidDataSource druidDataSource = new DruidDataSource();
-//		druidDataSource.setDriverClassName(driver);
-//		druidDataSource.setUrl(url);
-//		druidDataSource.setUsername(username);
-//		druidDataSource.setPassword(password);
-//		DataSourceProxy dsp = new DataSourceProxy(druidDataSource);
-//		return dsp;
-//	}
-
-//	@Bean
-//	public SqlSessionFactory sqlSessionFactory(DataSourceProxy dataSourceProxy) throws Exception {
-//		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-//		factoryBean.setDataSource(dataSourceProxy); // 必须传入代理数据源
-//		return factoryBean.getObject();
-//	}
-
 	@Value("${mybatis-plus.mapper-locations}")
 	private String mapperLocations;
 
 	@Bean
 	// 读取配置文件中的配置。
 	@ConfigurationProperties(prefix = "spring.datasource")
-	public DataSource dataSource() {
+	DataSource dataSource() {
 		return new DruidDataSource();
 	}
 
 	@Bean
-	public DataSourceProxy dataSourceProxy(DataSource dataSource) {
+	DataSourceProxy dataSourceProxy(DataSource dataSource) {
 		return new DataSourceProxy(dataSource);
 	}
 
 	@Bean
-	public SqlSessionFactory sqlSessionFactoryBean(DataSource dataSourceProxy) throws Exception {
+	SqlSessionFactory sqlSessionFactoryBean(DataSource dataSourceProxy) throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSourceProxy);
 		sqlSessionFactoryBean

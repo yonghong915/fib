@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fib.core.util.StatusCode;
 
 /**
  * 
@@ -109,14 +110,6 @@ public class ResultRsp<T> implements Serializable {
 	}
 
 	public boolean isSuccess() {
-		return false;
-	}
-
-	public boolean hasData() {
-		return rspObj != null;
-	}
-
-	public static ResultRsp<Boolean> success(boolean result) {
-		return new ResultRsp().setRsp("S0001", "message", result);
+		return StatusCode.SUCCESS.code().equals(rspCode);
 	}
 }

@@ -15,7 +15,6 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/fib_order?useUnicode=true&characterEncoding=utf8&connectTimeout=5000&socketTimeout=30000&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: root
     password: fangyh102034
-    # type: com.alibaba.druid.pool.DruidDataSource
   cloud:
     nacos:
       discovery:
@@ -53,7 +52,11 @@ seata:
       username: nacos
       password: nacos
   enable-auto-data-source-proxy: true
-
+  client:
+    tm:
+      commit-retry-count: 5
+      rollback-retry-count: 5
+      default-global-transaction-timeout: 120000
 logging:
   config: classpath:config/log/logback.xml
 mybatis-plus:

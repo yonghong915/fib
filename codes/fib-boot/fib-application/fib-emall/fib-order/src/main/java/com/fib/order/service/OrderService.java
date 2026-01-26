@@ -1,5 +1,7 @@
 package com.fib.order.service;
 
+import com.fib.order.entity.OrderEntity;
+
 public interface OrderService {
-	boolean createOrder(Long productId, Integer count, Long userId);
+	boolean createOrder(OrderEntity orderEntity);
 }

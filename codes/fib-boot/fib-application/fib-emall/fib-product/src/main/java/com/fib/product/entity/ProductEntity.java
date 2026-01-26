@@ -3,7 +3,7 @@ package com.fib.product.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("t_stock")
-public class Stock {
+public class ProductEntity {
 	private Long id;
 	private Long productId;
 	private Integer stockCount;

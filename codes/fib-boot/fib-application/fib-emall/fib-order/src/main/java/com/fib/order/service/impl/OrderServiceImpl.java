@@ -5,20 +5,18 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import com.fib.core.web.ResultRsp;
+import org.springframework.transaction.annotation.Transactional;
 import com.fib.order.entity.OrderEntity;
 import com.fib.order.mapper.OrderMapper;
 import com.fib.order.service.OrderService;
 import com.fib.order.service.feign.StockFeignClient;
 
 import io.seata.core.context.RootContext;
-import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
-	private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 	@Resource
 	private OrderMapper orderMapper;
 	@Resource
@@ -30,34 +28,32 @@ public class OrderServiceImpl implements OrderService {
 	 * @GlobalTransactional：Seata全局事务注解，TM发起全局事务
 	 */
 	@Override
-	@GlobalTransactional(rollbackFor = Exception.class, timeoutMills = 30000)
-	public boolean createOrder(Long productId, Integer count, Long userId) {
-		log.info("开始创建订单，全局事务ID：{}", RootContext.getXID());
+	@Transactional(rollbackFor = Exception.class)
+	public boolean createOrder(OrderEntity orderEntity) {
+		logger.info("开始创建订单，全局事务ID：{}", RootContext.getXID());
 
 		try {
-			// 1. 远程调用库存服务扣减库存
-			ResultRsp<Boolean> deductResult = stockFeignClient.deductStock(productId, count);
-			if (!deductResult.isSuccess() || !deductResult.hasData()) {
-				throw new RuntimeException("库存扣减失败");
-			}
+//			// 1. 远程调用库存服务扣减库存
+//			ResultRsp<Boolean> deductResult = stockFeignClient.deductStock(productId, count);
+//			if (!deductResult.isSuccess() || deductResult.getRspObj() != null) {
+//				throw new RuntimeException("库存扣减失败");
+//			}
 
 			// 2. 本地创建订单
 			OrderEntity order = new OrderEntity();
 			order.setOrderNo(UUID.randomUUID().toString().replace("-", ""));
-			order.setProductId(productId);
-			order.setCount(count);
-			order.setUserId(userId);
+			order.setProductId(1l);
+			order.setCount(2);
+			order.setUserId(2l);
 			order.setStatus(1); // 订单状态：成功
 			int rows = orderMapper.createOrder(order);
 			if (rows <= 0) {
 				throw new RuntimeException("订单创建失败");
 			}
-
-			log.info("订单创建成功，订单编号：{}", order.getOrderNo());
+			logger.info("订单创建成功，订单编号：{}", order.getOrderNo());
 			return true;
-
 		} catch (Exception e) {
-			log.error("订单创建失败，触发全局回滚", e);
+			logger.error("订单创建失败，触发全局回滚", e);
 			throw new RuntimeException("订单创建失败", e); // 抛出异常，TM通知TC回滚
 		}
 	}

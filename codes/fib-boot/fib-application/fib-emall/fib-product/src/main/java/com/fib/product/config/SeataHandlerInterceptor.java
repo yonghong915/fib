@@ -47,8 +47,6 @@ public class SeataHandlerInterceptor implements HandlerInterceptor {
 					log.warn("bind {} back to RootContext", unbindXid);
 				}
 			}
-
 		}
 	}
-
 }

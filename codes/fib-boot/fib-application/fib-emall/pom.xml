@@ -13,6 +13,7 @@
 		<version>${revision}</version>
 	</parent>
 	<modules>
+		<module>fib-mall</module>
 		<module>fib-order</module>
 		<module>fib-payment</module>
 		<module>fib-product</module>
@@ -24,6 +25,10 @@
 		<dependency>
 			<groupId>com.fib</groupId>
 			<artifactId>fib-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,6 +91,18 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-loadbalancer</artifactId>
 		</dependency>
+		
+		<dependency>
+          <groupId>io.seata</groupId>
+          <artifactId>seata-spring-boot-starter</artifactId>
+		</dependency>
+
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-configuration-processor</artifactId>
+        	<optional>true</optional>
+        </dependency>
+		
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>

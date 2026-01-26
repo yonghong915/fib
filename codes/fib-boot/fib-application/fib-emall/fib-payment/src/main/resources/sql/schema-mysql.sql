@@ -1,4 +1,4 @@
-create table if not exists t_order (
+create table if not exists t_payment (
     pk_id BIGINT(20) NOT NULL COMMENT '主键编码',
     create_by BIGINT(20)  DEFAULT 0 COMMENT '创建人',
     create_dt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

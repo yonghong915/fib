@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.fib.mall.mapper.MallMapper">
+	<sql id="BASE_COLUMN_LIST">
+		message_type,transaction_type,send_clearing_bank,receive_clearing_bank,return_limited,original_message_id,batch_id
+	</sql>
+
+
+
+	<update id="updateQueueHeaderStatus"
+		parameterType="com.fib.mall.entity.MallEntity">
+		UPDATE beps_queue_header
+		SET status=#{status}
+		WHERE
+		queue_id=#{queueId}
+	</update>
+
+	<select id="getQueueHeader"
+		parameterType="com.fib.mall.entity.MallEntity"
+		resultType="com.fib.mall.entity.MallEntity">
+		SELECT *
+		FROM beps_queue_header
+		<where>
+			<if test="status != null and status != ''">
+				AND status=#{status}
+			</if>
+
+			<if test="queueType != null and queueType != ''">
+				AND queue_type=#{queueType}
+			</if>
+
+			<if test="queueId != null and queueId != ''">
+				AND queue_id=#{queueId}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateQueueItemStatus"
+		parameterType="com.fib.mall.entity.MallEntity">
+		UPDATE beps_queue_item
+		SET status=#{status}
+		WHERE queue_id=#{queueId}
+		AND record_id IN
+		<foreach collection="list" item="recordId" index="index"
+			open="(" close=")" separator=",">
+			#{recordId}
+		</foreach>
+	</update>
+
+	<select id="getQueueByQueueType" parameterType="string"
+		resultType="com.fib.mall.entity.MallEntity">
+		SELECT queue_type,queue_status
+		FROM beps_queue
+		WHERE
+		queue_type=#{queueType}
+	</select>
+
+	<insert id="createMall" parameterType="com.fib.mall.entity.MallEntity">
+		INSERT INTO t_mall(pk_id,create_by,create_dt,update_by,update_dt)
+		VALUES(#{id},2,CURRENT_TIMESTAMP,2,CURRENT_TIMESTAMP)
+	</insert>
+</mapper>

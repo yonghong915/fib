@@ -15,5 +15,4 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		// 注册HandlerInterceptor，拦截所有请求
 		registry.addInterceptor(seataHandlerInterceptor).addPathPatterns(new String[] { "/**" });
 	}
-
 }
