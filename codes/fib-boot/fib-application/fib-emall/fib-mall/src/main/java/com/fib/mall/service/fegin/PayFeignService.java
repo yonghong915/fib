@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fib.core.web.ResultRsp;
+import com.fib.mall.config.FeignGlobalConfig;
 import com.fib.mall.dto.PayDto;
 
-@FeignClient(name = "fib-payment")
+@FeignClient(name = "fib-payment",configuration = FeignGlobalConfig.class)
 public interface PayFeignService {
 
 	@PostMapping(value = "/pay", consumes = "application/json")

@@ -1,9 +1,6 @@
 package com.fib.core.web;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fib.core.util.StatusCode;
@@ -23,12 +20,12 @@ public class ResultRsp<T> implements Serializable {
 	/**
 	 * 返回码值,默认值Const.FAIL
 	 */
-	@JsonProperty("rspCode")
+	@JsonProperty("code")
 	private String rspCode;
 	/**
 	 * 返回码值解析
 	 */
-	@JsonProperty("rspMsg")
+	@JsonProperty("msg")
 	private String rspMsg;
 	/**
 	 * 返回对象
@@ -40,8 +37,8 @@ public class ResultRsp<T> implements Serializable {
 	 * 时间戳
 	 */
 	@JsonProperty("timestamp")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
-	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "GMT+8")
+	private Long timestamp = System.currentTimeMillis();
 
 	public ResultRsp() {
 		// do nothing
@@ -96,11 +93,11 @@ public class ResultRsp<T> implements Serializable {
 		this.rspObj = rspObj;
 	}
 
-	public Timestamp getTimestamp() {
+	public Long getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Timestamp timestamp) {
+	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
 

@@ -61,4 +61,10 @@ public class OrderEntity {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+
+	@Override
+	public String toString() {
+		return "id=" + id + " orderNo" + orderNo + " productId=" + productId;
+	}
+
 }

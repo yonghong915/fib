@@ -48,6 +48,8 @@ public class MallServiceImpl extends ServiceImpl<MallMapper, MallEntity> impleme
 			/* 1.调用订单服务-创建订单 */
 			OrderDto orderDto = new OrderDto();
 			orderDto.setId(1l);
+			orderDto.setOrderNo("202601270001");
+			orderDto.setProductId(23l);
 			ResultRsp<?> orderRsp = orderFeignService.createOrder(orderDto);
 			if (!orderRsp.isSuccess()) {
 				throw new RuntimeException("Failed to invoke createOrder of OrderService");
