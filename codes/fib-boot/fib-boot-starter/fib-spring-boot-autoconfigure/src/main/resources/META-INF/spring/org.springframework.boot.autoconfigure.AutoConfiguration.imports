@@ -1,4 +1,4 @@
-com.fib.autoconfigure.crypto.CryptoAutoConfiguration
+#com.fib.autoconfigure.crypto.CryptoAutoConfiguration
 #com.fib.autoconfigure.ruleengine.RuleEngineAutoConfiguration
 #com.fib.autoconfigure.ruleengine.drools.DroolsAutoConfiguration
 #com.fib.autoconfigure.ruleengine.easyrules.EasyRulesAutoConfiguration
@@ -9,3 +9,4 @@ com.fib.autoconfigure.crypto.CryptoAutoConfiguration
 #com.fib.autoconfigure.disruptor.DisruptorAutoConfiguration
 #com.fib.autoconfigure.xml.dom4j.Dom4jAutoConfiguration
 #com.fib.autoconfigure.msgconverter.MsgconverterAutoConfiguration
+com.fib.autoconfigure.openapi.OpenapiAutoConfiguration

@@ -30,5 +30,10 @@
     <artifactId>bcprov-jdk18on</artifactId>
     <version>1.83</version>
 </dependency>
+
+<dependency>
+		   <groupId>com.fib</groupId>
+		   <artifactId>fib-openapi-spring-boot-starter</artifactId>
+		</dependency>
 	</dependencies>
 </project>

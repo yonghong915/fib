@@ -25,7 +25,7 @@ public class ResultRsp<T> implements Serializable {
 	/**
 	 * 返回码值解析
 	 */
-	@JsonProperty("msg")
+	@JsonProperty("message")
 	private String rspMsg;
 	/**
 	 * 返回对象

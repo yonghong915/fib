@@ -20,6 +20,7 @@
     <module>fib-msgconverter-spring-boot-starter</module>
     <module>fib-dom4j-spring-boot-starter</module>
     <module>fib-crypto-spring-boot-starter</module>
+	<module>fib-openapi-spring-boot-starter</module>
   </modules>
   	
   <dependencies>

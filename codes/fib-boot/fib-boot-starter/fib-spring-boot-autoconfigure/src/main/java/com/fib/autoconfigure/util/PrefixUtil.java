@@ -17,4 +17,6 @@ public final class PrefixUtil {
 	public static final String GATEWAY_PREFIX = "fib.gateway";
 
 	public static final String CRYPTO_PREFIX = "fib.crypto";
+	
+	public static final String OPENAPI_PREFIX = "fib.openapi";
 }

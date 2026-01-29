@@ -6,7 +6,10 @@ import java.lang.reflect.Type;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fib.autoconfigure.openapi.message.ApiResponse;
+import com.fib.autoconfigure.openapi.message.ResponseHeader;
 import com.fib.core.util.StatusCode;
+import com.fib.core.web.ResultRsp;
 
 import feign.Response;
 import feign.codec.Decoder;
@@ -29,14 +32,14 @@ public class FeignCustomDecoder implements Decoder {
 	@Override
 	public Object decode(Response response, Type type) throws IOException {
 		// 1. 先解析响应为公共响应体（ResponseWrapper）
-		ResponseWrapper<?> wrapper = (ResponseWrapper<?>) delegate.decode(response, ResponseWrapper.class);
-
+		ApiResponse<?> apiResponse = (ApiResponse<?>) delegate.decode(response, ApiResponse.class);
+		ResponseHeader responseHeader = apiResponse.getResponseHeader();
 		// 2. 自定义处理：比如验签、解密、统一异常处理
-		if (!StatusCode.SUCCESS.code().equals(wrapper.getCode())) {
-			throw new RuntimeException("Feign 调用失败：" + wrapper.getMsg());
+		if (!StatusCode.SUCCESS.code().equals(responseHeader.getCode())) {
+			throw new RuntimeException("Feign 调用失败：" + responseHeader.getMessage());
 		}
 
 		// 3. 提取业务数据并转换为目标类型（比如原接口期望的返回类型）
-		return objectMapper.convertValue(wrapper, objectMapper.constructType(type));
+		return objectMapper.convertValue(responseHeader, ResultRsp.class);
 	}
 }

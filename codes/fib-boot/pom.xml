@@ -85,6 +85,12 @@
 				<artifactId>fib-commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
+			<dependency>
+		   <groupId>com.fib</groupId>
+		   <artifactId>fib-openapi-spring-boot-starter</artifactId>
+		   <version>${project.version}</version>
+		</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>

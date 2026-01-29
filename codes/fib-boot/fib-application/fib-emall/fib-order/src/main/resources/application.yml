@@ -22,10 +22,21 @@ spring:
         username: nacos
         password: nacos
       config:
-        enabled: false
+        server-addr: 127.0.0.1:8843,127.0.0.1:8845,127.0.0.1:8847
+        file-extension: yml
+        refresh-enabled: true
+        username: nacos
+        password: nacos
     inetutils:      
       preferred-networks:  
       - 192.168
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+  config:
+    import:
+    - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   sql:
     init:
       mode: always
@@ -34,7 +45,7 @@ spring:
       - classpath:sql/schema-mysql.sql
       data-locations:
       - classpath:sql/data-mysql.sql
- 
+    
 seata:
   enabled: true
   tx-service-group: seata_tx_group
@@ -63,3 +74,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:**/mapper/*.xml
+
+fib:
+  openapi:
+    enabled: true

@@ -1,5 +1,0 @@
-SM2=com.fib.autoconfigure.crypto.security.support.sm.SM2Encryptor
-SM4=com.fib.autoconfigure.crypto.security.support.sm.SM4Encryptor
-SM3=com.fib.autoconfigure.crypto.security.support.sm.SM3Encryptor
-AES=com.fib.autoconfigure.crypto.security.support.sm.AESEncryptor
-RSA=com.fib.autoconfigure.crypto.security.support.sm.RSAEncryptor
