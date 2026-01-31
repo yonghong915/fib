@@ -1,7 +1,5 @@
 package com.fib.autoconfigure.openapi;
 
-import java.lang.reflect.Type;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,8 @@ import com.fib.autoconfigure.openapi.message.ApiResponse;
 import com.fib.autoconfigure.openapi.message.ResponseBody;
 import com.fib.autoconfigure.openapi.message.ResponseHeader;
 import com.fib.autoconfigure.openapi.util.EncryptUtils;
+import com.fib.core.exception.BusinessException;
+import com.fib.core.util.StatusCode;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.RandomUtil;
@@ -43,8 +43,8 @@ public class ResponseBuilder {
 
 		ResponseHeader responseHeader = new ResponseHeader();
 		responseHeader.setAppId(appId);
-		responseHeader.setCode("000000");
-		responseHeader.setMessage("success");
+		responseHeader.setCode(StatusCode.SUCCESS.code());
+		responseHeader.setMessage(StatusCode.SUCCESS.message());
 		responseHeader.setTimestamp(System.currentTimeMillis());
 		responseHeader.setNonce(RandomUtil.randomString(16));
 
@@ -85,11 +85,62 @@ public class ResponseBuilder {
 		String sign = EncryptUtils.generateSign(SignAlgorithm.SHA256withRSA.getValue(), privateKeyStr, signSourceHash);
 		LOGGER.info("sign=[{}]", sign);
 		responseHeader.setSign(sign);
-		
+
 		responseBody.setEncryptedBody(encryedBizData);
 
 		apiResponse.setResponseHeader(responseHeader);
 		apiResponse.setResponseBody(responseBody);
 		return apiResponse;
+	}
+
+	public Object parseMessageResponse(ApiResponse<?> apiResponse, Class<?> clazz) {
+		ResponseHeader responseHeader = apiResponse.getResponseHeader();
+		// 2. 自定义处理：比如验签、解密、统一异常处理
+		if (!StatusCode.SUCCESS.code().equals(responseHeader.getCode())) {
+			throw new BusinessException("404", "Feign 调用失败：" + responseHeader.getMessage());
+		}
+
+		if (responseHeader.getAppId() == null || responseHeader.getTimestamp() == null
+				|| responseHeader.getNonce() == null || responseHeader.getSign() == null) {
+			throw new BusinessException("400", "缺少必要的安全参数");
+		}
+
+		// ========== 步骤4：防重放校验（时间戳 + nonce） ==========
+
+		/* 步骤6：解密业务报文 */
+		String encryptBizData = apiResponse.getResponseBody().getEncryptedBody();
+		// LOGGER.info("encryptBizData=[{}]", encryptBizData);
+
+		String privateKey = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAJp4BnASzcnfBN58NFSjH61jKv+Np5aiXHmuY/LCTOyY0UjZBzcdBvgDefCpvAMTv7QsqCtX4B1V5HfHdW5z5/imJl6W6mwBtixcwfhqO+Fn6/wmG2AugmQBh6T0Se7peG6KJUTu1mEOExR7lGvY8hBNRngwdcJYSLx7bgcIfqu9AgMBAAECgYACITVY2RAwdZb2rf3htzBiCVvn00SULC+8DMEQ291y0KY9YSKl6kxKN0VjNvqM4fo9ah/fyHHNAxNn6bPZ3pa8PnyMknu/B8zU22/7DI9Kshm/6xxLsYs2TYdJfekcbPdnozWjtwoedCwASKwVz0ExHYzJ2ZfpST3zc2xVHUZ1AQJBANYwp72KTWcnYO6+HY07K/Dxv1VLe9VtiuanD/Mq14twRXICNcOXPth+ciVQUSR60vbVN6nTdlCjS1gZfo75NL0CQQC4nwbCPf/l42QPpVNVCEk4nbq39hPBJ/fY9QW1VCpBuYLBUQBiwLqrT7TSTSDdf8CWGQb/uZYxFb7xq2f7GEMBAkBRcb7Wu7gi+T5KidAC2/UhcUsny8QSq8ydV/kgpbHAO7isWVrIPMKQ38PXnGq+TFXbtcess9PRZcZIgak2BFyhAkBqIHg5Jny4gKtfVxD9G2ND2V+hKiKW8UvG+qqKXtRfra0dRVvsaI+ltI7kKRQQX8SsQ7zDOcK9epulvntqWrsBAkA5Nq7Ag4Yc7kF/+m3RRloaJ+AZXhHkEoLuLSi+Vu0I/IaeZwcocLWlGUUoTTynzC6BU8imcj8n+scH4RFnxm3w";
+		String keyvStr = responseHeader.getEncryptedAesKey();
+		String bizData = null;
+		try {
+			String[] ivStr = EncryptUtils.rsaDecryptAesKey(EncryptUtils.RSA_ALGORITHM, keyvStr, privateKey);
+			bizData = EncryptUtils.aesDecrypt(encryptBizData, ivStr[0], ivStr[1]);
+			LOGGER.info("bizData=[{}]" + bizData);
+		} catch (Exception e) {
+			LOGGER.error("报文解密失败", e);
+			throw new BusinessException("500", "报文解密失败");
+		}
+		/* 步骤5：验签 */
+		String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCaeAZwEs3J3wTefDRUox+tYyr/jaeWolx5rmPywkzsmNFI2Qc3HQb4A3nwqbwDE7+0LKgrV+AdVeR3x3Vuc+f4piZelupsAbYsXMH4ajvhZ+v8JhtgLoJkAYek9Enu6XhuiiVE7tZhDhMUe5Rr2PIQTUZ4MHXCWEi8e24HCH6rvQIDAQAB";
+		String signContent = responseHeader.getAppId() + responseHeader.getTimestamp() + responseHeader.getNonce()
+				+ bizData;
+		boolean signValid = false;
+		try {
+			String signSourceHash = DigestUtil.sha256Hex(signContent);
+			signValid = EncryptUtils.verifySign(SignAlgorithm.SHA256withRSA.getValue(), signSourceHash,
+					responseHeader.getSign(), publicKey);
+		} catch (Exception e) {
+			LOGGER.error("签名验证失败", e);
+			throw new BusinessException("500", "签名验证失败");
+		}
+		if (!signValid) {
+			LOGGER.error("签名无效");
+			throw new BusinessException("403", "签名无效");
+		}
+		IO.println(bizData);
+		// 3. 提取业务数据并转换为目标类型（比如原接口期望的返回类型）
+		return SingletonObjectMapper.fromJson(bizData, clazz);
 	}
 }
