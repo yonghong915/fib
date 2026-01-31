@@ -171,12 +171,12 @@
 			<artifactId>dom4j</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+	<!--	<dependency>
 			<groupId>com.fib</groupId>
 			<artifactId>fib-msg-converter</artifactId>
 			<version>${project.version}</version>
 			<optional>true</optional>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.apache.dubbo</groupId>
