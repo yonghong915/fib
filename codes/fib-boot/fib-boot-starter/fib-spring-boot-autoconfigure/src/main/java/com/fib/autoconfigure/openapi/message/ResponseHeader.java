@@ -4,13 +4,16 @@ import java.io.Serializable;
 
 public class ResponseHeader implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	// 调用方应用ID
+	private String appId;
 	// 响应码 000000成功
 	private String code = "000000";
 	// 响应信息
 	private String message = "success";
 	// 对应请求ID
 	private String requestId;
+	// 随机字符串
+	private String nonce;
 	// 响应时间戳
 	private Long timestamp;
 	// 签名算法类型
@@ -82,5 +85,21 @@ public class ResponseHeader implements Serializable {
 
 	public void setEncryptedAesKey(String encryptedAesKey) {
 		this.encryptedAesKey = encryptedAesKey;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getNonce() {
+		return nonce;
+	}
+
+	public void setNonce(String nonce) {
+		this.nonce = nonce;
 	}
 }

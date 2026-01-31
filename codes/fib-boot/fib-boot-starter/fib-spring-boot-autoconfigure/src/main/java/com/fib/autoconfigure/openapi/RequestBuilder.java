@@ -16,6 +16,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.asymmetric.SignAlgorithm;
+import cn.hutool.crypto.digest.DigestUtil;
 
 /**
  * 发送方请求构建工具
@@ -52,6 +53,7 @@ public class RequestBuilder {
 		String aesIv = aesKeyIv[1];
 
 		// 2. AES加密业务数据
+		
 		String bizDataStr = SingletonObjectMapper.toSortedJson(bizData);
 		LOGGER.info("bizDataStr=[{}]", bizDataStr);
 		String encryedBizData = EncryptUtils.aesEncrypt(bizDataStr, aesKey, aesIv);
@@ -82,7 +84,8 @@ public class RequestBuilder {
 		// 5. 生成签名
 		// appId + timestamp + nonce + cipherText
 		String signSource = requestHeader.getAppId() + requestHeader.getTimestamp() + requestHeader.getNonce() + bizDataStr;
-		String sign = EncryptUtils.generateSign(SignAlgorithm.SHA256withRSA.getValue(), privateKeyStr, signSource);
+		String signSourceHash = DigestUtil.sha256Hex(signSource);
+		String sign = EncryptUtils.generateSign(SignAlgorithm.SHA256withRSA.getValue(), privateKeyStr, signSourceHash);
 		LOGGER.info("sign=[{}]", sign);
 		requestHeader.setSign(sign);
 

@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fib.order.entity.OrderEntity;
 import com.fib.order.mapper.OrderMapper;
 import com.fib.order.service.OrderService;
+
+import cn.hutool.core.util.IdUtil;
 import io.seata.core.context.RootContext;
 import jakarta.annotation.Resource;
 
@@ -29,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
 		logger.info("开始创建订单，全局事务ID：{}", RootContext.getXID());
 		/* 本地创建订单 */
 		OrderEntity order = new OrderEntity();
+		order.setId(IdUtil.getSnowflakeNextId());
 		order.setOrderNo(UUID.randomUUID().toString().replace("-", ""));
 		order.setProductId(1l);
 		order.setCount(2);

@@ -1,5 +1,10 @@
 create table if not exists t_order (
     pk_id BIGINT(20) NOT NULL COMMENT '主键编码',
+    order_no varchar(50),
+    product_id int,
+    count int,
+    user_id BIGINT(20),
+    status char(1),
     create_by BIGINT(20)  DEFAULT 0 COMMENT '创建人',
     create_dt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_by BIGINT(0)  DEFAULT 0 COMMENT '更新人',

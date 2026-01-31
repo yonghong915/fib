@@ -22,6 +22,8 @@ import com.fib.autoconfigure.openapi.message.RequestHeader;
 import com.fib.autoconfigure.openapi.util.EncryptUtils;
 
 import cn.hutool.crypto.asymmetric.SignAlgorithm;
+import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.json.JSONUtil;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -114,7 +116,7 @@ public class ApiSecurityFilter implements Filter {
 		try {
 			String[] ivStr = EncryptUtils.rsaDecryptAesKey(EncryptUtils.RSA_ALGORITHM, keyvStr, privateKey);
 			bizData = EncryptUtils.aesDecrypt(encryptBizData, ivStr[0], ivStr[1]);
-			LOGGER.info("bizData=[{}]" + bizData);
+			LOGGER.info("bizData=[{}]", bizData);
 		} catch (Exception e) {
 			writeErrorResponse(httpResponse, "500", "报文解密失败：" + e.getMessage());
 			return;
@@ -132,11 +134,13 @@ public class ApiSecurityFilter implements Filter {
 
 		/* 步骤5：验签 */
 		String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCaeAZwEs3J3wTefDRUox+tYyr/jaeWolx5rmPywkzsmNFI2Qc3HQb4A3nwqbwDE7+0LKgrV+AdVeR3x3Vuc+f4piZelupsAbYsXMH4ajvhZ+v8JhtgLoJkAYek9Enu6XhuiiVE7tZhDhMUe5Rr2PIQTUZ4MHXCWEi8e24HCH6rvQIDAQAB";
-		String signContent = requestHeader.getAppId() + requestHeader.getTimestamp() + requestHeader.getNonce() + bizData;
+		String signContent = requestHeader.getAppId() + requestHeader.getTimestamp() + requestHeader.getNonce()
+				+ bizData;
+		String signSourceHash = DigestUtil.sha256Hex(signContent);
 		boolean signValid = false;
 		try {
-			signValid = EncryptUtils.verifySign(SignAlgorithm.SHA256withRSA.getValue(), signContent, requestHeader.getSign(),
-					publicKey);
+			signValid = EncryptUtils.verifySign(SignAlgorithm.SHA256withRSA.getValue(), signSourceHash,
+					requestHeader.getSign(), publicKey);
 		} catch (Exception e) {
 			writeErrorResponse(httpResponse, "500", "签名验证失败：" + e.getMessage());
 			return;
@@ -159,8 +163,11 @@ public class ApiSecurityFilter implements Filter {
 		try {
 			// 读取Controller的原始响应
 			String originalResponse = new String(customResponse.getContentAsByteArray(), StandardCharsets.UTF_8);
-
-			ApiResponse<Object> apiResponse = responseBuilder.buildMessageResponse(originalResponse);
+			Object respBizObject = originalResponse;
+			if (JSONUtil.isTypeJSON(originalResponse)) {
+				respBizObject = SingletonObjectMapper.fromJson(originalResponse, Object.class);
+			}
+			ApiResponse<Object> apiResponse = responseBuilder.buildMessageResponse(respBizObject);
 
 			// BusinessResponse<?> businessResponse =
 			// objectMapper.readValue(originalResponse, BusinessResponse.class);
