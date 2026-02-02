@@ -6,26 +6,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.fib</groupId>
-		<artifactId>fib-application</artifactId>
+		<artifactId>fib-midbiz</artifactId>
 		<version>${revision}</version>
 	</parent>
-	<artifactId>fib-midbiz</artifactId>
-	<name>fib-midbiz</name>
+	<artifactId>fib-midbiz-common</artifactId>
+	<name>fib-midbiz-common</name>
 	<url>http://maven.apache.org</url>
-	<packaging>pom</packaging>
-	<modules>
-		<module>fib-bss</module>
-		<!--<module>fib-campuscard</module>-->
-		<!--<module>fib-hfs</module>-->
-		<module>fib-efs</module>
-		<module>fib-midbiz-common</module>
-		<module>fib-midbiz-app</module>
-	</modules>
-
+	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
-
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+		</dependency>
 	</dependencies>
 </project>
