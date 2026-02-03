@@ -27,11 +27,17 @@ public class EfsServiceImpl implements EfsServiceApi {
 	@Override
 	public EfsDTO createEfs() {
 		Long bssId = IdUtil.getSnowflakeNextId();
-		BssDTO bssDTO = bssServiceApi.getBssById(bssId);
-		if (bssDTO == null) {
+		BssDTO bssDTO = new BssDTO();
+		bssDTO.setId(bssId);
+		int rows = bssServiceApi.createBss(bssDTO);
+		if (rows == 0) {
 			throw new RuntimeException("用户不存在");
 		}
 
+		BssDTO qryDto = bssServiceApi.getBssById(bssDTO);
+		if (qryDto == null) {
+			throw new RuntimeException("用户不存在");
+		}
 		EfsDTO efsDTO = new EfsDTO();
 		EfsEntity efsEntity = new EfsEntity();
 		efsEntity.setId(2018260969310363648l);
@@ -39,5 +45,4 @@ public class EfsServiceImpl implements EfsServiceApi {
 
 		return efsDTO;
 	}
-
 }

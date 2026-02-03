@@ -11,5 +11,7 @@ public interface BssServiceApi {
 	 * @param bssId
 	 * @return
 	 */
-	BssDTO getBssById(Long bssId);
+	int createBss(BssDTO bssDto);
+
+	BssDTO getBssById(BssDTO bssDto);
 }

@@ -51,6 +51,7 @@
 		<junit.version>4.13.1</junit.version>
 		<jsr305.version>3.0.2</jsr305.version>
 		<lombok.version>1.18.30</lombok.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
 		<minio.version>8.5.7</minio.version>
 		<mybatis-plus.version>3.5.5</mybatis-plus.version>
 		<mybatis.version>3.5.15</mybatis.version>
