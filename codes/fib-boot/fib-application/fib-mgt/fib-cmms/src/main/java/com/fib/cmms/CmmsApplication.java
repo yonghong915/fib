@@ -18,6 +18,6 @@ public class CmmsApplication {
 	public static void main(String[] args) {
 		LOGGER.info("Hello World!");
 		SpringApplication.run(CmmsApplication.class, args);
-		
+
 	}
 }

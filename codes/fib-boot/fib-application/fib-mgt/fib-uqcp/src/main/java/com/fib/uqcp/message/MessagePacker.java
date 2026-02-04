@@ -10,8 +10,6 @@ import org.dom4j.Node;
 
 import com.fib.commons.xml.dom4j.Dom4jParser;
 
-import cn.hutool.core.io.FileUtil;
-
 public class MessagePacker {
 
 	public static void main(String[] args) {
@@ -21,7 +19,7 @@ public class MessagePacker {
 	}
 
 	public void parse(String file) {
-		Document document = Dom4jParser.newBuilder().build().getDocument(FileUtil.getInputStream(file));
+		Document document = null;//Dom4jParser.newBuilder().build().getDocument(FileUtil.getInputStream(file));
 		Element rootEle = document.getRootElement();
 		String id = rootEle.attributeValue("id");
 		String eleClass = rootEle.attributeValue("class");

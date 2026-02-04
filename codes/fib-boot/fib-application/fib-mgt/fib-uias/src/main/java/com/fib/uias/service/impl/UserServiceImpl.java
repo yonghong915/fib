@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fib.commons.exception.BusinessException;
-import com.fib.core.util.StatusCode;
+import com.fib.commons.util.StatusCode;
 import com.fib.uias.entity.UserEntity;
 import com.fib.uias.mapper.UserMapper;
 import com.fib.uias.service.IUserService;

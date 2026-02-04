@@ -8,7 +8,7 @@ import com.fib.core.web.ResultRsp;
 import com.fib.mall.config.FeignGlobalConfig;
 import com.fib.mall.dto.PayDto;
 
-@FeignClient(name = "fib-payment",configuration = FeignGlobalConfig.class)
+@FeignClient(name = "fib-pay",configuration = FeignGlobalConfig.class)
 public interface PayFeignService {
 
 	@PostMapping(value = "/pay", consumes = "application/json")

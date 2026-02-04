@@ -1,7 +1,6 @@
 package com.fib.uqcp;
 
 import cn.hutool.core.lang.Snowflake;
-import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.IdUtil;
 
 public class SerialNumber {
@@ -12,7 +11,7 @@ public class SerialNumber {
 	public void init() {
 		try {
 			// 将网络ip转换成long
-			workerId = NetUtil.ipv4ToLong(NetUtil.getLocalhostStr());
+			//workerId = NetUtil.ipv4ToLong(NetUtil.getLocalhostStr());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

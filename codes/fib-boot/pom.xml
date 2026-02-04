@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-       	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.10</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 	<groupId>com.fib</groupId>
 	<artifactId>fib-boot</artifactId>
@@ -28,7 +28,6 @@
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 		<cglib.version>3.3.0</cglib.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
@@ -86,12 +85,12 @@
 				<artifactId>fib-commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
-		   <groupId>com.fib</groupId>
-		   <artifactId>fib-openapi-spring-boot-starter</artifactId>
-		   <version>${project.version}</version>
-		</dependency>
+				<groupId>com.fib</groupId>
+				<artifactId>fib-openapi-spring-boot-starter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -255,6 +254,22 @@
 				<version>${mysql.version}</version>
 				<optional>true</optional>
 			</dependency>
+
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${mapstruct.version}</version>
+				<optional>true</optional>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct-processor</artifactId>
+				<version>${mapstruct.version}</version>
+				<optional>true</optional>
+			</dependency>
+
+
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>

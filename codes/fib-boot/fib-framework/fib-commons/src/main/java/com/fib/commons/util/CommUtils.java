@@ -19,7 +19,6 @@ import com.fib.commons.exception.CommonException;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ZipUtil;
 
@@ -144,7 +143,7 @@ public class CommUtils {
 
 		List<File> files = new ArrayList<>();
 		for (String srcFile : javaSrcFiles) {
-			files.add(FileUtil.file(srcFile));
+			//files.add(FileUtil.file(srcFile));
 		}
 
 		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(files);

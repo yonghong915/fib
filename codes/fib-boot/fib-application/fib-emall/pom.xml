@@ -15,7 +15,7 @@
 	<modules>
 		<module>fib-mall</module>
 		<module>fib-order</module>
-		<module>fib-payment</module>
+		<module>fib-pay</module>
 		<module>fib-product</module>
 	</modules>
 	<properties>

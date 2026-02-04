@@ -15,7 +15,6 @@ import com.fib.autoconfigure.crypto.service.ISecurityService;
 import com.fib.core.util.ConstantUtil;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.HexUtil;
@@ -63,7 +62,7 @@ public class SecurityServiceImpl implements ISecurityService {
 
 	@Override
 	public String getNonce(long timestamp) {
-		return NetUtil.getLocalhostStr() + "|" + timestamp + "|" + RandomUtil.randomString(8);
+		return "";//NetUtil.getLocalhostStr() + "|" + timestamp + "|" + RandomUtil.randomString(8);
 	}
 
 	@Override

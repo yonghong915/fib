@@ -9,7 +9,7 @@
 		<version>${revision}</version>
 	</parent>
 	<artifactId>fib-crypto-spring-boot-starter</artifactId>
-	<name>crypto</name>
+	<name>fib-crypto-spring-boot-starter</name>
 	<dependencies>
 		<dependency>
 			<groupId>com.fib</groupId>

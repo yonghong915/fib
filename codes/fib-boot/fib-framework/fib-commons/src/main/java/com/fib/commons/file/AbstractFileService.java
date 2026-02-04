@@ -18,13 +18,13 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.beust.jcommander.internal.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
-import cn.hutool.core.io.BOMInputStream;
 
 /**
  * 抽象文件处理通用服务(文本文件)

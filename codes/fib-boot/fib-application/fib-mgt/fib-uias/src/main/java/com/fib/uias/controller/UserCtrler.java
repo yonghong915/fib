@@ -13,8 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fib.uias.entity.UserEntity;
 import com.fib.uias.service.IUserService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
@@ -65,9 +63,9 @@ public class UserCtrler {
     }
 
     @GetMapping("/add/{name}")
-    @HystrixCommand(fallbackMethod = "saveFallbackMethod", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
-            @HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests", value = "3")})
+//    @HystrixCommand(fallbackMethod = "saveFallbackMethod", commandProperties = {
+//            @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
+//            @HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests", value = "3")})
     public String add(@PathVariable String name) {
         String url = "http://" + serviceName + "/add/" + name;
         ResponseEntity<String> respEntity = restTemplate.getForEntity(url, String.class);

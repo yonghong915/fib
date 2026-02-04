@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import com.alibaba.cloud.commons.lang.StringUtils;
 import io.seata.core.context.RootContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,7 +34,7 @@ public class SeataHandlerInterceptor implements HandlerInterceptor {
 
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
 		String rpcXid = request.getHeader("TX_XID");
-		if (!StringUtils.isEmpty(rpcXid)) {
+		if (StringUtils.hasLength(rpcXid)) {
 			String unbindXid = RootContext.unbind();
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("unbind {} from RootContext", unbindXid);

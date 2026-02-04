@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.fib.autoconfigure.crypto.annotation.EnableSecurity;
-
 /**
  * 
  * @author fangyh
@@ -14,7 +12,7 @@ import com.fib.autoconfigure.crypto.annotation.EnableSecurity;
  * @date 2023-11-06 09:45:27
  */
 @SpringBootApplication
-@EnableSecurity
+//@EnableSecurity
 public class UqcpApplication {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UqcpApplication.class);
 

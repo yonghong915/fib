@@ -145,7 +145,7 @@ public class BatchImplUtil {
 	}
 
 	private static List<Map<String, Object>> getTableCols(String trim) {
-		String sql = "select table_name,column_name,data_type from user_tab_cols where table_name = ? ";
+		//String sql = "select table_name,column_name,data_type from user_tab_cols where table_name = ? ";
 
 		ClassLoaderUtil.getClassLoader();
 		return null;
