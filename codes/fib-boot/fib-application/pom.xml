@@ -10,20 +10,9 @@
     <version>${revision}</version>
   </parent>
   <modules>
-    <module>fib-bip</module>
-    <module>fib-cmms</module>
-    <module>fib-crm</module>
-    <module>fib-ecif</module>
-    <module>fib-esb</module>
-    <module>fib-msg-converter</module>
-    <module>fib-oims</module>
-    <module>fib-oms</module>
-    <module>fib-pcms</module>
-    <module>fib-uias</module>
-    <module>fib-upp</module>
-    <module>fib-uqcp</module>
-    <module>fib-test</module>
-    <module>fib-midbiz</module>
     <module>fib-emall</module>
+	<module>fib-mgt</module>
+	<module>fib-midbiz</module>
+    <module>fib-payment</module>
   </modules>
 </project>
