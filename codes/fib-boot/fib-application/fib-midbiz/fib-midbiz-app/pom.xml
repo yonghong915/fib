@@ -35,6 +35,12 @@
 			<version>${revision}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fib</groupId>
+			<artifactId>fib-campuscard</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
 		<!-- Spring Boot 测试（可选） -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

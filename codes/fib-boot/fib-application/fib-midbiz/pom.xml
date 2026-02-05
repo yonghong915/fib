@@ -15,7 +15,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>fib-bss</module>
-		<!--<module>fib-campuscard</module>-->
+		<module>fib-campuscard</module>
 		<!--<module>fib-hfs</module>-->
 		<module>fib-efs</module>
 		<module>fib-midbiz-common</module>
@@ -76,14 +76,12 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>${mapstruct.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
-			<version>${mapstruct.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

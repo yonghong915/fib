@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "com.fib.midbiz")
-@MapperScan(basePackages = { "com.fib.midbiz.efs.mapper", "com.fib.midbiz.bss.mapper" })
+@MapperScan(basePackages = { "com.fib.midbiz.efs.mapper", "com.fib.midbiz.bss.mapper",
+		"com.fib.midbiz.campuscard.mapper" })
 public class MidbizApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MidbizApplication.class, args);
