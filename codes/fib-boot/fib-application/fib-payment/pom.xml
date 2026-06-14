@@ -21,7 +21,8 @@
 		<module>fib-dcep</module>
 		<module>fib-payment-common</module>
 		<module>fib-payment-app</module>
-	</modules>
+        <module>fib-ecny</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
