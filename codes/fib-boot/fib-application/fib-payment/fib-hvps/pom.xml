@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.fib</groupId>
 		<artifactId>fib-payment</artifactId>
-		<version>${revision}</version>
+		<version>0.0.1</version>
 	</parent>
 	<artifactId>fib-hvps</artifactId>
 	<name>fib-hvps</name>

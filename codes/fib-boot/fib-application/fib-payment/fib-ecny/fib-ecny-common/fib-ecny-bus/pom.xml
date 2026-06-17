@@ -1,16 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.fib</groupId>
         <artifactId>fib-ecny-common</artifactId>
-        <version>${revision}</version>
+        <version>0.0.1</version>
     </parent>
     <artifactId>fib-ecny-bus</artifactId>
-    <name>Archetype - fib-ecny-bus</name>
-    <url>http://maven.apache.org</url>
+    <name>fib-ecny-bus</name>
+    <url>https://maven.apache.org</url>
 
     <dependencies>
+        <dependency>
+            <groupId>com.fib</groupId>
+            <artifactId>fib-ecny-mapper</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -20,6 +25,18 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>9.1.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

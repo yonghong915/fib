@@ -19,6 +19,7 @@
 		<module>fib-application</module>
 		<module>fib-framework</module>
 		<module>fib-boot-starter</module>
+		<module>fib-application/fib-payment/fib-ecny/fib-ecny-common/fib-ecny-mapper</module>
 	</modules>
 	<properties>
 		<revision>0.0.1</revision>
