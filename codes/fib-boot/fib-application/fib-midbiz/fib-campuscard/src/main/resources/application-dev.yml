@@ -36,3 +36,6 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
     banner: false
+
+logging:
+  config: classpath:log4j2.xml

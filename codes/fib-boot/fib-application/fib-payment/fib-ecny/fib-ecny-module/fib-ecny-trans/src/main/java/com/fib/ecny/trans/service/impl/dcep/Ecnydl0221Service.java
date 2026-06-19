@@ -1,12 +1,12 @@
 package com.fib.ecny.trans.service.impl.dcep;
 
 import com.fib.common.bus.base.BizContext;
-import com.fib.common.bus.base.IService;
+import com.fib.common.bus.base.IBusiService;
 import com.fib.common.bus.base.RespEntity;
 
-public class Ecnydl0221Service implements IService {
+public class Ecnydl0221Service implements IBusiService {
     @Override
-    public RespEntity arrow(BizContext bizContext) {
+    public RespEntity arrange(BizContext bizContext) {
         return null;
     }
 }
