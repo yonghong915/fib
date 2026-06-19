@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: ecny-trans
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:C:\software\db\sqlite\wallet.db?busy_timeout=5000
+    username:
+    password:
+    master:
+        url: jdbc:sqlite:wallet.db?busy_timeout=5000
+        driver-class-name: org.sqlite.JDBC
+        username:
+        password:
+    slave:
+       url: jdbc:sqlite:wallet.db?busy_timeout=5000
+       driver-class-name: org.sqlite.JDBC
+       username:
+       password:
+  jackson:
+    default-property-inclusion: non_null
+  threads:
+    virtual:
+      enabled: true
+  main:
+    banner-mode: off
+server:
+  servlet:
+    context-path: /ecny
+ 
+mybatis-plus:
+  mapper-locations: classpath:**/mapper/**/*.xml
+  type-aliases-package: com.fib.ecny.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl #打印sql
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: del_flg
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      insert-strategy: not_null
+      update-strategy: not_null
+      where-strategy: not_null
+    banner: false

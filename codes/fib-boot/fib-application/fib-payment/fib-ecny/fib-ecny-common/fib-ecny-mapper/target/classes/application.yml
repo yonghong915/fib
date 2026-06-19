@@ -1,14 +1,14 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:wallet.db?busy_timeout=5000
+    url: jdbc:sqlite:C:\software\db\sqlite\wallet.db?busy_timeout=5000
     username:
     password:
   schema: classpath:schema.sql
   initialization-mode: always
 
 mybatis-plus:
-  mapper-locations: classpath:**mapper/**/*.xml
+  mapper-locations: classpath:mapper/**/*.xml
   type-aliases-package: com.fib.ecny.entity
   configuration:
     map-underscore-to-camel-case: true # 下划线转驼峰
