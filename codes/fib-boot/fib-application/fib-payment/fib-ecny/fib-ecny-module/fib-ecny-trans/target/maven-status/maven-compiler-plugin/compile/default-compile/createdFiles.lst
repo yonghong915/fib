@@ -2,12 +2,14 @@ com\fib\ecny\trans\service\impl\uwap\Ecnyul0551Service.class
 com\fib\ecny\trans\EcnyTransApplication.class
 com\fib\ecny\trans\controller\DcepBaseController.class
 com\fib\ecny\trans\controller\UwapController.class
+com\fib\ecny\trans\controller\ValidatorUtils$ValidationException.class
 com\fib\ecny\trans\JacksonConfig.class
+com\fib\ecny\trans\controller\Uwap050100302Rsp.class
 com\fib\ecny\trans\controller\UwapResponse.class
 com\fib\ecny\trans\controller\CustomBaseController.class
 com\fib\ecny\trans\controller\UwapBaseController.class
 com\fib\ecny\trans\service\impl\dcep\Ecnydl0221Service.class
 com\fib\ecny\trans\controller\BizBaseController.class
-com\fib\ecny\trans\controller\UwapRequest.class
+com\fib\ecny\trans\controller\ValidatorUtils.class
 com\fib\ecny\trans\controller\EsbBaseController.class
 com\fib\ecny\trans\controller\Uwap050100302Req.class

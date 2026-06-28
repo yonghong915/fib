@@ -1,20 +1,24 @@
 package com.fib.ecny.common.bus.base;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fib.common.bus.base.BizException;
-import com.fib.common.bus.base.annotation.ErrorCode;
-import com.fib.ecny.common.bus.converter.wallet.WalletInfoMapperConverter;
+import com.fib.common.bus.base.EcnyErrorCode;
+import com.fib.ecny.common.bus.converter.wallet.WalletInfoConverter;
 import com.fib.ecny.common.bus.dto.wallet.WalletInfoDto;
 import com.fib.ecny.entity.WalletInfoEntity;
 import com.fib.ecny.mapper.WalletInfoMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/**
+ * 钱包信息组件
+ */
 @Component
+@Slf4j
 public class WalletInfoComp {
-    private static final Logger LOGGER =  LoggerFactory.getLogger(WalletInfoComp.class);
     private final WalletInfoMapper walletInfoMapper;
 
     public WalletInfoComp(WalletInfoMapper walletInfoMapper) {
@@ -22,12 +26,60 @@ public class WalletInfoComp {
     }
 
     public WalletInfoDto getWalletInfo(WalletInfoDto walletInfoDto) {
-        LambdaQueryWrapper<WalletInfoEntity> wrapper = Wrappers.lambdaQuery(WalletInfoMapperConverter.INSTANCE.fromDto(walletInfoDto));
+        LambdaQueryWrapper<WalletInfoEntity> wrapper = Wrappers.lambdaQuery(WalletInfoEntity.class);
+        WalletInfoEntity walletInfoEntity = WalletInfoConverter.INSTANCE.fromDto(walletInfoDto);
+
+        wrapper.eq(WalletInfoEntity::getWalletId, walletInfoEntity.getWalletId());
+        wrapper.eq(WalletInfoEntity::getEcnyCustNo, walletInfoEntity.getEcnyCustNo());
         try {
-            return WalletInfoMapperConverter.INSTANCE.toDto(walletInfoMapper.selectOne(wrapper, Boolean.FALSE));
+            return WalletInfoConverter.INSTANCE.toDto(walletInfoMapper.selectOne(wrapper, Boolean.FALSE));
         } catch (Exception e) {
-            LOGGER.error("Failed to execute to query walletInfo.", e);
-            throw new BizException(ErrorCode.FAIL);
+            log.error("Failed to execute to query walletInfo.", e);
+            throw new BizException(EcnyErrorCode.DB_EXP);
+        }
+    }
+
+    /**
+     * 报文钱包信息
+     *
+     * @param walletInfoDto 钱包信息 DTO
+     * @return 影响行数
+     */
+    public int saveWalletInfo(WalletInfoDto walletInfoDto) {
+        try {
+            return walletInfoMapper.insert(WalletInfoConverter.INSTANCE.fromDto(walletInfoDto));
+        } catch (Exception e) {
+            log.error("Failed to execute to save walletInfo", e);
+            throw new BizException(EcnyErrorCode.DB_EXP);
+        }
+    }
+
+    /**
+     * 根据数币客户号与钱包编码更新钱包信息
+     *
+     * @param walletInfoDto 钱包信息 DTO
+     * @return 影响行数
+     */
+    public int updateWalletInfo(WalletInfoDto walletInfoDto) {
+        if (StrUtil.isEmpty(walletInfoDto.getEcnyCustNo()) || StrUtil.isEmpty(walletInfoDto.getWalletId())) {
+            log.error("==== updateWalletInfo ==== 参数数币客户号或钱包编码不能为空");
+            throw new BizException(EcnyErrorCode.E1000002, "数币客户号或钱包编码不能为空");
+        }
+        LambdaUpdateWrapper<WalletInfoEntity> wrapper = Wrappers.lambdaUpdate(WalletInfoEntity.class);
+        WalletInfoEntity walletInfoEntity = WalletInfoConverter.INSTANCE.fromDto(walletInfoDto);
+
+        wrapper.set(StrUtil.isNotEmpty(walletInfoEntity.getWalletName()), WalletInfoEntity::getWalletName, walletInfoEntity.getWalletName());
+        wrapper.set(StrUtil.isNotEmpty(walletInfoEntity.getWalletLevel()), WalletInfoEntity::getWalletLevel, walletInfoEntity.getWalletLevel());
+        wrapper.set(StrUtil.isNotEmpty(walletInfoEntity.getWalletStatus()), WalletInfoEntity::getWalletStatus, walletInfoEntity.getWalletStatus());
+        wrapper.set(StrUtil.isNotEmpty(walletInfoEntity.getRemark()), WalletInfoEntity::getRemark, walletInfoEntity.getRemark());
+
+        wrapper.eq(WalletInfoEntity::getEcnyCustNo, walletInfoEntity.getEcnyCustNo());
+        wrapper.eq(WalletInfoEntity::getWalletId, walletInfoEntity.getWalletId());
+        try {
+            return walletInfoMapper.update(wrapper);
+        } catch (Exception e) {
+            log.error("Failed to execute to update walletInfo", e);
+            throw new BizException(EcnyErrorCode.DB_EXP);
         }
     }
 }

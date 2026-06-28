@@ -3,6 +3,7 @@ C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\f
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\BizContext.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\BizException.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\Circle.java
+C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\EcnyErrorCode.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\exchange\EcnyTransExchange.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\exchange\trans\RedeemAcctReq.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\exchange\trans\RedeemAcctRsp.java
@@ -17,5 +18,6 @@ C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\f
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\common\bus\base\UwapResponse.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\ecny\common\bus\base\config\CustomMapperConfig.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\ecny\common\bus\base\WalletInfoComp.java
-C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\ecny\common\bus\converter\wallet\WalletInfoMapperConverter.java
+C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\ecny\common\bus\converter\wallet\WalletInfoConverter.java
 C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\ecny\common\bus\dto\wallet\WalletInfoDto.java
+C:\software\ws_project\fib\codes\fib-boot\fib-application\fib-payment\fib-ecny\fib-ecny-common\fib-ecny-bus\src\main\java\com\fib\ecny\common\bus\vo\wallet\WalletInfoVo.java

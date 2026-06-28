@@ -9,4 +9,11 @@
     <artifactId>fib-ecny-wallet</artifactId>
     <name>fib-ecny-wallet</name>
     <url>https://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>com.fib</groupId>
+            <artifactId>fib-ecny-bus</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
 </project>

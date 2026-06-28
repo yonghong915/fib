@@ -1,53 +1,30 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.fib</groupId>
-		<artifactId>fib-payment</artifactId>
-		<version>0.0.1</version>
-	</parent>
-	<artifactId>fib-hvps</artifactId>
-	<name>fib-hvps</name>
-	<url>http://maven.apache.org</url>
-	<packaging>jar</packaging>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.fib</groupId>
+        <artifactId>fib-payment</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <artifactId>fib-hvps</artifactId>
+    <name>fib-hvps</name>
+    <url>https://maven.apache.org</url>
+    <packaging>jar</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.fib</groupId>
-			<artifactId>fib-payment-common</artifactId>
-			<version>${revision}</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.fib</groupId>
+            <artifactId>fib-payment-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.redisson</groupId>
-			<artifactId>redisson-spring-boot-starter</artifactId>
-			<version>4.1.0</version>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>25</source> <!-- 与项目 JDK 版本一致（JDK 8+） -->
-					<target>25</target>
-					<encoding>UTF-8</encoding>
-					<!-- 注解处理器路径：必须配置 MapStruct（若用 Lombok 则放在前面） -->
-					<annotationProcessorPaths>
-						<!-- MapStruct 注解处理器（必须配置，版本与核心依赖一致） -->
-						<path>
-							<groupId>org.mapstruct</groupId>
-							<artifactId>mapstruct-processor</artifactId>
-							<version>${mapstruct.version}</version>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+    </dependencies>
 </project>

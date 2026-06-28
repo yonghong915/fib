@@ -1,7 +1,7 @@
 package com.fib.ecny.trans.service.impl.uwap;
 
 import com.fib.common.bus.base.BizContext;
-import com.fib.common.bus.base.IBusiService;
+import com.fib.common.bus.base.IBizService;
 import com.fib.common.bus.base.RespEntity;
 import com.fib.common.bus.base.UwapRequest;
 import com.fib.ecny.common.bus.dto.wallet.WalletInfoDto;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Ecnyul0551Service implements IBusiService {
+public class Ecnyul0551Service implements IBizService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Ecnyul0551Service.class);
     @Resource
     private WalletInfoComp walletInfoComp;

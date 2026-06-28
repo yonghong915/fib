@@ -5,6 +5,7 @@ import lombok.Data;
 /**
  * 报文头
  */
+@Data
 public class MsgHeader {
     /**
      *
@@ -14,34 +15,12 @@ public class MsgHeader {
     /**
      *
      */
-    private String msgType;
+    private String mesgType;
 
     /**
      *
      */
     private String origSendDateTime;
 
-    public String getMsgId() {
-        return msgId;
-    }
-
-    public void setMsgId(String msgId) {
-        this.msgId = msgId;
-    }
-
-    public String getMsgType() {
-        return msgType;
-    }
-
-    public void setMsgType(String msgType) {
-        this.msgType = msgType;
-    }
-
-    public String getOrigSendDateTime() {
-        return origSendDateTime;
-    }
-
-    public void setOrigSendDateTime(String origSendDateTime) {
-        this.origSendDateTime = origSendDateTime;
-    }
+    private String lang;
 }

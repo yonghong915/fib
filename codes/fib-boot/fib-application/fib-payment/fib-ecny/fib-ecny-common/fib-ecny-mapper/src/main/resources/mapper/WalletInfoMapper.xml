@@ -12,10 +12,10 @@
     </insert>
 
     <insert id="batchInsert" parameterType="com.fib.ecny.entity.WalletInfoEntity">
-        INSERT INTO t_wallet_info(wallet_id,wallet_name,wallet_level,wallet_status,create_dt,update_dt)
+        INSERT INTO t_wallet_info(ecny_cust_no,wallet_id,wallet_name,wallet_level,wallet_status,remark,create_dt,update_dt)
         VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.walletId},#{item.walletName},#{item.walletLevel},#{item.walletStatus},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+            (#{item.ecnyCustNo},#{item.walletId},#{item.walletName},#{item.walletLevel},#{item.walletStatus},#{item.remark},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
         </foreach>
     </insert>
 
