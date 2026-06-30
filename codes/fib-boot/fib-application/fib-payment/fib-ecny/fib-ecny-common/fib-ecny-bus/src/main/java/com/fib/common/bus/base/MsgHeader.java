@@ -7,6 +7,8 @@ import lombok.Data;
  */
 @Data
 public class MsgHeader {
+    private String origSender;
+    private String origReceiver;
     /**
      *
      */

@@ -32,7 +32,8 @@ import static org.hibernate.validator.internal.util.logging.Messages.MESSAGES;
 public class UwapBaseController extends BizBaseController {
 
     @Resource
-    private  SysParamsComp sysParamsComp;
+    private SysParamsComp sysParamsComp;
+
     public UwapResponse<?> executor(UwapRequest<?> request) {
         return executor(request, null, true);
     }
@@ -115,6 +116,9 @@ public class UwapBaseController extends BizBaseController {
         return response.getRespData();
     }
 
+    private void updateMessage(BizContext context, RespEntity response) {
+    }
+
     /**
      * 返回前处理，赋值header对象，处理状态码
      *
@@ -150,10 +154,10 @@ public class UwapBaseController extends BizBaseController {
             header.setOrigSender(msgHeader.getOrigReceiver());
         }
         if (StrUtil.isBlank(header.getOrigReceiver())) {
-            header.setOrigSender(msgHeader.setOrigSender());
+            header.setOrigSender(msgHeader.getOrigSender());
         }
         if (StrUtil.isBlank(header.getOrigSendDateTime())) {
-            header.setOrigSendDateTime(LocalDateTimeUtil.now().format(DateTimeFormatter.ofPattern(DateUtil.DATE_FORMAT_PATTERN_3)));
+            header.setOrigSendDateTime(LocalDateTimeUtil.now().format(DateTimeFormatter.ofPattern(DatePattern.UTC_SIMPLE_PATTERN)));
         }
 
         if (StrUtil.isBlank(header.getMesgType())) {
@@ -173,12 +177,16 @@ public class UwapBaseController extends BizBaseController {
             respData.setProcCd(response.getRespCode());
         }
         if (StrUtil.isBlank(respData.getProcSts())) {
-            respData.setProcSts(response.getRespPrcd());
+            respData.setProcSts(response.getRespProCd());
         }
         if (StrUtil.isBlank(respData.getProcInf())) {
             respData.setProcInf(response.getRespDesc());
         }
 
+    }
+
+    private String getMsgType(Object msgBody) {
+        return "";
     }
 
     /**
@@ -188,54 +196,7 @@ public class UwapBaseController extends BizBaseController {
      * @param request 请求参数对象
      */
     private void initContext(BizContext context, UwapRequest<?> request) {
-        Contracts.assertNotNull(context, MESSAGES.validatedObjectMustNotBeNull());
-        MsgHeader msgHeader = request.getMsgHeader();
-        context.setService(sysParamsComp.getSysParam("systemNo"));
-        context.setServerName(serverName);
-        context.setSceneId(msgHeader.getMesgType());
-        context.setChannelSeqNo(msgHeader.getMsgId());
-        context.setLang(msgHeader.getLang());
-        String channelCode = msgHeader.getMesgType().substring(0, msgHeader.getMesgType().indexOf("."));
-        context.setChannelCode(channelCode);
 
-        //分割请求头日期时间
-        LocalDateTime sendDateTime = LocalDateTime.parse(msgHeader.getOrigSendDateTime(), DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-
-        String channelDate = LocalDateTimeUtil.format(sendDateTime, DatePattern.PURE_DATE_PATTERN);
-        String channelTime = LocalDateTimeUtil.format(sendDateTime, DatePattern.PURE_TIME_PATTERN);
-        context.setChannelDate(channelDate);
-        context.setChannelTime(channelTime);
-
-        HttpServletRequest httpServletRequest = IpUtil.getRequest();
-        String reqUrl = httpServletRequest.getRequestURI();
-        String tranCode = reqUrl.substring(reqUrl.lastIndexOf("/") + 1);
-        context.setTransCode(tranCode);
-
-        LocalDateTime now = LocalDateTimeUtil.now();
-        context.setTransDate(LocalDateTimeUtil.format(now, DatePattern.PURE_DATE_PATTERN));
-        context.setTransTime(LocalDateTimeUtil.format(now, DatePattern.PURE_TIME_PATTERN));
-
-        context.setGlobalSeq(sysSequenceComp.getGlobalSeqNo(context.getService()));
-        context.setChannelAddr(IpUtil.getClientIp());
-
-        context.setRequest(request);
-
-
-        //获取http请求头字段
-        String userId = httpServletRequest.getHeader("userid");
-        if (StrUtil.isNotBlank(userId)) {
-            context.put("userid", userId);
-        }
-
-        String did = httpServletRequest.getHeader("did");
-        if (StrUtil.isNotBlank(did)) {
-            context.put("did", did);
-        }
-
-        String remoteAddr = httpServletRequest.getHeader("remote_addr");
-        if (StrUtil.isNotBlank(remoteAddr)) {
-            context.put("remote_addr", remoteAddr);
-        }
     }
 
     /**

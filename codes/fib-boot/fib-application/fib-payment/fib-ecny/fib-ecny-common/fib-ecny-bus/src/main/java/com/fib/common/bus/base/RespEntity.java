@@ -1,7 +1,16 @@
 package com.fib.common.bus.base;
 
-public class RespEntity {
+import lombok.Data;
 
+@Data
+public class RespEntity<T> {
+
+    private String respType;
+    private String respCode;
+    private String respDesc;
+    private String respProCd;
+    private UwapResponse<T> respData;
+    private Boolean needErrorCodeMapping = Boolean.FALSE;
     public static RespEntity fail() {
         return new RespEntity();
     }
@@ -20,5 +29,17 @@ public class RespEntity {
 
     public void setBody(Object body) {
         this.body = body;
+    }
+
+    public Object setFailed(EcnyErrorCode ecnyErrorCode) {
+        return null;
+    }
+
+    public boolean unsucc() {
+        return true;
+    }
+
+    public boolean okey() {
+        return true;
     }
 }

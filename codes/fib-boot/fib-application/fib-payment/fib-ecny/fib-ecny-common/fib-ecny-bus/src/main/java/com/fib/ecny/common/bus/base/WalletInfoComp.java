@@ -13,6 +13,8 @@ import com.fib.ecny.mapper.WalletInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
  * 钱包信息组件
  */
@@ -25,14 +27,14 @@ public class WalletInfoComp {
         this.walletInfoMapper = walletInfoMapper;
     }
 
-    public WalletInfoDto getWalletInfo(WalletInfoDto walletInfoDto) {
+    public Optional<WalletInfoDto> getWalletInfo(WalletInfoDto walletInfoDto) {
         LambdaQueryWrapper<WalletInfoEntity> wrapper = Wrappers.lambdaQuery(WalletInfoEntity.class);
         WalletInfoEntity walletInfoEntity = WalletInfoConverter.INSTANCE.fromDto(walletInfoDto);
 
         wrapper.eq(WalletInfoEntity::getWalletId, walletInfoEntity.getWalletId());
         wrapper.eq(WalletInfoEntity::getEcnyCustNo, walletInfoEntity.getEcnyCustNo());
         try {
-            return WalletInfoConverter.INSTANCE.toDto(walletInfoMapper.selectOne(wrapper, Boolean.FALSE));
+            return Optional.ofNullable(WalletInfoConverter.INSTANCE.toDto(walletInfoMapper.selectOne(wrapper, Boolean.FALSE)));
         } catch (Exception e) {
             log.error("Failed to execute to query walletInfo.", e);
             throw new BizException(EcnyErrorCode.DB_EXP);

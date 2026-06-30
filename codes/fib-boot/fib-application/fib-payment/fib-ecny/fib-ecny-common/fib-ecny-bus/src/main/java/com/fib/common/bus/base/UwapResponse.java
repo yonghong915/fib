@@ -1,11 +1,38 @@
 package com.fib.common.bus.base;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class UwapResponse<T> {
 
-    MsgHeader msgHeader;
+    @NotNull(message = "msgHeader must not be null.")
+    private MsgHeader msgHeader;
 
-    T respData;
+    @NotNull(message = "msgBody must not be null.")
+    private T msgBody;
+
+    private String procSts;
+
+    private String procCd;
+
+    private String procInf;
+
+    public UwapResponse() {
+
+    }
+
+    public UwapResponse(T response) {
+        this.msgBody = response;
+        this.procSts = "PGO000";
+        this.procCd = "000000";
+        this.procInf = "success";
+    }
+
+    public UwapResponse(MsgHeader header, UwapResponse respData) {
+    }
+
+    public static UwapResponse<?> fail() {
+        return new UwapResponse();
+    }
 }

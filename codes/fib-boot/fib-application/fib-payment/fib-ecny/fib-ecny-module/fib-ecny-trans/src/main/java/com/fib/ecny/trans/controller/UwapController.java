@@ -1,6 +1,7 @@
 package com.fib.ecny.trans.controller;
 
 import com.fib.common.bus.base.UwapRequest;
+import com.fib.common.bus.base.UwapResponse;
 import com.fib.ecny.trans.service.impl.uwap.Ecnyul0551Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
