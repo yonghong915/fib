@@ -14,5 +14,6 @@
         <module>fib-ecny-bus</module>
         <module>fib-ecny-mapper</module>
         <module>fib-ecny-rpc</module>
+        <module>fib-ecny-notice</module>
     </modules>
 </project>

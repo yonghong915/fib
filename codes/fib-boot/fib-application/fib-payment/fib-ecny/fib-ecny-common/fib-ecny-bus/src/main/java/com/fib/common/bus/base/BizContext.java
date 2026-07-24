@@ -18,7 +18,7 @@ public class BizContext<T> {
     private String channelAddr;
     private String serverName;
     private String sceneId;
-    private UwapRequest<T> request;
+    private T request;
 
     public void put(String flag, boolean b) {
     }

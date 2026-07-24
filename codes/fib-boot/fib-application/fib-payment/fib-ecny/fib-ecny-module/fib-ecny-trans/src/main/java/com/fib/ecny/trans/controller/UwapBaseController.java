@@ -2,26 +2,17 @@ package com.fib.ecny.trans.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.fib.common.bus.base.*;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.internal.util.Contracts;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -70,7 +61,7 @@ public class UwapBaseController extends BizBaseController {
                 isInsertRequest = insertMessage(context);
             } catch (Exception e) {
                 log.error("交易请求流水保存失败", e);
-                exceptionResolver.throwIfStrict(EcnyErrorCode.UWAP_R_9999, BizException.class);
+                //exceptionResolver.throwIfStrict(EcnyErrorCode.UWAP_R_9999, BizException.class);
             }
 
             //参数校验
@@ -80,9 +71,9 @@ public class UwapBaseController extends BizBaseController {
 
             response = execute(context, response, bizService);
         } catch (ValidatorUtils.ValidationException e) {
-            ExcepUtils.printError(response.setFailed(EcnyErrorCode.UWAP_R_0001), e);
+            //ExcepUtils.printError(response.setFailed(EcnyErrorCode.UWAP_R_0001), e);
         } catch (Exception e) {
-            response = ExcepUtils.of(e, response);
+           // response = ExcepUtils.of(e, response);
         } finally {
             log.info("业务层返回类型:{}", response.getRespType());
             log.info("业务层返回代码:{}", response.getRespCode());
@@ -100,7 +91,7 @@ public class UwapBaseController extends BizBaseController {
 
             //获取执行耗时
             long cost = watch.getTotalTimeMillis();
-            context.put(TqaMessageSerialDommain::getElpsdTm, (int) cost);
+            //context.put(TqaMessageSerialDommain::getElpsdTm, (int) cost);
 
             if (isInsertRequest) {
                 updateMessage(context, response);
@@ -145,7 +136,7 @@ public class UwapBaseController extends BizBaseController {
             respData = new UwapResponse<>(header, response.getRespData());
             response.setRespData(respData);
         }
-        复制请求报文头到返回报文头中
+        //复制请求报文头到返回报文头中
         MsgHeader msgHeader = ((UwapRequest<?>) context.getRequest()).getMsgHeader();
         BeanUtil.copyProperties(msgHeader, header);
 

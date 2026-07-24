@@ -1,27 +1,36 @@
 package com.fib.ecny.trans.controller;
 
+import cn.hutool.extra.spring.SpringUtil;
 import jakarta.validation.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+//common-core
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class ValidatorUtils {
-    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Validator validator = SpringUtil.getBean(Validator.class);
 
-    public static <T> void validate(T obj, Class<?>... groups) {
-        Set<ConstraintViolation<T>> violations = validator.validate(obj, groups);
+    /**
+     * 手动校验参数
+     *
+     * @param object 入参
+     * @param groups 校验分组
+     * @param <T>
+     */
+    public static <T> void validate(T object, Class<?>... groups) {
+        Set<ConstraintViolation<T>> violations = validator.validate(object, groups);
         if (!violations.isEmpty()) {
-            throw new ValidationException(violations.stream()
-                    .map(v -> v.getPropertyPath() + ": " + v.getMessage())
-                    .collect(Collectors.joining(",")));
+            ConstraintViolation<T> first = violations.iterator().next();
+            log.error("校验失败-对象:{},字段及错误:{},分组:{}", object.getClass().getSimpleName(),
+                    violations.stream().map(v -> v.getPropertyPath() + ": " + v.getMessage()).collect(Collectors.joining(",")),
+                    groups.length > 0 ? groups[0].getSimpleName() : "默认分组");
+            throw new ValidationException(first.getMessage());
         }
-
-//        if (!violations.isEmpty()) {
-//            // 处理校验失败的情况，例如返回错误信息等。
-//            throw new ValidationException("校验失败");
-//            return;
-//            //return ResponseEntity.badRequest().body("校验失败: " + violations); // 需要更精细的处理方式，比如提取具体错误信息。
-//        }
     }
 
     public static class ValidationException extends RuntimeException {

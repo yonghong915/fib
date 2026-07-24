@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-06-28T11:25:00+0800",
+    date = "2026-07-12T20:02:40+0800",
     comments = "version: 1.6.3, compiler: javac, environment: Java 25.0.3 (Oracle Corporation)"
 )
 @Component
@@ -29,6 +29,7 @@ public class WalletInfoConverterImpl implements WalletInfoConverter {
         walletInfoDto.setWalletName( entity.getWalletName() );
         walletInfoDto.setWalletLevel( entity.getWalletLevel() );
         walletInfoDto.setWalletStatus( entity.getWalletStatus() );
+        walletInfoDto.setRemark( entity.getRemark() );
 
         return walletInfoDto;
     }
@@ -60,6 +61,7 @@ public class WalletInfoConverterImpl implements WalletInfoConverter {
         walletInfoEntity.setWalletName( dto.getWalletName() );
         walletInfoEntity.setWalletLevel( dto.getWalletLevel() );
         walletInfoEntity.setWalletStatus( dto.getWalletStatus() );
+        walletInfoEntity.setRemark( dto.getRemark() );
 
         return walletInfoEntity;
     }
@@ -77,6 +79,7 @@ public class WalletInfoConverterImpl implements WalletInfoConverter {
         walletInfoDto.setWalletName( vo.getWalletName() );
         walletInfoDto.setWalletLevel( vo.getWalletLevel() );
         walletInfoDto.setWalletStatus( vo.getWalletStatus() );
+        walletInfoDto.setRemark( vo.getRemark() );
 
         return walletInfoDto;
     }
@@ -94,6 +97,7 @@ public class WalletInfoConverterImpl implements WalletInfoConverter {
         walletInfoVo.setWalletName( dto.getWalletName() );
         walletInfoVo.setWalletLevel( dto.getWalletLevel() );
         walletInfoVo.setWalletStatus( dto.getWalletStatus() );
+        walletInfoVo.setRemark( dto.getRemark() );
 
         return walletInfoVo;
     }

@@ -9,4 +9,5 @@ public class WalletInfoVo {
     private String walletName;
     private String walletLevel;
     private String walletStatus;
+    private String remark;
 }

@@ -35,5 +35,5 @@ public class WalletInfoDto {
     @NotBlank(message = "钱包状态不能为空")
     private String walletStatus;
 
-
+    private String remark;
 }

@@ -1,0 +1,19 @@
+@startuml
+set separator none
+title EcnyApplication
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+Container_Boundary("EcnyApplication.EcnyApplication_boundary", "EcnyApplication", $tags="") {
+  Component(EcnyApplication.EcnyApplication.Order, "Order", $techn="Module", $descr="", $tags="", $link="")
+  Component(EcnyApplication.EcnyApplication.Inventory, "Inventory", $techn="Module", $descr="", $tags="", $link="")
+}
+
+Rel(EcnyApplication.EcnyApplication.Inventory, EcnyApplication.EcnyApplication.Order, "listens to", $techn="", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml
