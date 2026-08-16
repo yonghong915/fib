@@ -70,6 +70,14 @@
             <version>${spring-modulith.version}</version>
         </dependency>
 
+        <!-- 可选：运行时观测 -->
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-starter-insight</artifactId>
+            <version>${spring-modulith.version}</version>
+        </dependency>
+
+
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.experimental</groupId>-->
         <!--            <artifactId>spring-modulith-api</artifactId>-->
@@ -79,6 +87,56 @@
             <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-starter-test</artifactId>
             <version>${spring-modulith.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>26.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.53.2.0</version>
         </dependency>
     </dependencies>
     <build>
@@ -112,9 +170,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <modules>
-        <module>fib-ecny-common</module>
-        <module>fib-ecny-module</module>
-    </modules>
 </project>
