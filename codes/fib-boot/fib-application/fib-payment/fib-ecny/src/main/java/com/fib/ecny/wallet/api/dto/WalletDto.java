@@ -1,7 +1,7 @@
 package com.fib.ecny.wallet.api.dto;
 
-import org.springframework.modulith.NamedInterface;
+import lombok.Data;
 
-@NamedInterface
+@Data
 public class WalletDto {
 }

@@ -1,2 +1,2 @@
 @org.springframework.modulith.NamedInterface("api")
-package com.fib.ecny.wallet.api;
+package com.fib.ecny.wallet.api.dto;
