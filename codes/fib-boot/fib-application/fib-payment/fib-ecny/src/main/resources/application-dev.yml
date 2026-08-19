@@ -7,15 +7,17 @@ spring:
     username:
     password:
     master:
-        url: jdbc:sqlite:wallet.db?busy_timeout=5000
+        url: jdbc:sqlite:C:\software\db\sqlite\wallet.db?busy_timeout=5000
         driver-class-name: org.sqlite.JDBC
         username:
         password:
     slave:
-       url: jdbc:sqlite:wallet.db?busy_timeout=5000
+       url: jdbc:sqlite:C:\software\db\sqlite\wallet.db?busy_timeout=5000
        driver-class-name: org.sqlite.JDBC
        username:
        password:
+  schema: classpath:schema.sql
+  initialization-mode: always
   jackson:
     default-property-inclusion: non_null
   redis:

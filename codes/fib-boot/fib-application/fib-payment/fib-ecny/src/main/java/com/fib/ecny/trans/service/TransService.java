@@ -1,6 +1,6 @@
 package com.fib.ecny.trans.service;
 
-import com.fib.ecny.wallet.api.dto.WalletDto;
+import com.fib.ecny.wallet.api.dto.WalletInfoDto;
 import com.fib.ecny.wallet.api.facade.InventoryApi;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class TransService {
         this.inventoryApi = inventoryApi;
     }
 
-    public WalletDto saveWallet() {
+    public WalletInfoDto saveWallet() {
         return inventoryApi.saveWallet();
     }
 

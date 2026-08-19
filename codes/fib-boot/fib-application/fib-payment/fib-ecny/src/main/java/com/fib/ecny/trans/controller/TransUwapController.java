@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-public class UwapController extends UwapBaseController {
+public class TransUwapController extends UwapBaseController {
     @PostMapping(value = "/ecnyul0501", produces = MediaType.APPLICATION_JSON_VALUE)
     public UwapResponse<?> ecnyul0501(@RequestBody UwapRequest<?> req) {
         return executor(req, Ecnyul0501Service.class);
