@@ -24,18 +24,22 @@ import java.util.Objects;
 public class DcepController extends BizBaseController {
 
     public UwapResponse<?> executor(UwapRequest<?> request) {
-        return executor(request, null, true);
+        return executor(request,null, null, true);
     }
 
     public UwapResponse<?> executor(UwapRequest<?> request, boolean isCheckParam) {
-        return executor(request, null, isCheckParam);
+        return executor(request,null, null, isCheckParam);
     }
 
-    public UwapResponse<?> executor(UwapRequest<?> request, Class<?> bizService) {
-        return executor(request, bizService, true);
+    public UwapResponse<?> executor(UwapRequest<?> request, Class<IBizService> bizServiceClazz) {
+        return executor(request, bizServiceClazz, null, true);
     }
 
-    private UwapResponse<?> executor(UwapRequest<?> request, Class<?> bizService, boolean isCheckParam) {
+    public UwapResponse<?> executor(UwapRequest<?> request, IBizService bizService) {
+        return executor(request, null, bizService, true);
+    }
+
+    private UwapResponse<?> executor(UwapRequest<?> request, Class<IBizService> bizServiceClazz, IBizService bizService, boolean isCheckParam) {
         StopWatch watch = new StopWatch();
         BizContext context = new BizContext();
         RespEntity response = RespEntity.fail();
@@ -56,7 +60,7 @@ public class DcepController extends BizBaseController {
 
             try {
                 //交易请求流水信息保存
-               // isInsertRequest = insertMessage(context);
+                // isInsertRequest = insertMessage(context);
             } catch (Exception e) {
                 log.error("交易请求流水保存失败", e);
                 //exceptionResolver.throwIfStrict(EcnyErrorCode.UWAP_R_9999, BizException.class);
@@ -67,7 +71,7 @@ public class DcepController extends BizBaseController {
                 //checkField(context);
             }
 
-            response = execute(context, response, bizService);
+            response = execute(context, response, bizServiceClazz,bizService);
         } catch (ValidationException e) {
             //ExcepUtils.printError(response.setFailed(EcnyErrorCode.UWAP_R_0001), e);
         } catch (Exception e) {
@@ -185,6 +189,7 @@ public class DcepController extends BizBaseController {
      * @param request 请求参数对象
      */
     private void initContext(BizContext context, UwapRequest<?> request) {
+
 
     }
 

@@ -4,7 +4,6 @@ import com.fib.ecny.base.IEnumFunction;
 
 public class BizException extends RuntimeException {
     private final IEnumFunction errorCode;
-
     private String message;
 
     public BizException(IEnumFunction _errorCode) {
@@ -15,6 +14,12 @@ public class BizException extends RuntimeException {
     public BizException(IEnumFunction _errorCode, String message) {
         super(message);
         this.errorCode = _errorCode;
+        this.message = message;
+    }
+
+    public BizException(String message) {
+        super(message);
+        this.errorCode = null;
         this.message = message;
     }
 }

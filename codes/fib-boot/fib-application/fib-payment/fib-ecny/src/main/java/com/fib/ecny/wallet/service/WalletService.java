@@ -19,11 +19,12 @@ public class WalletService {
         this.walletInfoComp = walletInfoComp;
     }
 
-    public void saveWallet() {
+    public int saveWallet(WalletInfoDto walletInfoDto) {
         TransDto transDto = transCompImpl.queryTransById("12344");
         System.out.println(transDto.getTransAmt());
-        WalletInfoDto walletInfoDto = new WalletInfoDto();
+        int rows = walletInfoComp.saveWalletInfo(walletInfoDto);
         Optional<WalletInfoDto> ss = walletInfoComp.getWalletInfo(walletInfoDto);
-
+        ss.ifPresent(val -> System.out.println(val.getEcnyCustNo()));
+        return rows;
     }
 }
