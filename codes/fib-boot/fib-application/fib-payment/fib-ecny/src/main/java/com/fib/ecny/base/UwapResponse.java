@@ -1,6 +1,6 @@
 package com.fib.ecny.base;
 
-import com.fib.ecny.base.service.MsgHeader;
+import com.fib.ecny.base.enums.service.MsgHeader;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 

@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.fib.ecny</groupId>
+        <artifactId>fib-ecny</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>fib-ecny-fin-service</artifactId>
+    <packaging>pom</packaging>
+
+    <name>fib-ecny-fin-service</name>
+    <url>https://maven.apache.org</url>
+    <modules>
+        <module>fib-ecny-application</module>
+        <module>fib-ecny-trans</module>
+        <module>fib-ecny-wallet</module>
+        <module>fib-ecny-fin-common</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

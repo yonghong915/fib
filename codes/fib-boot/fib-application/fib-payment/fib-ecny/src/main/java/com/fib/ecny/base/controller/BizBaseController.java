@@ -3,6 +3,7 @@ package com.fib.ecny.base.controller;
 import com.fib.ecny.base.BizContext;
 import com.fib.ecny.base.IBizService;
 import com.fib.ecny.base.RespEntity;
+import com.fib.ecny.common.util.ValidatorUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-public class BizBaseController {
+public abstract class BizBaseController {
 
     @Resource
     private BeanInstanceCacheHolder beanInstanceCacheHolder;
@@ -28,14 +29,15 @@ public class BizBaseController {
     }
 
 
-    protected RespEntity execute(BizContext context, RespEntity response, Class<IBizService> bizServiceClazz, IBizService bizService) {
+    protected RespEntity execute(BizContext context, RespEntity response, Class<?> bizServiceClazz, IBizService bizService) {
         context.put(FLAG, Boolean.TRUE);
         context.put("flag", true);
         try {
-            //return Optional.ofNullable(bizService).orElse(beanInstanceCacheHolder.getBean(bizServiceClazz)).execute(context);
-            return bizService.execute(context);
+            //IBizService ss = (IBizService) beanInstanceCacheHolder.getBean(bizServiceClazz);
+            return Optional.ofNullable(bizService).orElse((IBizService) beanInstanceCacheHolder.getBean(bizServiceClazz)).execute(context);
+            // return bizService.execute(context);
         } catch (Exception e) {
-            log.error("请求业务服务为空或不是IBizService的子类",e);
+            log.error("请求业务服务为空或不是IBizService的子类", e);
             return RespEntity.fail();
         }
     }

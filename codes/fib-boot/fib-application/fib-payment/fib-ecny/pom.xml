@@ -9,8 +9,13 @@
         <artifactId>fib-payment</artifactId>
         <version>0.0.1</version>
     </parent>
+
+    <groupId>com.fib.ecny</groupId>
     <artifactId>fib-ecny</artifactId>
     <name>fib-ecny</name>
+    <modules>
+        <module>fib-ecny-fin-service</module>
+    </modules>
     <packaging>pom</packaging>
     <url>https://maven.apache.org</url>
     <properties>
@@ -92,6 +97,12 @@
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
@@ -138,19 +149,33 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.53.2.0</version>
         </dependency>
+
+        <!-- Caffeine本地缓存 -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+            <version>2.14.5</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <!-- 如果有 includes/excludes，确认没有把配置文件排除掉 -->
-                <includes>
-                    <include>**/*.yml</include>
-                    <include>**/*.yaml</include>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
+                <filtering>false</filtering>
             </resource>
         </resources>
         <plugins>

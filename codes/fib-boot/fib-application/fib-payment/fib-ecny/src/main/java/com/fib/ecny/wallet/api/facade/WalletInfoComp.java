@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fib.ecny.base.service.EcnyErrorCode;
+import com.fib.ecny.base.enums.service.EcnyErrorCode;
 import com.fib.ecny.common.exception.BizException;
 import com.fib.ecny.wallet.api.dto.WalletInfoDto;
 import com.fib.ecny.wallet.converter.WalletInfoConverter;

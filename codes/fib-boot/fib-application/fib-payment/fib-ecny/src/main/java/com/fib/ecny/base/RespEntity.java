@@ -1,6 +1,6 @@
 package com.fib.ecny.base;
 
-import com.fib.ecny.base.service.EcnyErrorCode;
+import com.fib.ecny.base.enums.service.EcnyErrorCode;
 import lombok.Data;
 
 @Data

@@ -1,7 +1,7 @@
 package com.fib.ecny.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fib.ecny.base.service.MsgHeader;
+import com.fib.ecny.base.enums.service.MsgHeader;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
@@ -28,6 +28,11 @@ public class UwapRequest<T> {
     }
 
     public void setMsgBody(T msgBody) {
+        this.msgBody = msgBody;
+    }
+
+    public UwapRequest(MsgHeader msgHeader,T msgBody){
+        this.msgHeader = msgHeader;
         this.msgBody = msgBody;
     }
 }

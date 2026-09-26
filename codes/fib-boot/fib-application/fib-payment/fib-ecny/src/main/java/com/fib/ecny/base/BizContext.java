@@ -2,8 +2,10 @@ package com.fib.ecny.base;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class BizContext<T> {
+public class BizContext implements Serializable {
     private String service;
     private String serialNo;
     private String channelCode;
@@ -18,7 +20,25 @@ public class BizContext<T> {
     private String channelAddr;
     private String serverName;
     private String sceneId;
-    private T request;
+    private Class<?> clazz;
+    private Object request;
+    private Long duration;
+
+    public BizContext(){}
+    public BizContext(Object request){
+        //super(request);
+        this.request = request;
+        this.clazz = request.getClass();
+    }
+
+    public <T> void setRequest(T request){
+        this.request = request;
+        this.clazz = request.getClass();
+    }
+
+    public <T> T getRequest(){
+        return this.getRequest();
+    }
 
     public void put(String flag, boolean b) {
     }

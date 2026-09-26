@@ -1,6 +1,5 @@
 package com.fib.ecny.base.enums;
 
-import com.fib.ecny.base.IEnumFunction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

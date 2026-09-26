@@ -1,6 +1,6 @@
 package com.fib.ecny.common.exception;
 
-import com.fib.ecny.base.IEnumFunction;
+import com.fib.ecny.base.enums.IEnumFunction;
 
 public class BizException extends RuntimeException {
     private final IEnumFunction errorCode;
