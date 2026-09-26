@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.fib.ecny</groupId>
+        <artifactId>fib-ecny</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>fib-ecny-pub</artifactId>
+    <packaging>pom</packaging>
+
+    <name>fib-ecny-pub</name>
+    <url>https://maven.apache.org</url>
+    <modules>
+        <module>fib-ecny-base</module>
+        <module>fib-ecny-mapper</module>
+    </modules>
+</project>

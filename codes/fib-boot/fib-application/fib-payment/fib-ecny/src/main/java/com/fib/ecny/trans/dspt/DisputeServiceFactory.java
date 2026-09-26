@@ -1,6 +1,5 @@
 package com.fib.ecny.trans.dspt;
 
-import com.fib.ecny.common.exception.BizException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

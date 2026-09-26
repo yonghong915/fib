@@ -1,11 +1,8 @@
 package com.fib.ecny.wallet.controller;
 
-import com.fib.ecny.base.IBizService;
 import com.fib.ecny.base.UwapRequest;
 import com.fib.ecny.base.UwapResponse;
-import com.fib.ecny.base.controller.UwapBaseController;
 import com.fib.ecny.wallet.service.Ecnydl0478Service;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

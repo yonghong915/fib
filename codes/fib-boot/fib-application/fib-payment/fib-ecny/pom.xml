@@ -15,6 +15,7 @@
     <name>fib-ecny</name>
     <modules>
         <module>fib-ecny-fin-service</module>
+        <module>fib-ecny-pub</module>
     </modules>
     <packaging>pom</packaging>
     <url>https://maven.apache.org</url>

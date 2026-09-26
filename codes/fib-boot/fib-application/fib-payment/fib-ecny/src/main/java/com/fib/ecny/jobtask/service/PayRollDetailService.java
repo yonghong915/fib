@@ -2,7 +2,6 @@ package com.fib.ecny.jobtask.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fib.ecny.common.exception.BizException;
 import com.fib.ecny.jobtask.PayrollDetailDto;
 import com.fib.ecny.jobtask.converter.PayrollDetailConverter;
 import com.fib.ecny.jobtask.entity.PayrollDetailEntity;
