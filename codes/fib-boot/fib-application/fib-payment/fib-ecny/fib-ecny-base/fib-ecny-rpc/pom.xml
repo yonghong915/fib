@@ -3,15 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.fib.ecny</groupId>
-        <artifactId>fib-ecny-pub</artifactId>
+        <artifactId>fib-ecny-base</artifactId>
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>fib-ecny-base</artifactId>
+    <artifactId>fib-ecny-rpc</artifactId>
     <packaging>jar</packaging>
 
-    <name>fib-ecny-base</name>
-    <url>https://maven.apache.org</url>
+    <name>fib-ecny-rpc</name>
+    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

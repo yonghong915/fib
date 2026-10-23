@@ -13,7 +13,5 @@
     <name>fib-ecny-pub</name>
     <url>https://maven.apache.org</url>
     <modules>
-        <module>fib-ecny-base</module>
-        <module>fib-ecny-mapper</module>
     </modules>
 </project>

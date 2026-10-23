@@ -17,6 +17,8 @@
         <module>fib-ecny-trans</module>
         <module>fib-ecny-wallet</module>
         <module>fib-ecny-fin-common</module>
+        <module>fib-ecny-fin-controller</module>
+        <module>fib-ecny-scens</module>
     </modules>
 
     <properties>
