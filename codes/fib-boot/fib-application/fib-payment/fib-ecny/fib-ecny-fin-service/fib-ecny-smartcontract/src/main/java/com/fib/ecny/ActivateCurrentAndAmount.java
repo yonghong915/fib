@@ -2,18 +2,18 @@ package com.fib.ecny;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
+import lombok.Data;
 
+import java.math.BigDecimal;
+
+@Data
+// 根节点就是 tranAmt
+//@JacksonXmlRootElement(localName = "tranAmt")
 public class ActivateCurrentAndAmount {
-    private String ccy;
-    private String value;
 
     @JacksonXmlProperty(localName = "Ccy", isAttribute = true)
-    public String getCcy() {
-        return ccy;
-    }
+    private String ccy = "CNY";
 
     @JacksonXmlText
-    public String geValue() {
-        return value;
-    }
+    private BigDecimal value;
 }
