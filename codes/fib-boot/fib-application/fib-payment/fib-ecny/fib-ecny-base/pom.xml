@@ -15,11 +15,6 @@
     <modules>
         <module>fib-ecny-base-starter</module>
         <module>fib-ecny-common</module>
-        <module>fib-ecny-common/fib-ecny-common-core</module>
-        <module>fib-ecny-common/fib-ecny-common-interflow</module>
-        <module>fib-ecny-common/fib-ecny-common-public</module>
-        <module>fib-ecny-common/fib-ecny-common-web</module>
-        <module>fib-ecny-common/fib-ecny-common-busi</module>
         <module>fib-ecny-rpc</module>
     </modules>
 

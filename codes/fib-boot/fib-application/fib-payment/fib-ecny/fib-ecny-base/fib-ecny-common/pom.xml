@@ -8,15 +8,22 @@
     </parent>
 
     <artifactId>fib-ecny-common</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>fib-ecny-common</name>
-    <url>http://maven.apache.org</url>
+    <url>https://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <modules>
+        <module>fib-ecny-common-busi</module>
+        <module>fib-ecny-common-core</module>
+        <module>fib-ecny-common-interflow</module>
+        <module>fib-ecny-common-mapper</module>
+        <module>fib-ecny-common-public</module>
+        <module>fib-ecny-common-web</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

@@ -2,7 +2,8 @@ package com.fib.ecny.entity.wallet.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,9 +12,10 @@ import java.time.LocalDateTime;
 /**
  * 钱包交易明细信息
  */
-@Data
+@AllArgsConstructor
+@Getter
 @TableName("tqa_wallet_tran_detail")
-public class TqaWalletTranDetailEntity {
+public class TqaWalletTranDetailEntity extends BaseEntity{
     @TableId("id")
     private BigInteger id;
     private String glSerialNo;
