@@ -19,6 +19,7 @@
         <module>fib-ecny-fin-common</module>
         <module>fib-ecny-fin-controller</module>
         <module>fib-ecny-scens</module>
+        <module>fib-ecny-smartcontract</module>
     </modules>
 
     <properties>
