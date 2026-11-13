@@ -35,15 +35,11 @@ public class XmlUtil {
         }
     }
 
-    record SerialContext(String glSeqNo, String systemSeqNo, String tranDt) {
+    public static XmlMapper getXmlMapper() {
+        return XML_MAPPER;
     }
 
-    record TranSerialIds() {
-    }
 
-    record MessageSerialContext(SerialContext serialContext, String chnlNo, String tranTm, String reqTm, String reqAddr,
-                                long startMills) {
-    }
 
     public static BigDecimal fenToYuan(long fen) {
         return BigDecimal.valueOf(fen).movePointLeft(2);
@@ -52,6 +48,4 @@ public class XmlUtil {
     public static long yuanToFen(String yuan) {
         return Objects.isNull(yuan) ? 0L : new BigDecimal(yuan).movePointRight(2).longValueExact();
     }
-
-
 }

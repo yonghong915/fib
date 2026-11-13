@@ -1,5 +1,7 @@
 package com.fib.ecny.sm;
 
+import com.fib.ecny.sm.serial.TranSerialIds;
+
 public class LoanPayProcessor implements LoanProcessor<LoanAppReqBody>{
     @Override
     public String tranCode() {
@@ -12,7 +14,7 @@ public class LoanPayProcessor implements LoanProcessor<LoanAppReqBody>{
     }
 
     @Override
-    public LoanResponse process(LoanRequest request, LoanAppReqBody body, XmlUtil.TranSerialIds ids) {
+    public LoanResponse process(LoanRequest request, LoanAppReqBody body, TranSerialIds ids) {
         return null;
     }
 }
