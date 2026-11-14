@@ -1,7 +1,7 @@
 package com.fib.ecny.wallet.converter;
 
 import com.fib.ecny.base.dto.wallet.TqaWalletTranDetailDto;
-import com.fib.ecny.entity.wallet.entity.TqaWalletTranDetailEntity;
+import com.fib.ecny.entity.wallet.TqaWalletTranDetailEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

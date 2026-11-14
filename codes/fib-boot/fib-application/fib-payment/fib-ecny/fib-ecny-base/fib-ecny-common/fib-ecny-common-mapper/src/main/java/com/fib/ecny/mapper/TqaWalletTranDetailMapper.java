@@ -1,7 +1,7 @@
 package com.fib.ecny.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fib.ecny.entity.wallet.entity.TqaWalletTranDetailEntity;
+import com.fib.ecny.entity.wallet.TqaWalletTranDetailEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

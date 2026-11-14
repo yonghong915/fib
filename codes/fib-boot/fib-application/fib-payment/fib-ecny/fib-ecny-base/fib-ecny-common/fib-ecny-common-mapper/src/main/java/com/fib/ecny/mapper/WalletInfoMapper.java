@@ -1,6 +1,6 @@
 package com.fib.ecny.mapper;
 
-import com.fib.ecny.entity.wallet.entity.WalletInfoEntity;
+import com.fib.ecny.entity.wallet.WalletInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

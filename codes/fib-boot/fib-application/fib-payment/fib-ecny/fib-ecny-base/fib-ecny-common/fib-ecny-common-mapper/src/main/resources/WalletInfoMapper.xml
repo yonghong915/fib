@@ -6,12 +6,12 @@
         wallet_id,wallet_name,wallet_level,wallet_status,create_dt,update_dt
     </sql>
 
-    <insert id="insertWalletInfo" parameterType="com.fib.ecny.entity.wallet.entity.WalletInfoEntity">
+    <insert id="insertWalletInfo" parameterType="com.fib.ecny.entity.wallet.WalletInfoEntity">
         INSERT INTO t_wallet_info(wallet_id,wallet_name,wallet_level,wallet_status,create_dt,update_dt)
         VALUES(#{walletId},#{walletName},#{walletLevel},#{walletStatus},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
     </insert>
 
-    <insert id="batchInsert" parameterType="com.fib.ecny.entity.wallet.entity.WalletInfoEntity">
+    <insert id="batchInsert" parameterType="com.fib.ecny.entity.wallet.WalletInfoEntity">
         INSERT INTO t_wallet_info(ecny_cust_no,wallet_id,wallet_name,wallet_level,wallet_status,remark,create_dt,update_dt)
         VALUES
         <foreach collection="list" item="item" separator=",">
@@ -20,8 +20,8 @@
     </insert>
 
     <select id="getQueueHeader"
-            parameterType="com.fib.ecny.entity.wallet.entity.WalletInfoEntity"
-            resultType="com.fib.ecny.entity.wallet.entity.WalletInfoEntity">
+            parameterType="com.fib.ecny.entity.wallet.WalletInfoEntity"
+            resultType="com.fib.ecny.entity.wallet.WalletInfoEntity">
         SELECT *
         FROM t_wallet_info
         <where>
@@ -36,7 +36,7 @@
     </select>
 
     <update id="updateQueueItemStatus"
-            parameterType="com.fib.ecny.entity.wallet.entity.WalletInfoEntity">
+            parameterType="com.fib.ecny.entity.wallet.WalletInfoEntity">
         UPDATE t_wallet_info
         SET wallet_name=#{walletName}
         WHERE wallet_id=#{walletName}
